@@ -5,7 +5,7 @@ return [
 	'language'      => '言語',
 	'fediverse'     => '分散',
 	'opensource'	=> 'オープンソース',
-	'terms'         => '規約',
+	'terms'         => '利用規約',
 	'privacy'       => 'プライバシー',
 	'l10nWip'       => '私達はローカライズサポートに取り組んでいます',
 	'currentLocale' => '現在のロケール',

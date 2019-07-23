@@ -6,7 +6,7 @@ return [
 	'home'		 => 'ホーム',
 	'local'		 => 'ローカル',
 	'network'	 => 'ネットワーク',
-	'discover'	 => '見つける',
+	'discover'	 => 'Discover',
 	'viewMyProfile'	 => '自分のプロフィールを見る',
 	'myTimeline'	 => 'タイムライン',
 	'publicTimeline' => 'パブリックタイムライン',

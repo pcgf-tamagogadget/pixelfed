@@ -10,7 +10,7 @@ return [
 	'profile' => 'プロフィール',
 	'stories' => 'ストーリー',
 	'hashtags' => 'ハッシュダグ',
-	'discover' => '見つける',
+	'discover' => 'Discover',
 	'directMessages' => 'ダイレクトメッセージ',
 	'timelines' => 'タイムライン',
 
