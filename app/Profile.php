@@ -140,7 +140,7 @@ class Profile extends Model
             $version = hash('sha256', $avatar->change_count);
             $path = "{$path}?v={$version}";
 
-            return url(Storage::url($path));
+            return config('app.url') . Storage::url($path);
         });
 
         return $url;
@@ -295,5 +295,12 @@ class Profile extends Model
     public function collections()
     {
         return $this->hasMany(Collection::class);
+    }
+
+    public function hasFollowRequestById(int $id)
+    {
+        return FollowRequest::whereFollowerId($id)
+            ->whereFollowingId($this->id)
+            ->exists();
     }
 }
