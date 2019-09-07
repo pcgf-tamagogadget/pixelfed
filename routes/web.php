@@ -68,7 +68,7 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('discover/c/{slug}', 'DiscoverController@showCategory');
-    Route::get('discover/personal', 'DiscoverController@showPersonal');
+    Route::redirect('discover/personal', '/discover');
     Route::get('discover', 'DiscoverController@home')->name('discover');
     Route::get('discover/loops', 'DiscoverController@showLoops');
     
@@ -102,13 +102,13 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
             Route::get('status/{id}/replies', 'InternalApiController@statusReplies');
             Route::post('moderator/action', 'InternalApiController@modAction');
             Route::get('discover/categories', 'InternalApiController@discoverCategories');
-            Route::post('status/compose', 'InternalApiController@composePost')->middleware('throttle:maxPostsPerHour,60')->middleware('throttle:maxPostsPerDay,1440');
             Route::get('loops', 'DiscoverController@loopsApi');
             Route::post('loops/watch', 'DiscoverController@loopWatch');
             Route::get('discover/tag', 'DiscoverController@getHashtags');
+            Route::post('status/compose', 'InternalApiController@composePost')->middleware('throttle:maxPostsPerHour,60')->middleware('throttle:maxPostsPerDay,1440');
         });
         Route::group(['prefix' => 'local'], function () {
-            Route::post('status/compose', 'InternalApiController@compose')->middleware('throttle:maxPostsPerHour,60')->middleware('throttle:maxPostsPerDay,1440');
+            Route::post('status/compose', 'InternalApiController@composePost')->middleware('throttle:maxPostsPerHour,60')->middleware('throttle:maxPostsPerDay,1440');
             Route::get('exp/rec', 'ApiController@userRecommendations');
             Route::post('discover/tag/subscribe', 'HashtagFollowController@store')->middleware('throttle:maxHashtagFollowsPerHour,60')->middleware('throttle:maxHashtagFollowsPerDay,1440');;
             Route::get('discover/tag/list', 'HashtagFollowController@getTags');
@@ -121,10 +121,20 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
             Route::delete('collection/{id}', 'CollectionController@delete')->middleware('throttle:maxCollectionsPerHour,60')->middleware('throttle:maxCollectionsPerDay,1440')->middleware('throttle:maxCollectionsPerMonth,43800');
             Route::post('collection/{id}/publish', 'CollectionController@publish')->middleware('throttle:maxCollectionsPerHour,60')->middleware('throttle:maxCollectionsPerDay,1440')->middleware('throttle:maxCollectionsPerMonth,43800');
             Route::get('profile/collections/{id}', 'CollectionController@getUserCollections');
+
+            Route::post('compose/media/update/{id}', 'MediaController@composeUpdate')->middleware('throttle:maxComposeMediaUpdatesPerHour,60')->middleware('throttle:maxComposeMediaUpdatesPerDay,1440')->middleware('throttle:maxComposeMediaUpdatesPerMonth,43800');
+            Route::get('compose/location/search', 'ApiController@composeLocationSearch');
         });
+        Route::group(['prefix' => 'admin'], function () {
+            Route::post('moderate', 'Api\AdminApiController@moderate');
+        });
+
     });
 
     Route::get('discover/tags/{hashtag}', 'DiscoverController@showTags');
+    Route::get('discover/places', 'PlaceController@directoryHome')->name('discover.places');
+    Route::get('discover/places/{id}/{slug}', 'PlaceController@show');
+    Route::get('discover/location/country/{country}', 'PlaceController@directoryCities');
 
     Route::group(['prefix' => 'i'], function () {
         Route::redirect('/', '/');
@@ -329,6 +339,7 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
     Route::get('p/{username}/{id}/c', 'CommentController@showAll');
     Route::get('p/{username}/{id}/edit', 'StatusController@edit');
     Route::post('p/{username}/{id}/edit', 'StatusController@editStore');
+    Route::get('p/{username}/{id}.json', 'StatusController@showObject');
     Route::get('p/{username}/{id}', 'StatusController@show');
     Route::get('{username}/followers', 'ProfileController@followers')->middleware('auth');
     Route::get('{username}/following', 'ProfileController@following')->middleware('auth');

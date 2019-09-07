@@ -10,7 +10,8 @@ use App\{
     Like,
     Notification,
     Profile,
-    Status
+    Status,
+    StatusHashtag,
 };
 use Carbon\Carbon;
 use App\Util\ActivityPub\Helpers;
@@ -103,7 +104,7 @@ class Inbox
 
     public function actorFirstOrCreate($actorUrl)
     {
-        return Helpers::profileFirstOrNew($actorUrl);
+        return Helpers::profileFetch($actorUrl);
     }
 
     public function handleCreateActivity()
@@ -129,7 +130,7 @@ class Inbox
         }
 
         $inReplyTo = $activity['inReplyTo'];
-        $url = $activity['id'];
+        $url = isset($activity['url']) ? $activity['url'] : $activity['id'];
         
         Helpers::statusFirstOrFetch($url, true);
         return;
@@ -147,7 +148,7 @@ class Inbox
             return;
         }
 
-        $url = $activity['id'];
+        $url = isset($activity['url']) ? $activity['url'] : $activity['id'];
         if(Status::whereUrl($url)->exists()) {
             return;
         }
@@ -176,7 +177,7 @@ class Inbox
                 'following_id' => $target->id,
                 'local_profile' => empty($actor->domain)
             ]);
-            if($follower->wasRecentlyCreated == true) {
+            if($follower->wasRecentlyCreated == true && $target->domain == null) {
                 // send notification
                 Notification::firstOrCreate([
                     'profile_id' => $target->id,
@@ -188,14 +189,19 @@ class Inbox
                     'item_type' => 'App\Profile'
                 ]);
             }
-            $payload = $this->payload;
+
             // send Accept to remote profile
             $accept = [
                 '@context' => 'https://www.w3.org/ns/activitystreams',
                 'id'       => $target->permalink().'#accepts/follows/' . $follower->id,
                 'type'     => 'Accept',
                 'actor'    => $target->permalink(),
-                'object'   => $payload
+                'object'   => [
+                    'id'        => $actor->permalink('#follows/' . $follower->id),
+                    'actor'     => $actor->permalink(),
+                    'type'      => 'Follow',
+                    'object'    => $target->permalink()
+                ]
             ];
             Helpers::sendSignedObject($target, $actor->inbox_url, $accept);
         }
@@ -243,7 +249,7 @@ class Inbox
     public function handleAcceptActivity()
     {
 
-        $actor = $this->payload['actor'];
+        $actor = $this->payload['object']['actor'];
         $obj = $this->payload['object']['object'];
         $type = $this->payload['object']['type'];
 
@@ -251,8 +257,8 @@ class Inbox
             return;
         }
 
-        $actor = Helpers::validateUrl($actor);
-        $target = Helpers::validateLocalUrl($obj);
+        $actor = Helpers::validateLocalUrl($actor);
+        $target = Helpers::validateUrl($obj);
 
         if(!$actor || !$target) {
             return;
@@ -269,10 +275,10 @@ class Inbox
             return;
         }
 
-        $follower = new Follower();
-        $follower->profile_id = $actor->id;
-        $follower->following_id = $target->id;
-        $follower->save();
+        $follower = Follower::firstOrCreate([
+            'profile_id' => $actor->id,
+            'following_id' => $target->id,
+        ]);
         FollowPipeline::dispatch($follower);
 
         $request->delete();
@@ -280,16 +286,58 @@ class Inbox
 
     public function handleDeleteActivity()
     {
+        if(!isset(
+            $this->payload['actor'], 
+            $this->payload['object'], 
+            $this->payload['object']['id'],
+            $this->payload['object']['type']
+        )) {
+            return;
+        }
         $actor = $this->payload['actor'];
         $obj = $this->payload['object'];
-        abort_if(!Helpers::validateUrl($obj), 400);
-        if(is_string($obj) && Helpers::validateUrl($obj)) {
-            // actor object detected
-            // todo delete actor
+        $type = $this->payload['object']['type'];
+        $typeCheck = in_array($type, ['Person', 'Tombstone']);
+        if(!Helpers::validateUrl($actor) || !Helpers::validateUrl($obj['id']) || !$typeCheck) {
             return;
-        } else if (Helpers::validateUrl($obj['id']) && Helpers::validateObject($obj) && $obj['type'] == 'Tombstone') {
-            // todo delete status or object
+        }
+        if(parse_url($obj['id'], PHP_URL_HOST) !== parse_url($actor, PHP_URL_HOST)) {
             return;
+        }
+        $id = $this->payload['object']['id'];
+        switch ($type) {
+            case 'Person':
+                    $profile = Profile::whereNull('domain')
+                        ->whereNull('private_key')
+                        ->whereRemoteUrl($id)
+                        ->first();
+                    if(!$profile) {
+                        return;
+                    }
+                    Notification::whereActorId($profile->id)->delete();
+                    $profile->avatar()->delete();
+                    $profile->followers()->delete();
+                    $profile->following()->delete();
+                    $profile->likes()->delete();
+                    $profile->media()->delete();
+                    $profile->statuses()->delete();
+                    $profile->delete();
+                return;
+                break;
+
+            case 'Tombstone':
+                    $status = Status::whereUri($id)->first();
+                    if(!$status) {
+                        return;
+                    }
+                    $status->media->delete();
+                    $status->delete();
+                    return;
+                break;
+            
+            default:
+                return;
+                break;
         }
     }
 
@@ -297,11 +345,15 @@ class Inbox
     {
         $actor = $this->payload['actor'];
 
-        abort_if(!Helpers::validateUrl($actor), 400);
+        if(!Helpers::validateUrl($actor)) {
+            return;
+        }
 
         $profile = self::actorFirstOrCreate($actor);
         $obj = $this->payload['object'];
-        abort_if(!Helpers::validateLocalUrl($obj), 400);
+        if(!Helpers::validateUrl($obj)) {
+            return;
+        }
         $status = Helpers::statusFirstOrFetch($obj);
         if(!$status || !$profile) {
             return;
@@ -338,7 +390,9 @@ class Inbox
                 
             case 'Announce':
                 $obj = $obj['object'];
-                abort_if(!Helpers::validateLocalUrl($obj), 400);
+                if(!Helpers::validateLocalUrl($obj)) {
+                    return;
+                }
                 $status = Helpers::statusFetch($obj);
                 if(!$status) {
                     return;

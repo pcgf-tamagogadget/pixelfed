@@ -37,6 +37,7 @@ class SearchController extends Controller
         $tokens = Cache::remember('api:search:tag:'.$hash, now()->addMinutes(5), function () use ($tag) {
             $tokens = [];
             if(Helpers::validateUrl($tag) != false && config('federation.activitypub.enabled') == true && config('federation.activitypub.remoteFollow') == true) {
+                abort_if(Helpers::validateLocalUrl($tag), 404);
                 $remote = Helpers::fetchFromUrl($tag);
                 if(isset($remote['type']) && in_array($remote['type'], ['Note', 'Person']) == true) {
                     $type = $remote['type'];
@@ -50,10 +51,11 @@ class SearchController extends Controller
                             'tokens' => [$item->username],
                             'name'   => $item->name,
                             'entity' => [
-                                'id' => $item->id,
+                                'id' => (string) $item->id,
                                 'following' => $item->followedBy(Auth::user()->profile),
                                 'follow_request' => $item->hasFollowRequestById(Auth::user()->profile_id),
-                                'thumb' => $item->avatarUrl()
+                                'thumb' => $item->avatarUrl(),
+                                'local' => (bool) !$item->domain
                             ]
                         ]];
                     } else if ($type == 'Note') {
@@ -91,7 +93,7 @@ class SearchController extends Controller
             }
             return $tokens;
         });
-        $users = Profile::select('username', 'name', 'id')
+        $users = Profile::select('domain', 'username', 'name', 'id')
             ->whereNull('status')
             ->whereNull('domain')
             ->where('id', '!=', Auth::user()->profile->id)
@@ -112,9 +114,11 @@ class SearchController extends Controller
                     'avatar' => $item->avatarUrl(),
                     'id'     =>  $item->id,
                     'entity' => [
-                        'id' => $item->id,
+                        'id' => (string) $item->id,
                         'following' => $item->followedBy(Auth::user()->profile),
-                        'thumb' => $item->avatarUrl()
+                        'follow_request' => $item->hasFollowRequestById(Auth::user()->profile_id),
+                        'thumb' => $item->avatarUrl(),
+                        'local' => (bool) !$item->domain
                     ]
                 ];
             });
@@ -161,4 +165,5 @@ class SearchController extends Controller
         
         return view('search.results');
     }
+
 }
