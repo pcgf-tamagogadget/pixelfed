@@ -12,12 +12,12 @@
 A free and ethical photo sharing platform, powered by ActivityPub federation.
 
 <p align="center">
-<img src="https://pixelfed.nyc3.cdn.digitaloceanspaces.com/media/Screen%20Shot%202019-02-05%20at%206.34.59%20PM.png">
+<img src="https://pixelfed.nyc3.cdn.digitaloceanspaces.com/media/Screen%20Shot%202019-09-08%20at%2010.40.54%20PM.png">
 </p>
 
 ## Official Documentation
 
-Documentation for Pixelfed can be found on the [Pixelfed documentation website](https://pixelfed.github.io/docs/master/).
+Documentation for Pixelfed can be found on the [Pixelfed documentation website](https://docs.pixelfed.org/).
 
 ## License
 
