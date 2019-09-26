@@ -27,13 +27,16 @@ class FollowerController extends Controller
         ]);
         $item = (int) $request->input('item');
         $this->handleFollowRequest($item);
-        return response()->json(200);
+        if($request->wantsJson()) {
+            return response()->json(200);
+        } else {
+            return redirect()->back();
+        }
     }
 
     protected function handleFollowRequest($item)
     {
         $user = Auth::user()->profile;
-
 
         $target = Profile::where('id', '!=', $user->id)->whereNull('status')->findOrFail($item);
         $private = (bool) $target->is_private;
@@ -50,7 +53,7 @@ class FollowerController extends Controller
 
         $isFollowing = Follower::whereProfileId($user->id)->whereFollowingId($target->id)->exists();
 
-        if($private == true && $isFollowing == 0 || $remote == true) {
+        if($private == true && $isFollowing == 0 && $remote == true) {
             if($user->following()->count() >= Follower::MAX_FOLLOWING) {
                 abort(400, 'You cannot follow more than ' . Follower::MAX_FOLLOWING . ' accounts');
             }
