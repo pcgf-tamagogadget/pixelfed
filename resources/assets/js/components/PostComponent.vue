@@ -34,6 +34,7 @@
               <span class="fas fa-ellipsis-v text-muted"></span>
               </button>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item font-weight-bold" @click="showEmbedPostModal()">Embed</a>
                   <div v-if="!owner()">
                     <a class="dropdown-item font-weight-bold" :href="reportUrl()">Report</a>
                     <a class="dropdown-item font-weight-bold" v-on:click="muteProfile()">Mute Profile</a>
@@ -50,7 +51,7 @@
           </div>
          </div>
           <div class="col-12 col-md-8 px-0 mx-0">
-              <div class="postPresenterContainer d-none d-flex justify-content-center align-items-center" v-on:dblclick="likeStatus">
+              <div class="postPresenterContainer d-none d-flex justify-content-center align-items-center" style="background: #000;">
                 <div v-if="status.pf_type === 'photo'" class="w-100">
                   <photo-presenter :status="status" v-on:lightbox="lightbox"></photo-presenter>
                 </div>
@@ -99,6 +100,7 @@
                     <span class="fas fa-ellipsis-v text-muted"></span>
                     </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item font-weight-bold" @click="showEmbedPostModal()">Embed</a>
                           <span v-if="!owner()">
                             <a class="dropdown-item font-weight-bold" :href="reportUrl()">Report</a>
                             <a class="dropdown-item font-weight-bold" v-on:click="muteProfile">Mute Profile</a>
@@ -117,10 +119,21 @@
             <div class="d-flex flex-md-column flex-column-reverse h-100" style="overflow-y: auto;">
               <div class="card-body status-comments pb-5">
                 <div class="status-comment">
-                  <p :class="[status.content.length > 620 ? 'mb-1 read-more' : 'mb-1']" style="overflow: hidden;">
-                    <a class="font-weight-bold pr-1 text-dark text-decoration-none" :href="statusProfileUrl">{{statusUsername}}</a>
-                    <span class="comment-text" :id="status.id + '-status-readmore'" v-html="status.content"></span>
-                  </p>
+                  <div v-if="showCaption != true">
+                    <span class="py-3">
+                      <a class="text-dark font-weight-bold mr-1" :href="status.account.url" v-bind:title="status.account.username">{{truncate(status.account.username,15)}}</a>
+                      <span class="text-break">
+                        <span class="font-italic text-muted">This comment may contain sensitive material</span>
+                        <span class="text-primary cursor-pointer pl-1" @click="showCaption = true">Show</span>
+                      </span>
+                    </span>
+                  </div>
+                  <div v-else>
+                    <p :class="[status.content.length > 620 ? 'mb-1 read-more' : 'mb-1']" style="overflow: hidden;">
+                      <a class="font-weight-bold pr-1 text-dark text-decoration-none" :href="statusProfileUrl">{{statusUsername}}</a>
+                      <span class="comment-text" :id="status.id + '-status-readmore'" v-html="status.content"></span>
+                    </p>
+                  </div>
 
                   <div v-if="showComments">
                     <hr>
@@ -214,19 +227,6 @@
             </div>
             <div v-if="showComments && user.length !== 0" class="card-footer bg-white px-2 py-0">
               <ul class="nav align-items-center emoji-reactions" style="overflow-x: scroll;flex-wrap: unset;">
-                <li class="nav-item" v-on:click="emojiReaction">😂</li>
-                <li class="nav-item" v-on:click="emojiReaction">💯</li>
-                <li class="nav-item" v-on:click="emojiReaction">❤️</li>
-                <li class="nav-item" v-on:click="emojiReaction">🙌</li>
-                <li class="nav-item" v-on:click="emojiReaction">👏</li>
-                <li class="nav-item" v-on:click="emojiReaction">👌</li>
-                <li class="nav-item" v-on:click="emojiReaction">😍</li>
-                <li class="nav-item" v-on:click="emojiReaction">😯</li>
-                <li class="nav-item" v-on:click="emojiReaction">😢</li>
-                <li class="nav-item" v-on:click="emojiReaction">😅</li>
-                <li class="nav-item" v-on:click="emojiReaction">😁</li>
-                <li class="nav-item" v-on:click="emojiReaction">🙂</li>
-                <li class="nav-item" v-on:click="emojiReaction">😎</li>
                 <li class="nav-item" v-on:click="emojiReaction" v-for="e in emoji">{{e}}</li>
               </ul>
             </div>
@@ -236,7 +236,7 @@
               </div>
               <form v-else class="border-0 rounded-0 align-middle" method="post" action="/i/comment" :data-id="statusId" data-truncate="false">
                 <textarea class="form-control border-0 rounded-0" name="comment" placeholder="Add a comment…" autocomplete="off" autocorrect="off" style="height:56px;line-height: 18px;max-height:80px;resize: none; padding-right:4.2rem;" v-model="replyText"></textarea>
-                <input type="button" value="Post" class="d-inline-block btn btn-link font-weight-bold reply-btn text-decoration-none" v-on:click.prevent="postReply"/>
+                <input type="button" value="Post" class="d-inline-block btn btn-link font-weight-bold reply-btn text-decoration-none" v-on:click.prevent="postReply" :disabled="replyText.length == 0" />
               </form>
             </div>
           </div>
@@ -344,7 +344,7 @@
             </div>
             <div class="col-12 col-md-4 pt-4 pl-md-3">
                 <p class="lead font-weight-bold">Comments</p>
-                <div v-if="user" class="moment-comments">
+                <div v-if="user && user.length" class="moment-comments">
                   <div class="form-group">
                     <textarea class="form-control" rows="3" placeholder="Add a comment ..." v-model="replyText"></textarea>
                     <p style="padding-top:4px;">
@@ -353,7 +353,7 @@
                       </span>
                       <button 
                       :class="[replyText.length > 1 ? 'btn btn-sm font-weight-bold float-right btn-outline-dark ':'btn btn-sm font-weight-bold float-right btn-outline-lighter']" 
-                      :disabled="replyText.length < 2" 
+                      :disabled="replyText.length == 0 ? 'disabled':''" 
                       @click="postReply"
                       >Post</button>
                     </p>
@@ -478,6 +478,21 @@
       <img :src="lightboxMedia.url" :class="lightboxMedia.filter_class + ' img-fluid'" style="min-height: 100%; min-width: 100%">
     </div>
   </b-modal>
+ <b-modal ref="embedModal"
+    id="ctx-embed-modal"
+    hide-header
+    hide-footer
+    centered
+    rounded
+    size="md"
+    body-class="p-2 rounded">
+    <div>
+      <textarea class="form-control disabled" rows="1" style="border: 1px solid #efefef; font-size: 14px; line-height: 12px; height: 37px; margin: 0 0 7px; resize: none; white-space: nowrap;" v-model="ctxEmbedPayload"></textarea>
+      <hr>
+      <button :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed': 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'" @click="ctxCopyEmbed" :disabled="copiedEmbed">{{copiedEmbed ? 'Embed Code Copied!' : 'Copy Embed Code'}}</button>
+      <p class="mb-0 px-2 small text-muted">By using this embed, you agree to our <a href="/site/terms">Terms of Use</a></p>
+    </div>
+  </b-modal>
 </div>
 </template>
 
@@ -549,6 +564,10 @@
   .momentui .carousel-item {
     background: #000 !important;
   }
+  .reply-btn[disabled] {
+    opacity: .3;
+    color: #3897f0;
+  }
 </style>
 
 <script>
@@ -595,8 +614,11 @@ export default {
             loading: null,
             replyingToId: this.statusId,
             replyToIndex: 0,
-            emoji: ['😀','🤣','😃','😄','😆','😉','😊','😋','😘','😗','😙','😚','🤗','🤩','🤔','🤨','😐','😑','😶','🙄','😏','😣','😥','😮','🤐','😪','😫','😴','😌','😛','😜','😝','🤤','😒','😓','😔','😕','🙃','🤑','😲','🙁','😖','😞','😟','😤','😭','😦','😧','😨','😩','🤯','😬','😰','😱','😳','🤪','😵','😡','😠','🤬','😷','🤒','🤕','🤢','🤮','🤧','😇','🤠','🤡','🤥','🤫','🤭','🧐','🤓','😈','👿','👹','👺','💀','👻','👽','🤖','💩','😺','😸','😹','😻','😼','😽','🙀','😿','😾','🤲','👐','🤝','👍','👎','👊','✊','🤛','🤜','🤞','✌️','🤟','🤘','👈','👉','👆','👇','☝️','✋','🤚','🖐','🖖','👋','🤙','💪','🖕','✍️','🙏','💍','💄','💋','👄','👅','👂','👃','👣','👁','👀','🧠','🗣','👤','👥'],
+            emoji: window.App.util.emoji,
             showReadMore: true,
+            showCaption: true,
+            ctxEmbedPayload: false,
+            copiedEmbed: false,
           }
     },
 
@@ -663,6 +685,7 @@ export default {
                 self.likesPage = 2;
                 self.sharesPage = 2;
                 this.showMuteBlock();
+                self.showCaption = !response.data.status.sensitive;
                 if(self.status.comments_disabled == false) {
                   self.showComments = true;
                   this.fetchComments();
@@ -1163,7 +1186,17 @@ export default {
 
       redirect(url) {
         window.location.href = url;
-      }
+      },
+
+      showEmbedPostModal() {
+        this.ctxEmbedPayload = window.App.util.embed.post(this.status.url)
+        this.$refs.embedModal.show();
+      },
+
+      ctxCopyEmbed() {
+        navigator.clipboard.writeText(this.ctxEmbedPayload);
+        this.$refs.embedModal.hide();
+      },
 
     },
 }

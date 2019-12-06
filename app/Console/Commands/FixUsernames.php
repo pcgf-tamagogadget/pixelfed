@@ -48,10 +48,13 @@ class FixUsernames extends Command
 
         $users = User::chunk(100, function($users) use($affected, $restricted) {
             foreach($users as $user) {
+                if($user->is_admin || $user->status == 'deleted') {
+                    continue;
+                }
                 if(in_array($user->username, $restricted)) {
                     $affected->push($user);
                 }
-                $val = str_replace(['-', '_'], '', $user->username);
+                $val = str_replace(['-', '_', '.'], '', $user->username);
                 if(!ctype_alnum($val)) {
                     $this->info('Found invalid username: ' . $user->username);
                     $affected->push($user);

@@ -9,7 +9,7 @@ use League\Fractal;
 class AccountTransformer extends Fractal\TransformerAbstract
 {
     protected $defaultIncludes = [
-        'relationship',
+        // 'relationship',
     ];
 
 	public function transform(Profile $profile)
@@ -24,24 +24,16 @@ class AccountTransformer extends Fractal\TransformerAbstract
 			'acct' => $acct,
 			'display_name' => $profile->name,
 			'locked' => (bool) $profile->is_private,
-			'created_at' => $profile->created_at->format('c'),
 			'followers_count' => $profile->followerCount(),
 			'following_count' => $profile->followingCount(),
 			'statuses_count' => (int) $profile->statusCount(),
 			'note' => $profile->bio ?? '',
 			'url' => $profile->url(),
 			'avatar' => $profile->avatarUrl(),
-			'avatar_static' => $profile->avatarUrl(),
-			'header' => '',
-			'header_static' => '',
-			'header_bg' => $profile->header_bg,
-			'emojis' => [],
-			'moved' => null,
-			'fields' => [],
-			'bot' => false,
 			'website' => $profile->website,
-			'software' => 'pixelfed',
+			'local' => (bool) $local,
 			'is_admin' => (bool) $is_admin,
+			'created_at' => $profile->created_at->timestamp
 		];
 	}
 

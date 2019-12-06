@@ -7,13 +7,14 @@ use App, Auth, Cache, View;
 use App\Util\Lexer\PrettyNumber;
 use App\{Follower, Page, Profile, Status, User, UserFilter};
 use App\Util\Localization\Localization;
+use App\Services\FollowerService;
 
 class SiteController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
         if (Auth::check()) {
-            return $this->homeTimeline();
+            return $this->homeTimeline($request);
         } else {
             return $this->homeGuest();
         }
@@ -24,9 +25,13 @@ class SiteController extends Controller
         return view('site.index');
     }
 
-    public function homeTimeline()
+    public function homeTimeline(Request $request)
     {
-        return view('timeline.home');
+        $this->validate($request, [
+            'layout' => 'nullable|string|in:grid,feed'
+        ]);
+        $layout = $request->input('layout', 'feed');
+        return view('timeline.home', compact('layout'));
     }
 
     public function changeLocale(Request $request, $locale)
@@ -93,5 +98,26 @@ class SiteController extends Controller
             return Page::whereSlug($slug)->whereActive(true)->first();
         });
         return View::make('site.terms')->with(compact('page'))->render();
+    }
+
+    public function redirectUrl(Request $request)
+    {
+        $this->validate($request, [
+            'url' => 'required|url'
+        ]);
+        $url = urldecode(request()->input('url'));
+        return view('site.redirect', compact('url'));
+    }
+
+    public function followIntent(Request $request)
+    {
+        $this->validate($request, [
+            'user' => 'string|min:1|max:15|exists:users,username',
+        ]);
+        $profile = Profile::whereUsername($request->input('user'))->firstOrFail();
+        $user = $request->user();
+        abort_if($user && $profile->id == $user->profile_id, 404);
+        $following = $user != null ? FollowerService::follows($user->profile_id, $profile->id) : false;
+        return view('site.intents.follow', compact('profile', 'user', 'following'));
     }
 }

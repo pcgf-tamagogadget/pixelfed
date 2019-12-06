@@ -267,7 +267,7 @@ class ApiV1Controller extends Controller
             'max_id' => 'nullable|integer|min:0|max:' . PHP_INT_MAX,
             'since_id' => 'nullable|integer|min:0|max:' . PHP_INT_MAX,
             'min_id' => 'nullable|integer|min:0|max:' . PHP_INT_MAX,
-            'limit' => 'nullable|integer|min:1|max:40'
+            'limit' => 'nullable|integer|min:1|max:80'
         ]);
 
         $profile = Profile::whereNull('status')->findOrFail($id);
@@ -312,6 +312,8 @@ class ApiV1Controller extends Controller
                 'scope',
                 'local',
                 'place_id',
+                'likes_count',
+                'reblogs_count',
                 'created_at',
                 'updated_at'
               )->whereProfileId($profile->id)
@@ -335,6 +337,8 @@ class ApiV1Controller extends Controller
                 'scope',
                 'local',
                 'place_id',
+                'likes_count',
+                'reblogs_count',
                 'created_at',
                 'updated_at'
               )->whereProfileId($profile->id)
@@ -748,6 +752,8 @@ class ApiV1Controller extends Controller
         ]);
 
         if($like->wasRecentlyCreated == true) {
+            $status->likes_count = $status->likes()->count();
+            $status->save();
             LikePipeline::dispatch($like);
         }
 
@@ -777,6 +783,8 @@ class ApiV1Controller extends Controller
 
         if($like) {
             $like->delete();
+            $status->likes_count = $status->likes()->count();
+            $status->save();
         }
 
         $resource = new Fractal\Resource\Item($status, new StatusTransformer());
@@ -892,7 +900,16 @@ class ApiV1Controller extends Controller
             'title' => 'Pixelfed (' . config('pixelfed.domain.app') . ')',
             'uri' => config('app.url'),
             'urls' => [],
-            'version' => '2.7.2 (compatible; Pixelfed ' . config('pixelfed.version') . ')'
+            'version' => '2.7.2 (compatible; Pixelfed ' . config('pixelfed.version') . ')',
+            'environment' => [
+                'max_photo_size' => config('pixelfed.max_photo_size'),
+                'max_avatar_size' => config('pixelfed.max_avatar_size'),
+                'max_caption_length' => config('pixelfed.max_caption_length'),
+                'max_bio_length' => config('pixelfed.max_bio_length'),
+                'max_album_length' => config('pixelfed.max_album_length'),
+                'mobile_apis' => config('pixelfed.oauth_enabled')
+
+            ]
         ];
         return response()->json($res, 200, [], JSON_PRETTY_PRINT);
     }
@@ -1160,14 +1177,14 @@ class ApiV1Controller extends Controller
             $id = $min ?? $max;
             $notifications = Notification::whereProfileId($pid)
                 ->whereDate('created_at', '>', $timeago)
-                ->latest()
                 ->where('id', $dir, $id)
+                ->orderByDesc('created_at')
                 ->limit($limit)
                 ->get();
         } else {
             $notifications = Notification::whereProfileId($pid)
                 ->whereDate('created_at', '>', $timeago)
-                ->latest()
+                ->orderByDesc('created_at')
                 ->simplePaginate($limit);
         }
         $resource = new Fractal\Resource\Collection($notifications, new NotificationTransformer());
@@ -1220,6 +1237,8 @@ class ApiV1Controller extends Controller
                         'scope',
                         'local',
                         'reply_count',
+                        'likes_count',
+                        'reblogs_count',
                         'comments_disabled',
                         'place_id',
                         'created_at',
@@ -1247,6 +1266,8 @@ class ApiV1Controller extends Controller
                         'local',
                         'reply_count',
                         'comments_disabled',
+                        'likes_count',
+                        'reblogs_count',
                         'place_id',
                         'created_at',
                         'updated_at'
@@ -1315,6 +1336,8 @@ class ApiV1Controller extends Controller
                         'reply_count',
                         'comments_disabled',
                         'place_id',
+                        'likes_count',
+                        'reblogs_count',
                         'created_at',
                         'updated_at'
                       )->whereNull('uri')
@@ -1341,6 +1364,8 @@ class ApiV1Controller extends Controller
                         'reply_count',
                         'comments_disabled',
                         'place_id',
+                        'likes_count',
+                        'reblogs_count',
                         'created_at',
                         'updated_at'
                       )->whereNull('uri')
@@ -1427,6 +1452,7 @@ class ApiV1Controller extends Controller
         abort_if(!$request->user(), 403);
 
         $this->validate($request, [
+            'page'  => 'nullable|integer|min:1|max:40',
             'limit' => 'nullable|integer|min:1|max:80'
         ]);
 
@@ -1436,7 +1462,13 @@ class ApiV1Controller extends Controller
         $resource = new Fractal\Resource\Collection($shared, new AccountTransformer());
         $res = $this->fractal->createData($resource)->toArray();
 
-        return response()->json($res);
+        $url = $request->url();
+        $page = $request->input('page', 1);
+        $next = $page < 40 ? $page + 1 : 40;
+        $prev = $page > 1 ? $page - 1 : 1;
+        $links = '<'.$url.'?page='.$next.'&limit='.$limit.'>; rel="next", <'.$url.'?page='.$prev.'&limit='.$limit.'>; rel="prev"';
+
+        return response()->json($res, 200, ['Link' => $links]);
     }
 
     /**
@@ -1451,6 +1483,7 @@ class ApiV1Controller extends Controller
         abort_if(!$request->user(), 403);
 
         $this->validate($request, [
+            'page'  => 'nullable|integer|min:1|max:40',
             'limit' => 'nullable|integer|min:1|max:80'
         ]);
 
@@ -1460,7 +1493,13 @@ class ApiV1Controller extends Controller
         $resource = new Fractal\Resource\Collection($liked, new AccountTransformer());
         $res = $this->fractal->createData($resource)->toArray();
 
-        return response()->json($res);
+        $url = $request->url();
+        $page = $request->input('page', 1);
+        $next = $page < 40 ? $page + 1 : 40;
+        $prev = $page > 1 ? $page - 1 : 1;
+        $links = '<'.$url.'?page='.$next.'&limit='.$limit.'>; rel="next", <'.$url.'?page='.$prev.'&limit='.$limit.'>; rel="prev"';
+
+        return response()->json($res, 200, ['Link' => $links]);
     }
 
     /**
@@ -1604,6 +1643,8 @@ class ApiV1Controller extends Controller
         ]);
 
         if($share->wasRecentlyCreated == true) {
+            $status->reblogs_count = $status->shares()->count();
+            $status->save();
             SharePipeline::dispatch($share);
         }
 
@@ -1629,8 +1670,7 @@ class ApiV1Controller extends Controller
         Status::whereProfileId($user->profile_id)
           ->whereReblogOfId($status->id)
           ->delete();
-        $count = $status->reblogs_count;
-        $status->reblogs_count = $count > 0 ? $count - 1 : 0;
+        $status->reblogs_count = $status->shares()->count();
         $status->save();
 
         $resource = new Fractal\Resource\Item($status, new StatusTransformer());

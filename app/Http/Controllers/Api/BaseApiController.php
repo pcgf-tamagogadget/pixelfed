@@ -20,6 +20,7 @@ use App\Transformer\Api\{
     AccountTransformer,
     NotificationTransformer,
     MediaTransformer,
+    MediaDraftTransformer,
     StatusTransformer
 };
 use League\Fractal;
@@ -49,18 +50,26 @@ class BaseApiController extends Controller
     {
         abort_if(!$request->user(), 403);
         $pid = $request->user()->profile_id;
-        $this->validate($request, [
-            'page' => 'nullable|integer|min:1|max:10',
-            'limit' => 'nullable|integer|min:1|max:40'
-        ]);
-        $limit = $request->input('limit') ?? 10;
-        $timeago = Carbon::now()->subMonths(6);
-        $notifications = Notification::whereProfileId($pid)
-            ->whereDate('created_at', '>', $timeago)
-            ->latest()
-            ->simplePaginate($limit);
-        $resource = new Fractal\Resource\Collection($notifications, new NotificationTransformer());
-        $res = $this->fractal->createData($resource)->toArray();
+        $pg = $request->input('pg');
+        if($pg == true) {
+            $timeago = Carbon::now()->subMonths(6);
+            $notifications = Notification::whereProfileId($pid)
+                ->whereDate('created_at', '>', $timeago)
+                ->latest()
+                ->simplePaginate(10);
+            $resource = new Fractal\Resource\Collection($notifications, new NotificationTransformer());
+            $res = $this->fractal->createData($resource)->toArray();
+        } else {
+            $this->validate($request, [
+                'page' => 'nullable|integer|min:1|max:10',
+                'limit' => 'nullable|integer|min:1|max:40'
+            ]);
+            $limit = $request->input('limit') ?? 10;
+            $page = $request->input('page') ?? 1;
+            $end = (int) $page * $limit;
+            $start = (int) $end - $limit;
+            $res = NotificationService::get($pid, $start, $end);
+        }
 
         return response()->json($res);
     }
@@ -184,11 +193,11 @@ class BaseApiController extends Controller
         ]);
     }
 
-    public function showTempMedia(Request $request, int $profileId, $mediaId)
+    public function showTempMedia(Request $request, $profileId, $mediaId, $timestamp)
     {
         abort_if(!$request->user(), 403);
         abort_if(!$request->hasValidSignature(), 404); 
-        abort_if(Auth::user()->profile_id !== $profileId, 404); 
+        abort_if(Auth::user()->profile_id != $profileId, 404); 
         $media = Media::whereProfileId(Auth::user()->profile_id)->findOrFail($mediaId);
         $path = storage_path('app/'.$media->media_path);
         return response()->file($path);
@@ -249,10 +258,9 @@ class BaseApiController extends Controller
         $media->save();
 
         $url = URL::temporarySignedRoute(
-            'temp-media', now()->addHours(1), ['profileId' => $profile->id, 'mediaId' => $media->id]
+            'temp-media', now()->addHours(1), ['profileId' => $profile->id, 'mediaId' => $media->id, 'timestamp' => time()]
         );
 
-        $preview_url = $url;
         switch ($media->mime) {
             case 'image/jpeg':
             case 'image/png':
@@ -271,7 +279,7 @@ class BaseApiController extends Controller
 
         $resource = new Fractal\Resource\Item($media, new MediaTransformer());
         $res = $this->fractal->createData($resource)->toArray();
-        $res['preview_url'] = $preview_url;
+        $res['preview_url'] = $url;
         $res['url'] = $url;
         return response()->json($res);
     }
@@ -300,23 +308,25 @@ class BaseApiController extends Controller
 
     public function verifyCredentials(Request $request)
     {
-        abort_if(!$request->user(), 403);
-        $id = Auth::id();
-
-        $res = Cache::remember('user:account:id:'.$id, now()->addHours(6), function() use($id) {
-            $profile = Profile::whereNull('status')->whereUserId($id)->firstOrFail();
-            $resource = new Fractal\Resource\Item($profile, new AccountTransformer());
-            $res = $this->fractal->createData($resource)->toArray();
-            $res['source'] = [
-                'privacy' => $profile->is_private ? 'private' : 'public',
-                'sensitive' => $profile->cw ? true : false,
-                'language' => 'en',
-                'note' => '',
-                'fields' => []
-            ];
-            return $res;
-        });
-
+        $user = $request->user();
+        abort_if(!$user, 403);
+        $resource = new Fractal\Resource\Item($user->profile, new AccountTransformer());
+        $res = $this->fractal->createData($resource)->toArray();
         return response()->json($res);
+    }
+
+    public function drafts(Request $request)
+    {
+        $user = $request->user();
+        abort_if(!$request->user(), 403);
+
+        $medias = Media::whereUserId($user->id)
+            ->whereNull('status_id')
+            ->latest()
+            ->take(13)
+            ->get();
+        $resource = new Fractal\Resource\Collection($medias, new MediaDraftTransformer());
+        $res = $this->fractal->createData($resource)->toArray();
+        return response()->json($res, 200, [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
     }
 }

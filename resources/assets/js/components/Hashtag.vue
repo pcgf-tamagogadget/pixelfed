@@ -110,6 +110,7 @@
 		beforeMount() {
 			this.authenticated = $('body').hasClass('loggedIn');
 			this.getResults();
+			this.hashtagCount = window.App.util.format.count(this.hashtagCount);
 		},
 		methods: {
 			getResults() {
@@ -135,7 +136,7 @@
 			},
 
 			infiniteLoader($state) {
-				if(this.page > (this.authenticated ? 19 : 3)) {
+				if(this.page > (this.authenticated ? 29 : 10)) {
 					$state.complete();
 					return;
 				}

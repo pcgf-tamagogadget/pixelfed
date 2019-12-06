@@ -18,8 +18,36 @@
 			</section>
 			<section class="mb-5 section-explore">
 				<div class="profile-timeline">
-					<div class="row p-0">
-						<div class="col-4 p-1 p-sm-2 p-md-3" v-for="post in posts">
+					<div class="row p-0 mt-5">
+						<div class="col-12 col-md-6">
+							<div class="mb-4">
+								<a class="card info-overlay card-md-border-0" :href="posts[0].url">
+									<div class="square">
+										<span v-if="posts[0].type == 'photo:album'" class="float-right mr-3 post-icon"><i class="fas fa-images fa-2x"></i></span>
+										<span v-if="posts[0].type == 'video'" class="float-right mr-3 post-icon"><i class="fas fa-video fa-2x"></i></span>
+										<span v-if="posts[0].type == 'video:album'" class="float-right mr-3 post-icon"><i class="fas fa-film fa-2x"></i></span>
+										<div class="square-content" v-bind:style="{ 'background-image': 'url(' + posts[0].thumb + ')' }">
+										</div>
+									</div>
+								</a>
+							</div>				
+						</div>
+						<div class="col-12 col-md-6 row p-0 m-0">
+							<div v-for="(post, index) in posts.slice(1,5)" class="col-6" style="margin-bottom:1.8rem;">
+								<a class="card info-overlay card-md-border-0" :href="post.url">
+									<div class="square">
+										<span v-if="post.type == 'photo:album'" class="float-right mr-3 post-icon"><i class="fas fa-images fa-2x"></i></span>
+										<span v-if="post.type == 'video'" class="float-right mr-3 post-icon"><i class="fas fa-video fa-2x"></i></span>
+										<span v-if="post.type == 'video:album'" class="float-right mr-3 post-icon"><i class="fas fa-film fa-2x"></i></span>
+										<div class="square-content" v-bind:style="{ 'background-image': 'url(' + post.thumb + ')' }">
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="row p-0" style="display: flex;">
+						<div v-for="(post, index) in posts.slice(5)" class="col-3 p-1 p-sm-2 p-md-3">
 							<a class="card info-overlay card-md-border-0" :href="post.url">
 								<div class="square">
 									<span v-if="post.type == 'photo:album'" class="float-right mr-3 post-icon"><i class="fas fa-images fa-2x"></i></span>
