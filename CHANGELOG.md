@@ -1,12 +1,23 @@
 # Release Notes
 
-## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.10.6...dev)
+## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.10.7...dev)
+### Added
+
+### Fixed
+- Fixed Story Compose bug affecting postgres instances ([#1918](https://github.com/pixelfed/pixelfed/pull/1918))
+
+
+### Changed
+
+## [v0.10.7 (2020-01-07)](https://github.com/pixelfed/pixelfed/compare/v0.10.6...v0.10.7)
 
 ### Added
 - Added drafts API endpoint for Camera Roll ([bad2ecde](https://github.com/pixelfed/pixelfed/commit/bad2ecde))
 - Added AccountService ([885a1258](https://github.com/pixelfed/pixelfed/commit/885a1258))
 - Added post embeds ([1fecf717](https://github.com/pixelfed/pixelfed/commit/1fecf717))
 - Added profile embeds ([fb7a3cf0](https://github.com/pixelfed/pixelfed/commit/fb7a3cf0))
+- Added Force MetroUI labs experiment ([#1889](https://github.com/pixelfed/pixelfed/pull/1889))
+- Added Stories, to enable add ```STORIES_ENABLED=true``` to ```.env```	 and run ```php artisan config:cache && php artisan cache:clear```. If opcache is enabled you may need to reload the web server.
 
 ### Fixed
 - Fixed like and share/reblog count on profiles ([86cb7d09](https://github.com/pixelfed/pixelfed/commit/86cb7d09))
@@ -52,7 +63,8 @@
 - Updated ApiV1Controller, add ```mobile_apis``` to /api/v1/instance endpoint ([57407463](https://github.com/pixelfed/pixelfed/commit/57407463))
 - Updated PublicTimelineService, add video media scopes ([7b00eba3](https://github.com/pixelfed/pixelfed/commit/7b00eba3))
 - Updated PublicApiController, add AccountService ([5ebd2c8a](https://github.com/pixelfed/pixelfed/commit/5ebd2c8a))
-- Update CommentController, fix scope bug ([45ecad2a](https://github.com/pixelfed/pixelfed/45ecad2a))
+- Updated CommentController, fix scope bug ([45ecad2a](https://github.com/pixelfed/pixelfed/45ecad2a))
+- Updated CollectionController, increase limit from 18 to 50. ([c2826fd3](https://github.com/pixelfed/pixelfed/c2826fd3))
 
 ## Deprecated
     
@@ -368,6 +380,3 @@ Policies:
 - Block: Default blocks the defined scope
 - CW: Automatically rewrites the scope to apply a warning
 - Unlist: Removes the scope from public timelines
-
-
-
