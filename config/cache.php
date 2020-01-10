@@ -70,7 +70,7 @@ return [
 
         'redis' => [
             'driver' => 'redis',
-            'client' => env('REDIS_CLIENT', 'predis'),
+            'client' => 'predis',
 
             'default' => [
                 'scheme'   => env('REDIS_SCHEME', 'tcp'),

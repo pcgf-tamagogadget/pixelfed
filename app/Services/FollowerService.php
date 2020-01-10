@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Redis;
+use Redis;
 
 use App\{
 	Follower,

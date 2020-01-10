@@ -2,7 +2,6 @@
 
 return [
 
-	'description' => env('INSTANCE_DESCRIPTION', null),
 	'announcement' => [
 		'enabled' => env('INSTANCE_ANNOUNCEMENT_ENABLED', false),
 		'message' => env('INSTANCE_ANNOUNCEMENT_MESSAGE', 'Example announcement message.<br><span class="font-weight-normal">Something else here</span>')
@@ -47,8 +46,4 @@ return [
 			'custom' => env('USERNAME_REMOTE_CUSTOM_TEXT', null)
 		]
 	],
-
-	'stories' => [
-		'enabled' => env('STORIES_ENABLED', false),
-	]
 ];

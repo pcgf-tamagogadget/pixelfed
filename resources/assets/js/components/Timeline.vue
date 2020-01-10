@@ -2,7 +2,7 @@
 <div class="container" style="">
 	<div v-if="layout === 'feed'" class="row">
 		<div :class="[modes.distractionFree ? 'col-md-8 col-lg-8 offset-md-2 px-0 my-sm-3 timeline order-2 order-md-1':'col-md-8 col-lg-8 px-0 my-sm-3 timeline order-2 order-md-1']">
-			<story-component v-if="config.features.stories"></story-component>
+			<div class="d-none" data-id="StoryTimelineComponent"></div>
 			<div style="padding-top:10px;">
 				<div v-if="loading" class="text-center">
 					<div class="spinner-border" role="status">
@@ -90,6 +90,41 @@
 								<button class="btn btn-link text-dark py-0" type="button" @click="ctxMenu(status)">
 									<span class="fas fa-ellipsis-h text-lighter"></span>
 								</button>
+								<!-- <div class="dropdown-menu dropdown-menu-right">
+									<a class="dropdown-item font-weight-bold" :href="status.url">Go to post</a>
+									<!-- <a class="dropdown-item font-weight-bold" href="#">Share</a>
+									<a class="dropdown-item font-weight-bold" href="#">Embed</a> ->
+									<span v-if="statusOwner(status) == false">
+										<a class="dropdown-item font-weight-bold" :href="reportUrl(status)">Report</a>
+										<a class="dropdown-item font-weight-bold" v-on:click="muteProfile(status)">Mute Profile</a>
+										<a class="dropdown-item font-weight-bold" v-on:click="blockProfile(status)">Block Profile</a>
+									</span>
+									<span v-if="statusOwner(status) == true">
+										<a class="dropdown-item font-weight-bold text-danger" v-on:click="deletePost(status)">Delete</a>
+									</span>
+									<span v-if="profile.is_admin == true && modes.mod == true">
+										<div class="dropdown-divider"></div>
+										<a v-if="!statusOwner(status)" class="dropdown-item font-weight-bold text-danger" v-on:click="deletePost(status)">Delete</a>
+										<div class="dropdown-divider"></div>
+										<h6 class="dropdown-header">Mod Tools</h6>
+										<a class="dropdown-item font-weight-bold" v-on:click="moderatePost(status, 'autocw')">
+											<p class="mb-0" data-toggle="tooltip" data-placement="bottom" title="Adds a CW to every post made by this account.">Enforce CW</p>
+										</a>
+										<a class="dropdown-item font-weight-bold" v-on:click="moderatePost(status, 'noautolink')">
+											<p class="mb-0" title="Do not transform mentions, hashtags or urls into HTML.">No Autolinking</p>
+										</a>
+										<a class="dropdown-item font-weight-bold" v-on:click="moderatePost(status, 'unlisted')">
+											<p class="mb-0" title="Removes account from public/network timelines.">Unlisted Posts</p>
+										</a>
+										<a class="dropdown-item font-weight-bold" v-on:click="moderatePost(status, 'disable')">
+											<p class="mb-0" title="Temporarily disable account until next time user log in.">Disable Account</p>
+										</a>
+										<a class="dropdown-item font-weight-bold" v-on:click="moderatePost(status, 'suspend')">
+											<p class="mb-0" title="This prevents any new interactions, without deleting existing data.">Suspend Account</p>
+										</a>
+
+									</span>
+								</div> -->
 							</div>
 						</div>
 
@@ -246,13 +281,21 @@
 				</div>
 
 				<div class="mb-4">
-					<a class="btn btn-light btn-block btn-sm font-weight-bold text-dark mb-3 border bg-white" href="/i/compose" data-toggle="modal" data-target="#composeModal">
-						<i class="far fa-plus-square pr-3 fa-lg pt-1"></i> Compose Post
-					</a>
+					<a class="btn btn-light btn-block btn-sm font-weight-bold text-dark mb-3 border" href="/i/compose" data-toggle="modal" data-target="#composeModal"><i class="far fa-plus-square pr-3 fa-lg pt-1"></i> Compose Post</a>
 				</div>
 
-				<div v-if="showTips && !loading" class="mb-4 card-tips">
-					<announcements-card v-on:show-tips="showTips = $event"></announcements-card>
+				<div v-if="showTips" class="mb-4 card-tips">
+					<div class="card border shadow-none mb-3" style="max-width: 18rem;">
+						<div class="card-body">
+							<div class="card-title">
+								<span class="font-weight-bold">Tip: Hide follower counts</span>
+								<span class="float-right cursor-pointer" @click.prevent="hideTips()"><i class="fas fa-times text-lighter"></i></span>
+							</div>
+							<p class="card-text">
+								<span style="font-size:13px;">You can hide followers or following count and lists on your profile.</span>
+								<br><a href="/settings/privacy/" class="small font-weight-bold">Privacy Settings</a></p>
+						</div>
+					</div>
 				</div>
 
 				<div v-show="modes.notify == true && !loading" class="mb-4">
@@ -522,6 +565,7 @@
 		beforeMount() {
 			this.fetchProfile();
 			this.fetchTimelineApi();
+
 		},
 
 		mounted() {
@@ -1315,6 +1359,11 @@
 				this.$refs.ctxModModal.hide();
 			},
 
+			hideTips() {
+				this.showTips = false;
+				window.localStorage.setItem('metro-tips', false);
+			},
+
 			formatCount(count) {
 				return App.util.format.count(count);
 			},
@@ -1382,7 +1431,7 @@
 				return _.truncate(caption, {
 					length: len
 				});
-			},
+			}
 		}
 	}
 </script>

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Log;
-use Illuminate\Support\Facades\Redis;
+use Redis;
 
 class FollowPipeline implements ShouldQueue
 {

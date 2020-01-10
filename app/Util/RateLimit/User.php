@@ -6,7 +6,7 @@ trait User {
 	
 	public function isTrustedAccount()
 	{
-		return $this->created_at->lt(now()->subDays(60));
+		return $this->created_at->lt(now()->subDays(20));
 	}
 
 	public function getMaxPostsPerHourAttribute()
@@ -97,20 +97,5 @@ trait User {
 	public function getMaxComposeMediaUpdatesPerMonthAttribute()
 	{
 		return 5000;
-	}
-
-	public function getMaxStoriesPerHourAttribute()
-	{
-		return 20;
-	}
-
-	public function getMaxStoriesPerDayAttribute()
-	{
-		return 30;
-	}
-
-	public function getMaxStoryDeletePerDayAttribute()
-	{
-		return 35;
 	}
 }

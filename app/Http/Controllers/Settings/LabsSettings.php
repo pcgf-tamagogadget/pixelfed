@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use Cookie;
-use Illuminate\Support\Facades\Redis;
+use Cookie, Redis;
 use App\Services\SuggestionService;
 
 trait LabsSettings {
