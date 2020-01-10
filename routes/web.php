@@ -52,13 +52,6 @@ Route::domain(config('pixelfed.domain.admin'))->prefix('i/admin')->group(functio
     Route::get('messages/home', 'AdminController@messagesHome')->name('admin.messages');
     Route::get('messages/show/{id}', 'AdminController@messagesShow');
     Route::post('messages/mark-read', 'AdminController@messagesMarkRead');
-    Route::redirect('site-news', '/i/admin/newsroom');
-    Route::get('newsroom', 'AdminController@newsroomHome')->name('admin.newsroom.home');
-    Route::get('newsroom/create', 'AdminController@newsroomCreate')->name('admin.newsroom.create');
-    Route::get('newsroom/edit/{id}', 'AdminController@newsroomEdit');
-    Route::post('newsroom/edit/{id}', 'AdminController@newsroomUpdate');
-    Route::delete('newsroom/edit/{id}', 'AdminController@newsroomDelete');
-    Route::post('newsroom/create', 'AdminController@newsroomStore');
 });
 
 Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofactor', 'localization'])->group(function () {
@@ -120,8 +113,6 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
                 Route::get('notifications', 'ApiController@notifications');
                 Route::get('timelines/public', 'PublicApiController@publicTimelineApi');
                 Route::get('timelines/home', 'PublicApiController@homeTimelineApi');
-                Route::get('newsroom/timeline', 'NewsroomController@timelineApi');
-                Route::post('newsroom/markasread', 'NewsroomController@markAsRead');
             });
 
             Route::group(['prefix' => 'v2'], function() {
@@ -165,7 +156,6 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
             Route::get('bookmarks', 'InternalApiController@bookmarks');
             Route::get('collection/items/{id}', 'CollectionController@getItems');
             Route::post('collection/item', 'CollectionController@storeId');
-            Route::delete('collection/item', 'CollectionController@deleteId');
             Route::get('collection/{id}', 'CollectionController@get');
             Route::post('collection/{id}', 'CollectionController@store');
             Route::delete('collection/{id}', 'CollectionController@delete')->middleware('throttle:maxCollectionsPerHour,60')->middleware('throttle:maxCollectionsPerDay,1440')->middleware('throttle:maxCollectionsPerMonth,43800');
@@ -177,14 +167,6 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
         });
         Route::group(['prefix' => 'admin'], function () {
             Route::post('moderate', 'Api\AdminApiController@moderate');
-        });
-        Route::group(['prefix' => 'stories'], function () {
-            Route::get('v1/recent', 'StoryController@apiV1Recent');
-            Route::post('v1/add', 'StoryController@apiV1Add')->middleware('throttle:maxStoriesPerDay,1440');
-            Route::get('v1/fetch/{id}', 'StoryController@apiV1Fetch');
-            Route::get('v1/profile/{id}', 'StoryController@apiV1Profile');
-            Route::get('v1/exists/{id}', 'StoryController@apiV1Exists');
-            Route::delete('v1/delete/{id}', 'StoryController@apiV1Delete')->middleware('throttle:maxStoryDeletePerDay,1440');
         });
 
     });
@@ -246,9 +228,6 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
 
         Route::get('me', 'ProfileController@meRedirect');
         Route::get('intent/follow', 'SiteController@followIntent');
-        Route::post('stories/viewed', 'StoryController@apiV1Viewed');
-        Route::get('stories/new', 'StoryController@compose');
-        Route::get('my/story', 'StoryController@iRedirect');
     });
 
     Route::group(['prefix' => 'account'], function () {
@@ -380,10 +359,6 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
             Route::view('report-something', 'site.help.report-something')->name('help.report-something');
             Route::view('data-policy', 'site.help.data-policy')->name('help.data-policy');
         });
-        Route::get('newsroom/{year}/{month}/{slug}', 'NewsroomController@show');
-        Route::get('newsroom/archive', 'NewsroomController@archive');
-        Route::get('newsroom/search', 'NewsroomController@search');
-        Route::get('newsroom', 'NewsroomController@index');
     });
 
     Route::group(['prefix' => 'timeline'], function () {
@@ -400,7 +375,6 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
         Route::get('{username}', 'ProfileController@permalinkRedirect');
     });
 
-    Route::get('stories/{username}', 'ProfileController@stories');
     Route::get('c/{collection}', 'CollectionController@show');
     Route::get('p/{username}/{id}/c', 'CommentController@showAll');
     Route::get('p/{username}/{id}/embed', 'StatusController@showEmbed');

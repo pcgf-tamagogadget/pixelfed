@@ -35,12 +35,7 @@
 								<div class="d-block d-md-none mt-n3 mb-3">
 									<div class="row">
 										<div class="col-4">
-											<div v-if="hasStory" class="has-story cursor-pointer shadow-sm" @click="storyRedirect()">
-												<img :alt="profileUsername + '\'s profile picture'" class="rounded-circle" :src="profile.avatar" width="77px" height="77px">
-											</div>
-											<div v-else>
-												<img :alt="profileUsername + '\'s profile picture'" class="rounded-circle border" :src="profile.avatar" width="77px" height="77px">
-											</div>
+											<img :alt="profileUsername + '\'s profile picture'" class="rounded-circle border mr-2" :src="profile.avatar" width="77px" height="77px">
 										</div>
 										<div class="col-8">
 											<div class="d-block d-md-none mt-3 py-2">
@@ -77,12 +72,7 @@
 
 								<!-- DESKTOP PROFILE PICTURE -->
 								<div class="d-none d-md-block pb-5">
-									<div v-if="hasStory" class="has-story-lg cursor-pointer shadow-sm" @click="storyRedirect()">
-										<img :alt="profileUsername + '\'s profile picture'" class="rounded-circle box-shadow cursor-pointer" :src="profile.avatar" width="150px" height="150px">
-									</div>
-									<div v-else>
-										<img :alt="profileUsername + '\'s profile picture'" class="rounded-circle box-shadow" :src="profile.avatar" width="150px" height="150px">
-									</div>
+									<img :alt="profileUsername + '\'s profile picture'" class="rounded-circle box-shadow" :src="profile.avatar" width="150px" height="150px">
 									<p v-if="sponsorList.patreon || sponsorList.liberapay || sponsorList.opencollective" class="text-center mt-3">
 										<button type="button" @click="showSponsorModal" class="btn btn-outline-secondary font-weight-bold py-0">
 											<i class="fas fa-heart text-danger"></i>
@@ -533,34 +523,6 @@
 	.nav-topbar .nav-link .small {
 		font-weight: 600;
 	}
-	.has-story {
-		width: 84px;
-		height: 84px;
-		border-radius: 50%;
-		padding: 4px;
-		background: radial-gradient(ellipse at 70% 70%, #ee583f 8%, #d92d77 42%, #bd3381 58%);
-	}
-	.has-story img {
-		width: 76px;
-		height: 76px;
-		border-radius: 50%;
-		padding: 6px;
-		background: #fff;
-	}
-	.has-story-lg {
-		width: 159px;
-		height: 159px;
-		border-radius: 50%;
-		padding: 4px;
-		background: radial-gradient(ellipse at 70% 70%, #ee583f 8%, #d92d77 42%, #bd3381 58%);
-	}
-	.has-story-lg img {
-		width: 150px;
-		height: 150px;
-		border-radius: 50%;
-		padding: 6px;
-		background:#fff;
-	}
 </style>
 <script type="text/javascript">
 	import VueMasonry from 'vue-masonry-css'
@@ -603,21 +565,23 @@
 				collectionsPage: 2,
 				isMobile: false,
 				ctxEmbedPayload: null,
-				copiedEmbed: false,
-				hasStory: null
+				copiedEmbed: false
 			}
 		},
 		beforeMount() {
+			if(window.outerWidth < 576) {
+				$('nav.navbar').hide();
+				this.isMobile = true;
+			}
 			this.fetchRelationships();
 			this.fetchProfile();
 			let u = new URLSearchParams(window.location.search);
-			let forceMetro = localStorage.getItem('pf_metro_ui.exp.forceMetro') == 'true';
-			if(forceMetro == true || u.has('ui') && u.get('ui') == 'metro' && this.layout != 'metro') {
-				this.layout = 'metro';
-			}
 			if(u.has('ui') && u.get('ui') == 'moment' && this.layout != 'moment') {
 				Vue.use(VueMasonry);
 				this.layout = 'moment';
+			}
+			if(u.has('ui') && u.get('ui') == 'metro' && this.layout != 'metro') {
+				this.layout = 'metro';
 			}
 			if(this.layout == 'metro' && u.has('t')) {
 				if(this.modes.indexOf(u.get('t')) != -1) {
@@ -643,10 +607,6 @@
 					this.user = res.data;
 				});
 			}
-			if(window.outerWidth < 576) {
-				$('nav.navbar').hide();
-				this.isMobile = true;
-			}
 		},
 
 		updated() {
@@ -659,10 +619,6 @@
 					this.profile = res.data;
 				}).then(res => {
 					this.fetchPosts();
-					axios.get('/api/stories/v1/exists/' + this.profileId)
-					.then(res => {
-						this.hasStory = res.data == true;
-					})
 				});
 			},
 
@@ -1176,10 +1132,6 @@
 				this.$refs.embedModal.hide();
 				this.$refs.visitorContextMenu.hide();
 			},
-
-			storyRedirect() {
-				window.location.href = '/stories/' + this.profileUsername;
-			}
 		}
 	}
 </script>

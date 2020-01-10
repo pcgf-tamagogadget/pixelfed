@@ -8,8 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-use Cache, Log;
-use Illuminate\Support\Facades\Redis;
+use Cache, Log, Redis;
 use League\Fractal;
 use League\Fractal\Serializer\ArraySerializer;
 use App\FollowRequest;

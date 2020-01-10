@@ -3,7 +3,6 @@
 namespace App\Util\Site;
 
 use Cache;
-use Illuminate\Support\Str;
 
 class Config {
 
@@ -36,8 +35,7 @@ class Config {
 
 				'site' => [
 					'domain' => config('pixelfed.domain.app'),
-					'url'    => config('app.url'),
-					'description' => config('instance.description')
+					'url'    => config('app.url')
 				],
 
 				'username' => [
@@ -45,18 +43,6 @@ class Config {
 						'formats' => config('instance.username.remote.formats'),
 						'format' => config('instance.username.remote.format'),
 						'custom' => config('instance.username.remote.custom')
-					]
-				],
-
-				'features' => [
-					'mobile_apis' => config('pixelfed.oauth_enabled'),
-					'circles' => false,
-					'stories' => config('instance.stories.enabled'),
-					'video'	=> Str::contains(config('pixelfed.media_types'), 'video/mp4'),
-					'import' => [
-						'instagram' => config('pixelfed.import.instagram.enabled'),
-						'mastodon' => false,
-						'pixelfed' => false
 					]
 				]
 			];

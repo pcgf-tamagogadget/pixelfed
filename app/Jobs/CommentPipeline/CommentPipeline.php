@@ -8,8 +8,7 @@ use App\{
     UserFilter
 };
 use App\Services\NotificationService;
-use DB, Cache, Log;
-use Illuminate\Support\Facades\Redis;
+use DB, Cache, Log, Redis;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -58,7 +57,6 @@ class CommentPipeline implements ShouldQueue
         if ($actor->id === $target->id || $status->comments_disabled == true) {
             return true;
         }
-        
         $filtered = UserFilter::whereUserId($target->id)
             ->whereFilterableType('App\Profile')
             ->whereIn('filter_type', ['mute', 'block'])

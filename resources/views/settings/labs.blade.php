@@ -179,13 +179,8 @@
 		</div>
 		<div class="form-check pb-3">
 			<input class="form-check-input" type="checkbox" id="show_tips">
-			<label class="form-check-label font-weight-bold">Show Announcements</label>
-			<p class="text-muted small help-text">Show Announcements on Timelines (Desktop Only)</p>
-		</div>
-		<div class="form-check pb-3">
-			<input class="form-check-input" type="checkbox" id="force_metro">
-			<label class="form-check-label font-weight-bold">Force Metro Layout</label>
-			<p class="text-muted small help-text">Force MetroUI layout for profiles and posts.</p>
+			<label class="form-check-label font-weight-bold">Show Tips</label>
+			<p class="text-muted small help-text">Show Tips on Timelines (Desktop Only)</p>
 		</div>
 		<div class="py-3">
 			<p class="font-weight-bold text-muted text-center">Discovery</p>
@@ -215,7 +210,6 @@ $(document).ready(function() {
 	let showSuggestions = localStorage.getItem('pf_metro_ui.exp.rec') == 'false' ? false : true;
 	let showReadMore = localStorage.getItem('pf_metro_ui.exp.rm') == 'false' ? false : true;
 	let distractionFree = localStorage.getItem('pf_metro_ui.exp.df') == 'true' ? true : false;
-	let forceMetro = localStorage.getItem('pf_metro_ui.exp.forceMetro') == 'true' ? true : false;
 
 	if(showSuggestions == true) {
 		$('#show_suggestions').attr('checked', true);
@@ -231,10 +225,6 @@ $(document).ready(function() {
 
 	if(localStorage.getItem('metro-tips') !== 'false') {
 		$('#show_tips').attr('checked', true);
-	}
-
-	if(forceMetro == true) {
-		$('#force_metro').attr('checked', true);
 	}
 
 	$('#show_suggestions').on('change', function(e) {
@@ -268,14 +258,6 @@ $(document).ready(function() {
 			localStorage.removeItem('metro-tips');
 		}
 	});
-
-	$('#force_metro').on('change', function(e) {
-		if(e.target.checked) {
-			localStorage.setItem('pf_metro_ui.exp.forceMetro', true);
-		} else {
-			localStorage.removeItem('pf_metro_ui.exp.forceMetro');
-		}
-	})
 });
 </script>
 @endpush

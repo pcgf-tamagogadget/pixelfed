@@ -7,9 +7,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <div></div>
         <a href="/account/activity" class="cursor-pointer font-weight-bold text-primary">Notifications</a>
-        @if(request()->user()->profile->is_private)
         <a href="/account/follow-requests" class="cursor-pointer font-weight-bold text-dark">Follow Requests</a>
-        @endif
         <div></div>
       </div>
     </div>
@@ -19,6 +17,11 @@
 @endsection
 
 @push('scripts')
+<script type="text/javascript" src="{{ mix('js/compose.js') }}"></script>
 <script type="text/javascript" src="{{ mix('js/activity.js') }}"></script>
-<script type="text/javascript">window.App.boot();</script>
+<script type="text/javascript">
+  new Vue({
+    el: '#content'
+  });
+</script>
 @endpush
