@@ -1,4 +1,4 @@
-@extends('layouts.app')
+  @extends('layouts.app')
 
 @section('content')
 <div class="container mt-4">
@@ -18,13 +18,13 @@
     	<p class="lead text-center mt-5">Your email is already verified. <a href="/" class="font-weight-bold">Click here</a> to go home.</p>
     @else
     <div class="card shadow-none border">
-      <div class="card-header font-weight-bold bg-white">Confirm Email Address</div>
+      <div class="card-header font-weight-bold bg-white">{{ __('account.confirmEmail') }}</div>
       <div class="card-body">
-        <p class="lead text-break">You need to confirm your email address <span class="font-weight-bold">{{Auth::user()->email}}</span> before you can proceed.</p>
+        <p class="lead text-break">{!! __('account.confirmEmailMessage',['email' => Auth::user()->email]) !!}</p>
         @if(!$recentSent)
         <form method="post">
           @csrf
-          <button type="submit" class="btn btn-primary btn-block py-1 font-weight-bold">Send Confirmation Email</button>
+          <button type="submit" class="btn btn-primary btn-block py-1 font-weight-bold">{{ __('account.sendConfirmEmail') }}</button>
         </form>
         @else
         	<button class="btn btn-primary btn-block py-1 font-weight-bold" disabled>Confirmation Email Sent</button>
