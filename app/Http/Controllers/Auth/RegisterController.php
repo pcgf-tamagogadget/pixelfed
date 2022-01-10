@@ -44,6 +44,13 @@ class RegisterController extends Controller
 		$this->middleware('guest');
 	}
 
+	public function getRegisterToken()
+	{
+		return \Cache::remember('pf:register:rt', 900, function() {
+			return str_random(40);
+		});
+	}
+
 	/**
 	 * Get a validator for an incoming registration request.
 	 *
@@ -76,7 +83,7 @@ class RegisterController extends Controller
 					return $fail('Username is invalid. Can only contain one dash (-), period (.) or underscore (_).');
 				}
 
-				if (!ctype_alpha($value[0])) {
+				if (!ctype_alnum($value[0])) {
 					return $fail('Username is invalid. Must start with a letter or number.');
 				}
 
@@ -110,8 +117,18 @@ class RegisterController extends Controller
 			},
 		];
 
+		$rt = [
+			'required',
+			function ($attribute, $value, $fail) {
+				if($value !== $this->getRegisterToken()) {
+					return $fail('Something went wrong');
+				}
+			}
+		];
+
 		$rules = [
 			'agecheck' => 'required|accepted',
+			'rt' 	   => $rt,
 			'name'     => 'nullable|string|max:'.config('pixelfed.max_name_length'),
 			'username' => $usernameRules,
 			'email'    => $emailRules,

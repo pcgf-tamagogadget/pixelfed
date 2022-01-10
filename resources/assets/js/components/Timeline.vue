@@ -12,7 +12,7 @@
 					<div style="margin-top:-2px;">
 						<story-component v-if="config.features.stories" :scope="scope"></story-component>
 					</div>
-					<div>
+					<div class="pt-4">
 						<div v-if="loading" class="text-center" style="padding-top:10px;">
 							<div class="spinner-border" role="status">
 								<span class="sr-only">Loading...</span>
@@ -20,6 +20,18 @@
 						</div>
 
 						<div :data-status-id="status.id" v-for="(status, index) in feed" :key="`feed-${index}-${status.id}`">
+							<div v-if="index == 1 && !loading && showPromo" class="">
+								<div class="card rounded-0 shadow-none border border-top-0 py-5">
+									<div class="card-body p-5 my-5">
+										<h1>A New Experience Awaits</h1>
+										<p class="lead">Try out an early release of our new design</p>
+										<p class="mb-0 d-flex align-items-center">
+											<a class="btn btn-primary font-weight-bold py-1 px-4 rounded-pill mr-4" href="/i/web">Try new UI</a>
+											<a class="font-weight-bold text-muted" href="/" @click.prevent="hidePromo()">Hide</a>
+										</p>
+									</div>
+								</div>
+							</div>
 							<!-- <div v-if="index == 0 && showTips && !loading" class="my-4 card-tips">
 								<announcements-card v-on:show-tips="showTips = $event"></announcements-card>
 							</div> -->
@@ -106,6 +118,8 @@
 								size="small"
 								v-on:status-delete="deleteStatus"
 								v-on:comment-focus="commentFocus"
+								v-on:followed="followedAccount"
+								v-on:unfollowed="unfollowedAccount"
 							/>
 						</div>
 
@@ -319,7 +333,7 @@
 									<a href="/site/terms" class="text-lighter pr-2">Terms</a>
 								</p>
 								<p class="mb-0 text-uppercase text-muted small">
-									<a href="http://pixelfed.org" class="text-lighter" rel="noopener" title="" data-toggle="tooltip">Powered by Pixelfed</a>
+									<a href="https://pixelfed.org" class="text-lighter" rel="noopener" title="" data-toggle="tooltip">Powered by Pixelfed</a>
 								</p>
 							</div>
 						</footer>
@@ -448,7 +462,7 @@
 				replyStatus: {},
 				replyText: '',
 				replyNsfw: false,
-				emoji: window.App.util.emoji,
+				emoji: [],
 				showHashtagPosts: false,
 				hashtagPosts: [],
 				hashtagPostsName: '',
@@ -506,26 +520,13 @@
 				recentFeedMin: null,
 				recentFeedMax: null,
 				reactionBar: true,
-				emptyFeed: false
+				emptyFeed: false,
+				filters: [],
+				showPromo: false,
 			}
 		},
 
 		beforeMount() {
-			// let avop = window.localStorage.getItem('pf.feed:avop') === 'always';
-			// let u = new URLSearchParams(window.location.search);
-			// if(u.has('a')) {
-			// 	switch(u.get('a')) {
-			// 		case 'recent_feed':
-			// 			if(this.scope === 'home') {
-			// 				this.recentFeed = true;
-			// 			}
-			// 		break;
-			// 		case 'vop':
-			// 			this.recentFeed = false;
-			// 		break;
-			// 	}
-			// }
-			// this.recentFeed = avop ? false : this.recentFeed;
 			this.fetchProfile();
 		},
 
@@ -538,6 +539,10 @@
 				el.setAttribute('href', '/css/appdark.css?id=' + Date.now());
 				el.setAttribute('data-stylesheet', 'dark');
 			}*/
+
+			if(this.config.ab.spa === true) {
+				this.showPromo = localStorage.getItem('pf_metro_ui.exp.spa') == 'false' ? false : true;
+			}
 
 			if(localStorage.getItem('pf_metro_ui.exp.rec') == 'false') {
 				this.showSuggestions = false;
@@ -565,7 +570,16 @@
 						break;
 					}
 				}
-				this.fetchTimelineApi();
+
+				if(this.scope != 'home') {
+					axios.get('/api/pixelfed/v2/filters')
+					.then(res => {
+						this.filters = res.data;
+						this.fetchTimelineApi();
+					});
+				} else {
+					this.fetchTimelineApi();
+				}
 			});
 		},
 
@@ -584,10 +598,6 @@
 					}
 					window._sharedData.curUser = res.data;
 					window.App.util.navatar();
-					// this.$nextTick(() => {
-					// 	this.hasStory();
-					// });
-					// this.expRec();
 				}).catch(err => {
 					swal(
 						'Oops, something went wrong',
@@ -621,10 +631,16 @@
 				}).then(res => {
 					let data = res.data;
 
-					if(!data.length) {
+					if(!data || !data.length) {
 						this.loading = false;
 						this.emptyFeed = true;
 						return;
+					}
+
+					if(this.filters.length) {
+						data = data.filter(d => {
+							return this.filters.includes(d.account.id) == false;
+						});
 					}
 
 					this.feed.push(...data);
@@ -633,32 +649,15 @@
 					this.min_id = Math.max(...ids).toString();
 					this.max_id = Math.min(...ids).toString();
 					this.loading = false;
-					// $('.timeline .pagination').removeClass('d-none');
-
-					// if(this.hashtagPosts.length == 0) {
-					// 	this.fetchHashtagPosts();
-					// }
 					this.$nextTick(() => {
 						this.hasStory();
 					});
-					// this.fetchStories();
-					// this.rtw();
 
 					setTimeout(function() {
 						document.querySelectorAll('.timeline .card-body .comments .comment-body a').forEach(function(i, e) {
 							i.href = App.util.format.rewriteLinks(i);
 						});
 					}, 500);
-
-					// axios.get('/api/pixelfed/v2/discover/posts/trending', {
-					// 	params: {
-					// 		range: 'daily'
-					// 	}
-					// }).then(res => {
-					// 	let data = res.data.filter(post => this.ids.indexOf(post.id) === -1);
-					// 	this.discover_feed = data;
-					// });
-
 				}).catch(err => {
 					swal(
 						'Oops, something went wrong',
@@ -715,8 +714,8 @@
 								self.feed.push(d);
 								self.ids.push(d.id);
 								// vids.push({
-								// 	sid: d.id,
-								// 	pid: d.account.id
+								//  sid: d.id,
+								//  pid: d.account.id
 								// });
 							}
 						});
@@ -726,7 +725,7 @@
 						$state.loaded();
 						this.loading = false;
 						// axios.post('/api/status/view', {
-						// 	'_v': vids,
+						//  '_v': vids,
 						// });
 					} else {
 						$state.complete();
@@ -897,11 +896,6 @@
 					}
 					$('.postCommentsLoader').addClass('d-none');
 					$('.postCommentsContainer').removeClass('d-none');
-					// setTimeout(function() {
-					// 	document.querySelectorAll('.status-comment .postCommentsContainer .comment-body a').forEach(function(i, e) {
-					// 		i.href = App.util.format.rewriteLinks(i);
-					// 	});
-					// }, 500);
 				}).catch(error => {
 					if(!error.response) {
 						$('.postCommentsLoader .lds-ring')
@@ -1067,6 +1061,33 @@
 				this.feed = this.feed.filter(s => {
 					return s.id != status;
 				});
+			},
+
+			followedAccount(id) {
+				this.feed = this.feed.map(s => {
+					if(s.account.id == id) {
+						if(s.hasOwnProperty('relationship') && s.relationship.following == false) {
+							s.relationship.following = true;
+						}
+					}
+					return s;
+				});
+			},
+
+			unfollowedAccount(id) {
+				this.feed = this.feed.map(s => {
+					if(s.account.id == id) {
+						if(s.hasOwnProperty('relationship') && s.relationship.following == true) {
+							s.relationship.following = false;
+						}
+					}
+					return s;
+				});
+			},
+
+			hidePromo() {
+				localStorage.setItem('pf_metro_ui.exp.spa', 'false');
+				this.showPromo = false;
 			}
 		},
 

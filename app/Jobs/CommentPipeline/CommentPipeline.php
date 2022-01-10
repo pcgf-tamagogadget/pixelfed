@@ -8,6 +8,7 @@ use App\{
     UserFilter
 };
 use App\Services\NotificationService;
+use App\Services\StatusService;
 use DB, Cache, Log;
 use Illuminate\Support\Facades\Redis;
 
@@ -58,6 +59,11 @@ class CommentPipeline implements ShouldQueue
         $target = $status->profile;
         $actor = $comment->profile;
 
+        DB::transaction(function() use($status) {
+        	$status->reply_count = DB::table('statuses')->whereInReplyToId($status->id)->count();
+        	$status->save();
+        });
+
         if ($actor->id === $target->id || $status->comments_disabled == true) {
             return true;
         }
@@ -85,6 +91,16 @@ class CommentPipeline implements ShouldQueue
 
             NotificationService::setNotification($notification);
             NotificationService::set($notification->profile_id, $notification->id);
+            StatusService::del($comment->id);
         });
+
+        if($exists = Cache::get('status:replies:all:' . $status->id)) {
+        	if($exists && $exists->count() == 3) {
+        	} else {
+        		Cache::forget('status:replies:all:' . $status->id);
+        	}
+        } else {
+        	Cache::forget('status:replies:all:' . $status->id);
+        }
     }
 }

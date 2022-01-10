@@ -23,7 +23,7 @@ return [
 	| This value is the version of your Pixelfed instance.
 	|
 	*/
-	'version' => '0.11.1',
+	'version' => '0.11.2',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -256,10 +256,6 @@ return [
 	],
 
 	'oauth_enabled' => env('OAUTH_ENABLED', false),
-
-	'admin' => [
-		'env_editor' => env('ADMIN_ENV_EDITOR', false)
-	],
 
 	'bouncer' => [
 		'enabled' => env('PF_BOUNCER_ENABLED', false),

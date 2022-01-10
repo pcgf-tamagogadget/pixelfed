@@ -12,6 +12,9 @@ use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App\Util\ActivityPub\Helpers;
 use Illuminate\Support\Str;
+use App\Services\AccountService;
+use App\Services\HashtagService;
+use App\Services\StatusService;
 
 class SearchApiV2Service
 {
@@ -25,12 +28,14 @@ class SearchApiV2Service
 	protected function run($query)
 	{
 		$this->query = $query;
+		$q = urldecode($query->input('q'));
 
 		if($query->has('resolve') && 
 			$query->resolve == true && 
-			Helpers::validateUrl(urldecode($query->input('q')))
+			( Str::startsWith($q, 'https://') ||
+			  Str::substrCount($q, '@') == 2)
 		) {
-			return $this->resolve();
+			return $this->resolveQuery();
 		}
 
 		if($query->has('type')) {
@@ -74,31 +79,29 @@ class SearchApiV2Service
 		];
 	}
 
-	protected function resolve()
-	{
-		$query = urldecode($this->query->input('q'));
-		if(Str::startsWith($query, '@') == true) {
-			return WebfingerService::lookup($this->query->input('q'));
-		} else if (Str::startsWith($query, 'https://') == true) {
-			return $this->resolveQuery();
-		}
-	}
-
 	protected function accounts()
 	{
+		$user = request()->user();
 		$limit = $this->query->input('limit') ?? 20;
 		$offset = $this->query->input('offset') ?? 0;
 		$query = '%' . $this->query->input('q') . '%';
-		$results = Profile::whereNull('status')
+		$results = Profile::select('profiles.*', 'followers.profile_id', 'followers.created_at')
+			->whereNull('status')
+			->leftJoin('followers', function($join) use($user) {
+				return $join->on('profiles.id', '=', 'followers.following_id')
+					->where('followers.profile_id', $user->profile_id);
+			})
 			->where('username', 'like', $query)
+			->orderByDesc('profiles.followers_count')
+			->orderByDesc('followers.created_at')
 			->offset($offset)
 			->limit($limit)
-			->get();
+			->get()
+			->map(function($res) {
+				return AccountService::get($res['id']);
+			});
 
-		$fractal = new Fractal\Manager();
-		$fractal->setSerializer(new ArraySerializer());
-		$resource = new Fractal\Resource\Collection($results, new AccountTransformer());
-		return $fractal->createData($resource)->toArray();
+		return $results;
 	}
 
 	protected function hashtags()
@@ -115,6 +118,7 @@ class SearchApiV2Service
 				return [
 					'name' => $tag->name,
 					'url'  => $tag->url(),
+					'count' => HashtagService::count($tag->id),
 					'history' => []
 				];
 			});
@@ -134,12 +138,11 @@ class SearchApiV2Service
 		$results = Status::where('caption', 'like', $query)
 			->whereProfileId($accountId)
 			->limit($limit)
-			->get();
-
-		$fractal = new Fractal\Manager();
-		$fractal->setSerializer(new ArraySerializer());
-		$resource = new Fractal\Resource\Collection($results, new StatusTransformer());
-		return $fractal->createData($resource)->toArray();
+			->get()
+			->map(function($status) {
+				return StatusService::get($status->id);
+			});
+		return $results;
 	}
 
 	protected function resolveQuery()
@@ -152,11 +155,79 @@ class SearchApiV2Service
 				return $this->resolveLocalProfile();
 			}
 		} else {
-			return [
+			$default =  [
 				'accounts' => [],
 				'hashtags' => [],
-				'statuses' => []
+				'statuses' => [],
 			];
+			if(!Helpers::validateUrl($query) && strpos($query, '@') == -1) {
+				return $default;
+			}
+
+			if(Str::substrCount($query, '@') == 2) {
+				try {
+					$res = WebfingerService::lookup($query);
+				} catch (\Exception $e) {
+					return $default;
+				}
+				if($res && isset($res['id'])) {
+					$default['accounts'][] = $res;
+					return $default;
+				} else {
+					return $default;
+				}
+			}
+
+			try {
+				$res = ActivityPubFetchService::get($query);
+				if($res) {
+					$json = json_decode($res, true);
+
+					if(!$json || !isset($json['@context']) || !isset($json['type']) || !in_array($json['type'], ['Note', 'Person'])) {
+						return [
+							'accounts' => [],
+							'hashtags' => [],
+							'statuses' => [],
+						];
+					}
+
+					switch($json['type']) {
+						case 'Note':
+							$obj = Helpers::statusFetch($query);
+							if(!$obj) {
+								return $default;
+							}
+							$default['statuses'][] = StatusService::get($obj['id']);
+							return $default;
+						break;
+
+						case 'Person':
+							$obj = Helpers::profileFetch($query);
+							if(!$obj) {
+								return $default;
+							}
+							$default['accounts'][] = AccountService::get($obj['id']);
+							return $default;
+						break;
+
+						default:
+							return [
+								'accounts' => [],
+								'hashtags' => [],
+								'statuses' => [],
+							];
+						break;
+					}
+				}
+			} catch (\Exception $e) {
+				return [
+					'accounts' => [],
+					'hashtags' => [],
+					'statuses' => [],
+				];
+			}
+
+			return $default;
 		}
 	}
 

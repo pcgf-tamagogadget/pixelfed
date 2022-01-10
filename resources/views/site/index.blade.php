@@ -20,6 +20,7 @@
 	<meta name="medium" content="image">
 	<meta name="theme-color" content="#10c5f8">
 	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="/manifest.json">
 	<link rel="shortcut icon" type="image/png" href="/img/favicon.png?v=2">
 	<link rel="apple-touch-icon" type="image/png" href="/img/favicon.png?v=2">
 	<link href="{{ mix('css/landing.css') }}" rel="stylesheet">
@@ -115,7 +116,7 @@
 										@endif
 										<div class="form-group row mb-0">
 											<div class="col-md-12">
-												<button type="submit" class="btn btn-primary btn-block py-0 font-weight-bold text-uppercase">
+												<button type="submit" class="btn btn-primary btn-block btn-lg font-weight-bold text-uppercase">
 													{{ __('site.login') }}
 												</button>
 
@@ -126,7 +127,7 @@
 							</div>
 						</div>
 						<div class="card shadow-none border card-body">
-							<p class="text-center mb-0 font-weight-bold small">
+							<p class="text-center mb-0 font-weight-bold">
 								@if(config_cache('pixelfed.open_registration'))
 								<a href="/register">{{ __('site.register') }}</a>
 								<span class="px-1">·</span>

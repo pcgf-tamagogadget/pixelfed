@@ -25,10 +25,11 @@ class AccountTransformer extends Fractal\TransformerAbstract
 			'acct' => $acct,
 			'display_name' => $profile->name,
 			'locked' => (bool) $profile->is_private,
-			'followers_count' => $profile->followerCount(),
-			'following_count' => $profile->followingCount(),
+			'followers_count' => (int) $profile->followerCount(),
+			'following_count' => (int) $profile->followingCount(),
 			'statuses_count' => (int) $profile->statusCount(),
 			'note' => $profile->bio ?? '',
+			'note_text' => strip_tags($profile->bio),
 			'url' => $profile->url(),
 			'avatar' => $profile->avatarUrl(),
 			'website' => $profile->website,
@@ -37,7 +38,8 @@ class AccountTransformer extends Fractal\TransformerAbstract
 			'created_at' => $profile->created_at->toJSON(),
 			'header_bg' => $profile->header_bg,
 			'last_fetched_at' => optional($profile->last_fetched_at)->toJSON(),
-			'pronouns' => PronounService::get($profile->id)
+			'pronouns' => PronounService::get($profile->id),
+			'location' => $profile->location
 		];
 	}
 

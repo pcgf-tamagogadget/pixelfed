@@ -236,17 +236,9 @@ class BaseApiController extends Controller
         abort_if(!$user, 403);
         if($user->status != null) {
             Auth::logout();
-            return redirect('/login');
+            abort(403);
         }
-        $key = 'user:last_active_at:id:'.$user->id;
-        $ttl = now()->addMinutes(5);
-        Cache::remember($key, $ttl, function() use($user) {
-            $user->last_active_at = now();
-            $user->save();
-            return;
-        });
-        $resource = new Fractal\Resource\Item($user->profile, new AccountTransformer());
-        $res = $this->fractal->createData($resource)->toArray();
+        $res = AccountService::get($user->profile_id);
         return response()->json($res);
     }
 
@@ -312,7 +304,7 @@ class BaseApiController extends Controller
         $status->scope = 'archived';
         $status->visibility = 'draft';
         $status->save();
-        StatusService::del($status->id);
+        StatusService::del($status->id, true);
         AccountService::syncPostCount($status->profile_id);
 
         return [200];
@@ -339,7 +331,7 @@ class BaseApiController extends Controller
         $status->visibility = $archive->original_scope;
         $status->save();
         $archive->delete();
-        StatusService::del($status->id);
+        StatusService::del($status->id, true);
         AccountService::syncPostCount($status->profile_id);
 
         return [200];

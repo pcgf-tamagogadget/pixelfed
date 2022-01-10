@@ -55,7 +55,6 @@ class Bouncer {
 		}
 
 		if( $status->profile->created_at->gt(now()->subMonths(6)) &&
-			$status->profile->status_count < 2 &&
 			$status->profile->bio &&
 			$status->profile->website
 		) {
@@ -132,7 +131,7 @@ class Bouncer {
 
 		$status->scope = 'unlisted';
 		$status->visibility = 'unlisted';
-		$status->is_nsfw = true;
+		// $status->is_nsfw = true;
 		$status->save();
 
 		Cache::forget('pf:bouncer_v0:exemption_by_pid:' . $status->profile_id);

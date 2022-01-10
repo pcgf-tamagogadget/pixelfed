@@ -46,6 +46,8 @@ class StoryController extends StoryComposeController
 					$r  = new \StdClass;
 					$r->id = $s->id;
 					$r->profile_id = $s->profile_id;
+					$r->type = $s->type;
+					$r->path = $s->path;
 					return $r;
 				})
 				->unique('profile_id');
@@ -68,6 +70,11 @@ class StoryController extends StoryComposeController
 				'avatar' => $profile['avatar'],
 				'local' => $profile['local'],
 				'username'	=> $profile['acct'],
+				'latest' => [
+					'id' => $s->id,
+					'type' => $s->type,
+					'preview_url' => url(Storage::url($s->path))
+				],
 				'url' => $url,
 				'seen' => StoryService::hasSeen($pid, StoryService::latest($s->profile_id)),
 				'sid' => $s->id

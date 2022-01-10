@@ -170,6 +170,8 @@ trait AdminSettingsController
 				$json[] = $val;
 				ConfigCacheService::put('app.rules', json_encode(array_values($json)));
 			}
+			Cache::forget('api:v1:instance-data:rules');
+			Cache::forget('api:v1:instance-data-response');
 		}
 
 		if($request->filled('account_autofollow_usernames')) {
@@ -197,30 +199,6 @@ trait AdminSettingsController
 		$path = storage_path('app/'.config('app.name'));
 		$files = is_dir($path) ? new \DirectoryIterator($path) : [];
 		return view('admin.settings.backups', compact('files'));
-	}
-
-	public function settingsConfig(Request $request)
-	{
-		$editor = config('pixelfed.admin.env_editor');
-		$config = !$editor ? false : file_get_contents(base_path('.env'));
-		$backup = !$editor ? false : (is_file(base_path('.env.backup')) ? file_get_contents(base_path('.env.backup')) : false);
-		return view('admin.settings.config', compact('editor', 'config', 'backup'));
-	}
-
-	public function settingsConfigStore(Request $request)
-	{
-		if(config('pixelfed.admin.env_editor') !== true) {
-			abort(400);
-		}
-		return ['msg' => 200];
-	}
-
-	public function settingsConfigRestore(Request $request)
-	{
-		if(config('pixelfed.admin.env_editor') !== true) {
-			abort(400);
-		}
-		return ['msg' => 200];
 	}
 
 	public function settingsMaintenance(Request $request)

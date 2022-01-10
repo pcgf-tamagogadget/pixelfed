@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 
-$middleware = ['auth:api','twofactor','validemail','interstitial'];
+$middleware = ['auth:api','validemail'];
 
 Route::post('/f/inbox', 'FederationController@sharedInbox');
 Route::post('/users/{username}/inbox', 'FederationController@userInbox');
@@ -10,6 +10,12 @@ Route::get('i/actor', 'InstanceActorController@profile');
 Route::post('i/actor/inbox', 'InstanceActorController@inbox');
 Route::get('i/actor/outbox', 'InstanceActorController@outbox');
 Route::get('/stories/{username}/{id}', 'StoryController@getActivityObject');
+
+Route::get('.well-known/webfinger', 'FederationController@webfinger')->name('well-known.webfinger');
+Route::get('.well-known/nodeinfo', 'FederationController@nodeinfoWellKnown')->name('well-known.nodeinfo');
+Route::get('.well-known/host-meta', 'FederationController@hostMeta')->name('well-known.hostMeta');
+Route::redirect('.well-known/change-password', '/settings/password');
+Route::get('api/nodeinfo/2.0.json', 'FederationController@nodeinfo');
 
 Route::group(['prefix' => 'api'], function() use($middleware) {
 
@@ -71,10 +77,10 @@ Route::group(['prefix' => 'api'], function() use($middleware) {
 		Route::get('statuses/{id}', 'Api\ApiV1Controller@statusById')->middleware($middleware);
 		Route::post('statuses', 'Api\ApiV1Controller@statusCreate')->middleware($middleware);
 
-
 		Route::get('timelines/home', 'Api\ApiV1Controller@timelineHome')->middleware($middleware);
 		Route::get('timelines/public', 'Api\ApiV1Controller@timelinePublic')->middleware($middleware);
 		Route::get('timelines/tag/{hashtag}', 'Api\ApiV1Controller@timelineHashtag');
+		Route::get('discover/posts', 'Api\ApiV1Controller@discoverPosts')->middleware($middleware);
 	});
 
 	Route::group(['prefix' => 'v2'], function() use($middleware) {

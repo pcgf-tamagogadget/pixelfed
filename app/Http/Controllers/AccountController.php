@@ -26,6 +26,9 @@ use League\Fractal;
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App\Transformer\Api\Mastodon\v1\AccountTransformer;
+use App\Services\AccountService;
+use App\Services\UserFilterService;
+use App\Services\RelationshipService;
 
 class AccountController extends Controller
 {
@@ -33,6 +36,8 @@ class AccountController extends Controller
 		'user.mute',
 		'user.block',
 	];
+
+	const FILTER_LIMIT = 'You cannot block or mute more than 100 accounts';
 
 	public function __construct()
 	{
@@ -71,7 +76,10 @@ class AccountController extends Controller
 
 	public function verifyEmail(Request $request)
 	{
-		return view('account.verify_email');
+		$recentSent = EmailVerification::whereUserId(Auth::id())
+		->whereDate('created_at', '>', now()->subHours(12))->count();
+
+		return view('account.verify_email', compact('recentSent'));
 	}
 
 	public function sendVerifyEmail(Request $request)
@@ -140,6 +148,12 @@ class AccountController extends Controller
 		]);
 
 		$user = Auth::user()->profile;
+		$count = UserFilterService::muteCount($user->id);
+		abort_if($count >= 100, 422, self::FILTER_LIMIT);
+		if($count == 0) {
+			$filterCount = UserFilter::whereUserId($user->id)->count();
+			abort_if($filterCount >= 100, 422, self::FILTER_LIMIT);
+		}
 		$type = $request->input('type');
 		$item = $request->input('item');
 		$action = $type . '.mute';
@@ -171,6 +185,7 @@ class AccountController extends Controller
 		Cache::forget("user:filter:list:$pid");
 		Cache::forget("feature:discover:posts:$pid");
 		Cache::forget("api:local:exp:rec:$pid");
+		RelationshipService::refresh($pid, $profile->id);
 
 		return redirect()->back();
 	}
@@ -221,6 +236,7 @@ class AccountController extends Controller
 		Cache::forget("user:filter:list:$pid");
 		Cache::forget("feature:discover:posts:$pid");
 		Cache::forget("api:local:exp:rec:$pid");
+		RelationshipService::refresh($pid, $profile->id);
 
 		if($request->wantsJson()) {
 			return response()->json([200]);
@@ -237,6 +253,12 @@ class AccountController extends Controller
 		]);
 
 		$user = Auth::user()->profile;
+		$count = UserFilterService::blockCount($user->id);
+		abort_if($count >= 100, 422, self::FILTER_LIMIT);
+		if($count == 0) {
+			$filterCount = UserFilter::whereUserId($user->id)->count();
+			abort_if($filterCount >= 100, 422, self::FILTER_LIMIT);
+		}
 		$type = $request->input('type');
 		$item = $request->input('item');
 		$action = $type.'.block';
@@ -269,6 +291,7 @@ class AccountController extends Controller
 		$pid = $user->id;
 		Cache::forget("user:filter:list:$pid");
 		Cache::forget("api:local:exp:rec:$pid");
+		RelationshipService::refresh($pid, $profile->id);
 
 		return redirect()->back();
 	}
@@ -319,6 +342,7 @@ class AccountController extends Controller
 		Cache::forget("user:filter:list:$pid");
 		Cache::forget("feature:discover:posts:$pid");
 		Cache::forget("api:local:exp:rec:$pid");
+		RelationshipService::refresh($pid, $profile->id);
 
 		return redirect()->back();
 	}
@@ -552,5 +576,21 @@ class AccountController extends Controller
         $prev = $page > 1 ? $page - 1 : 1;
         $links = '<'.$url.'?page='.$next.'&limit='.$limit.'>; rel="next", <'.$url.'?page='.$prev.'&limit='.$limit.'>; rel="prev"';
         return response()->json($res, 200, ['Link' => $links]);
+
+    }
+
+    public function accountBlocksV2(Request $request)
+    {
+        return response()->json(UserFilterService::blocks($request->user()->profile_id), 200, [], JSON_UNESCAPED_SLASHES);
+    }
+
+    public function accountMutesV2(Request $request)
+    {
+        return response()->json(UserFilterService::mutes($request->user()->profile_id), 200, [], JSON_UNESCAPED_SLASHES);
+    }
+
+    public function accountFiltersV2(Request $request)
+    {
+        return response()->json(UserFilterService::filters($request->user()->profile_id), 200, [], JSON_UNESCAPED_SLASHES);
     }
 }
