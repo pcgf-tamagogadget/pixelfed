@@ -15,6 +15,7 @@ use League\Fractal\Serializer\ArraySerializer;
 use App\Transformer\ActivityPub\Verb\Announce;
 use GuzzleHttp\{Pool, Client, Promise};
 use App\Util\ActivityPub\HttpSignature;
+use App\Services\ReblogService;
 use App\Services\StatusService;
 
 class SharePipeline implements ShouldQueue
@@ -75,6 +76,8 @@ class SharePipeline implements ShouldQueue
 
 		$this->remoteAnnounceDeliver();
 
+		ReblogService::addPostReblog($parent->id, $status->id);
+
 		$parent->reblogs_count = $parent->shares()->count();
 		$parent->save();
 		StatusService::del($parent->id);
@@ -126,7 +129,12 @@ class SharePipeline implements ShouldQueue
 
 		$requests = function($audience) use ($client, $activity, $profile, $payload) {
 			foreach($audience as $url) {
-				$headers = HttpSignature::sign($profile, $url, $activity);
+				$version = config('pixelfed.version');
+				$appUrl = config('app.url');
+				$headers = HttpSignature::sign($profile, $url, $activity, [
+					'Content-Type'	=> 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+					'User-Agent'	=> "(Pixelfed/{$version}; +{$appUrl})",
+				]);
 				yield function() use ($client, $url, $headers, $payload) {
 					return $client->postAsync($url, [
 						'curl' => [

@@ -16,13 +16,16 @@ use App\Services\StatusMentionService;
 use App\Services\ProfileService;
 use Illuminate\Support\Str;
 use App\Services\PollService;
+use App\Models\CustomEmoji;
+use App\Services\BookmarkService;
 
 class StatusTransformer extends Fractal\TransformerAbstract
 {
 	public function transform(Status $status)
 	{
+		$pid = request()->user()->profile_id;
 		$taggedPeople = MediaTagService::get($status->id);
-		$poll = $status->type === 'poll' ? PollService::get($status->id, request()->user()->profile_id) : null;
+		$poll = $status->type === 'poll' ? PollService::get($status->id, $pid) : null;
 
 		return [
 			'_v'                        => 1,
@@ -36,7 +39,7 @@ class StatusTransformer extends Fractal\TransformerAbstract
 			'content'                   => $status->rendered ?? $status->caption,
 			'content_text'              => $status->caption,
 			'created_at'                => $status->created_at->format('c'),
-			'emojis'                    => [],
+			'emojis'                    => CustomEmoji::scan($status->caption),
 			'reblogs_count'             => 0,
 			'favourites_count'          => $status->likes_count ?? 0,
 			'reblogged'                 => $status->shared(),
@@ -68,6 +71,7 @@ class StatusTransformer extends Fractal\TransformerAbstract
 			'account'					=> ProfileService::get($status->profile_id),
 			'tags'						=> StatusHashtagService::statusTags($status->id),
 			'poll'						=> $poll,
+			'bookmarked'				=> BookmarkService::get($pid, $status->id),
 		];
 	}
 }

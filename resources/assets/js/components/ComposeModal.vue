@@ -1,6 +1,6 @@
 <template>
-<div>
-	<input type="file" id="pf-dz" name="media" class="w-100 h-100 d-none file-input" v-bind:accept="config.uploader.media_types">
+<div class="compose-modal-component">
+	<input type="file" id="pf-dz" name="media" class="w-100 h-100 d-none file-input" multiple="" v-bind:accept="config.uploader.media_types">
 	<canvas class="d-none" id="pr_canvas"></canvas>
 	<img class="d-none" id="pr_img">
 	<div class="timeline">
@@ -184,6 +184,7 @@
 						</span>
 					</div>
 				</div>
+
 				<div class="card-body p-0 border-top">
 					<div v-if="page == 'licensePicker'" class="w-100 h-100" style="min-height: 280px;">
 						<div class="list-group list-group-flush">
@@ -237,7 +238,7 @@
 
 					<div v-if="page == 1" class="w-100 h-100 d-flex justify-content-center align-items-center" style="min-height: 400px;">
 						<div class="text-center">
-							<div v-if="media.length == 0" class="card mx-md-5 my-md-3 shadow-none border compose-action text-decoration-none text-dark">
+							<div v-if="media.length == 0" class="card my-md-3 shadow-none border compose-action text-decoration-none text-dark">
 								<div @click.prevent="addMedia" class="card-body py-2">
 									<div class="media">
 										<div class="mr-3 align-items-center justify-content-center" style="display:inline-flex;width:40px;height:40px;border-radius: 100%;background-color: #008DF5">
@@ -248,12 +249,13 @@
 												<span class="h5 mt-0 font-weight-bold text-primary">New Post</span>
 											</p>
 											<p class="mb-0 text-muted">Share up to {{config.uploader.album_limit}} photos or videos</p>
+											<p class="mb-0 text-muted small"><span class="font-weight-bold">{{config.uploader.media_types.split(',').map(v => v.split('/')[1]).join(', ')}}</span> allowed up to <span class="font-weight-bold">{{filesize(config.uploader.max_photo_size)}}</span></p>
 										</div>
 									</div>
 								</div>
 							</div>
 
-							<div v-if="1==0 && config.ab.top == true && media.length == 0" class="card mx-md-5 my-md-3 shadow-none border compose-action text-decoration-none text-dark">
+							<div v-if="1==0 && config.ab.top == true && media.length == 0" class="card my-md-3 shadow-none border compose-action text-decoration-none text-dark">
 								<div @click.prevent="addText" class="card-body py-2">
 									<div class="media">
 										<div class="mr-3 align-items-center justify-content-center" style="display:inline-flex;width:40px;height:40px;border-radius: 100%;border: 2px solid #008DF5">
@@ -272,7 +274,7 @@
 								</div>
 							</div>
 
-							<a v-if="config.features.stories == true" class="card mx-md-5 my-md-3 shadow-none border compose-action text-decoration-none text-dark" href="/i/stories/new">
+							<a v-if="config.features.stories == true" class="card my-md-3 shadow-none border compose-action text-decoration-none text-dark" href="/i/stories/new">
 								<div class="card-body py-2">
 									<div class="media">
 										<div class="mr-3 align-items-center justify-content-center" style="display:inline-flex;width:40px;height:40px;border-radius: 100%;border: 1px solid #008DF5">
@@ -291,7 +293,7 @@
 								</div>
 							</a>
 
-							<a v-if="1==0 && config.ab.polls == true" class="card mx-md-5 my-md-3 shadow-none border compose-action text-decoration-none text-dark" href="#" @click.prevent="newPoll">
+							<a v-if="1==0 && config.ab.polls == true" class="card my-md-3 shadow-none border compose-action text-decoration-none text-dark" href="#" @click.prevent="newPoll">
 								<div class="card-body py-2">
 									<div class="media">
 										<div class="mr-3 align-items-center justify-content-center" style="display:inline-flex;width:40px;height:40px;border-radius: 100%;border: 2px solid #008DF5">
@@ -310,7 +312,7 @@
 								</div>
 							</a>
 
-							<a class="card mx-md-5 my-md-3 shadow-none border compose-action text-decoration-none text-dark" href="/i/collections/create">
+							<a class="card my-md-3 shadow-none border compose-action text-decoration-none text-dark" href="/i/collections/create">
 								<div class="card-body py-2">
 									<div class="media">
 										<div class="mr-3 align-items-center justify-content-center" style="display:inline-flex;width:40px;height:40px;border-radius: 100%;border: 1px solid #008DF5">
@@ -356,7 +358,7 @@
 								<img :class="'d-block img-fluid w-100 ' + [media[carouselCursor].filter_class?media[carouselCursor].filter_class:'']" :src="media[carouselCursor].url" :alt="media[carouselCursor].description" :title="media[carouselCursor].description">
 							</div>
 							<hr>
-							<div v-if="ids.length > 0 && media[carouselCursor].type == 'Image'" class="align-items-center px-2 pt-2">
+							<div v-if="ids.length > 0 && media[carouselCursor].type == 'image'" class="align-items-center px-2 pt-2">
 								<ul class="nav media-drawer-filters text-center">
 									<li class="nav-item">
 										<div class="p-1 pt-3">
@@ -393,7 +395,7 @@
 								<li class="nav-item mx-md-4">&nbsp;</li>
 							</ul>
 							<hr>
-							<div v-if="ids.length > 0 && media[carouselCursor].type == 'Image'" class="align-items-center px-2 pt-2">
+							<div v-if="ids.length > 0 && media[carouselCursor].type == 'image'" class="align-items-center px-2 pt-2">
 								<ul class="nav media-drawer-filters text-center">
 									<li class="nav-item">
 										<div class="p-1 pt-3">
@@ -445,8 +447,19 @@
 							<p class="px-4 mb-0 py-2 cursor-pointer" @click="showTagCard()">Tag people</p>
 						</div>
 						<div class="border-bottom">
+							<p class="px-4 mb-0 py-2 cursor-pointer" @click="showCollectionCard()">
+								<span>Add to Collection <span class="ml-2 badge badge-primary">NEW</span></span>
+								<span class="float-right">
+									<span v-if="collectionsSelected.length" href="#" class="btn btn-outline-secondary btn-sm small mr-3 mt-n1 disabled" style="font-size:10px;padding:3px 5px;text-transform: uppercase" disabled>
+										{{collectionsSelected.length}}
+									</span>
+									<span class="text-decoration-none"><i class="fas fa-chevron-right fa-lg text-lighter"></i></span>
+								</span>
+							</p>
+						</div>
+						<div class="border-bottom">
 							<p class="px-4 mb-0 py-2 cursor-pointer" @click="showLicenseCard()">
-								<span>Add license <span class="ml-2 badge badge-primary">NEW</span></span>
+								<span>Add license</span>
 								<span class="float-right">
 									<a v-if="licenseTitle" href="#" @click.prevent="showLicenseCard()" class="btn btn-outline-secondary btn-sm small mr-3 mt-n1 disabled" style="font-size:10px;padding:3px;text-transform: uppercase" disabled>{{licenseTitle}}</a>
 									<a href="#" @click.prevent="showLicenseCard()" class="text-decoration-none"><i class="fas fa-chevron-right fa-lg text-lighter"></i></a>
@@ -658,19 +671,30 @@
 					</div>
 
 					<div v-if="page == 'addToCollection'" class="w-100 h-100 p-3">
-						<div class="list-group mb-3">
-							<div class="list-group-item cursor-pointer compose-action border" @click="goBack()">
+						<div v-if="collectionsLoaded && collections.length" class="list-group mb-3 collections-list-group">
+							<div
+								v-for="(collection, index) in collections"
+								class="list-group-item cursor-pointer compose-action border"
+								:class="{ active: collectionsSelected.includes(index) }"
+								@click="toggleCollectionItem(index)">
 								<div class="media">
-								  <img src="" class="mr-3" alt="" width="50px" height="50px">
+								  <img :src="collection.thumb" class="mr-3" alt="" width="50px" height="50px">
 								  <div class="media-body">
-								    <h5 class="mt-0">collection title</h5>
-								    <p class="mb-0 text-muted small">3 Photos - Created 2h ago</p>
+								    <h5 class="mt-0">{{ collection.title }}</h5>
+								    <p class="mb-0 text-muted small">{{ collection.post_count }} Posts - Created {{ timeAgo(collection.published_at) }} ago</p>
 								  </div>
 								</div>
 							</div>
+
+							<button
+								v-if="collectionsCanLoadMore"
+								class="btn btn-light btn-block font-weight-bold mt-3"
+								@click="loadMoreCollections">
+								Load more
+							</button>
 						</div>
 						<p class="d-flex justify-content-between mb-0">
-							<button type="button" @click="goBack()" class="btn btn-link text-muted font-weight-bold text-decoration-none">Cancel</button>
+							<button type="button" @click="clearSelectedCollections()" class="btn btn-link text-muted font-weight-bold text-decoration-none">Clear</button>
 							<button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">Save</button>
 						</p>
 					</div>
@@ -810,47 +834,6 @@
 </div>
 </template>
 
-<style type="text/css" scoped>
-	.media-drawer-filters {
-		overflow-x: scroll;
-		flex-wrap:unset;
-	}
-	.media-drawer-filters::-webkit-scrollbar {
-		width: 0px;
-		background: transparent;
-	}
-	.media-drawer-filters .nav-link {
-		min-width:100px;
-		padding-top: 1rem;
-		padding-bottom: 1rem;
-	}
-	.media-drawer-filters .active {
-		color: #fff;
-		font-weight: bold;
-	}
-    @media (hover: none) and (pointer: coarse) {
-	    .media-drawer-filters::-webkit-scrollbar {
-	        display: none;
-	    }
-    }
-    .no-focus {
-		border-color: none;
-		outline: 0;
-		box-shadow: none;
-    }
-	a.list-group-item {
-		text-decoration: none;
-	}
-	a.list-group-item:hover {
-		text-decoration: none;
-		background-color: #f8f9fa !important;
-	}
-	.compose-action:hover {
-		cursor: pointer;
-		background-color: #f8f9fa !important;
-	}
-</style>
-
 <script type="text/javascript">
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
@@ -926,6 +909,7 @@ export default {
 			taggedPeopleSearch: null,
 			textMode: false,
 			tributeSettings: {
+				noMatchTemplate: function () { return null; },
 				collection: [
 					{
 						trigger: '@',
@@ -1019,7 +1003,12 @@ export default {
 			pollOptionModel: null,
 			pollOptions: [],
 			pollExpiry: 1440,
-			postingPoll: false
+			postingPoll: false,
+			collections: [],
+			collectionsSelected: [],
+			collectionsLoaded: false,
+			collectionsPage: 1,
+			collectionsCanLoadMore: false,
 		}
 	},
 
@@ -1046,6 +1035,10 @@ export default {
 	},
 
 	methods: {
+		timeAgo(ts) {
+			return App.util.format.timeAgo(ts);
+		},
+
 		fetchProfile() {
 			let tags = {
 				public: 'Public',
@@ -1244,6 +1237,7 @@ export default {
 					if(this.composeText == 'Add optional caption...') {
 						this.composeText = '';
 					}
+
 					let data = {
 						media: this.media,
 						caption: this.composeText,
@@ -1256,17 +1250,28 @@ export default {
 						license: this.licenseId,
 						video: this.video
 					};
+
+					if(this.collectionsSelected.length) {
+						data.collections = this.collectionsSelected
+							.map(idx => {
+								return this.collections[idx].id;
+						});
+					}
+
 					axios.post('/api/compose/v0/publish', data)
 					.then(res => {
-						let data = res.data;
-						if(location.pathname === '/i/web/compose') {
-							location.href = '/i/web/post/' + data.split('/').at(-1);
+						if(location.pathname === '/i/web/compose' && res.data && res.data.length) {
+							location.href = '/i/web/post/' + res.data.split('/').slice(-1)[0];
 						} else {
-							location.href = data;
+							location.href = res.data;
 						}
 					}).catch(err => {
-						let msg = err.response.data.message ? err.response.data.message : 'An unexpected error occured.'
-						swal('Oops, something went wrong!', msg, 'error');
+						if(err.response) {
+							let msg = err.response.data.message ? err.response.data.message : 'An unexpected error occured.'
+							swal('Oops, something went wrong!', msg, 'error');
+						} else {
+							swal('Oops, something went wrong!', err.message, 'error');
+						}
 					});
 					return;
 				break;
@@ -1326,6 +1331,7 @@ export default {
 
 		closeModal() {
 			$('#composeModal').modal('hide');
+			this.$emit('close');
 		},
 
 		goBack() {
@@ -1768,7 +1774,127 @@ export default {
 				this.postingPoll = false;
 				swal('Oops!', 'An error occured while attempting to create this poll. Please refresh the page and try again.', 'error');
 			})
+		},
+
+		filesize(val) {
+			return filesize(val * 1024, {round: 0});
+		},
+
+		showCollectionCard() {
+			this.pageTitle = 'Add to Collection(s)';
+			this.page = 'addToCollection';
+
+			if(!this.collectionsLoaded) {
+				this.fetchCollections();
+			}
+		},
+
+		fetchCollections() {
+			axios.get(`/api/local/profile/collections/${this.profile.id}`)
+			.then(res => {
+				this.collections = res.data;
+				this.collectionsLoaded = true;
+				this.collectionsCanLoadMore = res.data.length == 9;
+				this.collectionsPage++;
+			});
+		},
+
+		toggleCollectionItem(index) {
+			if(!this.collectionsSelected.includes(index)) {
+				if(this.collectionsSelected.length == 7) {
+					swal('Oops!', 'You can only share to 5 collections.', 'info');
+					return;
+				}
+				this.collectionsSelected.push(index);
+			} else {
+				this.collectionsSelected = this.collectionsSelected.filter(c => c != index);
+			}
+		},
+
+		clearSelectedCollections() {
+			this.collectionsSelected = [];
+			this.pageTitle = 'Compose';
+			this.page = 3;
+		},
+
+		loadMoreCollections() {
+			this.collectionsCanLoadMore = false;
+
+			axios.get(`/api/local/profile/collections/${this.profile.id}`, {
+				params: {
+					page: this.collectionsPage
+				}
+			})
+			.then(res => {
+				let ids = this.collections.map(c => c.id);
+				let data = res.data.filter(res => {
+					return !ids.includes(res.id);
+				});
+
+				if(!data || !data.length) {
+					return;
+				}
+
+				this.collections.push(...data);
+				this.collectionsPage++;
+				this.collectionsCanLoadMore = true;
+			});
 		}
 	}
 }
 </script>
+
+<style lang="scss">
+	.compose-modal-component {
+		.media-drawer-filters {
+			overflow-x: scroll;
+			flex-wrap:unset;
+		}
+		.media-drawer-filters::-webkit-scrollbar {
+			width: 0px;
+			background: transparent;
+		}
+		.media-drawer-filters .nav-link {
+			min-width:100px;
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+		}
+		.media-drawer-filters .active {
+			color: #fff;
+			font-weight: bold;
+		}
+		@media (hover: none) and (pointer: coarse) {
+			.media-drawer-filters::-webkit-scrollbar {
+				display: none;
+			}
+		}
+		.no-focus {
+			border-color: none;
+			outline: 0;
+			box-shadow: none;
+		}
+		a.list-group-item {
+			text-decoration: none;
+		}
+		a.list-group-item:hover {
+			text-decoration: none;
+			background-color: #f8f9fa;
+		}
+		.compose-action:hover {
+			cursor: pointer;
+			background-color: #f8f9fa;
+		}
+		.collections-list-group {
+			max-height: 500px;
+			overflow-y: auto;
+
+			.list-group-item {
+				&.active {
+					color: #212529;
+					border-color: #60a5fa !important;
+					background-color: #dbeafe !important;
+				}
+			}
+		}
+	}
+</style>

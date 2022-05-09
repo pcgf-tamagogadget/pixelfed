@@ -13,14 +13,10 @@ use App\Util\Localization\Localization;
 
 class SpaController extends Controller
 {
-	public function __construct()
-	{
-		$this->middleware('auth');
-	}
-
-    public function index()
+    public function index(Request $req)
     {
     	abort_unless(config('exp.spa'), 404);
+    	if(!$req->user()) { return redirect('/login'); }
     	return view('layouts.spa');
     }
 
@@ -31,10 +27,6 @@ class SpaController extends Controller
 			return view('layouts.spa');
 		}
 
-		if(SnowflakeService::byDate(now()->subDays(30)) > $id) {
-			abort(404);
-		}
-
 		$post = StatusService::get($id);
 
 		if(
@@ -43,10 +35,11 @@ class SpaController extends Controller
 			isset($post['local']) &&
 			$post['local'] === true
 		) {
+			sleep(5);
 			return redirect($post['url']);
 		}
 
-		abort(404);
+    	return redirect('/login');
 	}
 
 	public function webProfile(Request $request, $id)
@@ -62,15 +55,19 @@ class SpaController extends Controller
 
 		$account = AccountService::get($id);
 
-		if($account && isset($account['url'])) {
+		sleep(5);
+
+		if($account && isset($account['url']) && $account['local']) {
 			return redirect($account['url']);
 		}
 
-		return redirect('404');
+		return redirect('/login');
 	}
 
 	public function updateLanguage(Request $request)
 	{
+		abort_unless(config('exp.spa'), 404);
+		abort_unless($request->user(), 404);
 		$this->validate($request, [
 			'v' => 'required|in:0.1,0.2',
 			'l' => 'required|alpha_dash|max:5'
@@ -90,6 +87,7 @@ class SpaController extends Controller
 
 	public function getPrivacy()
 	{
+		abort_unless($req->user(), 404);
 		$body = $this->markdownToHtml('views/page/privacy.md');
 		return [
 			'body' => $body
@@ -98,6 +96,7 @@ class SpaController extends Controller
 
 	public function getTerms()
 	{
+		abort_unless($req->user(), 404);
 		$body = $this->markdownToHtml('views/page/terms.md');
 		return [
 			'body' => $body
@@ -119,10 +118,20 @@ class SpaController extends Controller
 
 	public function usernameRedirect(Request $request, $username)
 	{
+		abort_unless($request->user(), 404);
 		$id = AccountService::usernameToId($username);
 		if(!$id) {
 			return redirect('/i/web/404');
 		}
 		return redirect('/i/web/profile/' . $id);
+	}
+
+	public function hashtagRedirect(Request $request, $tag)
+	{
+		if(!$request->user()) {
+			return redirect('/discover/tags/' . $tag);
+		}
+
+		return view('layouts.spa');
 	}
 }

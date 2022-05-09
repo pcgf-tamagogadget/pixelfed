@@ -61,6 +61,7 @@ return [
             'secret'   => env('AWS_SECRET_ACCESS_KEY'),
             'region'   => env('AWS_DEFAULT_REGION'),
             'bucket'   => env('AWS_BUCKET'),
+            'visibility' => 'public',
             'url'      => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
@@ -78,7 +79,6 @@ return [
                 'CacheControl' => 'max-age=31536000'
             ],
             'root' => env('DO_SPACES_ROOT','/'),
-            'url' => str_replace(env('DO_SPACES_REGION'),env('DO_SPACES_BUCKET').'.'.env('DO_SPACES_REGION'),str_replace("digitaloceanspaces","cdn.digitaloceanspaces",env('DO_SPACES_ENDPOINT'))),
         ],
 
         'backup' => [

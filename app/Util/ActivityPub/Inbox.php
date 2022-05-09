@@ -36,6 +36,7 @@ use App\Util\ActivityPub\Validator\UndoFollow as UndoFollowValidator;
 
 use App\Services\PollService;
 use App\Services\FollowerService;
+use App\Models\Conversation;
 
 class Inbox
 {
@@ -114,6 +115,10 @@ class Inbox
 				$this->handleStoryReplyActivity();
 				break;
 
+			// case 'Update':
+			// 	(new UpdateActivity($this->payload, $this->profile))->handle();
+			// 	break;
+
 			default:
 				// TODO: decide how to handle invalid verbs.
 				break;
@@ -176,6 +181,9 @@ class Inbox
 		$activity = $this->payload['object'];
 		$actor = $this->actorFirstOrCreate($this->payload['actor']);
 		if(!$actor || $actor->domain == null) {
+			return;
+		}
+		if(!isset($activity['to'])) {
 			return;
 		}
 		$to = $activity['to'];
@@ -255,10 +263,16 @@ class Inbox
 		}
 
 		$url = isset($activity['url']) ? $activity['url'] : $activity['id'];
+
 		if(Status::whereUrl($url)->exists()) {
 			return;
 		}
-		Helpers::statusFetch($url);
+
+		Helpers::storeStatus(
+			$url,
+			$actor,
+			$activity
+		);
 		return;
 	}
 
@@ -354,6 +368,19 @@ class Inbox
 		$dm->is_hidden = $hidden;
 		$dm->type = 'text';
 		$dm->save();
+
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $profile->id,
+				'from_id' => $actor->id
+			],
+			[
+				'type' => 'text',
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => $hidden
+			]
+		);
 
 		if(count($activity['attachment'])) {
 			$photos = 0;
@@ -587,6 +614,9 @@ class Inbox
 			DeleteRemoteProfilePipeline::dispatchNow($profile);
 			return;
 		} else {
+			if(!isset($obj['id'], $this->payload['object'], $this->payload['object']['id'])) {
+				return;
+			}
 			$type = $this->payload['object']['type'];
 			$typeCheck = in_array($type, ['Person', 'Tombstone', 'Story']);
 			if(!Helpers::validateUrl($actor) || !Helpers::validateUrl($obj['id']) || !$typeCheck) {
@@ -607,7 +637,10 @@ class Inbox
 					break;
 
 				case 'Tombstone':
-						$profile = Helpers::profileFetch($actor);
+						$profile = Profile::whereRemoteUrl($actor)->first();
+						if(!$profile || $profile->private_key != null) {
+							return;
+						}
 						$status = Status::whereProfileId($profile->id)
 							->whereUri($id)
 							->orWhere('url', $id)
@@ -683,16 +716,23 @@ class Inbox
 		$profile = self::actorFirstOrCreate($actor);
 		$obj = $this->payload['object'];
 
+		// TODO: Some implementations do not inline the object, skip for now
+		if(!$obj || !is_array($obj) || !isset($obj['type'])) {
+			return;
+		}
+
 		switch ($obj['type']) {
 			case 'Accept':
 				break;
 
 			case 'Announce':
-				$obj = $obj['object'];
-				if(!Helpers::validateLocalUrl($obj)) {
+				if(is_array($obj) && isset($obj['object'])) {
+					$obj = $obj['object'];
+				}
+				if(!is_string($obj) || !Helpers::validateLocalUrl($obj)) {
 					return;
 				}
-				$status = Helpers::statusFetch($obj);
+				$status = Status::whereUri($obj)->exists();
 				if(!$status) {
 					return;
 				}
@@ -885,6 +925,19 @@ class Inbox
 		]);
 		$dm->save();
 
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $story->profile_id,
+				'from_id' => $actorProfile->id
+			],
+			[
+				'type' => 'story:react',
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => false
+			]
+		);
+
 		$n = new Notification;
 		$n->profile_id = $dm->to_id;
 		$n->actor_id = $dm->from_id;
@@ -980,6 +1033,19 @@ class Inbox
 			'caption' => $text
 		]);
 		$dm->save();
+
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $story->profile_id,
+				'from_id' => $actorProfile->id
+			],
+			[
+				'type' => 'story:comment',
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => false
+			]
+		);
 
 		$n = new Notification;
 		$n->profile_id = $dm->to_id;

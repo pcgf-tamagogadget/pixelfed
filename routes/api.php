@@ -21,6 +21,7 @@ Route::group(['prefix' => 'api'], function() use($middleware) {
 
 	Route::group(['prefix' => 'v1'], function() use($middleware) {
 		Route::post('apps', 'Api\ApiV1Controller@apps');
+		Route::get('apps/verify_credentials', 'Api\ApiV1Controller@getApp')->middleware($middleware);
 		Route::get('instance', 'Api\ApiV1Controller@instance');
 		Route::get('bookmarks', 'Api\ApiV1Controller@bookmarks')->middleware($middleware);
 
@@ -41,7 +42,7 @@ Route::group(['prefix' => 'api'], function() use($middleware) {
 		Route::post('accounts/{id}/unmute', 'Api\ApiV1Controller@accountUnmuteById')->middleware($middleware);
 		Route::get('accounts/{id}/lists', 'Api\ApiV1Controller@accountListsById')->middleware($middleware);
 		Route::get('lists/{id}/accounts', 'Api\ApiV1Controller@accountListsById')->middleware($middleware);
-		Route::get('accounts/{id}', 'Api\ApiV1Controller@accountById');
+		Route::get('accounts/{id}', 'Api\ApiV1Controller@accountById')->middleware($middleware);
 
 		Route::post('avatar/update', 'ApiController@avatarUpdate')->middleware($middleware);
 		Route::get('blocks', 'Api\ApiV1Controller@accountBlocks')->middleware($middleware);
@@ -58,6 +59,7 @@ Route::group(['prefix' => 'api'], function() use($middleware) {
 		Route::post('follow_requests/{id}/reject', 'Api\ApiV1Controller@accountFollowRequestReject')->middleware($middleware);
 		Route::get('lists', 'Api\ApiV1Controller@accountLists')->middleware($middleware);
 		Route::post('media', 'Api\ApiV1Controller@mediaUpload')->middleware($middleware);
+		Route::get('media/{id}', 'Api\ApiV1Controller@mediaGet')->middleware($middleware);
 		Route::put('media/{id}', 'Api\ApiV1Controller@mediaUpdate')->middleware($middleware);
 		Route::get('mutes', 'Api\ApiV1Controller@accountMutes')->middleware($middleware);
 		Route::get('notifications', 'Api\ApiV1Controller@accountNotifications')->middleware($middleware);
@@ -81,10 +83,17 @@ Route::group(['prefix' => 'api'], function() use($middleware) {
 		Route::get('timelines/public', 'Api\ApiV1Controller@timelinePublic')->middleware($middleware);
 		Route::get('timelines/tag/{hashtag}', 'Api\ApiV1Controller@timelineHashtag');
 		Route::get('discover/posts', 'Api\ApiV1Controller@discoverPosts')->middleware($middleware);
+
+		Route::get('preferences', 'Api\ApiV1Controller@getPreferences')->middleware($middleware);
+		Route::get('trends', 'Api\ApiV1Controller@getTrends')->middleware($middleware);
+		Route::get('announcements', 'Api\ApiV1Controller@getAnnouncements')->middleware($middleware);
+		Route::get('markers', 'Api\ApiV1Controller@getMarkers')->middleware($middleware);
+		Route::post('markers', 'Api\ApiV1Controller@setMarkers')->middleware($middleware);
 	});
 
 	Route::group(['prefix' => 'v2'], function() use($middleware) {
 		Route::get('search', 'Api\ApiV1Controller@searchV2')->middleware($middleware);
+		Route::post('media', 'Api\ApiV1Controller@mediaUploadV2')->middleware($middleware);
 	});
 
 });

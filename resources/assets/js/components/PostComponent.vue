@@ -125,7 +125,7 @@
 										<div v-else>
 											<p :class="[status.content.length > 620 ? 'mb-1 read-more' : 'mb-1']" style="overflow: hidden;">
 												<a class="font-weight-bold pr-1 text-dark text-decoration-none" :href="statusProfileUrl">{{statusUsername}}</a>
-												<span class="comment-text" :id="status.id + '-status-readmore'" v-html="status.content"></span>
+												<span class="comment-text" :id="status.id + '-status-readmore'" v-html="content"></span>
 											</p>
 										</div>
 										<hr>
@@ -277,178 +277,6 @@
 									</div>
 								</div>
 							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div v-if="layout == 'moment'" class="momentui">
-			<div class="bg-dark mt-md-n4">
-				<div class="container" style="max-width: 700px;">
-							<div class="postPresenterContainer d-none d-flex justify-content-center align-items-center bg-dark">
-								<div v-if="status.pf_type === 'photo'" class="w-100">
-									<photo-presenter :status="status" v-on:lightbox="lightbox" v-on:togglecw="status.sensitive = false"></photo-presenter>
-								</div>
-
-								<div v-else-if="status.pf_type === 'video'" class="w-100">
-									<video-presenter :status="status" v-on:togglecw="status.sensitive = false"></video-presenter>
-								</div>
-
-								<div v-else-if="status.pf_type === 'photo:album'" class="w-100">
-									<photo-album-presenter :status="status" v-on:lightbox="lightbox" v-on:togglecw="status.sensitive = false"></photo-album-presenter>
-								</div>
-
-								<div v-else-if="status.pf_type === 'video:album'" class="w-100">
-									<video-album-presenter :status="status" v-on:togglecw="status.sensitive = false"></video-album-presenter>
-								</div>
-
-								<div v-else-if="status.pf_type === 'photo:video:album'" class="w-100">
-									<mixed-album-presenter :status="status" v-on:lightbox="lightbox" v-on:togglecw="status.sensitive = false"></mixed-album-presenter>
-								</div>
-
-								<div v-else class="w-100">
-									<p class="text-center p-0 font-weight-bold text-white">Error: Problem rendering preview.</p>
-								</div>
-							</div>
-				</div>
-			</div>
-			<div class="bg-white">
-				<div class="container">
-					<div class="row pb-5">
-						<div class="col-12 col-md-8 py-4">
-							<div class="reactions d-flex align-items-center">
-								<div class="text-center mr-5">
-									<div v-bind:class="[reactions.liked ? 'fas fa-heart text-danger m-0 cursor-pointer' : 'far fa-heart m-0 like-btn cursor-pointer']" title="Like" v-on:click="likeStatus" style="font-size:1.575rem">
-									</div>
-									<div class="like-count font-weight-bold mt-2 rounded border" style="cursor:pointer;" v-on:click="likesModal">
-
-										{{ownerOrAdmin == true ? (status.liked_by.total_count + 1) : 0}}
-									</div>
-								</div>
-								<div class="text-center">
-									<div v-if="status.visibility == 'public'" v-bind:class="[reactions.shared ? 'h3 far fa-share-square m-0 text-primary cursor-pointer' : 'h3 far fa-share-square m-0 share-btn cursor-pointer']" title="Share" v-on:click="shareStatus">
-									</div>
-									<div class="share-count font-weight-bold mt-2 rounded border" v-if="status.visibility == 'public'" style="cursor:pointer;" v-on:click="sharesModal">{{status.reblogs_count || 0}}</div>
-								</div>
-							</div>
-							<div v-if="status.length && status.content_text.includes('#') || status.content_text.includes('https://') || status.content_text.includes('@') || status.content_text.length > 45" class="media align-items-center mt-3">
-								<div class="media-body">
-									<p class="lead mr-2" v-html="status.content">
-									</p>
-									<p class="lead mb-0">
-										by <a :href="statusProfileUrl">{{statusUsername}}</a>
-										<span v-if="relationship && profile && user && !relationship.following && profile.id != user.id">
-											<span class="px-1 text-lighter">•</span>
-											<a class="font-weight-bold small" href="#">Follow</a>
-										</span>
-									</p>
-								</div>
-								<a :href="statusProfileUrl" :title="statusUsername"><img :src="statusAvatar" class="rounded-circle border mr-3" alt="avatar" width="72px" height="72px"></a>
-							</div>
-							<div v-else class="media align-items-center mt-3">
-								<div class="media-body">
-									<h2 class="font-weight-bold mr-2">
-										{{status.content_text.length ? status.content_text : 'Untitled Post'}}
-									</h2>
-									<p class="lead mb-0">
-										by <a :href="statusProfileUrl">{{statusUsername}}</a>
-										<!-- <span class="px-1 text-lighter">•</span>
-										<a class="font-weight-bold small" href="#">Follow</a> -->
-									</p>
-								</div>
-								<a :href="statusProfileUrl" :title="statusUsername"><img :src="statusAvatar" class="rounded-circle border mr-3" alt="avatar" width="72px" height="72px"></a>
-							</div>
-							<hr>
-							<div>
-								<p class="lead">
-									<span v-if="status.place" class="text-truncate">
-										<i class="fas fa-map-marker-alt text-lighter mr-3"></i> {{status.place.name}}, {{status.place.country}}
-									</span>
-									<span v-once class="float-right">
-										<i class="far fa-clock text-lighter mr-3"></i> {{timeAgo(status.created_at)}} ago
-									</span>
-								</p>
-								<!-- <div class="">
-									<p class="lead">
-										<span class="mr-3"><i class="fas fa-camera text-lighter"></i></span>
-										<span>Nikon D850</span>
-									</p>
-									<p class="lead">
-										<span class="mr-3"><i class="fas fa-ruler-horizontal text-lighter"></i></span>
-										<span>200-500mm</span>
-									</p>
-									<p class="lead">
-										<span class="mr-3"><i class="fas fa-stream text-lighter"></i></span>
-										<span>500mm <span class="px-1"></span> ƒ/7.1 <span class="px-1"></span> 1/1600s <span class="px-1"></span> ISO 800</span>
-									</p>
-								</div> -->
-								<div v-if="status.tags" class="pt-4">
-									<p class="lead">
-										<a v-for="(tag, index) in status.tags" class="btn btn-outline-dark mr-1 mb-1" :href="tag.url + '?src=mp'">{{tag.name}}</a>
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-12 col-md-4 pt-4 pl-md-3">
-							<p class="lead font-weight-bold">Comments</p>
-							<div v-if="user != false" class="moment-comments">
-								<div class="form-group">
-									<textarea class="form-control" rows="3" placeholder="Add a comment ..." v-model="replyText"></textarea>
-									<p class="d-flex justify-content-between align-items-center mt-3">
-										<span class="small text-lighter font-weight-bold">
-											{{replyText.length}}/{{config.uploader.max_caption_length}}
-										</span>
-										<span v-if="replyText.length > 2">
-											<div class="custom-control custom-switch">
-												<input type="checkbox" class="custom-control-input" @click="!!replySensitive" v-model="replySensitive" id="sensitiveReply">
-												<label class="custom-control-label small font-weight-bold text-muted" style="padding-top: 3px" for="sensitiveReply">Add Content Warning</label>
-											</div>
-										</span>
-										<button class="btn btn-sm font-weight-bold btn-outline-primary py-1"
-										v-if="replyText.length > 2" @click="postReply">Post</button>
-									</p>
-								</div>
-							</div>
-							<div class="comment mt-4" style="max-height: 500px; overflow-y: auto;">
-								<div v-for="(reply, index) in results" :key="'tl' + reply.id + '_' + index" class="media mb-3 mt-2">
-									<a :href="reply.account.url" :title="reply.account.username"><img :src="reply.account.avatar" class="rounded-circle border mr-3" alt="avatar" width="32px" height="32px"></a>
-									<div class="media-body">
-										<div class="d-flex justify-content-between">
-											<span>
-												<a class="font-weight-bold text-dark" :href="reply.account.url">{{reply.account.username}}</a>
-											</span>
-											<span class="text-lighter">
-												<span v-if="reply.favourited" class="cursor-pointer mr-2" @click="likeReply(reply)">
-													<i class="fas fa-heart text-danger"></i>
-												</span>
-												<span v-else class="cursor-pointer mr-2" @click="likeReply(reply)">
-													<i class="far fa-heart"></i>
-												</span>
-												<span class="">
-													<post-menu :status="reply" :profile="user" :size="'sm'" :modal="'true'" class="d-inline-block px-2" v-on:deletePost="deleteComment(reply.id, index)"></post-menu>
-												</span>
-											</span>
-										</div>
-										<div v-if="reply.sensitive == true">
-											<span class="py-3">
-												<span class="text-break">
-													<span class="font-italic text-muted">This comment may contain sensitive material</span>
-													<span class="badge badge-primary cursor-pointer ml-2 py-1" @click="reply.sensitive = false;">Show</span>
-												</span>
-											</span>
-										</div>
-										<div v-else class="read-more" style="overflow-y: hidden;">
-											<p v-html="reply.content" class="mb-0">loading ...</p>
-										</div>
-										<p>
-											<span class="small">
-												<a class="text-lighter text-decoration-none" :href="reply.url">{{timeAgo(reply.created_at)}}</a>
-											</span>
-										</p>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -833,19 +661,6 @@
 	}
 
 </style>
-<style type="text/css" scoped>
-	.momentui .bg-dark {
-		background: #000 !important;
-	}
-	.momentui .carousel.slide,
-	.momentui .carousel-item {
-		background: #000 !important;
-	}
-	.reply-btn[disabled] {
-		opacity: .3;
-		color: #3897f0;
-	}
-</style>
 
 <script>
 import VueTribute from 'vue-tribute';
@@ -953,7 +768,8 @@ export default {
 									})
 								}
 							]
-						}
+						},
+						content: undefined
 					}
 		},
 		watch: {
@@ -1027,6 +843,11 @@ export default {
 								}
 								self.status = response.data.status;
 								self.media = self.status.media_attachments;
+								self.content = response.data.status.content;
+								self.status.emojis.forEach(function(emoji) {
+									let img = `<img draggable="false" class="emojione custom-emoji" alt="${emoji.shortcode}" title="${emoji.shortcode}" src="${emoji.url}" data-original="${emoji.url}" data-static="${emoji.static_url}" width="18" height="18" onerror="this.onerror=null;this.src='/storage/emoji/missing.png';" />`;
+									self.content = self.content.replace(`:${emoji.shortcode}:`, img);
+								});
 								self.likesPage = 2;
 								self.sharesPage = 2;
 								self.showCaption = !response.data.status.sensitive;
@@ -1036,11 +857,6 @@ export default {
 								}
 								this.loaded = true;
 
-								if(this.profileRecent !== false) {
-									setTimeout(function() {
-										self.fetchProfilePosts();
-									}, 3000);
-								}
 								setTimeout(function() {
 									self.fetchState();
 									document.querySelectorAll('.status-comment .postCommentsContainer .comment-body a').forEach(function(i, e) {
@@ -1378,9 +1194,9 @@ export default {
 					axios.get(url)
 						.then(response => {
 								let self = this;
-								this.results = this.layout == 'metro' ?
-									_.reverse(response.data.data) :
-									response.data.data;
+								this.results = response.data.data.filter(p => {
+									return p.pf_type == 'text';
+								});
 								this.pagination = response.data.meta.pagination;
 								if(this.results.length > 0) {
 									$('.load-more-link').removeClass('d-none');

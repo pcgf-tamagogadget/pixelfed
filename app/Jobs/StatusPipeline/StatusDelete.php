@@ -61,16 +61,12 @@ class StatusDelete implements ShouldQueue
 		$status = $this->status;
 		$profile = $this->status->profile;
 
-		StatusService::del($status->id);
-		$count = $profile->statuses()
-		->getQuery()
-		->whereIn('type', ['photo', 'photo:album', 'video', 'video:album', 'photo:video:album'])
-		->whereNull('in_reply_to_id')
-		->whereNull('reblog_of_id')
-		->count();
+		StatusService::del($status->id, true);
 
-		$profile->status_count = ($count - 1);
-		$profile->save();
+		if(in_array($status->type, ['photo', 'photo:album', 'video', 'video:album', 'photo:video:album'])) {
+			$profile->status_count = $profile->status_count - 1;
+			$profile->save();
+		}
 
 		if(config_cache('federation.activitypub.enabled') == true) {
 			$this->fanoutDelete($status);
@@ -148,7 +144,12 @@ class StatusDelete implements ShouldQueue
 
 		$requests = function($audience) use ($client, $activity, $profile, $payload) {
 			foreach($audience as $url) {
-				$headers = HttpSignature::sign($profile, $url, $activity);
+				$version = config('pixelfed.version');
+				$appUrl = config('app.url');
+				$headers = HttpSignature::sign($profile, $url, $activity, [
+					'Content-Type'	=> 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+					'User-Agent'	=> "(Pixelfed/{$version}; +{$appUrl})",
+				]);
 				yield function() use ($client, $url, $headers, $payload) {
 					return $client->postAsync($url, [
 						'curl' => [
