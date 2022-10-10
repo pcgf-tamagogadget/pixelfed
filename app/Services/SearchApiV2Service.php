@@ -19,9 +19,11 @@ use App\Services\StatusService;
 class SearchApiV2Service
 {
 	private $query;
+	static $mastodonMode = false;
 
-	public static function query($query)
+	public static function query($query, $mastodonMode = false)
 	{
+		self::$mastodonMode = $mastodonMode;
 		return (new self)->run($query);
 	}
 
@@ -31,9 +33,8 @@ class SearchApiV2Service
 		$q = urldecode($query->input('q'));
 
 		if($query->has('resolve') && 
-			$query->resolve == true && 
 			( Str::startsWith($q, 'https://') ||
-			  Str::substrCount($q, '@') == 2)
+			  Str::substrCount($q, '@') >= 1)
 		) {
 			return $this->resolveQuery();
 		}
@@ -79,12 +80,22 @@ class SearchApiV2Service
 		];
 	}
 
-	protected function accounts()
+	protected function accounts($initalQuery = false)
 	{
+		$mastodonMode = self::$mastodonMode;
 		$user = request()->user();
 		$limit = $this->query->input('limit') ?? 20;
 		$offset = $this->query->input('offset') ?? 0;
-		$query = '%' . $this->query->input('q') . '%';
+		$rawQuery = $initalQuery ? $initalQuery : $this->query->input('q');
+		$query = '%' . $rawQuery . '%';
+		if(Str::substrCount($rawQuery, '@') >= 1 && Str::contains($rawQuery, config('pixelfed.domain.app'))) {
+			$deliminatorCount = Str::substrCount($rawQuery, '@');
+			$query = explode('@', $rawQuery)[$deliminatorCount == 1 ? 0 : 1];
+		}
+		if(Str::substrCount($rawQuery, '@') == 1 && substr($rawQuery, 0, 1) == '@') {
+			$query = substr($rawQuery, 1) . '%';
+		}
+		$banned = InstanceService::getBannedDomains();
 		$results = Profile::select('profiles.*', 'followers.profile_id', 'followers.created_at')
 			->whereNull('status')
 			->leftJoin('followers', function($join) use($user) {
@@ -92,20 +103,31 @@ class SearchApiV2Service
 					->where('followers.profile_id', $user->profile_id);
 			})
 			->where('username', 'like', $query)
+			->orderBy('domain')
 			->orderByDesc('profiles.followers_count')
 			->orderByDesc('followers.created_at')
 			->offset($offset)
 			->limit($limit)
 			->get()
-			->map(function($res) {
-				return AccountService::get($res['id']);
-			});
+			->filter(function($profile) use ($banned) {
+				return in_array($profile->domain, $banned) == false;
+			})
+			->map(function($res) use($mastodonMode) {
+				return $mastodonMode ?
+				AccountService::getMastodon($res['id']) :
+				AccountService::get($res['id']);
+			})
+			->filter(function($account) {
+				return $account && isset($account['id']);
+			})
+			->values();
 
 		return $results;
 	}
 
 	protected function hashtags()
 	{
+		$mastodonMode = self::$mastodonMode;
 		$limit = $this->query->input('limit') ?? 20;
 		$offset = $this->query->input('offset') ?? 0;
 		$query = '%' . $this->query->input('q') . '%';
@@ -114,13 +136,18 @@ class SearchApiV2Service
 			->offset($offset)
 			->limit($limit)
 			->get()
-			->map(function($tag) {
-				return [
+			->map(function($tag) use($mastodonMode) {
+				$res = [
 					'name' => $tag->name,
-					'url'  => $tag->url(),
-					'count' => HashtagService::count($tag->id),
-					'history' => []
+					'url'  => $tag->url()
 				];
+
+				if(!$mastodonMode) {
+					$res['history'] = [];
+					$res['count'] = HashtagService::count($tag->id);
+				}
+
+				return $res;
 			});
 	}
 
@@ -132,6 +159,7 @@ class SearchApiV2Service
 
 	protected function statusesById()
 	{
+		$mastodonMode = self::$mastodonMode;
 		$accountId = $this->query->input('account_id');
 		$limit = $this->query->input('limit', 20);
 		$query = '%' . $this->query->input('q') . '%';
@@ -139,15 +167,30 @@ class SearchApiV2Service
 			->whereProfileId($accountId)
 			->limit($limit)
 			->get()
-			->map(function($status) {
-				return StatusService::get($status->id);
+			->map(function($status) use($mastodonMode) {
+				return $mastodonMode ?
+					StatusService::getMastodon($status->id) :
+					StatusService::get($status->id);
+			})
+			->filter(function($status) {
+				return $status && isset($status['account']);
 			});
 		return $results;
 	}
 
 	protected function resolveQuery()
 	{
+		$default =  [
+			'accounts' => [],
+			'hashtags' => [],
+			'statuses' => [],
+		];
+		$mastodonMode = self::$mastodonMode;
 		$query = urldecode($this->query->input('q'));
+		if(substr($query, 0, 1) === '@' && !Str::contains($query, '.')) {
+			$default['accounts'] = $this->accounts(substr($query, 1));
+			return $default;
+		}
 		if(Helpers::validateLocalUrl($query)) {
 			if(Str::contains($query, '/p/')) {
 				return $this->resolveLocalStatus();
@@ -155,18 +198,27 @@ class SearchApiV2Service
 				return $this->resolveLocalProfile();
 			}
 		} else {
-			$default =  [
-				'accounts' => [],
-				'hashtags' => [],
-				'statuses' => [],
-			];
 			if(!Helpers::validateUrl($query) && strpos($query, '@') == -1) {
 				return $default;
 			}
 
+			if(!Str::startsWith($query, 'http') && Str::substrCount($query, '@') == 1 && strpos($query, '@') !== 0) {
+				try {
+					$res = WebfingerService::lookup('@' . $query, $mastodonMode);
+				} catch (\Exception $e) {
+					return $default;
+				}
+				if($res && isset($res['id'])) {
+					$default['accounts'][] = $res;
+					return $default;
+				} else {
+					return $default;
+				}
+			}
+
 			if(Str::substrCount($query, '@') == 2) {
 				try {
-					$res = WebfingerService::lookup($query);
+					$res = WebfingerService::lookup($query, $mastodonMode);
 				} catch (\Exception $e) {
 					return $default;
 				}
@@ -180,6 +232,7 @@ class SearchApiV2Service
 
 			try {
 				$res = ActivityPubFetchService::get($query);
+				$banned = InstanceService::getBannedDomains();
 				if($res) {
 					$json = json_decode($res, true);
 
@@ -194,10 +247,16 @@ class SearchApiV2Service
 					switch($json['type']) {
 						case 'Note':
 							$obj = Helpers::statusFetch($query);
-							if(!$obj) {
+							if(!$obj || !isset($obj['id'])) {
 								return $default;
 							}
-							$default['statuses'][] = StatusService::get($obj['id']);
+							$note = $mastodonMode ?
+								StatusService::getMastodon($obj['id']) :
+								StatusService::get($obj['id']);
+							if(!$note) {
+								return $default;
+							}
+							$default['statuses'][] = $note;
 							return $default;
 						break;
 
@@ -206,7 +265,12 @@ class SearchApiV2Service
 							if(!$obj) {
 								return $default;
 							}
-							$default['accounts'][] = AccountService::get($obj['id']);
+							if(in_array($obj['domain'], $banned)) {
+								return $default;
+							}
+							$default['accounts'][] = $mastodonMode ?
+								AccountService::getMastodon($obj['id']) :
+								AccountService::get($obj['id']);
 							return $default;
 						break;
 
@@ -235,10 +299,7 @@ class SearchApiV2Service
 	{
 		$query = urldecode($this->query->input('q'));
 		$query = last(explode('/', $query));
-		$status = Status::whereNull('uri')
-			->whereScope('public')
-			->find($query);
-
+		$status = StatusService::getMastodon($query);
 		if(!$status) {
 			return [
 				'accounts' => [],
@@ -247,14 +308,13 @@ class SearchApiV2Service
 			];
 		}
 
-		$fractal = new Fractal\Manager();
-		$fractal->setSerializer(new ArraySerializer());
-		$resource = new Fractal\Resource\Item($status, new StatusTransformer());
-		return [
+		$res = [
 			'accounts' => [],
 			'hashtags' => [],
-			'statuses' => $fractal->createData($resource)->toArray()
+			'statuses' => [$status]
 		];
+
+		return $res;
 	}
 
 	protected function resolveLocalProfile()

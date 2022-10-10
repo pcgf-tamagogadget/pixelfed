@@ -6,6 +6,7 @@ use App\{
 	AccountInterstitial,
 	Contact,
 	Hashtag,
+	Instance,
 	Newsroom,
 	OauthClient,
 	Profile,
@@ -14,7 +15,7 @@ use App\{
 	Story,
 	User
 };
-use DB, Cache;
+use DB, Cache, Storage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -22,23 +23,29 @@ use App\Http\Controllers\Admin\{
 	AdminDiscoverController,
 	AdminInstanceController,
 	AdminReportController,
+	// AdminGroupsController,
 	AdminMediaController,
 	AdminSettingsController,
+	// AdminStorageController,
 	AdminSupportController,
 	AdminUserController
 };
 use Illuminate\Validation\Rule;
 use App\Services\AdminStatsService;
+use App\Services\AccountService;
 use App\Services\StatusService;
 use App\Services\StoryService;
+use App\Models\CustomEmoji;
 
 class AdminController extends Controller
 {
 	use AdminReportController, 
 	AdminDiscoverController,
+	// AdminGroupsController,
 	AdminMediaController, 
 	AdminSettingsController, 
 	AdminInstanceController,
+	// AdminStorageController,
 	AdminUserController;
 
 	public function __construct()
@@ -50,8 +57,70 @@ class AdminController extends Controller
 
 	public function home()
 	{
+		return view('admin.home');
+	}
+
+	public function stats()
+	{
 		$data = AdminStatsService::get();
-		return view('admin.home', compact('data'));
+		return view('admin.stats', compact('data'));
+	}
+
+	public function getStats()
+	{
+		return AdminStatsService::summary();
+	}
+
+	public function getAccounts()
+	{
+		$users = User::orderByDesc('id')->cursorPaginate(10);
+
+		$res = [
+			"next_page_url" => $users->nextPageUrl(),
+			"data" => $users->map(function($user) {
+				$account = AccountService::get($user->profile_id, true);
+				if(!$account) {
+					return [
+						"id" => $user->profile_id,
+						"username" => $user->username,
+						"status" => "deleted",
+						"avatar" => "/storage/avatars/default.jpg",
+						"created_at" => $user->created_at
+					];
+				}
+				$account['user_id'] = $user->id;
+				return $account;
+			})
+			->filter(function($user) {
+				return $user;
+			})
+		];
+		return $res;
+	}
+
+	public function getPosts()
+	{
+		$posts = DB::table('statuses')
+			->orderByDesc('id')
+			->cursorPaginate(10);
+
+		$res = [
+			"next_page_url" => $posts->nextPageUrl(),
+			"data" => $posts->map(function($post) {
+				$status = StatusService::get($post->id, false);
+				if(!$status) {
+					return ["id" => $post->id, "created_at" => $post->created_at];
+				}
+				return $status;
+			})
+		];
+
+		return $res;
+	}
+
+	public function getInstances()
+	{
+		return Instance::orderByDesc('id')->cursorPaginate(10);
 	}
 
 	public function statuses(Request $request)
@@ -115,7 +184,7 @@ class AdminController extends Controller
 	public function appsHome(Request $request)
 	{
 		$filter = $request->input('filter');
-		if(in_array($filter, ['revoked'])) {
+		if($filter == 'revoked') {
 			$apps = OauthClient::with('user')
 			->whereNotNull('user_id')
 			->whereRevoked(true)
@@ -342,5 +411,142 @@ class AdminController extends Controller
 		$stories = Story::with('profile')->latest()->paginate(10);
 		$stats = StoryService::adminStats();
 		return view('admin.stories.home', compact('stories', 'stats'));
+	}
+
+	public function customEmojiHome(Request $request)
+	{
+		if(!config('federation.custom_emoji.enabled')) {
+			return view('admin.custom-emoji.not-enabled');
+		}
+		$this->validate($request, [
+			'sort' => 'sometimes|in:all,local,remote,duplicates,disabled,search'
+		]);
+
+		if($request->has('cc')) {
+			Cache::forget('pf:admin:custom_emoji:stats');
+			Cache::forget('pf:custom_emoji');
+			return redirect(route('admin.custom-emoji'));
+		}
+
+		$sort = $request->input('sort') ?? 'all';
+
+		if($sort == 'search' && empty($request->input('q'))) {
+			return redirect(route('admin.custom-emoji'));
+		}
+
+		$pg = config('database.default') == 'pgsql';
+
+		$emojis = CustomEmoji::when($sort, function($query, $sort) use($request, $pg) {
+			if($sort == 'all') {
+				if($pg) {
+					return $query->latest();
+				} else {
+					return $query->groupBy('shortcode')->latest();
+				}
+			} else if($sort == 'local') {
+				return $query->latest()->where('domain', '=', config('pixelfed.domain.app'));
+			} else if($sort == 'remote') {
+				return $query->latest()->where('domain', '!=', config('pixelfed.domain.app'));
+			} else if($sort == 'duplicates') {
+				return $query->latest()->groupBy('shortcode')->havingRaw('count(*) > 1');
+			} else if($sort == 'disabled') {
+				return $query->latest()->whereDisabled(true);
+			} else if($sort == 'search') {
+				$q = $query
+					->latest()
+					->where('shortcode', 'like', '%' . $request->input('q') . '%')
+					->orWhere('domain', 'like', '%' . $request->input('q') . '%');
+				if(!$request->has('dups')) {
+					$q = $q->groupBy('shortcode');
+				}
+				return $q;
+			}
+		})
+		->simplePaginate(10)
+		->withQueryString();
+
+		$stats = Cache::remember('pf:admin:custom_emoji:stats', 43200, function() use($pg) {
+			$res = [
+				'total' => CustomEmoji::count(),
+				'active' => CustomEmoji::whereDisabled(false)->count(),
+				'remote' => CustomEmoji::where('domain', '!=', config('pixelfed.domain.app'))->count(),
+			];
+
+			if($pg) {
+				$res['duplicate'] = CustomEmoji::select('shortcode')->groupBy('shortcode')->havingRaw('count(*) > 1')->count();
+			} else {
+				$res['duplicate'] = CustomEmoji::groupBy('shortcode')->havingRaw('count(*) > 1')->count();
+			}
+
+			return $res;
+		});
+
+		return view('admin.custom-emoji.home', compact('emojis', 'sort', 'stats'));
+	}
+
+	public function customEmojiToggleActive(Request $request, $id)
+	{
+		abort_unless(config('federation.custom_emoji.enabled'), 404);
+		$emoji = CustomEmoji::findOrFail($id);
+		$emoji->disabled = !$emoji->disabled;
+		$emoji->save();
+		$key = CustomEmoji::CACHE_KEY . str_replace(':', '', $emoji->shortcode);
+		Cache::forget($key);
+		return redirect()->back();
+	}
+
+	public function customEmojiAdd(Request $request)
+	{
+		abort_unless(config('federation.custom_emoji.enabled'), 404);
+		return view('admin.custom-emoji.add');
+	}
+
+	public function customEmojiStore(Request $request)
+	{
+		abort_unless(config('federation.custom_emoji.enabled'), 404);
+		$this->validate($request, [
+			'shortcode' => [
+				'required',
+				'min:3',
+				'max:80',
+				'starts_with::',
+				'ends_with::',
+				Rule::unique('custom_emoji')->where(function ($query) use($request) {
+					return $query->whereDomain(config('pixelfed.domain.app'))
+					->whereShortcode($request->input('shortcode'));
+				})
+			],
+			'emoji' => 'required|file|mimetypes:jpg,png|max:' . (config('federation.custom_emoji.max_size') / 1000)
+		]);
+
+		$emoji = new CustomEmoji;
+		$emoji->shortcode = $request->input('shortcode');
+		$emoji->domain = config('pixelfed.domain.app');
+		$emoji->save();
+
+		$fileName = $emoji->id . '.' . $request->emoji->extension();
+		$request->emoji->storeAs('public/emoji', $fileName);
+		$emoji->media_path = 'emoji/' . $fileName;
+		$emoji->save();
+		Cache::forget('pf:custom_emoji');
+		return redirect(route('admin.custom-emoji'));
+	}
+
+	public function customEmojiDelete(Request $request, $id)
+	{
+		abort_unless(config('federation.custom_emoji.enabled'), 404);
+		$emoji = CustomEmoji::findOrFail($id);
+		Storage::delete("public/{$emoji->media_path}");
+		Cache::forget('pf:custom_emoji');
+		$emoji->delete();
+		return redirect(route('admin.custom-emoji'));
+	}
+
+	public function customEmojiShowDuplicates(Request $request, $id)
+	{
+		abort_unless(config('federation.custom_emoji.enabled'), 404);
+		$emoji = CustomEmoji::orderBy('id')->whereDisabled(false)->whereShortcode($id)->firstOrFail();
+		$emojis = CustomEmoji::whereShortcode($id)->where('id', '!=', $emoji->id)->cursorPaginate(10);
+		return view('admin.custom-emoji.duplicates', compact('emoji', 'emojis'));
 	}
 }

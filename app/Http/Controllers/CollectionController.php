@@ -17,6 +17,10 @@ use App\Transformer\Api\{
 };
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use App\Services\AccountService;
+use App\Services\CollectionService;
+use App\Services\FollowerService;
+use App\Services\StatusService;
 
 class CollectionController extends Controller
 {
@@ -29,18 +33,25 @@ class CollectionController extends Controller
             'profile_id' => $profile->id,
             'published_at' => null
         ]);
+        $collection->visibility = 'draft';
+        $collection->save();
         return view('collection.create', compact('collection'));
     }
 
-    public function show(Request $request, int $collection)
+    public function show(Request $request, int $id)
     {
-        $collection = Collection::with('profile')->whereNotNull('published_at')->findOrFail($collection);
-        if($collection->profile->status != null) {
-            abort(404);
-        }
-        if($collection->visibility !== 'public') {
-            abort_if(!Auth::check() || Auth::user()->profile_id != $collection->profile_id, 404);
-        }
+        $user = $request->user();
+		$collection = CollectionService::getCollection($id);
+		abort_if(!$collection, 404);
+		if($collection['published_at'] == null || $collection['visibility'] != 'public') {
+			abort_if(!$user, 404);
+			if($user->profile_id != $collection['pid']) {
+				if(!$user->is_admin) {
+					abort_if($collection['visibility'] != 'private', 404);
+					abort_if(!FollowerService::follows($user->profile_id, $collection['pid']), 404);
+				}
+			}
+		}
     	return view('collection.show', compact('collection'));
     }
 
@@ -52,53 +63,55 @@ class CollectionController extends Controller
 
     public function store(Request $request, $id)
     {
-        abort_if(!Auth::check(), 403);
+        abort_if(!$request->user(), 403);
         $this->validate($request, [
-            'title'         => 'nullable',
-            'description'   => 'nullable',
-            'visibility'    => 'nullable|string|in:public,private'
+            'title'         => 'nullable|max:50',
+            'description'   => 'nullable|max:500',
+            'visibility'    => 'nullable|string|in:public,private,draft'
         ]);
 
-        $profile = Auth::user()->profile;   
-        $collection = Collection::whereProfileId($profile->id)->findOrFail($id);
-        $collection->title = e($request->input('title'));
-        $collection->description = e($request->input('description'));
-        $collection->visibility = e($request->input('visibility'));
+        $pid = $request->user()->profile_id;
+        $collection = Collection::whereProfileId($pid)->findOrFail($id);
+        $collection->title = strip_tags($request->input('title'));
+        $collection->description = strip_tags($request->input('description'));
+        $collection->visibility = $request->input('visibility');
         $collection->save();
 
-        return 200;
+        CollectionService::deleteCollection($id);
+        return CollectionService::setCollection($collection->id, $collection);
     }
 
     public function publish(Request $request, int $id)
     {
-        abort_if(!Auth::check(), 403);
+        abort_if(!$request->user(), 403);
         $this->validate($request, [
-            'title'         => 'nullable',
-            'description'   => 'nullable',
-            'visibility'    => 'required|alpha|in:public,private'
+            'title'         => 'nullable|max:50',
+            'description'   => 'nullable|max:500',
+            'visibility'    => 'required|alpha|in:public,private,draft'
         ]);
         $profile = Auth::user()->profile;   
         $collection = Collection::whereProfileId($profile->id)->findOrFail($id);
         if($collection->items()->count() == 0) {
             abort(404);
         }
-        $collection->title = e($request->input('title'));
-        $collection->description = e($request->input('description'));
-        $collection->visibility = e($request->input('visibility'));
+        $collection->title = strip_tags($request->input('title'));
+        $collection->description = strip_tags($request->input('description'));
+        $collection->visibility = $request->input('visibility');
         $collection->published_at = now();
         $collection->save();
-
-        return $collection->url();
+        return CollectionService::setCollection($collection->id, $collection);
     }
 
     public function delete(Request $request, int $id)
     {
-        abort_if(!Auth::check(), 403);
-        $user = Auth::user();
+        abort_if(!$request->user(), 403);
+        $user = $request->user();
 
         $collection = Collection::whereProfileId($user->profile_id)->findOrFail($id);
         $collection->items()->delete();
         $collection->delete();
+
+        CollectionService::deleteCollection($id);
 
         if($request->wantsJson()) {
             return 200;
@@ -109,17 +122,32 @@ class CollectionController extends Controller
 
     public function storeId(Request $request)
     {
+        abort_if(!$request->user(), 403);
+
         $this->validate($request, [
             'collection_id' => 'required|int|min:1|exists:collections,id',
-            'post_id'       => 'required|int|min:1|exists:statuses,id'
+            'post_id'       => 'required|int|min:1'
         ]);
         
-        $profileId = Auth::user()->profile_id;
+        $profileId = $request->user()->profile_id;
         $collectionId = $request->input('collection_id');
         $postId = $request->input('post_id');
 
         $collection = Collection::whereProfileId($profileId)->findOrFail($collectionId);
         $count = $collection->items()->count();
+        CollectionService::deleteCollection($collection->id);
+
+        if($count) {
+            CollectionItem::whereCollectionId($collection->id)
+                ->get()
+                ->filter(function($col) {
+                    return StatusService::get($col->object_id, false) == null;
+                })
+                ->each(function($col) use($collectionId) {
+                    CollectionService::removeItem($collectionId, $col->object_id);
+                    $col->delete();
+                });
+        }
 
         $max = config('pixelfed.max_collection_length');
         if($count >= $max) {
@@ -127,6 +155,7 @@ class CollectionController extends Controller
         }
 
         $status = Status::whereScope('public')
+            ->whereProfileId($profileId)
             ->whereIn('type', ['photo', 'photo:album', 'video'])
             ->findOrFail($postId);
 
@@ -138,83 +167,128 @@ class CollectionController extends Controller
             'order'         => $count,
         ]);
 
-        return 200;
+        CollectionService::addItem(
+        	$collection->id,
+        	$status->id,
+        	$count
+        );
+
+        $collection->updated_at = now();
+        $collection->save();
+        CollectionService::setCollection($collection->id, $collection);
+
+        return StatusService::get($status->id);
     }
 
-    public function get(Request $request, $id)
+    public function getCollection(Request $request, $id)
     {
-        $profile = Auth::check() ? Auth::user()->profile : [];
+		$user = $request->user();
+		$collection = CollectionService::getCollection($id);
 
-        $collection = Collection::whereVisibility('public')->findOrFail($id);
-        if($collection->published_at == null) {
-            if(!Auth::check() || $profile->id !== $collection->profile_id) {
-                abort(404);
-            }
+        if(!$collection) {
+            return response()->json([], 404);
         }
 
-        return [
-            'id'            => $collection->id,
-            'title'         => $collection->title,
-            'description'   => $collection->description,
-            'visibility'    => $collection->visibility
-        ];
+		if($collection['published_at'] == null || $collection['visibility'] != 'public') {
+			abort_unless($user, 404);
+			if($user->profile_id != $collection['pid']) {
+				if(!$user->is_admin) {
+					abort_if($collection['visibility'] != 'private', 404);
+					abort_if(!FollowerService::follows($user->profile_id, $collection['pid']), 404);
+				}
+			}
+		}
+
+        return $collection;
     }
 
     public function getItems(Request $request, int $id)
     {
-        $collection = Collection::findOrFail($id);
-        if($collection->visibility !== 'public') {
-            abort_if(!Auth::check() || Auth::user()->profile_id != $collection->profile_id, 404);
+    	$user = $request->user();
+    	$collection = CollectionService::getCollection($id);
+
+        if(!$collection) {
+            return response()->json([], 404);
         }
-        $posts = $collection->posts()->orderBy('order', 'asc')->get();
 
-        $fractal = new Fractal\Manager();
-        $fractal->setSerializer(new ArraySerializer());
-        $resource = new Fractal\Resource\Collection($posts, new StatusTransformer());
-        $res = $fractal->createData($resource)->toArray();
+        if($collection['published_at'] == null || $collection['visibility'] != 'public') {
+			abort_unless($user, 404);
+			if($user->profile_id != $collection['pid']) {
+				if(!$user->is_admin) {
+					abort_if($collection['visibility'] != 'private', 404);
+					abort_if(!FollowerService::follows($user->profile_id, $collection['pid']), 404);
+				}
+			}
+		}
+        $page = $request->input('page') ?? 1;
+        $start = $page == 1 ? 0 : ($page * 10 - 10);
+        $end = $start + 10;
+        $items = CollectionService::getItems($id, $start, $end);
 
-        return response()->json($res);
+        return collect($items)
+        	->map(function($id) {
+        		return StatusService::get($id);
+        	})
+        	->filter(function($item) {
+        		return $item && isset($item['account'], $item['media_attachments']);
+        	})
+        	->values();
     }
 
     public function getUserCollections(Request $request, int $id)
     {
-        $profile = Profile::whereNull('status')
-            ->whereNull('domain')
-            ->findOrFail($id);
+    	$user = $request->user();
+    	$pid = $user ? $user->profile_id : null;
+    	$follows = false;
+    	$visibility = ['public'];
 
-        if($profile->is_private) {
-            abort_if(!Auth::check(), 404);
-            abort_if(!$profile->followedBy(Auth::user()->profile) && $profile->id != Auth::user()->profile_id, 404);
+        $profile = AccountService::get($id, true);
+        if(!$profile || !isset($profile['id'])) {
+            return response()->json([], 404);
         }
 
-        return $profile
-            ->collections()
-            ->has('posts')
-            ->with('posts')
-            ->whereVisibility('public')
-            ->whereNotNull('published_at')
-            ->orderByDesc('published_at')
+        if($pid) {
+        	$follows = FollowerService::follows($pid, $profile['id']);
+        }
+
+        if($profile['locked']) {
+            abort_if(!$pid, 404);
+            if(!$user->is_admin) {
+            	abort_if($profile['id'] != $pid && $follows == false, 404);
+            }
+        }
+
+        $owner = $pid ? $pid == $profile['id'] : false;
+
+        if($follows) {
+        	$visibility = ['public', 'private'];
+        }
+
+        if($pid && $pid == $profile['id']) {
+        	$visibility = ['public', 'private', 'draft'];
+        }
+
+        return Collection::whereProfileId($profile['id'])
+        	->whereIn('visibility', $visibility)
+        	->when(!$owner, function($q, $owner) {
+        		return $q->whereNotNull('published_at');
+        	})
+            ->orderByDesc('id')
             ->paginate(9)
             ->map(function($collection) {
-                return [
-                    'id' => $collection->id,
-                    'title' => $collection->title,
-                    'description' => $collection->description,
-                    'thumb' => $collection->posts()->first()->thumb(),
-                    'url' => $collection->url(),
-                    'published_at' => $collection->published_at
-                ];
+            	return CollectionService::getCollection($collection->id);
         });
     }
 
     public function deleteId(Request $request)
     {
+        abort_if(!$request->user(), 403);
         $this->validate($request, [
             'collection_id' => 'required|int|min:1|exists:collections,id',
-            'post_id'       => 'required|int|min:1|exists:statuses,id'
+            'post_id'       => 'required|int|min:1'
         ]);
         
-        $profileId = Auth::user()->profile_id;
+        $profileId = $request->user()->profile_id;
         $collectionId = $request->input('collection_id');
         $postId = $request->input('post_id');
 
@@ -235,6 +309,18 @@ class CollectionController extends Controller
             ->firstOrFail();
 
         $item->delete();
+
+        CollectionItem::whereCollectionId($collection->id)
+            ->orderBy('created_at')
+            ->get()
+            ->each(function($item, $index) {
+                $item->order = $index;
+                $item->save();
+            });
+
+        $collection->updated_at = now();
+        $collection->save();
+        CollectionService::deleteCollection($collection->id);
 
         return 200;
     }

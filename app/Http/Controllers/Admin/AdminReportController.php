@@ -22,6 +22,8 @@ use App\{
 };
 use Illuminate\Validation\Rule;
 use App\Services\StoryService;
+use App\Services\ModLogService;
+use App\Jobs\DeletePipeline\DeleteAccountPipeline;
 
 trait AdminReportController
 {
@@ -71,7 +73,7 @@ trait AdminReportController
 
 	public function showReport(Request $request, $id)
 	{
-		$report = Report::findOrFail($id);
+		$report = Report::with('status')->findOrFail($id);
 		return view('admin.reports.show', compact('report'));
 	}
 
@@ -243,7 +245,7 @@ trait AdminReportController
 	public function updateSpam(Request $request, $id)
 	{
 		$this->validate($request, [
-			'action' => 'required|in:dismiss,approve,dismiss-all,approve-all'
+			'action' => 'required|in:dismiss,approve,dismiss-all,approve-all,delete-account,mark-spammer'
 		]);
 
 		$action = $request->input('action');
@@ -256,6 +258,41 @@ trait AdminReportController
 		$now = now();
 		Cache::forget('admin-dash:reports:spam-count:total');
 		Cache::forget('admin-dash:reports:spam-count:30d');
+
+		if($action == 'delete-account') {
+			if(config('pixelfed.account_deletion') == false) {
+				abort(404);
+			}
+
+			$user = User::findOrFail($appeal->user_id);
+			$profile = $user->profile;
+
+			if($user->is_admin == true) {
+				$mid = $request->user()->id;
+				abort_if($user->id < $mid, 403);
+			}
+
+			$ts = now()->addMonth();
+			$user->status = 'delete';
+			$profile->status = 'delete';
+			$user->delete_after = $ts;
+			$profile->delete_after = $ts;
+			$user->save();
+			$profile->save();
+
+			ModLogService::boot()
+				->objectUid($user->id)
+				->objectId($user->id)
+				->objectType('App\User::class')
+				->user($request->user())
+				->action('admin.user.delete')
+				->accessLevel('admin')
+				->save();
+
+			Cache::forget('profiles:private');
+			DeleteAccountPipeline::dispatch($user)->onQueue('high');
+			return;
+		}
 
 		if($action == 'dismiss') {
 			$appeal->is_spam = true;
@@ -299,6 +336,37 @@ trait AdminReportController
 						StatusService::del($status->id, true);
 					}
 				});
+			Cache::forget('pf:bouncer_v0:exemption_by_pid:' . $appeal->user->profile_id);
+			Cache::forget('pf:bouncer_v0:recent_by_pid:' . $appeal->user->profile_id);
+			Cache::forget('admin-dash:reports:spam-count');
+			return $res;
+		}
+
+		if($action == 'mark-spammer') {
+			AccountInterstitial::whereType('post.autospam')
+				->whereItemType('App\Status')
+				->whereNull('appeal_handled_at')
+				->whereUserId($appeal->user_id)
+				->update(['appeal_handled_at' => $now, 'is_spam' => true]);
+
+			$pro = Profile::whereUserId($appeal->user_id)->firstOrFail();
+
+			$pro->update([
+				'unlisted' => true,
+				'cw' => true,
+				'no_autolink' => true
+			]);
+
+			Status::whereProfileId($pro->id)
+				->get()
+				->each(function($report) {
+					$status->is_nsfw = $meta->is_nsfw;
+					$status->scope = 'public';
+					$status->visibility = 'public';
+					$status->save();
+					StatusService::del($status->id, true);
+				});
+
 			Cache::forget('pf:bouncer_v0:exemption_by_pid:' . $appeal->user->profile_id);
 			Cache::forget('pf:bouncer_v0:recent_by_pid:' . $appeal->user->profile_id);
 			Cache::forget('admin-dash:reports:spam-count');
@@ -491,9 +559,12 @@ trait AdminReportController
 					return !in_array($id, $ignored);
 				})
 				->map(function($id) {
-					$account = AccountService::get($id);
 					$user = User::whereProfileId($id)->first();
-					if(!$user) {
+					if(!$user || $user->email_verified_at) {
+						return [];
+					}
+					$account = AccountService::get($id, true);
+					if(!$account) {
 						return [];
 					}
 					$account['email'] = $user->email;

@@ -163,7 +163,7 @@ class SettingsController extends Controller
 		$mode = $request->input('mode');
 
 		if($mode == 'dark') {
-			$cookie = Cookie::make('dark-mode', true, 43800);
+			$cookie = Cookie::make('dark-mode', 'true', 43800);
 		} else {
 			$cookie = Cookie::forget('dark-mode');
 		}
@@ -208,7 +208,7 @@ class SettingsController extends Controller
 		$opencollective = Str::startsWith($opencollective, 'opencollective.com/') ? e($opencollective) : null;
 
 		if(empty($patreon) && empty($liberapay) && empty($opencollective)) {
-			return redirect(route('settings'))->with('error', 'An error occured. Please try again later.');;
+			return redirect(route('settings'))->with('error', 'An error occured. Please try again later.');
 		}
 
 		$res = [
@@ -251,13 +251,15 @@ class SettingsController extends Controller
 		} else {
 			Redis::zrem('pf:tl:replies', $pid);
 		}
-		return redirect(route('settings'))->with('status', 'Timeline settings successfully updated!');;
+		return redirect(route('settings'))->with('status', 'Timeline settings successfully updated!');
 	}
 
 	public function mediaSettings(Request $request)
 	{
 		$setting = UserSetting::whereUserId($request->user()->id)->firstOrFail();
-		$compose = $setting->compose_settings ? json_decode($setting->compose_settings, true) : [
+		$compose = $setting->compose_settings ? (
+			is_string($setting->compose_settings) ? json_decode($setting->compose_settings, true) : $setting->compose_settings
+			) : [
 			'default_license' => null,
 			'media_descriptions' => false
 		];
@@ -278,7 +280,7 @@ class SettingsController extends Controller
 		$uid = $request->user()->id;
 
 		$setting = UserSetting::whereUserId($uid)->firstOrFail();
-		$compose = json_decode($setting->compose_settings, true);
+		$compose = is_string($setting->compose_settings) ? json_decode($setting->compose_settings, true) : $setting->compose_settings;
 		$changed = false;
 
 		if($sync) {
@@ -301,7 +303,7 @@ class SettingsController extends Controller
 		}
 
 		if($changed) {
-			$setting->compose_settings = json_encode($compose);
+			$setting->compose_settings = $compose;
 			$setting->save();
 			Cache::forget('profile:compose:settings:' . $request->user()->id);
 		}

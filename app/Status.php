@@ -28,7 +28,7 @@ class Status extends Model
 	 */
 	protected $dates = ['deleted_at'];
 
-	protected $fillable = ['profile_id', 'visibility', 'in_reply_to_id', 'reblog_of_id', 'type'];
+	protected $guarded = [];
 
 	const STATUS_TYPES = [
 		'text',
@@ -333,7 +333,7 @@ class Status extends Model
 			'id'    => $this->permalink(),
 			'type'  => 'Create',
 			'actor' => $profile->permalink(),
-			'published' => $this->created_at->format('c'),
+			'published' => str_replace('+00:00', 'Z', $this->created_at->format(DATE_RFC3339_EXTENDED)),
 			'to' => $to,
 			'cc' => $cc,
 			'object' => [
@@ -341,7 +341,7 @@ class Status extends Model
 				'type' => 'Note',
 				'summary' => null,
 				'inReplyTo' => null,
-				'published' => $this->created_at->format('c'),
+				'published' => str_replace('+00:00', 'Z', $this->created_at->format(DATE_RFC3339_EXTENDED)),
 				'url' => $this->url(),
 				'attributedTo' => $this->profile->url(),
 				'to' => $to,

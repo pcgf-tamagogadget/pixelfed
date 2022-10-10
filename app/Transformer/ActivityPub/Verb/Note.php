@@ -4,6 +4,7 @@ namespace App\Transformer\ActivityPub\Verb;
 
 use App\Status;
 use League\Fractal;
+use App\Models\CustomEmoji;
 use Illuminate\Support\Str;
 
 class Note extends Fractal\TransformerAbstract
@@ -46,27 +47,47 @@ class Note extends Fractal\TransformerAbstract
 				'name' => "#{$hashtag->name}",
 			];
 		})->toArray();
-		$tags = array_merge($mentions, $hashtags);
+
+		$emojis = CustomEmoji::scan($status->caption, true) ?? [];
+		$emoji = array_merge($emojis, $mentions);
+		$tags = array_merge($emoji, $hashtags);
 
 		return [
 			'@context' => [
-				'https://www.w3.org/ns/activitystreams',
 				'https://w3id.org/security/v1',
+				'https://www.w3.org/ns/activitystreams',
 				[
-					'sc'				=> 'http://schema.org#',
 					'Hashtag' 			=> 'as:Hashtag',
 					'sensitive' 		=> 'as:sensitive',
-					'commentsEnabled' 	=> 'sc:Boolean',
+					'schema' 			=> 'http://schema.org/',
+					'pixelfed' 			=> 'http://pixelfed.org/ns#',
+					'commentsEnabled' 	=> [
+						'@id' 			=> 'pixelfed:commentsEnabled',
+						'@type' 		=> 'schema:Boolean'
+					],
 					'capabilities'		=> [
-						'announce'		=> ['@type' => '@id'],
-						'like'			=> ['@type' => '@id'],
-						'reply'			=> ['@type' => '@id'],
-					]
+						'@id' 			=> 'pixelfed:capabilities',
+						'@container' 	=> '@set'
+					],
+					'announce'			=> [
+						'@id' 			=> 'pixelfed:canAnnounce',
+						'@type' 		=> '@id'
+					],
+					'like'				=> [
+						'@id' 			=> 'pixelfed:canLike',
+						'@type' 		=> '@id'
+					],
+					'reply'				=> [
+						'@id' 			=> 'pixelfed:canReply',
+						'@type' 		=> '@id'
+					],
+					'toot' 				=> 'http://joinmastodon.org/ns#',
+					'Emoji'				=> 'toot:Emoji'
 				]
 			],
 			'id' 				=> $status->url(),
 			'type' 				=> 'Note',
-			'summary'   		=> null,
+			'summary'   		=> $status->is_nsfw ? $status->cw_summary : null,
 			'content'   		=> $status->rendered ?? $status->caption,
 			'inReplyTo' 		=> $status->in_reply_to_id ? $status->parent()->url() : null,
 			'published'    		=> $status->created_at->toAtomString(),

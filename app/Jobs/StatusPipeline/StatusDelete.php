@@ -5,6 +5,7 @@ namespace App\Jobs\StatusPipeline;
 use DB, Storage;
 use App\{
 	AccountInterstitial,
+	CollectionItem,
 	MediaTag,
 	Notification,
 	Report,
@@ -25,6 +26,7 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use App\Util\ActivityPub\HttpSignature;
+use App\Services\CollectionService;
 use App\Services\StatusService;
 use App\Services\MediaStorageService;
 
@@ -61,16 +63,12 @@ class StatusDelete implements ShouldQueue
 		$status = $this->status;
 		$profile = $this->status->profile;
 
-		StatusService::del($status->id);
-		$count = $profile->statuses()
-		->getQuery()
-		->whereIn('type', ['photo', 'photo:album', 'video', 'video:album', 'photo:video:album'])
-		->whereNull('in_reply_to_id')
-		->whereNull('reblog_of_id')
-		->count();
+		StatusService::del($status->id, true);
 
-		$profile->status_count = ($count - 1);
-		$profile->save();
+		if(in_array($status->type, ['photo', 'photo:album', 'video', 'video:album', 'photo:video:album'])) {
+			$profile->status_count = $profile->status_count - 1;
+			$profile->save();
+		}
 
 		if(config_cache('federation.activitypub.enabled') == true) {
 			$this->fanoutDelete($status);
@@ -93,6 +91,19 @@ class StatusDelete implements ShouldQueue
 				$parent->save();
 			});
 		}
+
+        DB::transaction(function() use($status) {
+            CollectionItem::whereObjectType('App\Status')
+                ->whereObjectId($status->id)
+                ->get()
+                ->each(function($col) {
+                    $id = $col->collection_id;
+                    $sid = $col->object_id;
+                    $col->delete();
+                    CollectionService::removeItem($id, $sid);
+                });
+        });
+
 		DB::transaction(function() use($status) {
 			$comments = Status::where('in_reply_to_id', $status->id)->get();
 			foreach ($comments as $comment) {
@@ -148,7 +159,12 @@ class StatusDelete implements ShouldQueue
 
 		$requests = function($audience) use ($client, $activity, $profile, $payload) {
 			foreach($audience as $url) {
-				$headers = HttpSignature::sign($profile, $url, $activity);
+				$version = config('pixelfed.version');
+				$appUrl = config('app.url');
+				$headers = HttpSignature::sign($profile, $url, $activity, [
+					'Content-Type'	=> 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+					'User-Agent'	=> "(Pixelfed/{$version}; +{$appUrl})",
+				]);
 				yield function() use ($client, $url, $headers, $payload) {
 					return $client->postAsync($url, [
 						'curl' => [

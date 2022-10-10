@@ -14,6 +14,9 @@ class ConfigCacheService
 	{
 		$cacheKey = self::CACHE_KEY . $key;
 		$ttl = now()->addHours(12);
+		if(!config('instance.enable_cc')) {
+			return config($key);
+		}
 
 		return Cache::remember($cacheKey, $ttl, function() use($key) {
 
@@ -48,7 +51,11 @@ class ConfigCacheService
 				'pixelfed.cloud_storage',
 
 				'account.autofollow',
-				'account.autofollow_usernames'
+				'account.autofollow_usernames',
+				'config.discover.features',
+
+				'instance.has_legal_notice',
+				// 'system.user_mode'
 			];
 
 			if(!config('instance.enable_cc')) {

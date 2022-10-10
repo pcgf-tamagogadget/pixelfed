@@ -15,6 +15,7 @@ use League\Fractal\Serializer\ArraySerializer;
 use App\Transformer\ActivityPub\Verb\UndoAnnounce;
 use GuzzleHttp\{Pool, Client, Promise};
 use App\Util\ActivityPub\HttpSignature;
+use App\Services\ReblogService;
 use App\Services\StatusService;
 
 class UndoSharePipeline implements ShouldQueue
@@ -34,6 +35,8 @@ class UndoSharePipeline implements ShouldQueue
 		$actor = $status->profile;
 		$parent = $status->parent();
 		$target = $status->parent()->profile;
+
+		ReblogService::removePostReblog($parent->id, $status->id);
 
 		if ($status->uri !== null) {
 			return;
@@ -89,7 +92,12 @@ class UndoSharePipeline implements ShouldQueue
 
 		$requests = function($audience) use ($client, $activity, $profile, $payload) {
 			foreach($audience as $url) {
-				$headers = HttpSignature::sign($profile, $url, $activity);
+				$version = config('pixelfed.version');
+				$appUrl = config('app.url');
+				$headers = HttpSignature::sign($profile, $url, $activity, [
+					'Content-Type'	=> 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+					'User-Agent'	=> "(Pixelfed/{$version}; +{$appUrl})",
+				]);
 				yield function() use ($client, $url, $headers, $payload) {
 					return $client->postAsync($url, [
 						'curl' => [

@@ -24,6 +24,12 @@ return [
 	'timeline' => [
 		'local' => [
 			'is_public' => env('INSTANCE_PUBLIC_LOCAL_TIMELINE', false)
+		],
+
+		'network' => [
+			'cached' => env('PF_NETWORK_TIMELINE') ? env('INSTANCE_NETWORK_TIMELINE_CACHED', false) : false,
+			'cache_dropoff' => env('INSTANCE_NETWORK_TIMELINE_CACHE_DROPOFF', 100),
+			'max_hours_old' => env('INSTANCE_NETWORK_TIMELINE_CACHE_MAX_HOUR_INGEST', 6)
 		]
 	],
 
@@ -61,8 +67,8 @@ return [
 	],
 
 	'oauth' => [
-		'token_expiration' => env('OAUTH_TOKEN_DAYS', 15),
-		'refresh_expiration' => env('OAUTH_REFRESH_DAYS', 30),
+		'token_expiration' => env('OAUTH_TOKEN_DAYS', 365),
+		'refresh_expiration' => env('OAUTH_REFRESH_DAYS', 400),
 		'pat' => [
 			'enabled' => env('OAUTH_PAT_ENABLED', false),
 			'id' 	  => env('OAUTH_PAT_ID'),
@@ -77,5 +83,12 @@ return [
 		]
 	],
 
-	'enable_cc' => env('ENABLE_CONFIG_CACHE', false)
+	'enable_cc' => env('ENABLE_CONFIG_CACHE', false),
+
+	'has_legal_notice' => env('INSTANCE_LEGAL_NOTICE', false),
+
+	'embed' => [
+		'profile' => env('INSTANCE_PROFILE_EMBEDS', true),
+		'post' => env('INSTANCE_POST_EMBEDS', true),
+	],
 ];

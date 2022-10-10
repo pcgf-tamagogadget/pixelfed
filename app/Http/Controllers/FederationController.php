@@ -48,9 +48,12 @@ class FederationController extends Controller
 
 	public function webfinger(Request $request)
 	{
-		abort_if(!config('federation.webfinger.enabled'), 400);
-
-		abort_if(!$request->has('resource') || !$request->filled('resource'), 400);
+		if (!config('federation.webfinger.enabled') ||
+			!$request->has('resource') ||
+			!$request->filled('resource')
+		) {
+			return response('', 400);
+		}
 
 		$resource = $request->input('resource');
 		$hash = hash('sha256', $resource);
@@ -59,14 +62,18 @@ class FederationController extends Controller
 			return response()->json($cached, 200, [], JSON_UNESCAPED_SLASHES);
 		}
 		$domain = config('pixelfed.domain.app');
-		abort_if(strpos($resource, $domain) == false, 400);
+		if(strpos($resource, $domain) == false) {
+			return response('', 400);
+		}
 		$parsed = Nickname::normalizeProfileUrl($resource);
 		if(empty($parsed) || $parsed['domain'] !== $domain) {
-			abort(400);
+			return response('', 400);
 		}
 		$username = $parsed['username'];
-		$profile = Profile::whereNull('domain')->whereUsername($username)->firstOrFail();
-		abort_if($profile->status != null, 400);
+		$profile = Profile::whereNull('domain')->whereUsername($username)->first();
+		if(!$profile || $profile->status !== null) {
+			return response('', 400);
+		}
 		$webfinger = (new Webfinger($profile))->generate();
 		Cache::put($key, $webfinger, 1209600);
 
@@ -114,6 +121,23 @@ class FederationController extends Controller
 		$obj = json_decode($payload, true, 8);
 
 		if(isset($obj['type']) && $obj['type'] === 'Delete') {
+			if(!isset($obj['id'])) {
+				return;
+			}
+			$lockKey = 'pf:ap:del-lock:' . hash('sha256', $obj['id']);
+			if( isset($obj['actor']) &&
+				isset($obj['object']) &&
+				isset($obj['id']) &&
+				is_string($obj['id']) &&
+				is_string($obj['actor']) &&
+				is_string($obj['object']) &&
+				$obj['actor'] == $obj['object']
+			) {
+				if(Cache::get($lockKey) !== null) {
+					return;
+				}
+			}
+			Cache::put($lockKey, 1, 3600);
 			dispatch(new DeleteWorker($headers, $payload))->onQueue('delete');
 		} else {
 			dispatch(new InboxValidator($username, $headers, $payload))->onQueue('high');
@@ -131,6 +155,23 @@ class FederationController extends Controller
 		$obj = json_decode($payload, true, 8);
 
 		if(isset($obj['type']) && $obj['type'] === 'Delete') {
+			if(!isset($obj['id'])) {
+				return;
+			}
+			$lockKey = 'pf:ap:del-lock:' . hash('sha256', $obj['id']);
+			if( isset($obj['actor']) &&
+				isset($obj['object']) &&
+				isset($obj['id']) &&
+				is_string($obj['id']) &&
+				is_string($obj['actor']) &&
+				is_string($obj['object']) &&
+				$obj['actor'] == $obj['object']
+			) {
+				if(Cache::get($lockKey) !== null) {
+					return;
+				}
+			}
+			Cache::put($lockKey, 1, 3600);
 			dispatch(new DeleteWorker($headers, $payload))->onQueue('delete');
 		} else {
 			dispatch(new InboxWorker($headers, $payload))->onQueue('high');

@@ -53,7 +53,7 @@ class UserCreate extends Command
             $user->email = $o['email'];
             $user->password = bcrypt($o['password']);
             $user->is_admin = (bool) $o['is_admin'];
-            $user->email_verified_at = (bool) $o['confirm_email'] ? now() : null;
+            $user->email_verified_at = $o['confirm_email'] ? now() : null;
             $user->save();
 
             $this->info('Successfully created user!');
@@ -81,6 +81,11 @@ class UserCreate extends Command
 
         if($password !== $confirm) {
             $this->error('Password mismatch, please try again...');
+            exit;
+        }
+        
+        if (strlen($password) < 6) {
+            $this->error('Must be 6 or more characters, please try again...');
             exit;
         }
         

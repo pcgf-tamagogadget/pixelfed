@@ -19,7 +19,10 @@ use App\Services\MediaBlocklistService;
 use App\Jobs\StatusPipeline\NewStatusPipeline;
 use Illuminate\Support\Str;
 use App\Util\ActivityPub\Helpers;
+use App\Services\AccountService;
+use App\Services\StatusService;
 use App\Services\WebfingerService;
+use App\Models\Conversation;
 
 class DirectMessageController extends Controller
 {
@@ -329,6 +332,19 @@ class DirectMessageController extends Controller
 		$dm->type = $request->input('type');
 		$dm->save();
 
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $recipient->id,
+				'from_id' => $profile->id
+			],
+			[
+				'type' => $dm->type,
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => $hidden
+			]
+		);
+
 		if(filter_var($msg, FILTER_VALIDATE_URL)) {
 			if(Helpers::validateUrl($msg)) {
 				$dm->type = 'link';
@@ -421,8 +437,10 @@ class DirectMessageController extends Controller
 			->get();
 		}
 
-
-		$res = $res->map(function($s) use ($uid){
+		$res = $res->filter(function($s) {
+			return $s && $s->status;
+		})
+		->map(function($s) use ($uid) {
 			return [
 				'id' => (string) $s->id,
 				'hidden' => (bool) $s->is_hidden,
@@ -435,7 +453,8 @@ class DirectMessageController extends Controller
 				'reportId' => (string) $s->status_id,
 				'meta' => json_decode($s->meta,true)
 			];
-		});
+		})
+		->values();
 
 		$w = [
 			'id' => (string) $r->id,
@@ -444,10 +463,10 @@ class DirectMessageController extends Controller
 			'avatar' => $r->avatarUrl(),
 			'url' => $r->url(),
 			'muted' => UserFilter::whereUserId($uid)
-			->whereFilterableId($r->id)
-			->whereFilterableType('App\Profile')
-			->whereFilterType('dm.mute')
-			->first() ? true : false,
+				->whereFilterableId($r->id)
+				->whereFilterableType('App\Profile')
+				->whereFilterType('dm.mute')
+				->first() ? true : false,
 			'isLocal' => (bool) !$r->domain,
 			'domain' => $r->domain,
 			'timeAgo' => $r->created_at->diffForHumans(null, true, true),
@@ -468,16 +487,61 @@ class DirectMessageController extends Controller
 		$pid = $request->user()->profile_id;
 
 		$dm = DirectMessage::whereFromId($pid)
-		->whereStatusId($sid)
-		->firstOrFail();
+			->whereStatusId($sid)
+			->firstOrFail();
 
 		$status = Status::whereProfileId($pid)
-		->findOrFail($dm->status_id);
+			->findOrFail($dm->status_id);
 
-		if($dm->recipient->domain) {
+		$recipient = AccountService::get($dm->to_id);
+
+		if(!$recipient) {
+			return response('', 422);
+		}
+
+		if($recipient['local'] == false) {
 			$dmc = $dm;
 			$this->remoteDelete($dmc);
 		}
+
+		if(Conversation::whereStatusId($sid)->count()) {
+			$latest = DirectMessage::where(['from_id' => $dm->from_id, 'to_id' => $dm->to_id])
+				->orWhere(['to_id' => $dm->from_id, 'from_id' => $dm->to_id])
+				->latest()
+				->first();
+
+			if($latest->status_id == $sid) {
+				Conversation::where(['to_id' => $dm->from_id, 'from_id' => $dm->to_id])
+					->update([
+						'updated_at' => $latest->updated_at,
+						'status_id' => $latest->status_id,
+						'type' => $latest->type,
+						'is_hidden' => false
+					]);
+
+				Conversation::where(['to_id' => $dm->to_id, 'from_id' => $dm->from_id])
+					->update([
+						'updated_at' => $latest->updated_at,
+						'status_id' => $latest->status_id,
+						'type' => $latest->type,
+						'is_hidden' => false
+					]);
+			} else {
+				Conversation::where([
+					'status_id' => $sid,
+					'to_id' => $dm->from_id,
+					'from_id' => $dm->to_id
+				])->delete();
+
+				Conversation::where([
+					'status_id' => $sid,
+					'from_id' => $dm->from_id,
+					'to_id' => $dm->to_id
+				])->delete();
+			}
+		}
+
+		StatusService::del($status->id, true);
 
 		$status->delete();
 		$dm->delete();
@@ -499,7 +563,7 @@ class DirectMessageController extends Controller
 			'file'      => function() {
 				return [
 					'required',
-					'mimes:' . config_cache('pixelfed.media_types'),
+					'mimetypes:' . config_cache('pixelfed.media_types'),
 					'max:' . config_cache('pixelfed.max_photo_size'),
 				];
 			},
@@ -573,6 +637,19 @@ class DirectMessageController extends Controller
 		$dm->is_hidden = $hidden;
 		$dm->save();
 
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $recipient->id,
+				'from_id' => $profile->id
+			],
+			[
+				'type' => $dm->type,
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => $hidden
+			]
+		);
+
 		if($recipient->domain) {
 			$this->remoteDeliver($dm);
 		}
@@ -627,12 +704,14 @@ class DirectMessageController extends Controller
 		->limit(8)
 		->get()
 		->map(function($r) {
+			$acct = AccountService::get($r->id);
 			return [
 				'local' => (bool) !$r->domain,
 				'id' => (string) $r->id,
 				'name' => $r->username,
 				'privacy' => true,
-				'avatar' => $r->avatarUrl()
+				'avatar' => $r->avatarUrl(),
+				'account' => $acct
 			];
 		});
 
@@ -719,13 +798,8 @@ class DirectMessageController extends Controller
 
 		$body = [
 			'@context' => [
-				'https://www.w3.org/ns/activitystreams',
 				'https://w3id.org/security/v1',
-				[
-					'sc'                => 'http://schema.org#',
-					'Hashtag'           => 'as:Hashtag',
-					'sensitive'         => 'as:sensitive',
-				]
+				'https://www.w3.org/ns/activitystreams',
 			],
 			'id'                    => $dm->status->permalink(),
 			'type'                  => 'Create',
@@ -768,12 +842,6 @@ class DirectMessageController extends Controller
 		$body = [
 			'@context' => [
 				'https://www.w3.org/ns/activitystreams',
-				'https://w3id.org/security/v1',
-				[
-					'sc'				=> 'http://schema.org#',
-					'Hashtag'			=> 'as:Hashtag',
-					'sensitive'			=> 'as:sensitive',
-				]
 			],
 			'id' => $dm->status->permalink('#delete'),
 			'to' => [

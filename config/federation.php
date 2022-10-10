@@ -44,6 +44,14 @@ return [
 		'enabled' => env('WEBFINGER', true)
 	],
 
-	'network_timeline' => env('PF_NETWORK_TIMELINE', true)
+	'network_timeline' => env('PF_NETWORK_TIMELINE', true),
+	'network_timeline_days_falloff' => env('PF_NETWORK_TIMELINE_DAYS_FALLOFF', 2),
+
+	'custom_emoji' => [
+		'enabled' => env('CUSTOM_EMOJI', false),
+
+		// max size in bytes, default is 2mb
+		'max_size' => env('CUSTOM_EMOJI_MAX_SIZE', 2000000),
+	]
 
 ];

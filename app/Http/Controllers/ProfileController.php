@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Cache;
+use DB;
 use View;
 use App\Follower;
 use App\FollowRequest;
@@ -13,7 +14,9 @@ use App\Story;
 use App\User;
 use App\UserFilter;
 use League\Fractal;
+use App\Services\AccountService;
 use App\Services\FollowerService;
+use App\Services\StatusService;
 use App\Util\Lexer\Nickname;
 use App\Util\Webfinger\Webfinger;
 use App\Transformer\ActivityPub\ProfileOutbox;
@@ -23,6 +26,17 @@ class ProfileController extends Controller
 {
 	public function show(Request $request, $username)
 	{
+		// redirect authed users to Metro 2.0
+		if($request->user()) {
+			// unless they force static view
+			if(!$request->has('fs') || $request->input('fs') != '1') {
+				$pid = AccountService::usernameToId($username);
+				if($pid) {
+					return redirect('/i/web/profile/' . $pid);
+				}
+			}
+		}
+
 		$user = Profile::whereNull('domain')
 			->whereNull('status')
 			->whereUsername($username)
@@ -55,7 +69,6 @@ class ProfileController extends Controller
 			$owner = false;
 			$is_following = false;
 
-			$is_admin = $user->user->is_admin;
 			$profile = $user;
 			$settings = [
 				'crawlable' => $settings->crawlable,
@@ -68,9 +81,7 @@ class ProfileController extends Controller
 					'list' => $settings->show_profile_followers
 				]
 			];
-			$ui = $request->has('ui') && $request->input('ui') == 'memory' ? 'profile.memory' : 'profile.show';
-
-			return view($ui, compact('profile', 'settings'));
+			return view('profile.show', compact('profile', 'settings'));
 		} else {
 			$key = 'profile:settings:' . $user->id;
 			$ttl = now()->addHours(6);
@@ -107,8 +118,7 @@ class ProfileController extends Controller
 					'list' => $settings->show_profile_followers
 				]
 			];
-			$ui = $request->has('ui') && $request->input('ui') == 'memory' ? 'profile.memory' : 'profile.show';
-			return view($ui, compact('profile', 'settings'));
+			return view('profile.show', compact('profile', 'settings'));
 		}
 	}
 
@@ -187,20 +197,40 @@ class ProfileController extends Controller
 	{
 		abort_if(!config('federation.atom.enabled'), 404);
 
-		$profile = $user = Profile::whereNull('status')->whereNull('domain')->whereUsername($user)->whereIsPrivate(false)->firstOrFail();
-		if($profile->status != null) {
-			return $this->accountCheck($profile);
+		$pid = AccountService::usernameToId($user);
+
+		abort_if(!$pid, 404);
+
+		$profile = AccountService::get($pid);
+
+		abort_if(!$profile || $profile['locked'] || !$profile['local'], 404);
+
+		$items = DB::table('statuses')
+			->whereProfileId($pid)
+			->whereVisibility('public')
+			->whereType('photo')
+			->orderByDesc('id')
+			->take(10)
+			->get()
+			->map(function($status) {
+				return StatusService::get($status->id);
+			})
+			->filter(function($status) {
+				return $status &&
+					isset($status['account']) &&
+					isset($status['media_attachments']) &&
+					count($status['media_attachments']);
+			})
+			->values();
+		$permalink = config('app.url') . "/users/{$profile['username']}.atom";
+		$headers = ['Content-Type' => 'application/atom+xml'];
+
+		if($items && $items->count()) {
+			$headers['Last-Modified'] = now()->parse($items->first()['created_at'])->toRfc7231String();
 		}
-		if($profile->is_private || Auth::check()) {
-			$blocked = $this->blockedProfileCheck($profile);
-			$check = $this->privateProfileCheck($profile, null);
-			if($check || $blocked) {
-				return redirect($profile->url());
-			}
-		}
-		$items = $profile->statuses()->whereHas('media')->whereIn('visibility',['public', 'unlisted'])->orderBy('created_at', 'desc')->take(10)->get();
-		return response()->view('atom.user', compact('profile', 'items'))
-		->header('Content-Type', 'application/atom+xml');
+		return response()
+			->view('atom.user', compact('profile', 'items', 'permalink'))
+			->withHeaders($headers);
 	}
 
 	public function meRedirect()
@@ -212,6 +242,10 @@ class ProfileController extends Controller
 	public function embed(Request $request, $username)
 	{
 		$res = view('profile.embed-removed');
+
+		if(!config('instance.embed.profile')) {
+			return response($res)->withHeaders(['X-Frame-Options' => 'ALLOWALL']);
+		}
 
 		if(strlen($username) > 15 || strlen($username) < 2) {
 			return response($res)->withHeaders(['X-Frame-Options' => 'ALLOWALL']);
@@ -227,11 +261,13 @@ class ProfileController extends Controller
 			return response($res)->withHeaders(['X-Frame-Options' => 'ALLOWALL']);
 		}
 
-		$content = Cache::remember('profile:embed:'.$profile->id, now()->addHours(12), function() use($profile) {
-			return View::make('profile.embed')->with(compact('profile'))->render();
-		});
+		if(AccountService::canEmbed($profile->user_id) == false) {
+			return response($res)->withHeaders(['X-Frame-Options' => 'ALLOWALL']);
+		}
 
-		return response($content)->withHeaders(['X-Frame-Options' => 'ALLOWALL']);
+		$profile = AccountService::get($profile->id);
+		$res = view('profile.embed', compact('profile'));
+		return response($res)->withHeaders(['X-Frame-Options' => 'ALLOWALL']);
 	}
 
 	public function stories(Request $request, $username)

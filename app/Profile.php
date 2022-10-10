@@ -26,7 +26,7 @@ class Profile extends Model
 	];
 	protected $hidden = ['private_key'];
 	protected $visible = ['id', 'user_id', 'username', 'name'];
-	protected $fillable = ['user_id'];
+	protected $guarded = [];
 
 	public function user()
 	{
@@ -157,15 +157,19 @@ class Profile extends Model
 
 	public function avatarUrl()
 	{
-		$url = Cache::remember('avatar:'.$this->id, now()->addYears(1), function () {
+		$url = Cache::remember('avatar:'.$this->id, 1209600, function () {
 			$avatar = $this->avatar;
 
 			if($avatar->cdn_url) {
-				return $avatar->cdn_url ?? url('/storage/avatars/default.jpg');
+				if(substr($avatar->cdn_url, 0, 8) === 'https://') {
+					return $avatar->cdn_url;
+				} else {
+					return url($avatar->cdn_url);
+				}
 			}
 
 			if($avatar->is_remote) {
-				return $avatar->cdn_url ?? url('/storage/avatars/default.jpg');
+				return url('/storage/avatars/default.jpg');
 			}
 			
 			$path = $avatar->media_path;
@@ -271,7 +275,28 @@ class Profile extends Model
 						$this->permalink('/followers')
 					]
 				];
-				break;
+			break;
+
+			case 'unlisted':
+				$audience = [
+					'to' => [
+					],
+					'cc' => [
+						'https://www.w3.org/ns/activitystreams#Public',
+						$this->permalink('/followers')
+					]
+				];
+			break;
+
+			case 'private':
+				$audience = [
+					'to' => [
+						$this->permalink('/followers')
+					],
+					'cc' => [
+					]
+				];
+			break;
 		}
 		return $audience;
 	}

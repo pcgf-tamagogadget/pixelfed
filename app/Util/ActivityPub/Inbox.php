@@ -36,6 +36,12 @@ use App\Util\ActivityPub\Validator\UndoFollow as UndoFollowValidator;
 
 use App\Services\PollService;
 use App\Services\FollowerService;
+use App\Services\StatusService;
+use App\Services\UserFilterService;
+use App\Services\NetworkTimelineService;
+use App\Models\Conversation;
+use App\Jobs\ProfilePipeline\IncrementPostCount;
+use App\Jobs\ProfilePipeline\DecrementPostCount;
 
 class Inbox
 {
@@ -114,6 +120,10 @@ class Inbox
 				$this->handleStoryReplyActivity();
 				break;
 
+			// case 'Update':
+			// 	(new UpdateActivity($this->payload, $this->profile))->handle();
+			// 	break;
+
 			default:
 				// TODO: decide how to handle invalid verbs.
 				break;
@@ -176,6 +186,9 @@ class Inbox
 		$activity = $this->payload['object'];
 		$actor = $this->actorFirstOrCreate($this->payload['actor']);
 		if(!$actor || $actor->domain == null) {
+			return;
+		}
+		if(!isset($activity['to'])) {
 			return;
 		}
 		$to = $activity['to'];
@@ -255,10 +268,16 @@ class Inbox
 		}
 
 		$url = isset($activity['url']) ? $activity['url'] : $activity['id'];
+
 		if(Status::whereUrl($url)->exists()) {
 			return;
 		}
-		Helpers::statusFetch($url);
+
+		Helpers::storeStatus(
+			$url,
+			$actor,
+			$activity
+		);
 		return;
 	}
 
@@ -355,6 +374,19 @@ class Inbox
 		$dm->type = 'text';
 		$dm->save();
 
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $profile->id,
+				'from_id' => $actor->id
+			],
+			[
+				'type' => 'text',
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => $hidden
+			]
+		);
+
 		if(count($activity['attachment'])) {
 			$photos = 0;
 			$videos = 0;
@@ -445,18 +477,19 @@ class Inbox
 		) {
 			return;
 		}
+
+        $blocks = UserFilterService::blocks($target->id);
+        if($blocks && in_array($actor->id, $blocks)) {
+            return;
+        }
+
 		if($target->is_private == true) {
-			FollowRequest::firstOrCreate([
+			FollowRequest::updateOrCreate([
 				'follower_id' => $actor->id,
-				'following_id' => $target->id
+				'following_id' => $target->id,
+			],[
+				'activity' => collect($this->payload)->only(['id','actor','object','type'])->toArray()
 			]);
-
-			Cache::forget('profile:follower_count:'.$target->id);
-			Cache::forget('profile:follower_count:'.$actor->id);
-			Cache::forget('profile:following_count:'.$target->id);
-			Cache::forget('profile:following_count:'.$actor->id);
-			FollowerService::add($actor->id, $target->id);
-
 		} else {
 			$follower = new Follower;
 			$follower->profile_id = $actor->id;
@@ -506,6 +539,11 @@ class Inbox
 		if(empty($parent)) {
 			return;
 		}
+
+        $blocks = UserFilterService::blocks($parent->profile_id);
+        if($blocks && in_array($actor->id, $blocks)) {
+            return;
+        }
 
 		$status = Status::firstOrCreate([
 			'profile_id' => $actor->id,
@@ -587,6 +625,9 @@ class Inbox
 			DeleteRemoteProfilePipeline::dispatchNow($profile);
 			return;
 		} else {
+			if(!isset($obj['id'], $this->payload['object'], $this->payload['object']['id'])) {
+				return;
+			}
 			$type = $this->payload['object']['type'];
 			$typeCheck = in_array($type, ['Person', 'Tombstone', 'Story']);
 			if(!Helpers::validateUrl($actor) || !Helpers::validateUrl($obj['id']) || !$typeCheck) {
@@ -607,7 +648,10 @@ class Inbox
 					break;
 
 				case 'Tombstone':
-						$profile = Helpers::profileFetch($actor);
+						$profile = Profile::whereRemoteUrl($actor)->first();
+						if(!$profile || $profile->private_key != null) {
+							return;
+						}
 						$status = Status::whereProfileId($profile->id)
 							->whereUri($id)
 							->orWhere('url', $id)
@@ -616,6 +660,8 @@ class Inbox
 						if(!$status) {
 							return;
 						}
+						NetworkTimelineService::del($status->id);
+						StatusService::del($status->id, true);
 						Notification::whereActorId($profile->id)
 							->whereItemType('App\Status')
 							->whereItemId($status->id)
@@ -625,6 +671,7 @@ class Inbox
 						$status->likes()->delete();
 						$status->shares()->delete();
 						$status->delete();
+                        DecrementPostCount::dispatch($profile->id)->onQueue('low');
 						return;
 					break;
 
@@ -634,6 +681,7 @@ class Inbox
 					if($story) {
 						StoryExpire::dispatch($story)->onQueue('story');
 					}
+					break;
 
 				default:
 					return;
@@ -659,6 +707,12 @@ class Inbox
 		if(!$status || !$profile) {
 			return;
 		}
+
+        $blocks = UserFilterService::blocks($status->profile_id);
+        if($blocks && in_array($profile->id, $blocks)) {
+            return;
+        }
+
 		$like = Like::firstOrCreate([
 			'profile_id' => $profile->id,
 			'status_id' => $status->id
@@ -683,16 +737,23 @@ class Inbox
 		$profile = self::actorFirstOrCreate($actor);
 		$obj = $this->payload['object'];
 
+		// TODO: Some implementations do not inline the object, skip for now
+		if(!$obj || !is_array($obj) || !isset($obj['type'])) {
+			return;
+		}
+
 		switch ($obj['type']) {
 			case 'Accept':
 				break;
 
 			case 'Announce':
-				$obj = $obj['object'];
-				if(!Helpers::validateLocalUrl($obj)) {
+				if(is_array($obj) && isset($obj['object'])) {
+					$obj = $obj['object'];
+				}
+				if(!is_string($obj) || !Helpers::validateLocalUrl($obj)) {
 					return;
 				}
-				$status = Helpers::statusFetch($obj);
+				$status = Status::whereUri($obj)->exists();
 				if(!$status) {
 					return;
 				}
@@ -885,6 +946,19 @@ class Inbox
 		]);
 		$dm->save();
 
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $story->profile_id,
+				'from_id' => $actorProfile->id
+			],
+			[
+				'type' => 'story:react',
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => false
+			]
+		);
+
 		$n = new Notification;
 		$n->profile_id = $dm->to_id;
 		$n->actor_id = $dm->from_id;
@@ -980,6 +1054,19 @@ class Inbox
 			'caption' => $text
 		]);
 		$dm->save();
+
+		Conversation::updateOrInsert(
+			[
+				'to_id' => $story->profile_id,
+				'from_id' => $actorProfile->id
+			],
+			[
+				'type' => 'story:comment',
+				'status_id' => $status->id,
+				'dm_id' => $dm->id,
+				'is_hidden' => false
+			]
+		);
 
 		$n = new Notification;
 		$n->profile_id = $dm->to_id;

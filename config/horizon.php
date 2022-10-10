@@ -52,7 +52,7 @@ return [
 	|
 	*/
 
-	'prefix' => env('HORIZON_PREFIX', 'horizon-'.str_random(8).':'),
+	'prefix' => env('HORIZON_PREFIX', 'horizon-'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -152,7 +152,7 @@ return [
 	|
 	*/
 
-	'memory_limit' => 64,
+	'memory_limit' => env('HORIZON_MEMORY_LIMIT', 64),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -170,11 +170,13 @@ return [
 			'supervisor-1' => [
 				'connection'    => 'redis',
 				'queue'         => ['high', 'default', 'feed', 'low', 'story', 'delete', 'mmo'],
-				'balance'       => 'auto',
-				'maxProcesses'  => 20,
-				'memory'        => 128,
-				'tries'         => 3,
-				'nice'          => 0,
+				'balance'       => env('HORIZON_BALANCE_STRATEGY', 'auto'),
+				'minProcesses'  => env('HORIZON_MIN_PROCESSES', 1),
+				'maxProcesses'  => env('HORIZON_MAX_PROCESSES', 20),
+				'memory'        => env('HORIZON_SUPERVISOR_MEMORY', 64),
+				'tries'         => env('HORIZON_SUPERVISOR_TRIES', 3),
+				'nice'          => env('HORIZON_SUPERVISOR_NICE', 0),
+				'timeout'		=> env('HORIZON_SUPERVISOR_TIMEOUT', 300),
 			],
 		],
 
@@ -183,10 +185,12 @@ return [
 				'connection'    => 'redis',
 				'queue'         => ['high', 'default', 'feed', 'low', 'story', 'delete', 'mmo'],
 				'balance'       => 'auto',
+				'minProcesses' => 1,
 				'maxProcesses'  => 20,
 				'memory'        => 128,
 				'tries'         => 3,
 				'nice'          => 0,
+				'timeout'       => 300
 			],
 		],
 	],

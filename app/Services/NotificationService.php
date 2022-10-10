@@ -16,6 +16,15 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class NotificationService {
 
 	const CACHE_KEY = 'pf:services:notifications:ids:';
+	const MASTODON_TYPES = [
+		'follow',
+		'follow_request',
+		'mention',
+		'reblog',
+		'favourite',
+		'poll',
+		'status'
+	];
 
 	public static function get($id, $start = 0, $stop = 400)
 	{
@@ -85,6 +94,67 @@ class NotificationService {
 		return $res->toArray();
 	}
 
+
+	public static function getMaxMastodon($id = false, $start = 0, $limit = 10)
+	{
+		$ids = self::getRankedMaxId($id, $start, $limit);
+
+		if(empty($ids)) {
+			return [];
+		}
+
+		$res = collect([]);
+		foreach($ids as $id) {
+			$n = self::rewriteMastodonTypes(self::getNotification($id));
+			if($n != null && in_array($n['type'], self::MASTODON_TYPES)) {
+				if(isset($n['account'])) {
+					$n['account'] = AccountService::getMastodon($n['account']['id']);
+				}
+
+				if(isset($n['relationship'])) {
+					unset($n['relationship']);
+				}
+
+				if(isset($n['status'])) {
+					$n['status'] = StatusService::getMastodon($n['status']['id'], false);
+				}
+
+				$res->push($n);
+			}
+		}
+		return $res->toArray();
+	}
+
+	public static function getMinMastodon($id = false, $start = 0, $limit = 10)
+	{
+		$ids = self::getRankedMinId($id, $start, $limit);
+
+		if(empty($ids)) {
+			return [];
+		}
+
+		$res = collect([]);
+		foreach($ids as $id) {
+			$n = self::rewriteMastodonTypes(self::getNotification($id));
+			if($n != null && in_array($n['type'], self::MASTODON_TYPES)) {
+				if(isset($n['account'])) {
+					$n['account'] = AccountService::getMastodon($n['account']['id']);
+				}
+
+				if(isset($n['relationship'])) {
+					unset($n['relationship']);
+				}
+
+				if(isset($n['status'])) {
+					$n['status'] = StatusService::getMastodon($n['status']['id'], false);
+				}
+
+				$res->push($n);
+			}
+		}
+		return $res->toArray();
+	}
+
 	public static function getRankedMaxId($id = false, $start = null, $limit = 10)
 	{
 		if(!$start || !$id) {
@@ -109,8 +179,28 @@ class NotificationService {
 		]));
 	}
 
+	public static function rewriteMastodonTypes($notification)
+	{
+		if(!$notification || !isset($notification['type'])) {
+			return $notification;
+		}
+
+		if($notification['type'] === 'comment') {
+			$notification['type'] = 'mention';
+		}
+
+		if($notification['type'] === 'share') {
+			$notification['type'] = 'reblog';
+		}
+
+		return $notification;
+	}
+
 	public static function set($id, $val)
 	{
+		if(self::count($id) > 400) {
+			Redis::zpopmin(self::CACHE_KEY . $id);
+		}
 		return Redis::zadd(self::CACHE_KEY . $id, $val, $val);
 	}
 
@@ -137,10 +227,16 @@ class NotificationService {
 
 	public static function getNotification($id)
 	{
-		return Cache::remember('service:notification:'.$id, now()->addDays(3), function() use($id) {
+		$notification = Cache::remember('service:notification:'.$id, 86400, function() use($id) {
 			$n = Notification::with('item')->find($id);
 
 			if(!$n) {
+				return null;
+			}
+
+			$account = AccountService::get($n->actor_id, true);
+
+			if(!$account) {
 				return null;
 			}
 
@@ -149,6 +245,16 @@ class NotificationService {
 			$resource = new Fractal\Resource\Item($n, new NotificationTransformer());
 			return $fractal->createData($resource)->toArray();
 		});
+
+		if(!$notification) {
+			return;
+		}
+
+		if(isset($notification['account'])) {
+			$notification['account'] = AccountService::get($notification['account']['id'], true);
+		}
+
+		return $notification;
 	}
 
 	public static function setNotification(Notification $notification)

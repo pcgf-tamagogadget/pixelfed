@@ -47,11 +47,12 @@ class StatusService
 			return null;
 		}
 
+        $status['replies_count'] = $status['reply_count'];
+
 		if(config('exp.emc') == false) {
 			return $status;
 		}
 
-		$status['replies_count'] = $status['reply_count'];
 		unset(
 			$status['_v'],
 			$status['comments_disabled'],
@@ -130,7 +131,7 @@ class StatusService
 
 		$fractal = new Fractal\Manager();
 		$fractal->setSerializer(new ArraySerializer());
-		$resource = new Fractal\Resource\Item($status, new StatusTransformer());
+		$resource = new Fractal\Resource\Item($status, new StatusStatelessTransformer());
 		return $fractal->createData($resource)->toArray();
 	}
 
@@ -165,20 +166,14 @@ class StatusService
 	public static function isShared($id, $pid = null)
 	{
 		return $pid ?
-			DB::table('statuses')
-				->where('reblog_of_id', $id)
-				->where('profile_id', $pid)
-				->exists() :
+			ReblogService::get($pid, $id) :
 			false;
 	}
 
 	public static function isBookmarked($id, $pid = null)
 	{
 		return $pid ?
-			DB::table('bookmarks')
-				->where('status_id', $id)
-				->where('profile_id', $pid)
-				->exists() :
+			BookmarkService::get($pid, $id) :
 			false;
 	}
 }

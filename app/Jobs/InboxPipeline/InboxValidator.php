@@ -59,7 +59,7 @@ class InboxValidator implements ShouldQueue
                 // Job processed already
                 return 1;
             }
-            Cache::put($lockKey, 1, 300);
+            Cache::put($lockKey, 1, 3600);
         }
 
         if(!isset($headers['signature']) || !isset($headers['date'])) {
@@ -155,6 +155,9 @@ class InboxValidator implements ShouldQueue
        ) {
             return;
         }
+        if(!isset($bodyDecoded['id'])) {
+        	return;
+        }
         $signatureData = HttpSignature::parseSignatureHeader($signature);
         $keyId = Helpers::validateUrl($signatureData['keyId']);
         $id = Helpers::validateUrl($bodyDecoded['id']);
@@ -164,9 +167,16 @@ class InboxValidator implements ShouldQueue
             && is_array($bodyDecoded['object'])
             && isset($bodyDecoded['object']['attributedTo'])
         ) {
-            if(parse_url($bodyDecoded['object']['attributedTo'], PHP_URL_HOST) !== $keyDomain) {
+            $attr = Helpers::pluckval($bodyDecoded['object']['attributedTo']);
+            if(is_array($attr)) {
+                if(isset($attr['id'])) {
+                    $attr = $attr['id'];
+                } else {
+                    $attr = "";
+                }
+            }
+            if(parse_url($attr, PHP_URL_HOST) !== $keyDomain) {
                 return;
-                abort(400, 'Invalid request');
             }
         }
         if(!$keyDomain || !$idDomain || $keyDomain !== $idDomain) {
@@ -175,7 +185,7 @@ class InboxValidator implements ShouldQueue
         }
         $actor = Profile::whereKeyId($keyId)->first();
         if(!$actor) {
-            $actorUrl = is_array($bodyDecoded['actor']) ? $bodyDecoded['actor'][0] : $bodyDecoded['actor'];
+            $actorUrl = Helpers::pluckval($bodyDecoded['actor']);
             $actor = Helpers::profileFirstOrNew($actorUrl);
         }
         if(!$actor) {
@@ -223,6 +233,9 @@ class InboxValidator implements ShouldQueue
           'User-Agent' => 'PixelfedBot v0.1 - https://pixelfed.org',
         ])->get($actor->remote_url);
         $res = json_decode($res->body(), true, 8);
+        if(!$res || empty($res) || !isset($res['publicKey']) || !isset($res['publicKey']['id'])) {
+        	return;
+        }
         if($res['publicKey']['id'] !== $actor->key_id) {
             return;
         }

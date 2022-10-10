@@ -29,11 +29,11 @@ class SiteController extends Controller
 
 	public function homeTimeline(Request $request)
 	{
-		$this->validate($request, [
-			'layout' => 'nullable|string|in:grid,feed'
-		]);
-		$layout = $request->input('layout', 'feed');
-		return view('timeline.home', compact('layout'));
+		if($request->has('force_old_ui')) {
+			return view('timeline.home', ['layout' => 'feed']);
+		}
+
+		return redirect('/i/web');
 	}
 
 	public function changeLocale(Request $request, $locale)
@@ -80,7 +80,7 @@ class SiteController extends Controller
 	{
 		$page = Cache::remember('site:privacy', now()->addDays(120), function() {
 			$slug = '/site/privacy';
-			$page = Page::whereSlug($slug)->whereActive(true)->first();
+			return Page::whereSlug($slug)->whereActive(true)->first();
 		});
 		return View::make('site.privacy')->with(compact('page'))->render();
 	}
@@ -153,5 +153,15 @@ class SiteController extends Controller
 		}
 
 		return redirect($url);
+	}
+
+	public function legalNotice(Request $request)
+	{
+		$page = Cache::remember('site:legal-notice', now()->addDays(120), function() {
+			$slug = '/site/legal-notice';
+			return Page::whereSlug($slug)->whereActive(true)->first();
+		});
+		abort_if(!$page, 404);
+		return View::make('site.legal-notice')->with(compact('page'))->render();
 	}
 }

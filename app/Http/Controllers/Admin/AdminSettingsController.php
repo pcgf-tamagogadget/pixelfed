@@ -75,6 +75,8 @@ trait AdminSettingsController
 			unset($json[$index]);
 			$json = json_encode(array_values($json));
 			ConfigCacheService::put('app.rules', $json);
+            Cache::forget('api:v1:instance-data:rules');
+            Cache::forget('api:v1:instance-data-response-v1');
 			return 200;
 		}
 
@@ -121,7 +123,9 @@ trait AdminSettingsController
 			$val = $request->input($key);
 			if($cc && $cc->v != $val) {
 				ConfigCacheService::put($value, $val);
-			}
+			} else if(!empty($val)) {
+                ConfigCacheService::put($value, $val);
+            }
 		}
 
 		$bools = [
@@ -171,7 +175,7 @@ trait AdminSettingsController
 				ConfigCacheService::put('app.rules', json_encode(array_values($json)));
 			}
 			Cache::forget('api:v1:instance-data:rules');
-			Cache::forget('api:v1:instance-data-response');
+			Cache::forget('api:v1:instance-data-response-v1');
 		}
 
 		if($request->filled('account_autofollow_usernames')) {
