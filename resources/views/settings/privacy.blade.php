@@ -24,6 +24,7 @@
       </label>
       <p class="text-muted small help-text">{{__('settings.privateAccountDiscription')}}</p>
     </div>
+
     <div class="form-check pb-3">
       <input class="form-check-input" type="checkbox" name="crawlable" id="crawlable" {{!$settings->crawlable ? 'checked=""':''}} {{$settings->is_private ? 'disabled=""':''}}>
       <label class="form-check-label font-weight-bold" for="crawlable">
@@ -33,13 +34,13 @@
     </div>
 
 
-    {{-- <div class="form-check pb-3">
-      <input class="form-check-input" type="checkbox" name="show_discover" id="show_discover" {{$settings->is_private ? 'disabled=""':''}} {{$settings->show_discover ? 'checked=""':''}}>
-      <label class="form-check-label font-weight-bold" for="show_discover">
-        {{__('settings.visibleDiscover')}}
+    <div class="form-check pb-3">
+      <input class="form-check-input" type="checkbox" name="is_suggestable" id="is_suggestable" {{$settings->is_private ? 'disabled=""':''}} {{auth()->user()->profile->is_suggestable ? 'checked=""':''}}>
+      <label class="form-check-label font-weight-bold" for="is_suggestable">
+        {{__('settings.visibleDirectory')}}
       </label>
-      <p class="text-muted small help-text">{{__('settings.visibleDiscoverDiscription')}}</p>
-    </div> --}}
+      <p class="text-muted small help-text">{{__('settings.visibleDirectoryDiscription')}}</p>
+    </div>
     <div class="form-check pb-3">
       <input class="form-check-input" type="checkbox" id="public_dm" {{$settings->public_dm ? 'checked=""':''}} name="public_dm">
       <label class="form-check-label font-weight-bold" for="public_dm">

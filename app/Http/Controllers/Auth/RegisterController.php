@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use Purify;
 use App\Util\Lexer\RestrictedNames;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Services\EmailService;
+use App\Services\BouncerService;
 
 class RegisterController extends Controller
 {
@@ -157,10 +159,11 @@ class RegisterController extends Controller
 		}
 
 		return User::create([
-			'name'     => $data['name'],
+			'name'     => Purify::clean($data['name']),
 			'username' => $data['username'],
 			'email'    => $data['email'],
 			'password' => Hash::make($data['password']),
+			'app_register_ip' => request()->ip()
 		]);
 	}
 
@@ -172,6 +175,9 @@ class RegisterController extends Controller
 	public function showRegistrationForm()
 	{
 		if(config_cache('pixelfed.open_registration')) {
+			if(config('pixelfed.bouncer.cloud_ips.ban_signups')) {
+				abort_if(BouncerService::checkIp(request()->ip()), 404);
+			}
 			$limit = config('pixelfed.max_users');
 			if($limit) {
 				abort_if($limit <= User::count(), 404);
@@ -193,6 +199,10 @@ class RegisterController extends Controller
 	public function register(Request $request)
 	{
 		abort_if(config_cache('pixelfed.open_registration') == false, 400);
+
+		if(config('pixelfed.bouncer.cloud_ips.ban_signups')) {
+			abort_if(BouncerService::checkIp($request->ip()), 404);
+		}
 
 		$count = User::count();
 		$limit = config('pixelfed.max_users');
