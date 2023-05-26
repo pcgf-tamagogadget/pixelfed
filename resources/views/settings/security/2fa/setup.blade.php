@@ -50,7 +50,7 @@
 				  		<div class="card-body text-center">
 				  			<div class="pb-3">
 				  				<p class="font-weight-bold">{{__('settings.qrcode')}}</p>
-				  				<img src="data:image/png;base64,{{$qrcode}}" class="img-fluid" width="200px">
+				  				{!!$qrcode!!}
 				  			</div>
 				  			<div>
 				  				<p class="font-weight-bold">{{__('settings.otpSecret')}}</p>

@@ -23,7 +23,7 @@ return [
 	| This value is the version of your Pixelfed instance.
 	|
 	*/
-	'version' => '0.11.5',
+	'version' => '0.11.7',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -255,16 +255,16 @@ return [
 		]
 	],
 
-	'oauth_enabled' => env('OAUTH_ENABLED', false),
+	'oauth_enabled' => env('OAUTH_ENABLED', true),
 
 	'bouncer' => [
 		'enabled' => env('PF_BOUNCER_ENABLED', false),
 
 		'cloud_ips' => [
-			'ban_logins' => env('PF_BOUNCER_BAN_CLOUD_LOGINS', true),
-			'ban_signups' => env('PF_BOUNCER_BAN_CLOUD_SIGNUPS', true),
-			'ban_api' => env('PF_BOUNCER_BAN_CLOUD_API', true),
-			'ban_api_strict_mode' => env('PF_BOUNCER_BAN_CLOUD_API_STRICT_MODE', true),
+			'ban_logins' => env('PF_BOUNCER_BAN_CLOUD_LOGINS', false),
+			'ban_signups' => env('PF_BOUNCER_BAN_CLOUD_SIGNUPS', false),
+			'ban_api' => env('PF_BOUNCER_BAN_CLOUD_API', false),
+			'ban_api_strict_mode' => env('PF_BOUNCER_BAN_CLOUD_API_STRICT_MODE', false),
 		],
 	],
 

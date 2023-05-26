@@ -9,6 +9,7 @@ use App\Http\Controllers\StatusController;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Poll;
 use App\Services\AccountService;
+use App\Models\StatusEdit;
 
 class Status extends Model
 {
@@ -27,7 +28,8 @@ class Status extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'deleted_at' => 'datetime'
+		'deleted_at' => 'datetime',
+		'edited_at'  => 'datetime'
 	];
 
 	protected $guarded = [];
@@ -285,38 +287,6 @@ class Status extends Model
 		return $obj;
 	}
 
-	public function replyToText()
-	{
-		$actorName = $this->profile->username;
-
-		return "{$actorName} ".__('notification.commented');
-	}
-
-	public function replyToHtml()
-	{
-		$actorName = $this->profile->username;
-		$actorUrl = $this->profile->url();
-
-		return "<a href='{$actorUrl}' class='profile-link'>{$actorName}</a> ".
-		  __('notification.commented');
-	}
-
-	public function shareToText()
-	{
-		$actorName = $this->profile->username;
-
-		return "{$actorName} ".__('notification.shared');
-	}
-
-	public function shareToHtml()
-	{
-		$actorName = $this->profile->username;
-		$actorUrl = $this->profile->url();
-
-		return "<a href='{$actorUrl}' class='profile-link'>{$actorName}</a> ".
-		  __('notification.shared');
-	}
-
 	public function recentComments()
 	{
 		return $this->comments()->orderBy('created_at', 'desc')->take(3);
@@ -424,5 +394,10 @@ class Status extends Model
 	public function poll()
 	{
 		return $this->hasOne(Poll::class);
+	}
+
+	public function edits()
+	{
+		return $this->hasMany(StatusEdit::class);
 	}
 }
