@@ -13,15 +13,15 @@
 						@auth
 						@if($is_following == true)
 						<span class="pl-4">
-							<button class="btn btn-outline-secondary font-weight-bold px-4 py-0" type="button" onclick="unfollowProfile()">Unfollow</button>
+							<button class="btn btn-outline-secondary font-weight-bold px-4 py-0" type="button" onclick="unfollowProfile()">{{__('account.unfollow')}}</button>
 						</span>
 						@elseif($requested == true)
 						<span class="pl-4">
-							<button class="btn btn-outline-secondary font-weight-bold px-4 py-0" type="button" onclick="unfollowProfile()">Follow Requested</button>
+							<button class="btn btn-outline-secondary font-weight-bold px-4 py-0" type="button" onclick="unfollowProfile()">{{__('account.followRequested')}}</button>
 						</span>
 						@elseif($is_following == false)
 						<span class="pl-4">
-							<button class="btn btn-primary font-weight-bold px-4 py-0" type="button" onclick="followProfile()">Follow</button>
+							<button class="btn btn-primary font-weight-bold px-4 py-0" type="button" onclick="followProfile()">{{__('account.follow')}}</button>
 						</span>
 						@endif
 						<span class="pl-4">
@@ -31,21 +31,21 @@
 									<div class="modal-content">
 										<div class="modal-body p-0">
 											<div class="list-group-item cursor-pointer text-center rounded text-dark" onclick="window.App.util.clipboard('{{$user->url()}}');$('#ctxProfileMenu').modal('hide')">
-												Copy Link
+												{{__('account.copyLink')}}
 											</div>
 											@auth
 											<div class="list-group-item cursor-pointer text-center rounded text-dark" onclick="muteProfile()">
-												Mute
+												{{__('account.mute')}}
 											</div>
 											<a class="list-group-item cursor-pointer text-center rounded text-dark text-decoration-none" href="i/report?type=user&id={{$user->id}}">
-												Report User
+												{{__('account.reportUser')}}
 											</a>
 											<div class="list-group-item cursor-pointer text-center rounded text-dark" onclick="blockProfile()">
-												Block
+												{{__('account.block')}}
 											</div>
 											@endauth
 											<div class="list-group-item cursor-pointer text-center rounded text-muted" onclick="$('#ctxProfileMenu').modal('hide')">
-												Close
+												{{__('account.close')}}
 											</div>
 										</div>
 									</div>

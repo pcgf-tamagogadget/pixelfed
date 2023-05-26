@@ -26,7 +26,7 @@
         <div class="row">
           <div class="col-12 p-3 p-md-5">
 			  <div class="title">
-			    <h3 class="font-weight-bold">Email Settings</h3>
+			    <h3 class="font-weight-bold">{{__('settings.emailSettings')}}</h3>
 			  </div>
 			  <hr>
 			  <form method="post" action="{{route('settings.email')}}">
@@ -48,7 +48,7 @@
 			    </div>
 			    <div class="form-group row">
 			      <div class="col-12 text-right">
-			        <button type="submit" class="btn btn-primary font-weight-bold py-0 px-5">Submit</button>
+			        <button type="submit" class="btn btn-primary font-weight-bold py-0 px-5">{{__('settings.submit')}}</button>
 			      </div>
 			    </div>
 			  </form>
