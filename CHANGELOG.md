@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.11.7...dev)
+## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.11.8...dev)
+
+### Updates
+- Update Notifications.vue component, fix filtering logic to prevent endless spinner ([3df9b53f](https://github.com/pixelfed/pixelfed/commit/3df9b53f))
+-  ([](https://github.com/pixelfed/pixelfed/commit/))
+
+## [v0.11.8 (2023-05-29)](https://github.com/pixelfed/pixelfed/compare/v0.11.7...v0.11.8)
+
+### API Changes
+- Added `following_since` attribute to `/api/v1/accounts/relationships` endpoint when `_pe=1` (pixelfed entity) parameter is present ([992d910b](https://github.com/pixelfed/pixelfed/commit/992d910b))
+- Added `/api/v1.1/accounts/app/settings` endpoint and UserAppSettings model to store app specific settings ([a2305d5f](https://github.com/pixelfed/pixelfed/commit/a2305d5f))
 
 ### Added
 - Post edits ([#4416](https://github.com/pixelfed/pixelfed/pull/4416)) ([98cf8f3](https://github.com/pixelfed/pixelfed/commit/98cf8f3))
@@ -11,7 +21,9 @@
 - Update EditHistoryModal, fix caption rendering ([0f803446](https://github.com/pixelfed/pixelfed/commit/0f803446))
 - Update StatusRemoteUpdatePipeline, fix typo ([109d0419](https://github.com/pixelfed/pixelfed/commit/109d0419))
 - Update StatusActivityPubDeliver, fix delivery addressing ([1f2183ee](https://github.com/pixelfed/pixelfed/commit/1f2183ee))
--  ([](https://github.com/pixelfed/pixelfed/commit/))
+- Update UpdateStatusService, fix formatting issue. Fixes #4423 ([4479055e](https://github.com/pixelfed/pixelfed/commit/4479055e))
+- Update nginx config ([ee3b6e09](https://github.com/pixelfed/pixelfed/commit/ee3b6e09))
+- Update Status model, increase max mentions, hashtags and links ([1430f532](https://github.com/pixelfed/pixelfed/commit/1430f532))
 
 ## [v0.11.7 (2023-05-24)](https://github.com/pixelfed/pixelfed/compare/v0.11.6...v0.11.7)
 
@@ -1096,7 +1108,7 @@
 - Added post embeds ([1fecf717](https://github.com/pixelfed/pixelfed/commit/1fecf717))
 - Added profile embeds ([fb7a3cf0](https://github.com/pixelfed/pixelfed/commit/fb7a3cf0))
 - Added Force MetroUI labs experiment ([#1889](https://github.com/pixelfed/pixelfed/pull/1889))
-- Added Stories, to enable add ```STORIES_ENABLED=true``` to ```.env```	 and run ```php artisan config:cache && php artisan cache:clear```. If opcache is enabled you may need to reload the web server.
+- Added Stories, to enable add ```STORIES_ENABLED=true``` to ```.env```  and run ```php artisan config:cache && php artisan cache:clear```. If opcache is enabled you may need to reload the web server.
 
 ### Fixed
 - Fixed like and share/reblog count on profiles ([86cb7d09](https://github.com/pixelfed/pixelfed/commit/86cb7d09))
