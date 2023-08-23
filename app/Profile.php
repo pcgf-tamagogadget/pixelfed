@@ -7,6 +7,7 @@ use App\Util\Lexer\PrettyNumber;
 use App\HasSnowflakePrimary;
 use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 use App\Services\FollowerService;
+use App\Models\ProfileAlias;
 
 class Profile extends Model
 {
@@ -176,6 +177,13 @@ class Profile extends Model
 
 			if(!$path) {
 				return url('/storage/avatars/default.jpg');
+			}
+
+			if( $avatar->is_remote &&
+				$avatar->remote_url &&
+				boolval(config_cache('federation.avatars.store_local')) == true
+			) {
+				return $avatar->remote_url;
 			}
 
 			if($path === 'public/avatars/default.jpg') {
@@ -362,9 +370,13 @@ class Profile extends Model
 		return $this->hasMany(Story::class);
 	}
 
-
 	public function reported()
 	{
 		return $this->hasMany(Report::class, 'object_id');
+	}
+
+	public function aliases()
+	{
+		return $this->hasMany(ProfileAlias::class);
 	}
 }
