@@ -35,13 +35,13 @@ use App\Services\MediaStorageService;
 use App\Services\NetworkTimelineService;
 use App\Jobs\MediaPipeline\MediaStoragePipeline;
 use App\Jobs\AvatarPipeline\RemoteAvatarFetch;
+use App\Jobs\HomeFeedPipeline\FeedInsertRemotePipeline;
 use App\Util\Media\License;
 use App\Models\Poll;
 use Illuminate\Contracts\Cache\LockTimeoutException;
-use App\Jobs\ProfilePipeline\IncrementPostCount;
-use App\Jobs\ProfilePipeline\DecrementPostCount;
 use App\Services\DomainService;
 use App\Services\UserFilterService;
+use App\Services\Account\AccountStatService;
 
 class Helpers {
 
@@ -108,7 +108,10 @@ class Helpers {
                 'string',
                 Rule::in($mimeTypes)
             ],
-            '*.name' => 'sometimes|nullable|string'
+            '*.name' => 'sometimes|nullable|string',
+            '*.blurhash' => 'sometimes|nullable|string|min:6|max:164',
+            '*.width' => 'sometimes|nullable|integer|min:1|max:5000',
+            '*.height' => 'sometimes|nullable|integer|min:1|max:5000',
         ])->passes();
 
         return $valid;
@@ -276,7 +279,7 @@ class Helpers {
         }
 
         if(is_array($val)) {
-            return !empty($val) ? $val[0] : null;
+            return !empty($val) ? head($val) : null;
         }
 
         return null;
@@ -532,17 +535,24 @@ class Helpers {
             }
         }
 
-        IncrementPostCount::dispatch($pid)->onQueue('low');
+        AccountStatService::incrementPostCount($pid);
+
+        if( $status->in_reply_to_id === null &&
+            in_array($status->type, ['photo', 'photo:album', 'video', 'video:album', 'photo:video:album'])
+        ) {
+            FeedInsertRemotePipeline::dispatch($status->id, $pid)->onQueue('feed');
+        }
 
         return $status;
     }
 
     public static function getSensitive($activity, $url)
     {
-        $id = isset($activity['id']) ? self::pluckval($activity['id']) : self::pluckval($url);
-        $url = isset($activity['url']) ? self::pluckval($activity['url']) : $id;
-        $urlDomain = parse_url($url, PHP_URL_HOST);
+        if(!$url || !strlen($url)) {
+            return true;
+        }
 
+        $urlDomain = parse_url($url, PHP_URL_HOST);
         $cw = isset($activity['sensitive']) ? (bool) $activity['sensitive'] : false;
 
         if(in_array($urlDomain, InstanceService::getNsfwDomains())) {
@@ -684,6 +694,8 @@ class Helpers {
             $blurhash = isset($media['blurhash']) ? $media['blurhash'] : null;
             $license = isset($media['license']) ? License::nameToId($media['license']) : null;
             $caption = isset($media['name']) ? Purify::clean($media['name']) : null;
+            $width = isset($media['width']) ? $media['width'] : false;
+            $height = isset($media['height']) ? $media['height'] : false;
 
             $media = new Media();
             $media->blurhash = $blurhash;
@@ -695,6 +707,12 @@ class Helpers {
             $media->remote_url = $url;
             $media->caption = $caption;
             $media->order = $key + 1;
+            if($width) {
+                $media->width = $width;
+            }
+            if($height) {
+                $media->height = $height;
+            }
             if($license) {
                 $media->license = $license;
             }
@@ -749,6 +767,13 @@ class Helpers {
         if(!isset($res['preferredUsername']) && !isset($res['nickname'])) {
             return;
         }
+        // skip invalid usernames
+        if(!ctype_alnum($res['preferredUsername'])) {
+            $tmpUsername = str_replace(['_', '.', '-'], '', $res['preferredUsername']);
+            if(!ctype_alnum($tmpUsername)) {
+                return;
+            }
+        }
         $username = (string) Purify::clean($res['preferredUsername'] ?? $res['nickname']);
         if(empty($username)) {
             return;
@@ -785,11 +810,12 @@ class Helpers {
                 'inbox_url' => $res['inbox'],
                 'outbox_url' => isset($res['outbox']) ? $res['outbox'] : null,
                 'public_key' => $res['publicKey']['publicKeyPem'],
+                'indexable' => isset($res['indexable']) && is_bool($res['indexable']) ? $res['indexable'] : false,
             ]
         );
 
         if( $profile->last_fetched_at == null ||
-            $profile->last_fetched_at->lt(now()->subHours(24))
+            $profile->last_fetched_at->lt(now()->subMonths(3))
         ) {
             RemoteAvatarFetch::dispatch($profile);
         }

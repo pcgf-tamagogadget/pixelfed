@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        // 'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -31,17 +31,20 @@ class AuthServiceProvider extends ServiceProvider
             if(config('instance.oauth.pat.enabled')) {
                 Passport::personalAccessClientId(config('instance.oauth.pat.id'));
             }
-            Passport::setDefaultScope([
-                'read',
-                'write',
-                'follow',
-            ]);
 
             Passport::tokensCan([
                 'read' => 'Full read access to your account',
                 'write' => 'Full write access to your account',
                 'follow' => 'Ability to follow other profiles',
-                'push'  => ''
+                'admin:read' => 'Read all data on the server',
+                'admin:write' => 'Modify all data on the server',
+                'push'  => 'Receive your push notifications'
+            ]);
+
+            Passport::setDefaultScope([
+                'read',
+                'write',
+                'follow',
             ]);
         }
 
