@@ -15,7 +15,7 @@
 	                	<img src="/img/pixelfed-icon-white.svg" height="60px">
 	            	</a>
 	                <h1 class="pt-4 pb-1">Sudo Mode</h1>
-	                <p class="font-weight-light lead pb-2">Confirm password to continue</p>
+	                <p class="font-weight-light lead pb-2">{{__('auth.confirmPasswordContinue')}}</p>
 	            </div>
 	            <div class="card bg-glass">
 	                <div class="card-body">
@@ -30,7 +30,7 @@
 	                            	class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
 	                            	name="password"
 	                            	autocomplete="new-password"
-	                            	placeholder="{{__('Password')}}"
+	                            	placeholder="{{__('auth.password')}}"
 	                            	required>
 
 	                            @if ($errors->has('password'))
@@ -43,7 +43,7 @@
 	                        <div class="form-group" id="trusted-device-wrapper">
 	                            <div class="custom-control custom-checkbox">
 	                              <input type="checkbox" class="custom-control-input" name="trustDevice" id="trusted-device">
-	                              <label class="custom-control-label text-muted" for="trusted-device">Trust this device and don't ask again</label>
+	                              <label class="custom-control-label text-muted" for="trusted-device">{{__('auth.trustDevice')}}</label>
 	                            </div>
 	                        </div>
 
@@ -54,7 +54,7 @@
 	                                	id="sbtn"
 	                                	class="btn btn-success rounded-pill btn-block font-weight-bold"
 	                                	onclick="event.preventDefault();handleSubmit()">
-	                                    {{ __('Confirm Password') }}
+	                                    {{ __('auth.sudoConfirmPassword') }}
 	                                </button>
 
 	                            </div>
