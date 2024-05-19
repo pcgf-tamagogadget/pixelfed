@@ -1,11 +1,24 @@
+  
 <?php
 
 return [
+	'logo'				=> 'Logo',
 	'search'			=> 'Search',
+	'userMenu'			=> 'User Menu',
+	'myFeed'			=> 'My Feed',
+	'publicFeed'		=> 'Public Feed',
+	'networkFeed'		=> 'Network Feed',
+	'homeTitle'			=> 'Home',
+	'directTitle'		=> 'Direct',
+	'notificationsTitle'=> 'Notifications',
+	'composeTitle'		=> 'Compose',
 	'home'				=> 'Home',
+	'direct'			=> 'Direct',
 	'local'				=> 'Local',
+	'public'			=> 'Public',
 	'network'			=> 'Network',
 	'discover'			=> 'Discover',
+	'stories'			=> 'Stories',
 	'viewMyProfile'		=> 'View my profile',
 	'myProfile'			=> 'My Profile',
 	'myTimeline'		=> 'My Timeline',
@@ -16,4 +29,7 @@ return [
 	'logout'			=> 'Logout',
 	'directMessages'	=> 'Direct Messages',
 	'composePost'		=> 'Compose Post',
+	'newPost'			=> 'New',
+	'login' 			=> 'Login',
+	'register' 			=> 'Register',
 ];

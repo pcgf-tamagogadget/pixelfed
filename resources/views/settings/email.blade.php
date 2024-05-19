@@ -5,7 +5,7 @@
 <div class="d-flex justify-content-between align-items-center">
     <div class="title d-flex align-items-center" style="gap: 1rem;">
         <p class="mb-0"><a href="/settings/home"><i class="far fa-chevron-left fa-lg"></i></a></p>
-        <h3 class="font-weight-bold mb-0">Email Settings</h3>
+        <h3 class="font-weight-bold mb-0">{{__('settings.emailSettings')}}</h3>
     </div>
 </div>
 

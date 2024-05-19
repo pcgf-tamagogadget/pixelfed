@@ -1,11 +1,23 @@
 <?php
 
 return [
+	'logo'				=> 'ロゴ',
 	'search'			=> '検索',
+	'userMenu'			=> 'ユーザーメニュー',
+	'myFeed'			=> 'マイフィード',
+	'publicFeed'		=> 'パブリックフィード',
+	'networkFeed'		=> 'ネットワークフィード',
+	'homeTitle'			=> 'ホーム',
+	'directTitle'		=> 'ダイレクトメッセージ',
+	'notificationsTitle'=> '通知',
+	'composeTitle'		=> '新規投稿',
 	'home'				=> 'ホーム',
+	'direct'			=> 'ダイレクトメッセージ',
 	'local'				=> 'ローカル',
+	'public'			=> 'パブリック',
 	'network'			=> 'ネットワーク',
 	'discover'			=> '発見',
+	'stories'			=> 'ストーリーズ',
 	'viewMyProfile'		=> '自分のプロフィールを見る',
 	'myProfile'			=> 'プロフィール',
 	'myTimeline'		=> 'タイムライン',
@@ -16,4 +28,7 @@ return [
 	'logout'			=> 'ログアウト',
 	'directMessages'	=> 'ダイレクトメッセージ',
 	'composePost'		=> '投稿',
+	'newPost'			=> '新規投稿',
+	'login' 			=> 'ログイン',
+	'register' 			=> '新規登録',
 ];

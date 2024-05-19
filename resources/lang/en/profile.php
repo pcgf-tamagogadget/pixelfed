@@ -18,4 +18,12 @@ return [
   'mutedAccounts'           => 'Muted Accounts',
   'blockedAccounts'         => 'Blocked Accounts',
   'blockedDomains'          => 'Blocked Domains',
+  'unfollow'              => 'Unfollow',
+  'followRequested'       => 'Follow Requested',
+  'follow'                => 'Follow',
+  'copyLink'              => 'Copy Link',
+  'mute'                  => 'Mute',
+  'reportUser'            => 'Report User',
+  'block'                 => 'Block',
+  'close'                 => 'Close',
 ];
