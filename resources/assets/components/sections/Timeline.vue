@@ -91,6 +91,8 @@
             v-on:delete="deletePost"
             v-on:report-modal="handleReport"
             v-on:edit="handleEdit"
+            v-on:muted="handleMuted"
+            v-on:unfollow="handleUnfollow"
         />
 
         <likes-modal
@@ -187,7 +189,7 @@
                 forceUpdateIdx: 0,
                 showReblogBanner: false,
                 enablingReblogs: false,
-                baseApi: '/api/v1/pixelfed/timelines/',
+                baseApi: '/api/v1/timelines/',
             }
         },
 
@@ -204,7 +206,7 @@
             }
             if(window.App.config.ab.hasOwnProperty('cached_home_timeline')) {
                 const cht = window.App.config.ab.cached_home_timeline == true;
-                this.baseApi = cht ? '/api/v1/timelines/' : '/api/pixelfed/v1/timelines/';
+                this.baseApi = cht ? '/api/v1/timelines/' : '/api/v1/timelines/';
             }
             this.fetchSettings();
         },
@@ -261,10 +263,19 @@
                     }
                 } else {
                     url = this.baseApi + this.getScope();
-                    params = {
-                        max_id: this.max_id,
-                        limit: 6,
-                        '_pe': 1,
+
+                    if(this.max_id === 0) {
+                        params = {
+                            min_id: 1,
+                            limit: 6,
+                            '_pe': 1,
+                        }
+                    } else {
+                        params = {
+                            max_id: this.max_id,
+                            limit: 6,
+                            '_pe': 1,
+                        }
                     }
                 }
                 if(this.getScope() === 'network') {
@@ -534,6 +545,7 @@
 
             deletePost() {
                 this.feed.splice(this.postIndex, 1);
+                this.forceUpdateIdx++;
             },
 
             counterChange(index, type) {
@@ -778,6 +790,21 @@
                 })
                 .then(res => {
                 })
+            },
+
+            handleMuted(post) {
+                this.feed = this.feed.filter(p => {
+                   return p.account.id !== post.account.id;
+                });
+            },
+
+            handleUnfollow(post) {
+                if(this.scope === 'home') {
+                    this.feed = this.feed.filter(p => {
+                       return p.account.id !== post.account.id;
+                    });
+                }
+                this.updateProfile({ following_count: this.profile.following_count - 1 });
             },
         },
 
