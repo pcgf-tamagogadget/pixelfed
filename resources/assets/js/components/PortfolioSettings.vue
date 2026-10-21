@@ -7,8 +7,8 @@
             <div class="col-12 col-md-8 bg-dark py-2 rounded">
                 <ul class="nav nav-pills nav-fill">
                     <li v-for="(tab, index) in tabs" class="nav-item" :class="{ disabled: index !== 0 && !settings.active}">
-                        <span v-if="index !== 0 && !settings.active" class="nav-link">{{ tab }}</span>
-                        <a v-else class="nav-link" :class="{ active: tab === tabIndex }" href="#" @click.prevent="toggleTab(tab)">{{ tab }}</a>
+                        <span v-if="index !== 0 && !settings.active" class="nav-link">{{ tabLabel(tab) }}</span>
+                        <a v-else class="nav-link" :class="{ active: tab === tabIndex }" href="#" @click.prevent="toggleTab(tab)">{{ tabLabel(tab) }}</a>
                     </li>
                 </ul>
             </div>
@@ -16,13 +16,13 @@
             <transition name="slide-fade">
                 <div v-if="tabIndex === 'Configure'" class="col-12 col-md-8 bg-dark mt-3 py-2 rounded" key="0">
                     <div v-if="!user.statuses_count" class="alert alert-danger">
-                        <p class="mb-0 small font-weight-bold">You don't have any public posts, once you share public posts you can enable your portfolio.</p>
+                        <p class="mb-0 small font-weight-bold">{{ $t('compose.portfolioSettings.noPublicPosts') }}</p>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-2">
                         <div class="setting-label">
-                            <p class="lead mb-0">Portfolio Enabled</p>
-                            <p class="small mb-0 text-muted">You must enable your portfolio before you or anyone can view it.</p>
+                            <p class="lead mb-0">{{ $t('compose.portfolioSettings.portfolioEnabled') }}</p>
+                            <p class="small mb-0 text-muted">{{ $t('compose.portfolioSettings.portfolioEnabledDesc') }}</p>
                         </div>
 
                         <div class="setting-switch mt-n1">
@@ -34,8 +34,8 @@
 
                     <div class="d-flex justify-content-between align-items-center py-2">
                         <div class="setting-label" style="max-width: 50%;">
-                            <p class="mb-0">Portfolio Source</p>
-                            <p class="small mb-0 text-muted">Choose how you want to populate your portfolio, select Most Recent posts to automatically update your portfolio with recent posts or Curated Posts to select specific posts for your portfolio.</p>
+                            <p class="mb-0">{{ $t('compose.portfolioSettings.portfolioSource') }}</p>
+                            <p class="small mb-0 text-muted">{{ $t('compose.portfolioSettings.portfolioSourceDesc') }}</p>
                         </div>
                         <div class="ml-3">
                             <b-form-select v-model="settings.profile_source" :options="profileSourceOptions" :disabled="!user.statuses_count" />
@@ -47,24 +47,24 @@
                     <div v-if="!recentPostsLoaded" class="d-flex align-items-center justify-content-center py-5 my-5">
                         <div class="text-center">
                             <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
+                                <span class="sr-only">{{ $t('common.loading') }}</span>
                             </div>
-                            <p class="text-muted">Loading recent posts...</p>
+                            <p class="text-muted">{{ $t('compose.portfolioSettings.loadingRecentPosts') }}</p>
                         </div>
                     </div>
 
                     <template v-else>
                         <div class="mt-n2 mb-4">
-                            <p class="text-muted small">Select up to 100 photos from your 100 most recent posts. You can only select public photo posts, videos are not supported at this time.</p>
+                            <p class="text-muted small">{{ $t('compose.portfolioSettings.selectUpTo') }}</p>
 
                             <div class="d-flex align-items-center justify-content-between">
-                                <p class="font-weight-bold mb-0">Selected {{ selectedRecentPosts.length }}/100</p>
+                                <p class="font-weight-bold mb-0">{{ $t('compose.portfolioSettings.selected', { count: selectedRecentPosts.length }) }}</p>
                                 <div>
                                     <button
                                         class="btn btn-link font-weight-bold mr-3 text-decoration-none"
                                         :disabled="!selectedRecentPosts.length"
                                         @click="clearSelected">
-                                        Clear selected
+                                        {{ $t('compose.portfolioSettings.clearSelected') }}
                                     </button>
 
                                     <button
@@ -72,7 +72,7 @@
                                         style="width: 150px;"
                                         :disabled="!canSaveCurated"
                                         @click="saveCurated()">
-                                        <template v-if="!isSavingCurated">Save</template>
+                                        <template v-if="!isSavingCurated">{{ $t('compose.common.save') }}</template>
                                         <b-spinner v-else small />
                                     </button>
                                 </div>
@@ -143,12 +143,12 @@
 
                 		<div class="col-12 col-md-6">
 		                    <div class="card bg-dark mb-5">
-		                        <div class="card-header">Portfolio</div>
+		                        <div class="card-header">{{ $t('compose.portfolioSettings.portfolio') }}</div>
 		                        <div class="list-group bg-dark">
 		                            <div class="list-group-item">
 		                                <div class="d-flex justify-content-between align-items-center py-2">
 		                                    <div class="setting-label">
-		                                        <p class="mb-0">Layout</p>
+		                                        <p class="mb-0">{{ $t('compose.portfolioSettings.layout') }}</p>
 		                                    </div>
 
 		                                    <div>
@@ -160,7 +160,7 @@
 		                            <div v-if="settings.profile_source === 'custom'" class="list-group-item">
 		                                <div class="d-flex justify-content-between align-items-center py-2">
 		                                    <div class="setting-label">
-		                                        <p class="mb-0">Order</p>
+		                                        <p class="mb-0">{{ $t('compose.portfolioSettings.order') }}</p>
 		                                    </div>
 
 		                                    <div>
@@ -174,7 +174,7 @@
 		                            <div class="list-group-item">
 		                                <div class="d-flex justify-content-between align-items-center py-2">
 		                                    <div class="setting-label">
-		                                        <p class="mb-0">Color Scheme</p>
+		                                        <p class="mb-0">{{ $t('compose.portfolioSettings.colorScheme') }}</p>
 		                                    </div>
 
 		                                    <div>
@@ -190,7 +190,7 @@
 		                            <div class="list-group-item">
 		                                <div class="d-flex justify-content-between align-items-center py-2">
 		                                    <div class="setting-label">
-		                                        <p class="mb-0">Background Color</p>
+		                                        <p class="mb-0">{{ $t('compose.portfolioSettings.backgroundColor') }}</p>
 		                                    </div>
 
 		                                	<b-col sm="2">
@@ -204,7 +204,7 @@
 		                                			v-if="!['#000000', null].includes(settings.background_color)"
 		                                			variant="link"
 		                                			@click="resetBackgroundColor">
-		                                			Reset
+		                                			{{ $t('compose.portfolioSettings.reset') }}
 		                                		</b-button>
 		                                	</b-col>
 		                                </div>
@@ -213,7 +213,7 @@
 		                            <div class="list-group-item">
 		                                <div class="d-flex justify-content-between align-items-center py-2">
 		                                    <div class="setting-label">
-		                                        <p class="mb-0">Text Color</p>
+		                                        <p class="mb-0">{{ $t('compose.portfolioSettings.textColor') }}</p>
 		                                    </div>
 
 		                                	<b-col sm="2">
@@ -227,7 +227,7 @@
 		                                			v-if="!['#d4d4d8', null].includes(settings.text_color)"
 		                                			variant="link"
 		                                			@click="resetTextColor">
-		                                			Reset
+		                                			{{ $t('compose.portfolioSettings.reset') }}
 		                                		</b-button>
 		                                	</b-col>
 		                                </div>
@@ -240,7 +240,7 @@
 
                 <div v-else-if="tabIndex === 'Share'" class="col-12 col-md-8 bg-dark mt-3 py-2 rounded" key="3">
                     <div class="py-2">
-                        <p class="text-muted">Portfolio URL</p>
+                        <p class="text-muted">{{ $t('compose.portfolioSettings.portfolioUrl') }}</p>
                         <p class="lead mb-0"><a :href="settings.url">{{ settings.url }}</a></p>
                     </div>
                 </div>
@@ -272,24 +272,24 @@
                 customizeSettings: [],
                 skipWatch: false,
                 profileSourceOptions: [
-                    { value: null, text: 'Please select an option', disabled: true },
-                    { value: 'recent', text: 'Most recent posts' },
+                    { value: null, text: this.$t('compose.portfolioSettings.selectOption'), disabled: true },
+                    { value: 'recent', text: this.$t('compose.portfolioSettings.mostRecentPosts') },
                 ],
                 profileLayoutOptions: [
-                    { value: null, text: 'Please select an option', disabled: true },
-                    { value: 'grid', text: 'Grid' },
-                    { value: 'masonry', text: 'Masonry' },
-                    { value: 'album', text: 'Album' },
+                    { value: null, text: this.$t('compose.portfolioSettings.selectOption'), disabled: true },
+                    { value: 'grid', text: this.$t('compose.portfolioSettings.grid') },
+                    { value: 'masonry', text: this.$t('compose.portfolioSettings.masonry') },
+                    { value: 'album', text: this.$t('compose.portfolioSettings.album') },
                 ],
                 profileLayoutColorSchemeOptions: [
-                    { value: null, text: 'Please select an option', disabled: true },
-                	{ value: 'light', text: 'Light mode' },
-                	{ value: 'dark', text: 'Dark mode' },
-                	{ value: 'custom', text: 'Custom color scheme', disabled: true },
+                    { value: null, text: this.$t('compose.portfolioSettings.selectOption'), disabled: true },
+                	{ value: 'light', text: this.$t('compose.portfolioSettings.lightMode') },
+                	{ value: 'dark', text: this.$t('compose.portfolioSettings.darkMode') },
+                	{ value: 'custom', text: this.$t('compose.portfolioSettings.customColorScheme'), disabled: true },
                 ],
                 profileLayoutFeedOrder: [
-                	{ value: 'oldest', text: 'Oldest first' },
-                	{ value: 'recent', text: 'Recent first' }
+                	{ value: 'oldest', text: this.$t('compose.portfolioSettings.oldestFirst') },
+                	{ value: 'recent', text: this.$t('compose.portfolioSettings.recentFirst') }
                 ]
             }
         },
@@ -336,9 +336,9 @@
 
                     if(res.data.statuses_count > 0) {
                         this.profileSourceOptions = [
-                            { value: null, text: 'Please select an option', disabled: true },
-                            { value: 'recent', text: 'Most recent posts' },
-                            { value: 'custom', text: 'Curated posts' },
+                            { value: null, text: this.$t('compose.portfolioSettings.selectOption'), disabled: true },
+                            { value: 'recent', text: this.$t('compose.portfolioSettings.mostRecentPosts') },
+                            { value: 'custom', text: this.$t('compose.portfolioSettings.curatedPosts') },
                         ];
                     } else {
                         setTimeout(() => {
@@ -393,6 +393,17 @@
                 })
             },
 
+            tabLabel(tab) {
+                const labels = {
+                    'Configure': this.$t('compose.portfolioSettings.tabs.configure'),
+                    'Curate': this.$t('compose.portfolioSettings.tabs.curate'),
+                    'Customize': this.$t('compose.portfolioSettings.tabs.customize'),
+                    'Share': this.$t('compose.portfolioSettings.tabs.share'),
+                    'View Portfolio': this.$t('compose.portfolioSettings.tabs.viewPortfolio'),
+                };
+                return labels[tab] || tab;
+            },
+
             apiPath(path) {
                 return path;
             },
@@ -444,9 +455,9 @@
                 .then(res => {
                     this.updateTabs();
                     if(!silent) {
-	                    this.$bvToast.toast(`Your settings have been successfully updated!`, {
+	                    this.$bvToast.toast(this.$t('compose.portfolioSettings.settingsUpdatedMsg'), {
 	                        variant: 'dark',
-	                        title: 'Settings Updated',
+	                        title: this.$t('compose.portfolioSettings.settingsUpdated'),
 	                        autoHideDelay: 2000,
 	                        appendToast: false
 	                    })
@@ -507,18 +518,18 @@
                 })
                 .then(res => {
                     this.isSavingCurated = false;
-                    this.$bvToast.toast(`Your curated posts have been updated!`, {
+                    this.$bvToast.toast(this.$t('compose.portfolioSettings.curatedUpdatedMsg'), {
                         variant: 'dark',
-                        title: 'Portfolio Updated',
+                        title: this.$t('compose.portfolioSettings.portfolioUpdated'),
                         autoHideDelay: 2000,
                         appendToast: false
                     })
                 })
                 .catch(err => {
                     this.isSavingCurated = false;
-                    this.$bvToast.toast(`An error occured while attempting to update your portfolio, please try again later and contact an admin if this problem persists.`, {
+                    this.$bvToast.toast(this.$t('compose.portfolioSettings.updateError'), {
                         variant: 'dark',
-                        title: 'Error',
+                        title: this.$t('common.error'),
                         autoHideDelay: 2000,
                         appendToast: false
                     })
@@ -528,27 +539,27 @@
             initCustomizeSettings() {
                 this.customizeSettings = [
                     {
-                        title: "Post Settings",
+                        title: this.$t('compose.portfolioSettings.postSettings'),
                         items: [
                             {
-                                label: "Show Captions",
+                                label: this.$t('compose.portfolioSettings.showCaptions'),
                                 model: "show_captions"
                             },
                             {
-                                label: "Show License",
+                                label: this.$t('compose.portfolioSettings.showLicense'),
                                 model: "show_license"
                             },
                             {
-                                label: "Show Location",
+                                label: this.$t('compose.portfolioSettings.showLocation'),
                                 model: "show_location"
                             },
                             {
-                                label: "Show Timestamp",
+                                label: this.$t('compose.portfolioSettings.showTimestamp'),
                                 model: "show_timestamp"
                             },
                             {
-                                label: "Link to Post",
-                                description: "Add link to timestamp to view the original post url, requires show timestamp to be enabled",
+                                label: this.$t('compose.portfolioSettings.linkToPost'),
+                                description: this.$t('compose.portfolioSettings.linkToPostDesc'),
                                 model: "show_link",
                                 requiredWithTrue: "show_timestamp"
                             }
@@ -556,27 +567,27 @@
                     },
 
                     {
-                        title: "Profile Settings",
+                        title: this.$t('compose.portfolioSettings.profileSettings'),
                         items: [
                             {
-                                label: "Show Avatar",
+                                label: this.$t('compose.portfolioSettings.showAvatar'),
                                 model: "show_avatar"
                             },
                             {
-                                label: "Show Bio",
+                                label: this.$t('compose.portfolioSettings.showBio'),
                                 model: "show_bio"
                             },
                             {
-                            	label: "Show View Profile Button",
+                            	label: this.$t('compose.portfolioSettings.showViewProfileButton'),
                             	model: "show_profile_button"
                             },
                             {
-                            	label: "Enable RSS Feed",
-                            	description: "Enable your RSS feed with the 10 most recent portfolio items",
+                            	label: this.$t('compose.portfolioSettings.enableRss'),
+                            	description: this.$t('compose.portfolioSettings.enableRssDesc'),
                             	model: "rss_enabled"
                             },
                             {
-                            	label: "Show RSS Feed Button",
+                            	label: this.$t('compose.portfolioSettings.showRssButton'),
                             	model: "show_rss_button",
                             	requiredWithTrue: "rss_enabled"
                             },

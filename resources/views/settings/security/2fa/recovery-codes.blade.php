@@ -8,13 +8,13 @@
         <div class="row">
           <div class="col-12 p-3 p-md-5">
 			  <div class="title">
-			    <h3 class="font-weight-bold">Two-Factor Authentication Recovery Codes</h3>
+			    <h3 class="font-weight-bold">{{ __('settings.two_factor.two_factor_authentication_recovery_codes') }}</h3>
 			  </div>
 
 			  <hr>
 			    @if(count($codes) > 0)
 			      <p class="lead pb-3">
-			      	Each code can only be used once.
+			      	{{ __('settings.two_factor.each_code_can_only_be_used_once') }}
 			      </p>
 			      <ul class="list-group">
 			      	@foreach($codes as $code)
@@ -23,12 +23,12 @@
 			      </ul>
 			    @else
 			    <div class="pt-5">
-			      <h4 class="font-weight-bold">You are out of recovery codes</h4>
-			      <p class="lead">Generate more recovery codes and store them in a safe place.</p>
+			      <h4 class="font-weight-bold">{{ __('settings.two_factor.you_are_out_of_recovery_codes') }}</h4>
+			      <p class="lead">{{ __('settings.two_factor.generate_more_recovery_codes_and_store_them_etc') }}</p>
 			      <p>
 			        <form method="post">
 			          @csrf
-			          <button type="submit" class="btn btn-primary font-weight-bold">Generate Recovery Codes</button>
+			          <button type="submit" class="btn btn-primary font-weight-bold">{{ __('settings.two_factor.generate_recovery_codes') }}</button>
 			        </form>
 			      </p>
 			    </div>

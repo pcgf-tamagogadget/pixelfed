@@ -4,7 +4,7 @@
 			<div class="row">
 				<div v-if="morePostsAvailable == true" class="col-12 mt-5 pt-3 mb-3 fixed-top">
 					<p class="text-center">
-						<button class="btn btn-dark px-4 rounded-pill font-weight-bold shadow" @click="syncNewPosts">Load New Posts</button>
+						<button class="btn btn-dark px-4 rounded-pill font-weight-bold shadow" @click="syncNewPosts">{{ $t('classic.timeline.loadNewPosts') }}</button>
 					</p>
 				</div>
 
@@ -15,7 +15,7 @@
 					<div class="pt-4">
 						<div v-if="loading" class="text-center" style="padding-top:10px;">
 							<div class="spinner-border" role="status">
-								<span class="sr-only">Loading...</span>
+								<span class="sr-only">{{ $t('common.loading') }}</span>
 							</div>
 						</div>
 
@@ -23,11 +23,11 @@
 							<div v-if="index == 1 && !loading && showPromo" class="">
 								<div class="card rounded-0 shadow-none border border-top-0 py-5">
 									<div class="card-body p-5 my-5">
-										<h1>A New Experience Awaits</h1>
-										<p class="lead">Try out an early release of our new design</p>
+										<h1>{{ $t('classic.timeline.newExperience') }}</h1>
+										<p class="lead">{{ $t('classic.timeline.tryEarlyRelease') }}</p>
 										<p class="mb-0 d-flex align-items-center">
-											<a class="btn btn-primary font-weight-bold py-1 px-4 rounded-pill mr-4" href="/i/web">Try new UI</a>
-											<a class="font-weight-bold text-muted" href="/" @click.prevent="hidePromo()">Hide</a>
+											<a class="btn btn-primary font-weight-bold py-1 px-4 rounded-pill mr-4" href="/i/web">{{ $t('classic.timeline.tryNewUi') }}</a>
+											<a class="font-weight-bold text-muted" href="/" @click.prevent="hidePromo()">{{ $t('classic.timeline.hide') }}</a>
 										</p>
 									</div>
 								</div>
@@ -99,38 +99,38 @@
 										<div slot="no-more">
 											<div v-if="recentFeed">
 												<p class="text-center"><i class="far fa-check-circle fa-8x text-lighter"></i></p>
-												<p class="text-center h3 font-weight-light">You're All Caught Up!</p>
-												<p class="text-center text-muted font-weight-light">You've seen all the new posts from the accounts you follow.</p>
+												<p class="text-center h3 font-weight-light">{{ $t('classic.timeline.allCaughtUp') }}</p>
+												<p class="text-center text-muted font-weight-light">{{ $t('classic.timeline.seenAllNew') }}</p>
 												<p class="text-center mb-0">
-													<a class="btn btn-link font-weight-bold px-4" href="/?a=vop">View Older Posts</a>
+													<a class="btn btn-link font-weight-bold px-4" href="/?a=vop">{{ $t('classic.timeline.viewOlderPosts') }}</a>
 												</p>
 												<p class="text-center mb-0">
-													<a class="btn btn-link font-weight-bold px-4" href="/" @click.prevent="alwaysViewOlderPosts()">Always show older posts on this device</a>
+													<a class="btn btn-link font-weight-bold px-4" href="/" @click.prevent="alwaysViewOlderPosts()">{{ $t('classic.timeline.alwaysShowOlder') }}</a>
 												</p>
 											</div>
 											<div v-else>
-												<p class="text-center h3 font-weight-light">You've reached the end of this feed</p>
+												<p class="text-center h3 font-weight-light">{{ $t('classic.timeline.endOfFeed') }}</p>
 												<p class="text-center mb-0">
-													<a class="btn btn-link font-weight-bold px-4" href="/discover">Discover new posts and people</a>
+													<a class="btn btn-link font-weight-bold px-4" href="/discover">{{ $t('classic.timeline.discoverNew') }}</a>
 												</p>
 											</div>
 										</div>
 										<div slot="no-results">
 											<div v-if="recentFeed">
 												<p class="text-center"><i class="far fa-check-circle fa-8x text-lighter"></i></p>
-												<p class="text-center h3 font-weight-light">You're All Caught Up!</p>
-												<p class="text-center text-muted font-weight-light">You've seen all the new posts from the accounts you follow.</p>
+												<p class="text-center h3 font-weight-light">{{ $t('classic.timeline.allCaughtUp') }}</p>
+												<p class="text-center text-muted font-weight-light">{{ $t('classic.timeline.seenAllNew') }}</p>
 												<p class="text-center mb-0">
-													<a class="btn btn-link font-weight-bold px-4" href="/?a=vop">View Older Posts</a>
+													<a class="btn btn-link font-weight-bold px-4" href="/?a=vop">{{ $t('classic.timeline.viewOlderPosts') }}</a>
 												</p>
 												<p class="text-center mb-0">
-													<a class="btn btn-link font-weight-bold px-4" href="/" @click.prevent="alwaysViewOlderPosts()">Always show older posts on this device</a>
+													<a class="btn btn-link font-weight-bold px-4" href="/" @click.prevent="alwaysViewOlderPosts()">{{ $t('classic.timeline.alwaysShowOlder') }}</a>
 												</p>
 											</div>
 											<div v-else>
-												<p class="text-center h3 font-weight-light">You've reached the end of this feed</p>
+												<p class="text-center h3 font-weight-light">{{ $t('classic.timeline.endOfFeed') }}</p>
 												<p class="text-center mb-0">
-													<a class="btn btn-link font-weight-bold px-4" href="/discover">Discover new posts and people</a>
+													<a class="btn btn-link font-weight-bold px-4" href="/discover">{{ $t('classic.timeline.discoverNew') }}</a>
 												</p>
 											</div>
 										</div>
@@ -143,28 +143,28 @@
 							<div class="card rounded-0 mt-4 status-card rounded-0 shadow-none border">
 								<div v-if="profile.following_count != '0'" class="card-body py-5 my-5">
 									<p class="text-center"><i class="far fa-check-circle fa-8x text-lighter"></i></p>
-									<p class="text-center h3 font-weight-light">You're All Caught Up!</p>
-									<p class="text-center text-muted font-weight-light">You've seen all the new posts from the accounts you follow.</p>
+									<p class="text-center h3 font-weight-light">{{ $t('classic.timeline.allCaughtUp') }}</p>
+									<p class="text-center text-muted font-weight-light">{{ $t('classic.timeline.seenAllNew') }}</p>
 									<p class="text-center mb-0">
-										<a class="btn btn-link font-weight-bold px-4" href="/?a=vop">View Older Posts</a>
+										<a class="btn btn-link font-weight-bold px-4" href="/?a=vop">{{ $t('classic.timeline.viewOlderPosts') }}</a>
 									</p>
 									<p class="text-center mb-0">
-										<a class="btn btn-link font-weight-bold px-4" href="/" @click.prevent="alwaysViewOlderPosts()">Always show older posts on this device</a>
+										<a class="btn btn-link font-weight-bold px-4" href="/" @click.prevent="alwaysViewOlderPosts()">{{ $t('classic.timeline.alwaysShowOlder') }}</a>
 									</p>
 								</div>
 								<div v-else class="card-body py-5 my-5">
 									<p class="text-center"><i class="far fa-smile fa-8x text-lighter"></i></p>
-									<p class="text-center h3 font-weight-light">Hello {{profile.username}}</p>
-									<p class="text-center text-muted font-weight-light">Accounts you follow will appear in this feed.</p>
+									<p class="text-center h3 font-weight-light">{{ $t('classic.timeline.hello', { username: profile.username }) }}</p>
+									<p class="text-center text-muted font-weight-light">{{ $t('classic.timeline.accountsWillAppear') }}</p>
 									<p class="text-center mb-0">
-										<a class="btn btn-link font-weight-bold px-4" href="/discover">Discover new posts and people</a>
+										<a class="btn btn-link font-weight-bold px-4" href="/discover">{{ $t('classic.timeline.discoverNew') }}</a>
 									</p>
 									<hr>
 									<div class="text-center pt-5">
-										<h1>A New Experience Awaits</h1>
-										<p class="lead">Try out an early release of our new design</p>
+										<h1>{{ $t('classic.timeline.newExperience') }}</h1>
+										<p class="lead">{{ $t('classic.timeline.tryEarlyRelease') }}</p>
 										<p class="mb-0 d-flex align-items-center justify-content-center">
-											<a class="btn btn-primary font-weight-bold py-1 px-4 rounded-pill mr-4" href="/i/web">Try new UI</a>
+											<a class="btn btn-primary font-weight-bold py-1 px-4 rounded-pill mr-4" href="/i/web">{{ $t('classic.timeline.tryNewUi') }}</a>
 										</p>
 									</div>
 								</div>
@@ -173,8 +173,8 @@
 
 						<div v-if="!loading && scope == 'home' && recentFeed && discover_feed.length" class="pt-3">
 							<p class="h5 font-weight-bold py-3 d-flex justify-content-between align-items-center">
-								<span>Suggested Posts</span>
-								<a href="/?a=vop" class="small font-weight-bold">Older Posts</a>
+								<span>{{ $t('classic.timeline.suggestedPosts') }}</span>
+								<a href="/?a=vop" class="small font-weight-bold">{{ $t('classic.timeline.olderPosts') }}</a>
 							</p>
 						</div>
 
@@ -195,9 +195,9 @@
 								<div class="card-body py-5 my-5">
 									<p class="text-center"><i class="fas fa-battery-empty fa-8x text-lighter"></i></p>
 									<p class="text-center h3 font-weight-light">empty_timeline.jpg</p>
-									<p class="text-center text-muted font-weight-light">We cannot find any posts for this timeline.</p>
+									<p class="text-center text-muted font-weight-light">{{ $t('classic.timeline.noPostsForTimeline') }}</p>
 									<p class="text-center mb-0">
-										<a class="btn btn-link font-weight-bold px-4" href="/discover">Discover new posts and people</a>
+										<a class="btn btn-link font-weight-bold px-4" href="/discover">{{ $t('classic.timeline.discoverNew') }}</a>
 									</p>
 								</div>
 							</div>
@@ -214,21 +214,21 @@
 										<a :href="!userStory ? profile.url : '/stories/' + profile.acct" class="mr-3">
 											<!-- <img class="mr-3 rounded-circle box-shadow" :src="profile.avatar || '/storage/avatars/default.png'" alt="avatar" width="64px" height="64px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'"> -->
 											<div v-if="userStory" class="has-story cursor-pointer shadow-sm" @click="storyRedirect()">
-												<img class="rounded-circle box-shadow" :src="profile.avatar" width="64px" height="64px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" alt="avatar">
+												<img class="rounded-circle box-shadow" :src="profile.avatar" width="64px" height="64px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" :alt="$t('classic.timeline.avatar')">
 											</div>
 											<div v-else>
-												<img class="rounded-circle box-shadow" :src="profile.avatar" width="64px" height="64px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" alt="avatar">
+												<img class="rounded-circle box-shadow" :src="profile.avatar" width="64px" height="64px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" :alt="$t('classic.timeline.avatar')">
 											</div>
 										</a>
 										<div class="media-body d-flex justify-content-between word-break" >
 											<div>
-												<p class="mb-0 px-0 font-weight-bold"><a :href="profile.url" class="text-dark">{{profile.username || 'loading...'}}</a></p>
-												<p class="my-0 text-muted pb-0">{{profile.display_name || 'loading...'}}</p>
+												<p class="mb-0 px-0 font-weight-bold"><a :href="profile.url" class="text-dark">{{profile.username || $t('classic.timeline.loadingLower')}}</a></p>
+												<p class="my-0 text-muted pb-0">{{profile.display_name || $t('classic.timeline.loadingLower')}}</p>
 											</div>
 											<div class="ml-2">
 												<a class="text-muted" href="/settings/home">
 													<i class="fas fa-cog fa-lg"></i>
-													<span class="sr-only">User Settings</span>
+													<span class="sr-only">{{ $t('classic.timeline.userSettings') }}</span>
 												</a>
 											</div>
 										</div>
@@ -238,15 +238,15 @@
 									<div class="d-flex justify-content-between text-center">
 										<span class="cursor-pointer" @click="redirect(profile.url)">
 											<p class="mb-0 font-weight-bold">{{formatCount(profile.statuses_count)}}</p>
-											<p class="mb-0 small text-muted">Posts</p>
+											<p class="mb-0 small text-muted">{{ $t('profile.posts') }}</p>
 										</span>
 										<span class="cursor-pointer" @click="redirect(profile.url+'?md=followers')">
 											<p class="mb-0 font-weight-bold">{{formatCount(profile.followers_count)}}</p>
-											<p class="mb-0 small text-muted">Followers</p>
+											<p class="mb-0 small text-muted">{{ $t('profile.followers') }}</p>
 										</span>
 										<span class="cursor-pointer" @click="redirect(profile.url+'?md=following')">
 											<p class="mb-0 font-weight-bold">{{formatCount(profile.following_count)}}</p>
-											<p class="mb-0 small text-muted">Following</p>
+											<p class="mb-0 small text-muted">{{ $t('profile.following') }}</p>
 										</span>
 									</div>
 								</div> -->
@@ -255,15 +255,15 @@
 								<div class="d-flex justify-content-between text-center">
 									<span class="cursor-pointer" @click="redirect(profile.url)">
 										<p class="mb-0 font-weight-bold">{{formatCount(profile.statuses_count)}}</p>
-										<p class="mb-0 small text-muted">Posts</p>
+										<p class="mb-0 small text-muted">{{ $t('profile.posts') }}</p>
 									</span>
 									<span class="cursor-pointer" @click="redirect(profile.url+'?md=followers')">
 										<p class="mb-0 font-weight-bold">{{formatCount(profile.followers_count)}}</p>
-										<p class="mb-0 small text-muted">Followers</p>
+										<p class="mb-0 small text-muted">{{ $t('profile.followers') }}</p>
 									</span>
 									<span class="cursor-pointer" @click="redirect(profile.url+'?md=following')">
 										<p class="mb-0 font-weight-bold">{{formatCount(profile.following_count)}}</p>
-										<p class="mb-0 small text-muted">Following</p>
+										<p class="mb-0 small text-muted">{{ $t('profile.following') }}</p>
 									</span>
 								</div>
 							</div>
@@ -276,15 +276,15 @@
 						<footer>
 							<div class="container px-0 pb-5">
 								<p class="mb-2 small text-justify">
-									<a href="/site/about" class="text-lighter pr-2">About</a>
-									<a href="/site/help" class="text-lighter pr-2">Help</a>
-									<a href="/site/language" class="text-lighter pr-2">Language</a>
-									<a href="/discover/places" class="text-lighter pr-2">Places</a>
-									<a href="/site/privacy" class="text-lighter pr-2">Privacy</a>
-									<a href="/site/terms" class="text-lighter pr-2">Terms</a>
+									<a href="/site/about" class="text-lighter pr-2">{{ $t('navmenu.about') }}</a>
+									<a href="/site/help" class="text-lighter pr-2">{{ $t('navmenu.help') }}</a>
+									<a href="/site/language" class="text-lighter pr-2">{{ $t('navmenu.language') }}</a>
+									<a href="/discover/places" class="text-lighter pr-2">{{ $t('classic.timeline.places') }}</a>
+									<a href="/site/privacy" class="text-lighter pr-2">{{ $t('navmenu.privacy') }}</a>
+									<a href="/site/terms" class="text-lighter pr-2">{{ $t('navmenu.terms') }}</a>
 								</p>
 								<p class="mb-0 text-uppercase text-muted small">
-									<a href="https://pixelfed.org" class="text-lighter" rel="noopener" title="" data-toggle="tooltip">Powered by Pixelfed</a>
+									<a href="https://pixelfed.org" class="text-lighter" rel="noopener" title="" data-toggle="tooltip">{{ $t('powered_by_pixelfed') }}</a>
 								</p>
 							</div>
 						</footer>
@@ -306,7 +306,7 @@
 				hide-footer
 				centered
 				rounded
-				:title-html="replyStatus.account ? 'Reply to <span class=text-dark>' + replyStatus.account.username + '</span>' : ''"
+				:title-html="replyStatus.account ? $t('classic.timeline.replyTo', { user: '<span class=text-dark>' + replyStatus.account.username + '</span>' }) : ''"
 				title-tag="p"
 				title-class="font-weight-bold text-muted"
 				size="md"
@@ -334,11 +334,11 @@
 						<div class="d-flex align-items-center">
 							<div class="custom-control custom-switch mr-3">
 								<input type="checkbox" class="custom-control-input" id="replyModalCWSwitch" v-model="replyNsfw">
-								<label :class="[replyNsfw ? 'custom-control-label font-weight-bold text-dark':'custom-control-label text-lighter']" for="replyModalCWSwitch">Mark as NSFW</label>
+								<label :class="[replyNsfw ? 'custom-control-label font-weight-bold text-dark':'custom-control-label text-lighter']" for="replyModalCWSwitch">{{ $t('classic.timeline.markAsNsfw') }}</label>
 							</div>
 
 							<button class="btn btn-primary btn-sm py-2 px-4 lead text-uppercase font-weight-bold" v-on:click.prevent="commentSubmit(status, $event)" :disabled="replyText.length == 0">
-								{{replySending == true ? 'POSTING' : 'POST'}}
+								{{replySending == true ? $t('classic.timeline.posting') : $t('classic.timeline.post')}}
 							</button>
 						</div>
 					</div>
@@ -425,7 +425,7 @@
 				mpInterval: 15000,
 				mpEnabled: false,
 				mpPoller: null,
-				confirmModalTitle: 'Are you sure?',
+				confirmModalTitle: this.$t('classic.timeline.areYouSure'),
 				confirmModalIdentifer: null,
 				confirmModalType: false,
 				currentLayout: 'feed',
@@ -543,8 +543,8 @@
 					window.App.util.navatar();
 				}).catch(err => {
 					swal(
-						'Oops, something went wrong',
-						'Please reload the page.',
+						this.$t('classic.timeline.somethingWentWrong'),
+						this.$t('classic.timeline.reloadPage'),
 						'error'
 						);
 				});
@@ -603,8 +603,8 @@
 					}, 500);
 				}).catch(err => {
 					swal(
-						'Oops, something went wrong',
-						'Please reload the page.',
+						this.$t('classic.timeline.somethingWentWrong'),
+						this.$t('classic.timeline.reloadPage'),
 						'error'
 						);
 				});
@@ -774,20 +774,20 @@
 						$('.postCommentsLoader .lds-ring')
 						.attr('style','width:100%')
 						.addClass('pt-4 font-weight-bold text-muted')
-						.text('An error occurred, cannot fetch comments. Please try again later.');
+						.text(this.$t('classic.timeline.fetchCommentsError'));
 					} else {
 						switch(error.response.status) {
 							case 401:
 							$('.postCommentsLoader .lds-ring')
 							.attr('style','width:100%')
 							.addClass('pt-4 font-weight-bold text-muted')
-							.text('Please login to view.');
+							.text(this.$t('classic.timeline.loginToView'));
 							break;
 							default:
 							$('.postCommentsLoader .lds-ring')
 							.attr('style','width:100%')
 							.addClass('pt-4 font-weight-bold text-muted')
-							.text('An error occurred, cannot fetch comments. Please try again later.');
+							.text(this.$t('classic.timeline.fetchCommentsError'));
 							break;
 						}
 					}

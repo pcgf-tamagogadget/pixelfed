@@ -5,13 +5,13 @@
 				<i class="far fa-eye-slash fa-2x"></i>
 			</p>
 			<p class="h4 font-weight-bold text-center">
-				Sensitive Content
+				{{ $t('common.sensitiveContent') }}
 			</p>
 			<p class="text-center py-2 content-label-text">
-				{{ status.spoiler_text ? status.spoiler_text : 'This album may contain sensitive content.'}}
+				{{ status.spoiler_text ? status.spoiler_text : $t('compose.presenter.sensitiveAlbum') }}
 			</p>
 			<p class="mb-0">
-				<button @click="toggleContentWarning()" class="btn btn-outline-light btn-block btn-sm font-weight-bold">See Post</button>
+				<button @click="toggleContentWarning()" class="btn btn-outline-light btn-block btn-sm font-weight-bold">{{ $t('compose.presenter.seePost') }}</button>
 			</p>
 		</div>
 		<blur-hash-image
@@ -85,7 +85,7 @@
 				border-top-left-radius: 5px;
 				background: linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5));
 			">
-				<a :href="status.url" class="font-weight-bold text-light">Photo</a> by <a :href="status.account.url" class="font-weight-bold text-light">&commat;{{status.account.username}}</a> licensed under <a :href="status.media_attachments[0].license.url" class="font-weight-bold text-light">{{status.media_attachments[0].license.title}}</a>
+				<i18n path="compose.presenter.licenseCredit" tag="span"><template v-slot:photo><a :href="status.url" class="font-weight-bold text-light">{{ $t('compose.presenter.photo') }}</a></template><template v-slot:username><a :href="status.account.url" class="font-weight-bold text-light">&commat;{{ status.account.username }}</a></template><template v-slot:license><a :href="status.media_attachments[0].license.url" class="font-weight-bold text-light">{{ status.media_attachments[0].license.title }}</a></template></i18n>
 			</p>
 		</div>
 	</div>
@@ -132,7 +132,7 @@
 					return desc;
 				}
 
-				return 'Photo was not tagged with any alt text.';
+				return this.$t('compose.presenter.photoNoAlt');
 			},
 
 			keypressNavigation(e) {

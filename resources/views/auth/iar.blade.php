@@ -10,21 +10,21 @@
 
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="text-center">Join Pixelfed</h2>
-                    <p class="lead text-center mb-4">Enter Your Email</p>
+                    <h2 class="text-center">{{ __('auth.iarPage.title') }}</h2>
+                    <p class="lead text-center mb-4">{{ __('auth.iarPage.subtitle') }}</p>
 
                     <form method="POST">
                         @csrf
                         <input type="hidden" name="redirect_uri" value="{{ old('redirect_uri', $redirectUri) }}">
 
                         <div class="form-group">
-                            <label for="email">Email address</label>
+                            <label for="email">{{ __('auth.iarPage.emailLabel') }}</label>
                             <input type="email"
                                 class="form-control @error('email') is-invalid @enderror"
                                 id="email"
                                 name="email"
                                 value="{{ old('email') }}"
-                                placeholder="Enter your email address here"
+                                placeholder="{{ __('auth.iarPage.emailPlaceholder') }}"
                                 required
                                 autocomplete="email">
                             @error('email')
@@ -35,13 +35,13 @@
                         <x-captcha surface="register" wrapperClass="form-group text-center" />
 
                         <button type="submit" class="btn btn-primary btn-block">
-                            Send Verification Code
+                            {{ __('auth.iarPage.sendCode') }}
                         </button>
                     </form>
 
                     @if ($errors->any())
                     <div class="mt-4">
-                        <p class="text-center">If you need to resend the email verification, click <a href="{{ $resendUrl }}">here</a>.</p>
+                        <p class="text-center">{!! __('auth.iarPage.resendHint', ['url' => e($resendUrl)]) !!}</p>
                     </div>
                     @endif
                 </div>

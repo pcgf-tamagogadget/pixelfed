@@ -119,7 +119,7 @@
 				</div>
 				<div class="help-text">
 					<span class="small text-muted">
-						{{$storage['percentUsed']}}% used
+						{{ __('settings.home.percent_used', ['percent' => $storage['percentUsed']]) }}
 					</span>
 					<span class="small text-muted float-right">
 						{{$storage['usedPretty']}} / {{$storage['limitPretty']}}
@@ -199,13 +199,13 @@ $(document).ready(function() {
 
 		$('.delete-profile-photo').on('click', function(e) {
 			e.preventDefault();
-			if(window.confirm('{{__('settings.home.are_you_sure_you_want_to_delete_your_profile_photo')}}') == false) {
+			if(window.confirm(@json(__('settings.home.are_you_sure_you_want_to_delete_your_profile_photo'))) == false) {
 				return;
 			}
 			axios.delete('/settings/avatar').then(res => {
 				window.location.href = window.location.href;
 			}).catch(err => {
-				swal('{{__('settings.error')}}', '{{__('settings.home.an_error_occured_please_try_again_later')}}', 'error');
+				swal(@json(__('settings.error')), @json(__('settings.home.an_error_occured_please_try_again_later')), 'error');
 			});
 		});
 })

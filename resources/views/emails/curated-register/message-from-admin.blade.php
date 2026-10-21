@@ -1,21 +1,21 @@
 @component('mail::message')
-# New Message from {{config('pixelfed.domain.app')}}
+# {{ __('emails.curated.messageFromAdmin.title', ['domain' => config('pixelfed.domain.app')]) }}
 
-Hello,
+{{ __('emails.common.hello') }}
 
-You recently applied to join our Pixelfed community using the &commat;**{{ $verify->username }}** username.
+{!! __('emails.curated.messageFromAdmin.intro', ['username' => '&commat;**'.e($verify->username).'**']) !!}
 
-The admins have a message for you:
+{{ __('emails.curated.messageFromAdmin.hasMessage') }}
 
 <x-mail::panel>
 <p style="white-space: pre-wrap;">{{ $verify->message }}</p>
 </x-mail::panel>
 
-Please do not respond to this email, any replies will not be seen by our admin team.
+{{ __('emails.curated.messageFromAdmin.doNotRespond') }}
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 <a href="{{ config('app.url') }}">{{ config('pixelfed.domain.app') }}</a>
 <br>
 <hr>
-<p style="font-size:10pt;">This is an automated message on behalf of our admin team, please be aware that replies to this email cannot be monitored or responded to.</p>
+<p style="font-size:10pt;">{{ __('emails.curated.messageFromAdmin.automated') }}</p>
 @endcomponent

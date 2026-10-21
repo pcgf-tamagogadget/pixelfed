@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 
 <head>
     <meta charset="utf-8">
@@ -508,7 +508,7 @@
             @if($layout != 'compact')
             <div class="card-body">
                 <div class="view-more mb-2">
-                    <a class="font-weight-bold" href="{{$status['url']}}" target="_blank">View More on Pixelfed</a>
+                    <a class="font-weight-bold" href="{{$status['url']}}" target="_blank">{{ __('pages.status.embed.viewMore') }}</a>
                 </div>
                 <hr>
                 <div class="caption">
@@ -635,7 +635,7 @@
                 this.button = document.createElement('button');
                 this.button.type = 'button';
                 this.button.className = 'video-play';
-                this.button.setAttribute('aria-label', 'Play video');
+                this.button.setAttribute('aria-label', @json(__('pages.status.embed.playVideo')));
                 this.button.innerHTML = '<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>';
                 this.button.addEventListener('click', () => this.start());
                 this.appendChild(this.button);
@@ -677,7 +677,7 @@
                 link.href = this.dataset.url || '#';
                 link.target = '_blank';
                 link.rel = 'ugc';
-                link.textContent = "This video can't play here. Watch it on Pixelfed";
+                link.textContent = @json(__('pages.status.embed.cantPlay'));
                 this.appendChild(link);
             }
         }

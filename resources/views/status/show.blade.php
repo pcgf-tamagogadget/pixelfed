@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'title' => $desc ?? "{$user->username} shared a post",
+    'title' => $desc ?? __('pages.status.sharedPost', ['username' => $user->username]),
     'ogTitle' => $ogTitle
 ])
 
@@ -12,7 +12,7 @@ $wf = $displayName ? $s['account']['username'] . $domain : '';
 $ogTitle = $displayName ? $displayName . ' (@' . $s['account']['username'] . $domain . ')' : '';
 $mediaCount = $s['media_attachments'] && count($s['media_attachments']) ? count($s['media_attachments']) : 0;
 $mediaSuffix = $mediaCount < 2 ? '' : 's';
-$ogDescription = $s['content_text'] ? $s['content_text'] : 'Attached: ' . $mediaCount . ' ' . $s['media_attachments'][0]['type'] . $mediaSuffix;
+$ogDescription = $s['content_text'] ? $s['content_text'] : __('pages.status.attached', ['count' => $mediaCount, 'type' => $s['media_attachments'][0]['type'] . $mediaSuffix]);
 if($s['content_text']) {
     $captionLen = strlen($s['content_text']);
     $captionPreview = $captionLen > 40 ? substr($s['content_text'], 0, 40) . '…' : $s['content_text'];
@@ -21,7 +21,7 @@ $desc = false;
 if($displayName && $captionPreview) {
     $desc = $displayName . ': "' . $captionPreview . '" - Pixelfed';
 } else if($displayName) {
-    $desc = $displayName . ': Shared a new post - Pixelfed';
+    $desc = __('pages.status.sharedNewPost', ['name' => $displayName]);
 }
 
 @endphp
@@ -29,7 +29,7 @@ if($displayName && $captionPreview) {
 @section('content')
 <noscript>
   <div class="container">
-    <p class="pt-5 text-center lead">Please enable javascript to view this content.</p>
+    <p class="pt-5 text-center lead">{{ __('profile.page.enableJs') }}</p>
   </div>
 </noscript>
 <div class="mt-md-4"></div>

@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <div class="title d-flex align-items-center" style="gap: 1rem;">
             <p class="mb-0"><a href="/settings/home"><i class="far fa-chevron-left fa-lg"></i></a></p>
-            <h3 class="font-weight-bold mb-0">Parental Controls</h3>
+            <h3 class="font-weight-bold mb-0">{{ __('settings.parental_controls') }}</h3>
         </div>
     </div>
 
@@ -23,7 +23,7 @@
                     <p class="font-weight-bold mb-0" style="line-height: 1.5;">&commat;{{ $child->childAccount()['username'] }}</p>
                     <p class="small text-muted mb-0" style="line-height: 1;">{{ $child->childAccount()['display_name'] }}</p>
                     @else
-                    <p class="font-weight-light mb-0 text-danger" style="line-height: 1.5;">Invite Pending</p>
+                    <p class="font-weight-light mb-0 text-danger" style="line-height: 1.5;">{{ __('settings.parental_controls.invite_pending') }}</p>
                     <p class="mb-0 small" style="line-height: 1;">{{ $child->email }}</p>
                     @endif
                 </div>
@@ -42,18 +42,18 @@
     </div>
     @else
     <div class="d-flex flex-grow-1 bg-light mb-3 rounded p-4">
-        <p>You are not managing any children accounts.</p>
+        <p>{{ __('settings.parental_controls.you_are_not_managing_any_children_accounts') }}</p>
     </div>
     @endif
 
     <div class="d-flex justify-content-between align-items-center">
         <a class="btn btn-outline-dark font-weight-bold py-2 px-4" href="{{ route('settings.pc.add') }}">
-            <i class="far fa-plus mr-2"></i> Add Child
+            <i class="far fa-plus mr-2"></i> {{ __('settings.parental_controls.add_child_button') }}
         </a>
 
         <div class="font-weight-bold">
             <span>{{ $children->total() }}/{{ config('instance.parental_controls.limits.max_children') }}</span>
-            <span>children added</span>
+            <span>{{ __('settings.parental_controls.children_added') }}</span>
         </div>
     </div>
 

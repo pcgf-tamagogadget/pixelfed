@@ -6,27 +6,27 @@
 					<img :src="profile.avatar" class="rounded-circle border mr-3" width="32px" height="32px">
 					<div class="media-body">
 						<div class="reply-form form-group mb-0">
-							<input v-if="!composeText || composeText.length < 40" class="form-control rounded-pill" placeholder="Add a comment..." v-model="composeText">
-							<textarea v-else class="form-control" placeholder="Add a comment..." v-model="composeText" rows="4"></textarea>
+							<input v-if="!composeText || composeText.length < 40" class="form-control rounded-pill" :placeholder="$t('classic.commentFeed.addComment')" v-model="composeText">
+							<textarea v-else class="form-control" :placeholder="$t('classic.commentFeed.addComment')" v-model="composeText" rows="4"></textarea>
 							<div v-if="composeText && composeText.length" class="btn btn-primary btn-sm rounded-pill font-weight-bold px-3" @click="submitComment">
 								<span v-if="postingComment">
 									<div class="spinner-border spinner-border-sm" role="status">
-										<span class="sr-only">Loading...</span>
+										<span class="sr-only">{{ $t('common.loading') }}</span>
 									</div>
 								</span>
-								<span v-else>Post</span>
+								<span v-else>{{ $t('classic.commentFeed.post') }}</span>
 							</div>
 						</div>
 
 						<div v-if="composeText" class="reply-options">
 							<select class="form-control form-control-sm rounded-pill font-weight-bold" v-model="visibility">
-								<option value="public">Public</option>
-								<option value="private">Followers Only</option>
+								<option value="public">{{ $t('classic.commentFeed.public') }}</option>
+								<option value="private">{{ $t('classic.commentFeed.followersOnly') }}</option>
 							</select>
 							<div class="custom-control custom-switch">
 								<input type="checkbox" class="custom-control-input" id="sensitive" v-model="sensitive">
 								<label class="custom-control-label font-weight-bold text-lighter" for="sensitive">
-									<span class="d-none d-md-inline-block">Sensitive/</span>NSFW
+									<span class="d-none d-md-inline-block">{{ $t('classic.commentFeed.sensitivePrefix') }}</span>NSFW
 								</label>
 							</div>
 							<span class="text-muted font-weight-bold small">
@@ -43,11 +43,11 @@
 						<i class="fas fa-comment mr-1"></i>
 						{{ formatCount(pagination.total) }}
 					</p>
-					<h4 class="font-weight-bold mb-0 text-lighter">Comments</h4>
+					<h4 class="font-weight-bold mb-0 text-lighter">{{ $t('classic.commentFeed.comments') }}</h4>
 					<div class="form-group mb-0">
 						<select class="form-control form-control-sm">
-							<option>New</option>
-							<option>Oldest</option>
+							<option>{{ $t('classic.commentFeed.new') }}</option>
+							<option>{{ $t('classic.commentFeed.oldest') }}</option>
 						</select>
 					</div>
 				</div>
@@ -58,10 +58,10 @@
 			<div v-if="pagination.links.hasOwnProperty('next')" class="card card-body shadow-none rounded-0 border border-top-0 py-3">
 				<button v-if="loadingMoreComments" class="btn btn-primary" disabled>
 					<div class="spinner-border spinner-border-sm" role="status">
-						<span class="sr-only">Loading...</span>
+						<span class="sr-only">{{ $t('common.loading') }}</span>
 					</div>
 				</button>
-				<button v-else class="btn btn-primary font-weight-bold" @click="loadMoreComments">Load more comments</button>
+				<button v-else class="btn btn-primary font-weight-bold" @click="loadMoreComments">{{ $t('classic.commentFeed.loadMore') }}</button>
 			</div>
 
 			<context-menu
@@ -154,14 +154,14 @@
 									$('.postCommentsLoader .lds-ring')
 										.attr('style','width:100%')
 										.addClass('pt-4 font-weight-bold text-muted')
-										.text('Please login to view.');
+										.text(this.$t('classic.commentFeed.loginToView'));
 								break;
 
 								default:
 									$('.postCommentsLoader .lds-ring')
 										.attr('style','width:100%')
 										.addClass('pt-4 font-weight-bold text-muted')
-										.text('An error occurred, cannot fetch comments. Please try again later.');
+										.text(this.$t('classic.commentFeed.fetchError'));
 								break;
 							}
 						}
@@ -222,7 +222,7 @@
 					self.feed.unshift(entity);
 					self.pagination.total++;
 				}).catch(err => {
-					swal('Oops!', 'An error occured, please try again later.', 'error');
+					swal(this.$t('common.oops'), this.$t('classic.commentFeed.errorTryLater'), 'error');
 					self.postingComment = false;
 				})
 			},

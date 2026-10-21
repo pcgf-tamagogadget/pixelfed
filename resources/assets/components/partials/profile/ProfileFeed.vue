@@ -304,10 +304,10 @@
             <div class="col-12 col-md-8 text-center">
                 <img src="/img/illustrations/dk-secure-feed.svg" class="img-fluid" style="opacity: 0.6;">
                 <p class="h3 text-dark font-weight-bold mt-3 py-3">{{ $t("profile.private")}}</p>
-                <div class="lead text-muted px-3">
-                    Only approved followers can see <span class="font-weight-bold text-dark text-break">&commat;{{ profile.acct }}</span>'s <br />
-                    posts. To request access, click <span class="font-weight-bold">Follow</span>.
-                </div>
+                <i18n path="spa.profileFeed.privateNotice" tag="div" class="lead text-muted px-3">
+                    <template v-slot:username><span class="font-weight-bold text-dark text-break">&commat;{{ profile.acct }}</span></template>
+                    <template v-slot:follow><span class="font-weight-bold">{{ $t('profile.follow') }}</span></template>
+                </i18n>
             </div>
         </div>
 
@@ -327,11 +327,11 @@
                                     <span>{{ collection.post_count }} {{ $t("profile.posts")}}</span>
                                     <span>&middot;</span>
                                     <span v-if="collection.visibility === 'public'" class="text-dark">{{ $t("profile.public")}}</span>
-                                    <span v-else-if="collection.visibility === 'private'" class="text-dark"><i class="far fa-lock fa-sm"></i> Followers Only</span>
+                                    <span v-else-if="collection.visibility === 'private'" class="text-dark"><i class="far fa-lock fa-sm"></i> {{ $t('spa.profileFeed.followersOnly') }}</span>
                                     <span v-else-if="collection.visibility === 'draft'" class="primary"><i class="far fa-lock fa-sm"></i> {{ $t("profile.draft")}}</span>
                                     <span>&middot;</span>
-                                    <span v-if="collection.published_at">Created {{ timeago(collection.published_at) }} ago</span>
-                                    <span v-else class="text-warning">UNPUBLISHED</span>
+                                    <span v-if="collection.published_at">{{ $t('spa.profileFeed.createdAgo', { time: timeago(collection.published_at) }) }}</span>
+                                    <span v-else class="text-warning">{{ $t('spa.profileFeed.unpublished') }}</span>
                                 </p>
                             </div>
                         </div>
@@ -1165,7 +1165,7 @@
                 const item = sourceArray[this.postIndex];
 
                 if(item.bookmarked) {
-                    if(!window.confirm('Are you sure you want to unbookmark this post?')) {
+                    if(!window.confirm(this.$t('spa.profileFeed.confirmUnbookmark'))) {
                         return;
                     }
                 }
@@ -1177,8 +1177,8 @@
                     item.bookmarked = !item.bookmarked;
                 })
                 .catch(err => {
-                    this.$bvToast.toast('Cannot bookmark post at this time.', {
-                        title: 'Bookmark Error',
+                    this.$bvToast.toast(this.$t('spa.profileFeed.bookmarkErrorText'), {
+                        title: this.$t('spa.profileFeed.bookmarkErrorTitle'),
                         variant: 'danger',
                         autoHideDelay: 5000
                     });

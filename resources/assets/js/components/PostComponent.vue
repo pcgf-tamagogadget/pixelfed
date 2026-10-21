@@ -5,8 +5,8 @@
 	</div>
 	<div v-if="loaded && warning" class="bg-white mt-n4 pt-3 border-bottom">
 		<div class="container">
-			<p class="text-center font-weight-bold">You are blocking this account</p>
-			<p class="text-center font-weight-bold"><a href="#" class="btn btn-primary font-weight-bold px-5" @click.prevent="warning = false; fetchData()">View Status</a></p>
+			<p class="text-center font-weight-bold">{{ $t('profile.blocking') }}</p>
+			<p class="text-center font-weight-bold"><a href="#" class="btn btn-primary font-weight-bold px-5" @click.prevent="warning = false; fetchData()">{{ $t('classic.post.viewStatus') }}</a></p>
 		</div>
 	</div>
 	<div v-if="loaded && warning == false" class="postComponent">
@@ -16,17 +16,17 @@
 				<div class="d-flex d-md-none align-items-center justify-content-between card-header bg-white w-100">
 					<div class="d-flex">
 						<div class="status-avatar mr-2" @click="redirect(statusProfileUrl)">
-							<img :src="statusAvatar" width="24px" height="24px" style="border-radius:12px;" class="cursor-pointer" :alt="`${statusUsername}'s avatar`">
+							<img :src="statusAvatar" width="24px" height="24px" style="border-radius:12px;" class="cursor-pointer" :alt="$t('classic.post.avatarAlt', { username: statusUsername })">
 						</div>
 						<div class="username">
 							<span class="username-link font-weight-bold text-dark cursor-pointer" @click="redirect(statusProfileUrl)">{{ statusUsername }}</span>
-							<span v-if="status.account.is_admin" class="fa-stack" title="Admin Account" data-toggle="tooltip" style="height:1em; line-height:1em; max-width:19px;">
+							<span v-if="status.account.is_admin" class="fa-stack" :title="$t('classic.post.adminAccount')" data-toggle="tooltip" style="height:1em; line-height:1em; max-width:19px;">
 								<i class="fas fa-certificate text-danger fa-stack-1x"></i>
 								<i class="fas fa-crown text-white fa-sm fa-stack-1x" style="font-size:7px;"></i>
 							</span>
 							<p class="mb-0" style="font-size: 10px;">
 										<span v-if="loaded && status.taggedPeople.length" class="mb-0">
-											<span class="font-weight-light cursor-pointer" style="color:#718096" title="Tagged People" data-toggle="tooltip" data-placement="bottom" @click="showTaggedPeopleModal()"><i class="fas fa-tag text-lighter"></i> <span class="font-weight-bold">{{status.taggedPeople.length}} Tagged People</span></span>
+											<span class="font-weight-light cursor-pointer" style="color:#718096" :title="$t('classic.post.taggedPeople')" data-toggle="tooltip" data-placement="bottom" @click="showTaggedPeopleModal()"><i class="fas fa-tag text-lighter"></i> <span class="font-weight-bold">{{ $t('classic.post.taggedPeopleCount', { count: status.taggedPeople.length }) }}</span></span>
 										</span>
 										<span v-if="loaded && status.place != null && status.taggedPeople.length" class="px-2 font-weight-bold text-lighter">&#8226;</span>
 										<span v-if="loaded && status.place != null" class="mb-0 cursor-pointer text-truncate" style="color:#718096" @click="redirect('/discover/places/' + status.place.id + '/' + status.place.slug)"><i class="fas fa-map-marked-alt text-lighter"></i> <span class="font-weight-bold">{{status.place.name}}, {{status.place.country}}</span></span>
@@ -36,7 +36,7 @@
 					<div v-if="user != false" class="float-right">
 						<div class="post-actions">
 						<div>
-							<button class="btn btn-link text-dark no-caret" title="Post options" @click="ctxMenu()">
+							<button class="btn btn-link text-dark no-caret" :title="$t('classic.post.postOptions')" @click="ctxMenu()">
 								<span class="fas fa-ellipsis-v text-muted"></span>
 							</button>
 							</div>
@@ -73,7 +73,7 @@
 								</div>
 
 								<div v-else class="w-100">
-									<p class="text-center p-0 font-weight-bold text-white">Error: Problem rendering preview.</p>
+									<p class="text-center p-0 font-weight-bold text-white">{{ $t('classic.post.renderError') }}</p>
 								</div>
 							</div>
 					</div>
@@ -82,17 +82,17 @@
 						<div class="d-md-flex d-none align-items-center justify-content-between card-header py-3 bg-white">
 							<div class="d-flex align-items-center status-username text-truncate">
 								<div class="status-avatar mr-2" @click="redirect(statusProfileUrl)">
-									<img :src="statusAvatar" width="24px" height="24px" style="border-radius:12px;" class="cursor-pointer" :alt="`${statusUsername}'s avatar`">
+									<img :src="statusAvatar" width="24px" height="24px" style="border-radius:12px;" class="cursor-pointer" :alt="$t('classic.post.avatarAlt', { username: statusUsername })">
 								</div>
 								<div class="username">
 									<span class="username-link font-weight-bold text-dark cursor-pointer" @click="redirect(statusProfileUrl)">{{ statusUsername }}</span>
-									<span v-if="status.account.is_admin" class="fa-stack" title="Admin Account" data-toggle="tooltip" style="height:1em; line-height:1em; max-width:19px;">
+									<span v-if="status.account.is_admin" class="fa-stack" :title="$t('classic.post.adminAccount')" data-toggle="tooltip" style="height:1em; line-height:1em; max-width:19px;">
 										<i class="fas fa-certificate text-danger fa-stack-1x"></i>
 										<i class="fas fa-crown text-white fa-sm fa-stack-1x" style="font-size:7px;"></i>
 									</span>
 									<p class="mb-0" style="font-size: 10px;">
 										<span v-if="loaded && status.taggedPeople.length" class="mb-0">
-											<span class="font-weight-light cursor-pointer" style="color:#718096" title="Tagged People" data-toggle="tooltip" data-placement="bottom" @click="showTaggedPeopleModal()"><i class="fas fa-tag text-lighter"></i> <span class="font-weight-bold">{{status.taggedPeople.length}} Tagged People</span></span>
+											<span class="font-weight-light cursor-pointer" style="color:#718096" :title="$t('classic.post.taggedPeople')" data-toggle="tooltip" data-placement="bottom" @click="showTaggedPeopleModal()"><i class="fas fa-tag text-lighter"></i> <span class="font-weight-bold">{{ $t('classic.post.taggedPeopleCount', { count: status.taggedPeople.length }) }}</span></span>
 										</span>
 										<span v-if="loaded && status.place != null && status.taggedPeople.length" class="px-2 font-weight-bold text-lighter">&#8226;</span>
 										<span v-if="loaded && status.place != null" class="mb-0 cursor-pointer text-truncate" style="color:#718096" @click="redirect('/discover/places/' + status.place.id + '/' + status.place.slug)"><i class="fas fa-map-marked-alt text-lighter"></i> <span class="font-weight-bold">{{status.place.name}}, {{status.place.country}}</span></span>
@@ -102,7 +102,7 @@
 							<div class="float-right">
 								<div class="post-actions">
 									<div v-if="user != false">
-										<button class="btn btn-link text-dark no-caret" title="Post options" @click="ctxMenu()">
+										<button class="btn btn-link text-dark no-caret" :title="$t('classic.post.postOptions')" @click="ctxMenu()">
 											<span class="fas fa-ellipsis-v text-muted"></span>
 										</button>
 									</div>
@@ -117,8 +117,8 @@
 											<span class="py-3">
 												<a class="text-dark font-weight-bold mr-1" :href="status.account.url" v-bind:title="status.account.username">{{truncate(status.account.username,15)}}</a>
 												<span class="text-break">
-													<span class="font-italic text-muted">This comment may contain sensitive material</span>
-													<span class="text-primary cursor-pointer pl-1" @click="status.sensitive = false">Show</span>
+													<span class="font-italic text-muted">{{ $t('classic.post.sensitiveComment') }}</span>
+													<span class="text-primary cursor-pointer pl-1" @click="status.sensitive = false">{{ $t('classic.post.show') }}</span>
 												</span>
 											</span>
 										</div>
@@ -134,12 +134,12 @@
 									<div v-if="showComments">
 										<div class="postCommentsLoader text-center py-2">
 											<div class="spinner-border" role="status">
-												<span class="sr-only">Loading...</span>
+												<span class="sr-only">{{ $t('common.loading') }}</span>
 											</div>
 										</div>
 										<div class="postCommentsContainer d-none">
 											<p class="mb-1 text-center load-more-link d-none my-4">
-												<a href="#" class="text-dark" v-on:click="loadMore" title="Load more comments" data-toggle="tooltip" data-placement="bottom">
+												<a href="#" class="text-dark" v-on:click="loadMore" :title="$t('classic.post.loadMoreComments')" data-toggle="tooltip" data-placement="bottom">
 													<svg class="bi bi-plus-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="font-size:2em;">  <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>  <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>
 												</a>
 											</p>
@@ -151,8 +151,8 @@
 															<span class="py-3">
 																<a class="text-dark font-weight-bold mr-1" :href="profileUrl(reply)" v-bind:title="reply.account.username">{{!reply.account.local ? '@' : '' }}{{truncate(reply.account.username,15)}}</a>
 																<span class="text-break">
-																	<span class="font-italic text-muted">This comment may contain sensitive material</span>
-																	<span class="text-primary cursor-pointer pl-1" @click="reply.sensitive = false;">Show</span>
+																	<span class="font-italic text-muted">{{ $t('classic.post.sensitiveComment') }}</span>
+																	<span class="text-primary cursor-pointer pl-1" @click="reply.sensitive = false;">{{ $t('classic.post.show') }}</span>
 																</span>
 															</span>
 														</div>
@@ -170,11 +170,11 @@
 															<p class="">
 																<a v-once class="text-muted mr-3 text-decoration-none small" style="width: 20px;" v-text="timeAgo(reply.created_at)" :href="permalinkUrl(reply)"></a>
 																<span v-if="reply.favourites_count" class="text-muted comment-reaction font-weight-bold mr-3">{{reply.favourites_count == 1 ? '1 like' : reply.favourites_count + ' likes'}}</span>
-																<span class="text-muted comment-reaction font-weight-bold cursor-pointer" v-on:click="replyFocus(reply, index, true)">Reply</span>
+																<span class="text-muted comment-reaction font-weight-bold cursor-pointer" v-on:click="replyFocus(reply, index, true)">{{ $t('classic.post.reply') }}</span>
 															</p>
 															<div v-if="reply.reply_count > 0" class="cursor-pointer" v-on:click="toggleReplies(reply)">
 																 <span class="show-reply-bar"></span>
-																 <span class="comment-reaction font-weight-bold text-muted">{{reply.thread ? 'Hide' : 'View'}} Replies ({{reply.reply_count}})</span>
+																 <span class="comment-reaction font-weight-bold text-muted">{{reply.thread ? $t('classic.post.hideReplies', { count: reply.reply_count }) : $t('classic.post.viewReplies', { count: reply.reply_count })}}</span>
 															</div>
 															<div v-if="reply.thread == true" class="comment-thread">
 																<div v-for="(s, sindex) in reply.replies" class="pb-3 media" :key="'cr' + s.id + '_' + index">
@@ -208,25 +208,28 @@
 							</div>
 							<div v-if="reactionBarLoading" class="card-body flex-grow-0 py-4 text-center">
 								<div class="spinner-border" role="status">
-									<span class="sr-only">Loading...</span>
+									<span class="sr-only">{{ $t('common.loading') }}</span>
 								</div>
 							</div>
 							<div v-else class="card-body flex-grow-0 py-1">
 								<div v-if="loaded && user.hasOwnProperty('id')" class="reactions my-2 pb-1 d-flex justify-content-between">
-									<h3 v-bind:class="[reactions.liked ? 'fas fa-heart text-danger mr-3 m-0 cursor-pointer' : 'far fa-heart pr-3 m-0 like-btn cursor-pointer']" title="Like" v-on:click="likeStatus"></h3>
-									<h3 v-if="!status.comments_disabled" class="far fa-comment mr-3 m-0 cursor-pointer" title="Comment" v-on:click="replyFocus(status)"></h3>
+									<h3 v-bind:class="[reactions.liked ? 'fas fa-heart text-danger mr-3 m-0 cursor-pointer' : 'far fa-heart pr-3 m-0 like-btn cursor-pointer']" :title="$t('classic.post.like')" v-on:click="likeStatus"></h3>
+									<h3 v-if="!status.comments_disabled" class="far fa-comment mr-3 m-0 cursor-pointer" :title="$t('classic.post.comment')" v-on:click="replyFocus(status)"></h3>
 								 <h3 @click="redirect(status.media_attachments[0].url)" class="fas fa-expand m-0 mr-3 cursor-pointer"></h3>
 									 <!-- <h3 v-if="status.visibility == 'public'" v-bind:class="[reactions.bookmarked ? 'fas fa-bookmark text-warning m-0 float-right cursor-pointer' : 'far fa-bookmark m-0 float-right cursor-pointer']" title="Bookmark" v-on:click="bookmarkStatus"></h3> -->
-									<h3 v-if="status.visibility == 'public'" v-bind:class="[reactions.bookmarked ? 'fas fa-bookmark text-warning m-0 mr-3 cursor-pointer' : 'far fa-bookmark m-0 mr-3 cursor-pointer']" title="Bookmark" v-on:click="bookmarkStatus"></h3>
-									<h3 v-if="status.visibility == 'public'" v-bind:class="[reactions.shared ? 'fas fa-retweet m-0 text-primary cursor-pointer' : 'fas fa-retweet m-0 share-btn cursor-pointer']" title="Share" v-on:click="shareStatus"></h3>
+									<h3 v-if="status.visibility == 'public'" v-bind:class="[reactions.bookmarked ? 'fas fa-bookmark text-warning m-0 mr-3 cursor-pointer' : 'far fa-bookmark m-0 mr-3 cursor-pointer']" :title="$t('classic.post.bookmark')" v-on:click="bookmarkStatus"></h3>
+									<h3 v-if="status.visibility == 'public'" v-bind:class="[reactions.shared ? 'fas fa-retweet m-0 text-primary cursor-pointer' : 'fas fa-retweet m-0 share-btn cursor-pointer']" :title="$t('classic.post.share')" v-on:click="shareStatus"></h3>
 								</div>
 								<div class="reaction-counts mb-0">
 									<div v-if="status.liked_by.username && status.liked_by.username !== user.username" class="likes mb-1">
-										<span class="like-count">Liked by
-											<a class="font-weight-bold text-dark" :href="status.liked_by.url">{{status.liked_by.username}}</a>
-											<span v-if="status.liked_by.others == true">
-												and <span class="font-weight-bold text-dark cursor-pointer" @click="likesModal"><span v-if="status.liked_by.total_count_pretty">{{status.liked_by.total_count_pretty}}</span> others</span>
-											</span>
+										<span class="like-count">
+											<i18n v-if="status.liked_by.others == true" path="classic.post.likedByOthers" tag="span">
+												<template v-slot:user><a class="font-weight-bold text-dark" :href="status.liked_by.url">{{status.liked_by.username}}</a></template>
+												<template v-slot:others><span class="font-weight-bold text-dark cursor-pointer" @click="likesModal"><span v-if="status.liked_by.total_count_pretty">{{status.liked_by.total_count_pretty}}</span> {{ $t('classic.post.others') }}</span></template>
+											</i18n>
+											<i18n v-else path="classic.post.likedBy" tag="span">
+												<template v-slot:user><a class="font-weight-bold text-dark" :href="status.liked_by.url">{{status.liked_by.username}}</a></template>
+											</i18n>
 										</span>
 									</div>
 								</div>
@@ -234,17 +237,17 @@
 									<a v-bind:href="statusUrl" class="small text-muted" :title="status.created_at">
 										{{timestampFormat()}}
 									</a>
-									<span class="small text-muted text-capitalize cursor-pointer" v-on:click="visibilityModal">{{status.visibility}}</span>
+									<span class="small text-muted text-capitalize cursor-pointer" v-on:click="visibilityModal">{{ $te('classic.post.visibility.' + status.visibility) ? $t('classic.post.visibility.' + status.visibility) : status.visibility }}</span>
 								</div>
 							</div>
 						</div>
 						<div v-if="showComments" class="card-footer bg-white sticky-md-bottom p-0">
 							<div v-if="user.length == 0" class="comment-form-guest p-3">
-								<a href="/login">Login</a> to like or comment.
+								<i18n path="classic.post.loginToInteract" tag="span"><template v-slot:login><a href="/login">{{ $t('classic.post.login') }}</a></template></i18n>
 							</div>
 							<form v-else class="border-0 rounded-0 align-middle" method="post" action="/i/comment" :data-id="statusId" data-truncate="false">
-								<textarea class="form-control border-0 rounded-0" name="comment" placeholder="Add a comment…" autocomplete="off" autocorrect="off" style="height:56px;line-height: 18px;max-height:80px;resize: none; padding-right:4.2rem;" @click="replyFocus(status)"></textarea>
-								<input type="button" value="Post" class="d-inline-block btn btn-link font-weight-bold reply-btn text-decoration-none" disabled/>
+								<textarea class="form-control border-0 rounded-0" name="comment" :placeholder="$t('classic.post.addComment')" autocomplete="off" autocorrect="off" style="height:56px;line-height: 18px;max-height:80px;resize: none; padding-right:4.2rem;" @click="replyFocus(status)"></textarea>
+								<input type="button" :value="$t('classic.post.post')" class="d-inline-block btn btn-link font-weight-bold reply-btn text-decoration-none" disabled/>
 							</form>
 						</div>
 					</div>
@@ -252,7 +255,7 @@
 				</div>
 			</div>
 			<div class="container" v-if="showProfileMorePosts">
-				<p class="text-lighter px-3 mt-5" style="font-weight: 600;font-size: 15px;">More posts from <a :href="'/'+statusUsername" class="text-dark">{{this.statusUsername}}</a></p>
+				<p class="text-lighter px-3 mt-5" style="font-weight: 600;font-size: 15px;"><i18n path="classic.post.morePostsFrom" tag="span"><template v-slot:user><a :href="'/'+statusUsername" class="text-dark">{{this.statusUsername}}</a></template></i18n></p>
 				<div class="profile-timeline mt-md-4">
 					<div class="row">
 						<div class="col-4 p-1 p-md-3" v-for="(s, index) in profileMorePosts" :key="'tlob:'+index">
@@ -289,7 +292,7 @@
 
 					<div v-if="loading || !user || !reactions" class="text-center">
 						<div class="spinner-border" role="status">
-						  <span class="sr-only">Loading...</span>
+						  <span class="sr-only">{{ $t('common.loading') }}</span>
 						</div>
 					</div>
 					<div v-else>
@@ -322,13 +325,13 @@
 			id="l-modal"
 			hide-footer
 			centered
-			title="Likes"
+			:title="$t('classic.post.likes')"
 			body-class="list-group-flush py-3 px-0">
 			<div v-if="likedLoaded" class="list-group">
 				<div class="list-group-item border-0 py-1" v-for="(user, index) in likes" :key="'modal_likes_'+index">
 					<div class="media">
 						<a :href="user.url">
-							<img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="user.username + '’s avatar'" width="30px" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+							<img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="$t('classic.post.avatarAlt', { username: user.username })" width="30px" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
 						</a>
 						<div class="media-body">
 							<p class="mb-0" style="font-size: 14px">
@@ -382,51 +385,51 @@
 					<div class="form-check mr-3">
 						<input class="form-check-input" type="checkbox" v-model="ctxEmbedShowCaption" :disabled="ctxEmbedCompactMode == true">
 						<label class="form-check-label font-weight-light">
-							Show Caption
+							{{ $t('menu.showCaption') }}
 						</label>
 					</div>
 					<div class="form-check mr-3">
 						<input class="form-check-input" type="checkbox" v-model="ctxEmbedShowLikes" :disabled="ctxEmbedCompactMode == true">
 						<label class="form-check-label font-weight-light">
-							Show Likes
+							{{ $t('menu.showLikes') }}
 						</label>
 					</div>
 					<div class="form-check">
 						<input class="form-check-input" type="checkbox" v-model="ctxEmbedCompactMode">
 						<label class="form-check-label font-weight-light">
-							Compact Mode
+							{{ $t('menu.compactMode') }}
 						</label>
 					</div>
 				</div>
 				<hr>
-				<button :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed': 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'" @click="ctxCopyEmbed" :disabled="copiedEmbed">{{copiedEmbed ? 'Embed Code Copied!' : 'Copy Embed Code'}}</button>
-				<p class="mb-0 px-2 small text-muted">By using this embed, you agree to our <a href="/site/terms">Terms of Use</a></p>
+				<button :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed': 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'" @click="ctxCopyEmbed" :disabled="copiedEmbed">{{copiedEmbed ? $t('classic.post.embedCopied') : $t('classic.post.copyEmbed')}}</button>
+				<i18n path="classic.post.embedAgree" tag="p" class="mb-0 px-2 small text-muted"><template v-slot:terms><a href="/site/terms">{{ $t('site.terms') }}</a></template></i18n>
 			</div>
 		</b-modal>
 		<b-modal ref="taggedModal"
 			id="tagged-modal"
 			hide-footer
 			centered
-			title="Tagged People"
+			:title="$t('classic.post.taggedPeople')"
 			body-class="list-group-flush py-3 px-0">
 			<div class="list-group">
 				<div class="list-group-item border-0 py-1" v-for="(taguser, index) in status.taggedPeople" :key="'modal_taggedpeople_'+index">
 					<div class="media">
 						<a :href="'/'+taguser.username">
-							<img class="mr-3 rounded-circle box-shadow" :src="taguser.avatar" :alt="taguser.username + '’s avatar'" width="30px">
+							<img class="mr-3 rounded-circle box-shadow" :src="taguser.avatar" :alt="$t('classic.post.avatarAlt', { username: taguser.username })" width="30px">
 						</a>
 						<div class="media-body">
 							<p class="pt-1 d-flex justify-content-between" style="font-size: 14px">
 								<a :href="'/'+taguser.username" class="font-weight-bold text-dark">
 									{{taguser.username}}
 								</a>
-								<button v-if="taguser.id == user.id" class="btn btn-outline-primary btn-sm py-1 px-3" @click="untagMe()">Untag Me</button>
+								<button v-if="taguser.id == user.id" class="btn btn-outline-primary btn-sm py-1 px-3" @click="untagMe()">{{ $t('classic.post.untagMe') }}</button>
 							</p>
 						</div>
 					</div>
 				</div>
 			</div>
-			<p class="mb-0 text-center small text-muted font-weight-bold"><a href="/site/kb/tagging-people">Learn more</a> about Tagging People.</p>
+			<i18n path="classic.post.learnMoreTagging" tag="p" class="mb-0 text-center small text-muted font-weight-bold"><template v-slot:learnMore><a href="/site/kb/tagging-people">{{ $t('classic.post.learnMore') }}</a></template></i18n>
 		</b-modal>
 		<b-modal ref="ctxModal"
 			id="ctx-modal"
@@ -437,18 +440,18 @@
 			size="sm"
 			body-class="list-group-flush p-0 rounded">
 			<div class="list-group text-center">
-				<div v-if="status && status.local == true" class="list-group-item rounded cursor-pointer" @click="showEmbedPostModal()">Embed</div>
-				<div class="list-group-item rounded cursor-pointer" @click="ctxMenuCopyLink()">Copy Link</div>
-				<div v-if="status && user.id == status.account.id" class="list-group-item rounded cursor-pointer" @click="toggleCommentVisibility">{{ showComments ? 'Disable' : 'Enable'}} Comments</div>
-				<a v-if="status && user.id == status.account.id" class="list-group-item rounded cursor-pointer text-dark text-decoration-none" :href="editUrl()">Edit</a>
-				<div v-if="user && user.is_admin == true" class="list-group-item rounded cursor-pointer" @click="ctxModMenu()">Moderation Tools</div>
-				<div v-if="status && user.id != status.account.id && !relationship.blocking && !user.is_admin" class="list-group-item rounded cursor-pointer text-danger" @click="blockProfile()">Block</div>
-				<div v-if="status && user.id != status.account.id && relationship.blocking && !user.is_admin" class="list-group-item rounded cursor-pointer text-danger" @click="unblockProfile()">Unblock</div>
-				<a v-if="user && user.id != status.account.id && !user.is_admin" class="list-group-item rounded cursor-pointer text-danger text-decoration-none" :href="reportUrl()">Report</a>
-				<div v-if="status && user.id == status.account.id && status.visibility != 'archived'" class="list-group-item rounded cursor-pointer text-danger" @click="archivePost(status)">Archive</div>
-				<div v-if="status && user.id == status.account.id && status.visibility == 'archived'" class="list-group-item rounded cursor-pointer text-danger" @click="unarchivePost(status)">Unarchive</div>
-				<div v-if="status && (user.is_admin || user.id == status.account.id)" class="list-group-item rounded cursor-pointer text-danger" @click="deletePost(ctxMenuStatus)">Delete</div>
-				<div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxMenu()">Cancel</div>
+				<div v-if="status && status.local == true" class="list-group-item rounded cursor-pointer" @click="showEmbedPostModal()">{{ $t('menu.embed') }}</div>
+				<div class="list-group-item rounded cursor-pointer" @click="ctxMenuCopyLink()">{{ $t('common.copyLink') }}</div>
+				<div v-if="status && user.id == status.account.id" class="list-group-item rounded cursor-pointer" @click="toggleCommentVisibility">{{ showComments ? $t('classic.post.disableComments') : $t('classic.post.enableComments') }}</div>
+				<a v-if="status && user.id == status.account.id" class="list-group-item rounded cursor-pointer text-dark text-decoration-none" :href="editUrl()">{{ $t('classic.post.edit') }}</a>
+				<div v-if="user && user.is_admin == true" class="list-group-item rounded cursor-pointer" @click="ctxModMenu()">{{ $t('menu.moderationTools') }}</div>
+				<div v-if="status && user.id != status.account.id && !relationship.blocking && !user.is_admin" class="list-group-item rounded cursor-pointer text-danger" @click="blockProfile()">{{ $t('classic.post.block') }}</div>
+				<div v-if="status && user.id != status.account.id && relationship.blocking && !user.is_admin" class="list-group-item rounded cursor-pointer text-danger" @click="unblockProfile()">{{ $t('classic.post.unblock') }}</div>
+				<a v-if="user && user.id != status.account.id && !user.is_admin" class="list-group-item rounded cursor-pointer text-danger text-decoration-none" :href="reportUrl()">{{ $t('menu.report') }}</a>
+				<div v-if="status && user.id == status.account.id && status.visibility != 'archived'" class="list-group-item rounded cursor-pointer text-danger" @click="archivePost(status)">{{ $t('menu.archive') }}</div>
+				<div v-if="status && user.id == status.account.id && status.visibility == 'archived'" class="list-group-item rounded cursor-pointer text-danger" @click="unarchivePost(status)">{{ $t('menu.unarchive') }}</div>
+				<div v-if="status && (user.is_admin || user.id == status.account.id)" class="list-group-item rounded cursor-pointer text-danger" @click="deletePost(ctxMenuStatus)">{{ $t('common.delete') }}</div>
+				<div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxMenu()">{{ $t('common.cancel') }}</div>
 			</div>
 		</b-modal>
 		<b-modal ref="ctxModModal"
@@ -460,12 +463,12 @@
 			size="sm"
 			body-class="list-group-flush p-0 rounded">
 			<div class="list-group text-center">
-				<div class="list-group-item rounded cursor-pointer" @click="toggleCommentVisibility">{{ showComments ? 'Disable' : 'Enable'}} Comments</div>
+				<div class="list-group-item rounded cursor-pointer" @click="toggleCommentVisibility">{{ showComments ? $t('classic.post.disableComments') : $t('classic.post.enableComments') }}</div>
 
-				<div class="list-group-item rounded cursor-pointer" @click="moderatePost('unlist')">Unlist from Timelines</div>
-				<div v-if="status.sensitive" class="list-group-item rounded cursor-pointer" @click="moderatePost('remcw')">Remove Content Warning</div>
-				<div v-else class="list-group-item rounded cursor-pointer" @click="moderatePost('addcw')">Add Content Warning</div>
-				<div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModMenuClose()">Cancel</div>
+				<div class="list-group-item rounded cursor-pointer" @click="moderatePost('unlist')">{{ $t('menu.unlistFromTimelines') }}</div>
+				<div v-if="status.sensitive" class="list-group-item rounded cursor-pointer" @click="moderatePost('remcw')">{{ $t('menu.removeCW') }}</div>
+				<div v-else class="list-group-item rounded cursor-pointer" @click="moderatePost('addcw')">{{ $t('menu.addCW') }}</div>
+				<div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModMenuClose()">{{ $t('common.cancel') }}</div>
 			</div>
 		</b-modal>
 		<b-modal ref="replyModal"
@@ -473,14 +476,14 @@
 			hide-footer
 			centered
 			rounded
-			:title-html="replyingToUsername ? 'Reply to <span class=text-dark>' + replyingToUsername + '</span>' : ''"
+			:title-html="replyingToUsername ? $t('classic.post.replyTo', { user: '<span class=text-dark>' + replyingToUsername + '</span>' }) : ''"
 			title-tag="p"
 			title-class="font-weight-bold text-muted"
 			size="md"
 			body-class="p-2 rounded">
 			<div>
 				<vue-tribute :options="tributeSettings">
-					<textarea class="form-control" rows="4" style="border: none; font-size: 18px; resize: none; white-space: pre-wrap;outline: none;" placeholder="Reply here ..." v-model="replyText">
+					<textarea class="form-control" rows="4" style="border: none; font-size: 18px; resize: none; white-space: pre-wrap;outline: none;" :placeholder="$t('classic.post.replyPlaceholder')" v-model="replyText">
 					</textarea>
 				</vue-tribute>
 
@@ -498,7 +501,7 @@
 					<div class="d-flex align-items-center">
 						<div class="custom-control custom-switch mr-3">
 							<input type="checkbox" class="custom-control-input" id="replyModalCWSwitch" v-model="replySensitive">
-							<label :class="[replySensitive ? 'custom-control-label font-weight-bold text-dark':'custom-control-label text-lighter']" for="replyModalCWSwitch">Mark as NSFW</label>
+							<label :class="[replySensitive ? 'custom-control-label font-weight-bold text-dark':'custom-control-label text-lighter']" for="replyModalCWSwitch">{{ $t('classic.post.markAsNsfw') }}</label>
 						</div>
 						<!-- <select class="custom-select custom-select-sm my-0 mr-2">
 							<option value="public" selected="">Public</option>
@@ -506,7 +509,7 @@
 							<option value="followers">Followers Only</option>
 						</select> -->
 						<button class="btn btn-primary btn-sm py-2 px-4 lead text-uppercase font-weight-bold" v-on:click.prevent="postReply()" :disabled="replyText.length == 0">
-						{{replySending == true ? 'POSTING' : 'POST'}}
+						{{replySending == true ? $t('classic.post.postingUpper') : $t('classic.post.postUpper')}}
 					</button>
 					</div>
 				</div>
@@ -783,7 +786,7 @@ export default {
 									});
 								}, 500);
 						}).catch(error => {
-							swal('Oops!', 'An error occured, please try refreshing the page.', 'error');
+							swal(this.$t('common.oops'), this.$t('classic.post.refreshError'), 'error');
 						});
 			},
 
@@ -901,7 +904,7 @@ export default {
 					}
 				}).catch(err => {
 					console.error(err);
-					swal('Error', 'Something went wrong, please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.post.errorTryLater'), 'error');
 				});
 				window.navigator.vibrate(200);
 			},
@@ -929,7 +932,7 @@ export default {
 					}
 				}).catch(err => {
 					console.error(err);
-					swal('Error', 'Something went wrong, please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.post.errorTryLater'), 'error');
 				});
 			},
 
@@ -948,7 +951,7 @@ export default {
 						this.reactions.bookmarked = true;
 					}
 				}).catch(err => {
-					swal('Error', 'Something went wrong, please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.post.errorTryLater'), 'error');
 				});
 			},
 
@@ -963,9 +966,9 @@ export default {
 				}).then(res => {
 					this.$refs.ctxModal.hide();
 					this.relationship.blocking = true;
-					swal('Success', 'You have successfully blocked ' + this.status.account.acct, 'success');
+					swal(this.$t('common.success'), this.$t('classic.post.blockedSuccess', { acct: this.status.account.acct }), 'success');
 				}).catch(err => {
-					swal('Error', 'Something went wrong. Please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.post.errorTryLaterDot'), 'error');
 				});
 			},
 
@@ -980,9 +983,9 @@ export default {
 				}).then(res => {
 					this.relationship.blocking = false;
 					this.$refs.ctxModal.hide();
-					swal('Success', 'You have successfully unblocked ' + this.status.account.acct, 'success');
+					swal(this.$t('common.success'), this.$t('classic.post.unblockedSuccess', { acct: this.status.account.acct }), 'success');
 				}).catch(err => {
-					swal('Error', 'Something went wrong. Please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.post.errorTryLaterDot'), 'error');
 				});
 			},
 
@@ -990,7 +993,7 @@ export default {
 				if(!this.ownerOrAdmin()) {
 					return;
 				}
-				var result = confirm('Are you sure you want to delete this post?');
+				var result = confirm(this.$t('menu.deletePostConfirm'));
 				if (result) {
 						if($('body').hasClass('loggedIn') == false) {
 						return;
@@ -999,12 +1002,12 @@ export default {
 							type: 'status',
 							item: this.status.id
 						}).then(res => {
-							swal('Success', 'You have successfully deleted this post', 'success');
+							swal(this.$t('common.success'), this.$t('classic.post.deletedSuccess'), 'success');
 							setTimeout(function() {
 								window.location.href = '/';
 							}, 3000);
 						}).catch(err => {
-							swal('Error', 'Something went wrong. Please try again later.', 'error');
+							swal(this.$t('common.error'), this.$t('classic.post.errorTryLaterDot'), 'error');
 						});
 				}
 			},
@@ -1073,7 +1076,7 @@ export default {
 				}).then(res => {
 					this.results.splice(i, 1);
 				}).catch(err => {
-					swal('Something went wrong!', 'Please try again later', 'error');
+					swal(this.$t('classic.post.somethingWentWrong'), this.$t('classic.post.tryLater'), 'error');
 				});
 			},
 
@@ -1085,7 +1088,7 @@ export default {
 					this.results[pi].replies.splice(i, 1);
 					--this.results[pi].reply_count;
 				}).catch(err => {
-					swal('Something went wrong!', 'Please try again later', 'error');
+					swal(this.$t('classic.post.somethingWentWrong'), this.$t('classic.post.tryLater'), 'error');
 				});
 			},
 
@@ -1141,21 +1144,21 @@ export default {
 								$('.postCommentsLoader .lds-ring')
 									.attr('style','width:100%')
 									.addClass('pt-4 font-weight-bold text-muted')
-									.text('An error occurred, cannot fetch comments. Please try again later.');
+									.text(this.$t('classic.post.fetchCommentsError'));
 							} else {
 								switch(error.response.status) {
 									case 401:
 										$('.postCommentsLoader .lds-ring')
 											.attr('style','width:100%')
 											.addClass('pt-4 font-weight-bold text-muted')
-											.text('Please login to view.');
+											.text(this.$t('classic.post.loginToView'));
 									break;
 
 									default:
 										$('.postCommentsLoader .lds-ring')
 											.attr('style','width:100%')
 											.addClass('pt-4 font-weight-bold text-muted')
-											.text('An error occurred, cannot fetch comments. Please try again later.');
+											.text(this.$t('classic.post.fetchCommentsError'));
 									break;
 								}
 							}
@@ -1186,7 +1189,7 @@ export default {
 
 			likeReply(status, $event) {
 				if($('body').hasClass('loggedIn') == false) {
-					swal('Login', 'Please login to perform this action.', 'info');
+					swal(this.$t('classic.post.login'), this.$t('classic.post.loginRequired'), 'info');
 					return;
 				}
 
@@ -1200,7 +1203,7 @@ export default {
 						status.favourited = true;
 					}
 				}).catch(err => {
-					swal('Error', 'Something went wrong, please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.post.errorTryLater'), 'error');
 				});
 			},
 
@@ -1292,15 +1295,15 @@ export default {
 			visibilityModal() {
 				switch(this.status.visibility) {
 					case 'public':
-						swal('Public Post', 'This post is visible to everyone.', 'info');
+						swal(this.$t('classic.post.publicPost'), this.$t('classic.post.publicPostText'), 'info');
 					break;
 
 					case 'unlisted':
-						swal('Unlisted Post', 'This post is visible on profiles and with a direct links. It is not displayed on timelines.', 'info');
+						swal(this.$t('classic.post.unlistedPost'), this.$t('classic.post.unlistedPostText'), 'info');
 					break;
 
 					case 'private':
-						swal('Private Post', 'This post is only visible to followers.', 'info');
+						swal(this.$t('classic.post.privatePost'), this.$t('classic.post.privatePostText'), 'info');
 					break;
 				}
 			},
@@ -1427,9 +1430,9 @@ export default {
 						this.status.taggedPeople = this.status.taggedPeople.filter(t => {
 								return t.id != id;
 						});
-						swal('Untagged', 'You have been untagged from this post.', 'success');
+						swal(this.$t('classic.post.untagged'), this.$t('classic.post.untaggedText'), 'success');
 				}).catch(err => {
-						swal('An Error Occurred', 'Please try again later.', 'error');
+						swal(this.$t('classic.post.errorOccurred'), this.$t('classic.post.tryLaterDot'), 'error');
 				});
 			},
 
@@ -1445,9 +1448,9 @@ export default {
 				let self = this;
 				switch(action) {
 					case 'addcw':
-						msg = 'Are you sure you want to add a content warning to this post?';
+						msg = this.$t('menu.modAddCWConfirm');
 						swal({
-							title: 'Confirm',
+							title: this.$t('classic.post.confirm'),
 							text: msg,
 							icon: 'warning',
 							buttons: true,
@@ -1459,13 +1462,13 @@ export default {
 									item_id: status.id,
 									item_type: 'status'
 								}).then(res => {
-									swal('Success', 'Successfully added content warning', 'success');
+									swal(self.$t('common.success'), self.$t('menu.modCWSuccess'), 'success');
 									status.sensitive = true;
 									self.ctxModMenuClose();
 								}).catch(err => {
 									swal(
-										'Error',
-										'Something went wrong, please try again later.',
+										self.$t('common.error'),
+										self.$t('classic.post.errorTryLater'),
 										'error'
 									);
 									self.ctxModMenuClose();
@@ -1475,9 +1478,9 @@ export default {
 					break;
 
 					case 'remcw':
-						msg = 'Are you sure you want to remove the content warning on this post?';
+						msg = this.$t('menu.modRemoveCWConfirm');
 						swal({
-							title: 'Confirm',
+							title: this.$t('classic.post.confirm'),
 							text: msg,
 							icon: 'warning',
 							buttons: true,
@@ -1489,13 +1492,13 @@ export default {
 									item_id: status.id,
 									item_type: 'status'
 								}).then(res => {
-									swal('Success', 'Successfully added content warning', 'success');
+									swal(self.$t('common.success'), self.$t('menu.modCWSuccess'), 'success');
 									status.sensitive = false;
 									self.ctxModMenuClose();
 								}).catch(err => {
 									swal(
-										'Error',
-										'Something went wrong, please try again later.',
+										self.$t('common.error'),
+										self.$t('classic.post.errorTryLater'),
 										'error'
 									);
 									self.ctxModMenuClose();
@@ -1505,9 +1508,9 @@ export default {
 					break;
 
 					case 'unlist':
-						msg = 'Are you sure you want to unlist this post?';
+						msg = this.$t('menu.modUnlistConfirm');
 						swal({
-							title: 'Confirm',
+							title: this.$t('classic.post.confirm'),
 							text: msg,
 							icon: 'warning',
 							buttons: true,
@@ -1522,13 +1525,13 @@ export default {
 									// this.feed = this.feed.filter(f => {
 									//   return f.id != status.id;
 									// });
-									swal('Success', 'Successfully unlisted post', 'success');
+									swal(self.$t('common.success'), self.$t('menu.modUnlistSuccess'), 'success');
 									self.ctxModMenuClose();
 								}).catch(err => {
 									self.ctxModMenuClose();
 									swal(
-										'Error',
-										'Something went wrong, please try again later.',
+										self.$t('common.error'),
+										self.$t('classic.post.errorTryLater'),
 										'error'
 									);
 								});
@@ -1565,7 +1568,7 @@ export default {
 			},
 
 			archivePost(status) {
-				if(window.confirm('Are you sure you want to archive this post?') == false) {
+				if(window.confirm(this.$t('menu.archivePostConfirm')) == false) {
 					return;
 				}
 
@@ -1577,7 +1580,7 @@ export default {
 			},
 
 			unarchivePost(status) {
-				if(window.confirm('Are you sure you want to unarchive this post?') == false) {
+				if(window.confirm(this.$t('menu.unarchivePostConfirm')) == false) {
 					return;
 				}
 

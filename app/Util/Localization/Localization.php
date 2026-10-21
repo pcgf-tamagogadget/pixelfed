@@ -63,6 +63,31 @@ class Localization
     ];
 
     /**
+     * Browser language tags that need an explicit mapping because the
+     * primary subtag alone is ambiguous (e.g. Traditional vs Simplified
+     * Chinese). Keys are lowercase, hyphen-separated.
+     *
+     * @var array<string, string>
+     */
+    const BROWSER_LOCALE_ALIASES = [
+        'zh' => 'zh-CN',
+        'zh-hant' => 'zh-TW',
+        'zh-hk' => 'zh-TW',
+        'zh-mo' => 'zh-TW',
+        'zh-hans' => 'zh-CN',
+        'zh-sg' => 'zh-CN',
+        'nb' => 'no-NO',
+        'nn' => 'no-NO',
+    ];
+
+    /**
+     * Primary language subtags written right-to-left.
+     *
+     * @var array<int, string>
+     */
+    const RTL_LANGUAGES = ['ar', 'ckb', 'dv', 'fa', 'he', 'ps', 'syc', 'ug', 'ur', 'yi'];
+
+    /**
      * Normalize a configured locale to a current locale-coded value.
      *
      * Empty input returns "en-US"; a known legacy short code is mapped;
@@ -79,6 +104,101 @@ class Localization
         }
 
         return self::LEGACY_LOCALE_MAP[strtolower($locale)] ?? $locale;
+    }
+
+    /**
+     * Whether the given locale has a lang/ folder (after normalization).
+     */
+    public static function isAvailable(?string $locale): bool
+    {
+        if (! is_string($locale) || trim($locale) === '') {
+            return false;
+        }
+
+        return in_array(static::normalizeLocale($locale), static::languages(), true);
+    }
+
+    /**
+     * Pick the best available locale for a list of browser language tags,
+     * ordered by preference (as returned by Request::getLanguages(), e.g.
+     * ['ja_JP', 'ja', 'en_US', 'en']).
+     *
+     * Each tag is tried as an exact match, then via the alias and legacy
+     * maps, then by its primary subtag against the available locales.
+     *
+     * @param  array<int, string>  $tags
+     * @param  array<int, string>|null  $available  Defaults to languages().
+     */
+    public static function negotiate(array $tags, ?array $available = null): ?string
+    {
+        $available = $available ?? static::languages();
+        $byLower = [];
+        foreach ($available as $code) {
+            $byLower[strtolower($code)] = $code;
+        }
+
+        foreach ($tags as $tag) {
+            if (! is_string($tag) || trim($tag) === '' || $tag === '*') {
+                continue;
+            }
+
+            $lower = strtolower(str_replace('_', '-', trim($tag)));
+            $parts = explode('-', $lower);
+            $primary = $parts[0];
+
+            if (isset($byLower[$lower])) {
+                return $byLower[$lower];
+            }
+
+            $candidates = [];
+            foreach ([$lower, $primary.'-'.($parts[1] ?? '')] as $key) {
+                if (isset(self::BROWSER_LOCALE_ALIASES[$key])) {
+                    $candidates[] = self::BROWSER_LOCALE_ALIASES[$key];
+                }
+            }
+            if ($primary === 'zh' && array_intersect($parts, ['hant', 'tw', 'hk', 'mo'])) {
+                $candidates[] = 'zh-TW';
+            }
+            if (isset(self::BROWSER_LOCALE_ALIASES[$primary])) {
+                $candidates[] = self::BROWSER_LOCALE_ALIASES[$primary];
+            }
+            if (isset(self::LEGACY_LOCALE_MAP[$primary])) {
+                $candidates[] = self::LEGACY_LOCALE_MAP[$primary];
+            }
+
+            foreach ($candidates as $candidate) {
+                if (isset($byLower[strtolower($candidate)])) {
+                    return $byLower[strtolower($candidate)];
+                }
+            }
+
+            foreach ($byLower as $lowerCode => $code) {
+                // Skip private-use variants such as en-x-pirate.
+                if (str_starts_with($lowerCode, $primary.'-') && ! str_contains($lowerCode, '-x-')) {
+                    return $code;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether the locale is written right-to-left.
+     */
+    public static function isRtl(?string $locale): bool
+    {
+        $primary = strtolower(explode('-', str_replace('_', '-', (string) $locale))[0]);
+
+        return in_array($primary, self::RTL_LANGUAGES, true);
+    }
+
+    /**
+     * The HTML dir attribute value ("rtl" or "ltr") for the locale.
+     */
+    public static function direction(?string $locale = null): string
+    {
+        return static::isRtl($locale ?? app()->getLocale()) ? 'rtl' : 'ltr';
     }
 
     /**

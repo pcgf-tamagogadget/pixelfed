@@ -48,13 +48,13 @@
                             <i class="far fa-eye-slash fa-2x"></i>
                         </p>
                         <p class="h4 font-weight-bold text-center">
-                            {{ isFiltered ? 'Filtered Content' : $t('common.sensitiveContent') }}
+                            {{ isFiltered ? $t('spa.postContent.filteredContent') : $t('common.sensitiveContent') }}
                         </p>
                         <p class="text-center py-2 content-label-text">
                             {{ status.spoiler_text ? status.spoiler_text : $t('common.sensitiveContentWarning') }}
                         </p>
                         <p class="mb-0">
-                            <button class="btn btn-outline-light btn-block btn-sm font-weight-bold" @click="toggleContentWarning()">See Post</button>
+                            <button class="btn btn-outline-light btn-block btn-sm font-weight-bold" @click="toggleContentWarning()">{{ $t('spa.postContent.seePost') }}</button>
                         </p>
                     </div>
 
@@ -128,10 +128,10 @@
                     <p class="text-center">
                         <i class="far fa-eye-slash fa-2x"></i>
                     </p>
-                    <p class="text-center lead font-weight-bold mb-0">Sensitive Content</p>
-                    <p class="text-center">{{ status.spoiler_text && status.spoiler_text.length ? status.spoiler_text : 'This post may contain sensitive content' }}</p>
+                    <p class="text-center lead font-weight-bold mb-0">{{ $t('common.sensitiveContent') }}</p>
+                    <p class="text-center">{{ status.spoiler_text && status.spoiler_text.length ? status.spoiler_text : $t('common.sensitiveContentWarning') }}</p>
                     <p class="text-center mb-0">
-                        <button class="btn btn-primary btn-sm font-weight-bold" @click="status.sensitive = false">See post</button>
+                        <button class="btn btn-primary btn-sm font-weight-bold" @click="status.sensitive = false">{{ $t('spa.postContent.seePost') }}</button>
                     </p>
                 </div>
             </div>
@@ -143,7 +143,7 @@
                     </p>
 
                     <p class="lead text-center mb-0">
-                        Cannot display post
+                        {{ $t('spa.postContent.cannotDisplay') }}
                     </p>
 
                     <p class="small text-center mb-0">

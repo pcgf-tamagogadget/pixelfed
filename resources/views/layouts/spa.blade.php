@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,7 +42,7 @@
 		<main id="content">
 			<noscript>
 				<div class="container">
-					<p class="pt-5 text-center lead">Please enable javascript to view this content.</p>
+					<p class="pt-5 text-center lead">{{ __('pages.common.enableJs') }}</p>
 				</div>
 			</noscript>
 			<navbar></navbar>

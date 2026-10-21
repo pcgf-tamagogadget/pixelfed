@@ -1,17 +1,17 @@
-@extends('site.help.partial.template', ['breadcrumb'=>'Licenses'])
+@extends('site.help.partial.template', ['breadcrumb'=>__('helpcenter.licenses.title')])
 
 @section('section')
   <div class="title">
-    <h3 class="font-weight-bold">Licenses</h3>
+    <h3 class="font-weight-bold">{{ __('helpcenter.licenses.title') }}</h3>
   </div>
   <hr>
 
   <p class="lead">
-  	A Creative Commons license is one of several public copyright licenses that enable the free distribution of an otherwise copyrighted "work".
+  	{{ __('helpcenter.licenses.p1') }}
   </p>
   <p class="lead">
-  	A CC license is used when an author wants to give other people the right to share, use, and build upon a work that the author has created.
+  	{{ __('helpcenter.licenses.p2') }}
   </p>
 
-  <p>For more information, please visit <a href="https://creativecommons.org/licenses/" rel="nofollow">creativecommons.org</a></p>
+  <p>{!! __('helpcenter.licenses.moreInfo') !!}</p>
 @endsection

@@ -17,7 +17,7 @@
     <div v-if="relationship && relationship.blocking && warning" class="bg-white pt-3 border-bottom">
         <div class="container">
             <p class="text-center font-weight-bold">{{ $t("profile.blocking")}}</p>
-            <p class="text-center font-weight-bold">Click <a href="#" class="cursor-pointer" @click.prevent="warning = false;">here</a> to view profile</p>
+            <i18n path="classic.profile.clickHereToView" tag="p" class="text-center font-weight-bold"><template v-slot:here><a href="#" class="cursor-pointer" @click.prevent="warning = false;">{{ $t('classic.profile.here') }}</a></template></i18n>
         </div>
     </div>
     <div v-if="loading" style="height: 80vh;" class="d-flex justify-content-center align-items-center">
@@ -36,10 +36,10 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <div v-if="hasStory" class="has-story cursor-pointer shadow-sm" @click="storyRedirect()">
-                                                <img :alt="profileUsername + '\'s profile picture'" class="rounded-circle" :src="profile.avatar" width="77px" height="77px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
+                                                <img :alt="$t('classic.profile.profilePicture', { username: profileUsername })" class="rounded-circle" :src="profile.avatar" width="77px" height="77px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
                                             </div>
                                             <div v-else>
-                                                <img :alt="profileUsername + '\'s profile picture'" class="rounded-circle border" :src="profile.avatar" width="77px" height="77px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
+                                                <img :alt="$t('classic.profile.profilePicture', { username: profileUsername })" class="rounded-circle border" :src="profile.avatar" width="77px" height="77px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
                                             </div>
                                         </div>
                                         <div class="col-8">
@@ -78,10 +78,10 @@
                                 <!-- DESKTOP PROFILE PICTURE -->
                                 <div class="d-none d-md-block pb-3">
                                     <div v-if="hasStory" class="has-story-lg cursor-pointer shadow-sm" @click="storyRedirect()">
-                                        <img :alt="profileUsername + '\'s profile picture'" class="rounded-circle box-shadow cursor-pointer" :src="profile.avatar" width="150px" height="150px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
+                                        <img :alt="$t('classic.profile.profilePicture', { username: profileUsername })" class="rounded-circle box-shadow cursor-pointer" :src="profile.avatar" width="150px" height="150px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
                                     </div>
                                     <div v-else>
-                                        <img :alt="profileUsername + '\'s profile picture'" class="rounded-circle box-shadow" :src="profile.avatar" width="150px" height="150px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
+                                        <img :alt="$t('classic.profile.profilePicture', { username: profileUsername })" class="rounded-circle box-shadow" :src="profile.avatar" width="150px" height="150px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
                                     </div>
                                     <p v-if="sponsorList.patreon || sponsorList.liberapay || sponsorList.opencollective" class="text-center mt-3">
                                         <button type="button" @click="showSponsorModal" class="btn btn-outline-secondary font-weight-bold py-0">
@@ -98,11 +98,11 @@
                                     <span class="font-weight-ultralight h3 mb-0">{{profile.username}}</span>
                                     <span v-if="profile.id != user.id && user.hasOwnProperty('id')">
                                         <span class="pl-4" v-if="relationship.following == true">
-                                            <a :href="'/account/direct/t/'+profile.id"  class="btn btn-outline-secondary font-weight-bold btn-sm py-1 text-dark mr-2 px-3 btn-sec-alt" style="border:1px solid #dbdbdb;" data-toggle="tooltip" title="Message">Message</a>
-                                            <button type="button"  class="btn btn-outline-secondary font-weight-bold btn-sm py-1 text-dark btn-sec-alt" style="border:1px solid #dbdbdb;" v-on:click="followProfile" data-toggle="tooltip" title="Unfollow"><i class="fas fa-user-check mx-3"></i></button>
+                                            <a :href="'/account/direct/t/'+profile.id"  class="btn btn-outline-secondary font-weight-bold btn-sm py-1 text-dark mr-2 px-3 btn-sec-alt" style="border:1px solid #dbdbdb;" data-toggle="tooltip" :title="$t('classic.profile.message')">{{ $t('classic.profile.message') }}</a>
+                                            <button type="button"  class="btn btn-outline-secondary font-weight-bold btn-sm py-1 text-dark btn-sec-alt" style="border:1px solid #dbdbdb;" v-on:click="followProfile" data-toggle="tooltip" :title="$t('profile.unfollow')"><i class="fas fa-user-check mx-3"></i></button>
                                         </span>
                                         <span class="pl-4" v-if="!relationship.following">
-                                            <button type="button" class="btn btn-primary font-weight-bold btn-sm py-1 px-3" v-on:click="followProfile" data-toggle="tooltip" title="Follow">Follow</button>
+                                            <button type="button" class="btn btn-primary font-weight-bold btn-sm py-1 px-3" v-on:click="followProfile" data-toggle="tooltip" :title="$t('profile.follow')">{{ $t('profile.follow') }}</button>
                                         </span>
                                     </span>
                                     <span class="pl-4" v-if="owner && user.hasOwnProperty('id')">
@@ -146,7 +146,7 @@
                                         <span class="profile-website small"></span>
                                     </p>
                                     <p class="d-flex small text-muted align-items-center">
-                                        <span v-if="profile.is_admin" class="btn btn-outline-danger btn-sm py-0 mr-3" title="Admin Account" data-toggle="tooltip">
+                                        <span v-if="profile.is_admin" class="btn btn-outline-danger btn-sm py-0 mr-3" :title="$t('classic.profile.adminAccount')" data-toggle="tooltip">
                                             {{ $t("profile.admin") }}
                                         </span>
                                         <span v-if="relationship && relationship.followed_by" class="btn btn-outline-muted btn-sm py-0 mr-3">{{ $t("profile.followYou") }}</span>
@@ -163,8 +163,8 @@
             <div v-if="user && user.hasOwnProperty('id')" class="d-block d-md-none my-0 pt-3 border-bottom">
                 <p class="pt-3">
                     <button v-if="owner" class="btn btn-outline-secondary bg-white btn-sm py-1 btn-block text-center font-weight-bold text-dark border border-lighter" @click.prevent="redirect('/settings/home')">{{ $t("profile.editProfile")}}</button>
-                    <button v-if="!owner && relationship.following" class="btn btn-outline-secondary bg-white btn-sm py-1 px-5 font-weight-bold text-dark border border-lighter" @click="followProfile">&nbsp;&nbsp; Unfollow &nbsp;&nbsp;</button>
-                    <button v-if="!owner && !relationship.following" class="btn btn-primary btn-sm py-1 px-5 font-weight-bold" @click="followProfile">{{relationship.followed_by ? 'Follow Back' : '&nbsp;&nbsp;&nbsp;&nbsp; Follow &nbsp;&nbsp;&nbsp;&nbsp;'}}</button>
+                    <button v-if="!owner && relationship.following" class="btn btn-outline-secondary bg-white btn-sm py-1 px-5 font-weight-bold text-dark border border-lighter" @click="followProfile">&nbsp;&nbsp; {{ $t('profile.unfollow') }} &nbsp;&nbsp;</button>
+                    <button v-if="!owner && !relationship.following" class="btn btn-primary btn-sm py-1 px-5 font-weight-bold" @click="followProfile"><template v-if="relationship.followed_by">{{ $t('classic.profile.followBack') }}</template><template v-else>&nbsp;&nbsp;&nbsp;&nbsp; {{ $t('profile.follow') }} &nbsp;&nbsp;&nbsp;&nbsp;</template></button>
                     <!-- <button v-if="!owner" class="btn btn-outline-secondary bg-white btn-sm py-1 px-5 font-weight-bold text-dark border border-lighter mx-2">Message</button>
                     <button v-if="!owner" class="btn btn-outline-secondary bg-white btn-sm py-1 font-weight-bold text-dark border border-lighter"><i class="fas fa-chevron-down fa-sm"></i></button> -->
                 </p>
@@ -172,16 +172,16 @@
             <div class="">
                 <ul class="nav nav-topbar d-flex justify-content-center border-0">
                     <li class="nav-item border-top">
-                        <a :class="this.mode == 'grid' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('grid')"><i class="fas fa-th"></i> <span class="d-none d-md-inline-block small pl-1">POSTS</span></a>
+                        <a :class="this.mode == 'grid' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('grid')"><i class="fas fa-th"></i> <span class="d-none d-md-inline-block small pl-1">{{ $t('classic.profile.tabPosts') }}</span></a>
                     </li>
                     <li class="nav-item px-0 border-top">
-                        <a :class="this.mode == 'collections' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('collections')"><i class="fas fa-images"></i> <span class="d-none d-md-inline-block small pl-1">COLLECTIONS</span></a>
+                        <a :class="this.mode == 'collections' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('collections')"><i class="fas fa-images"></i> <span class="d-none d-md-inline-block small pl-1">{{ $t('classic.profile.tabCollections') }}</span></a>
                     </li>
                     <li v-if="owner" class="nav-item border-top">
-                        <a :class="this.mode == 'bookmarks' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('bookmarks')"><i class="fas fa-bookmark"></i> <span class="d-none d-md-inline-block small pl-1">SAVED</span></a>
+                        <a :class="this.mode == 'bookmarks' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('bookmarks')"><i class="fas fa-bookmark"></i> <span class="d-none d-md-inline-block small pl-1">{{ $t('classic.profile.tabSaved') }}</span></a>
                     </li>
                     <li v-if="owner" class="nav-item border-top">
-                        <a :class="this.mode == 'archives' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('archives')"><i class="far fa-folder-open"></i> <span class="d-none d-md-inline-block small pl-1">ARCHIVES</span></a>
+                        <a :class="this.mode == 'archives' ? 'nav-link text-dark' : 'nav-link'" href="#" v-on:click.prevent="switchMode('archives')"><i class="far fa-folder-open"></i> <span class="d-none d-md-inline-block small pl-1">{{ $t('classic.profile.tabArchives') }}</span></a>
                     </li>
                 </ul>
             </div>
@@ -242,7 +242,7 @@
                             <div v-if="timeline.length == 0" class="col-12">
                                 <div class="py-5 text-center text-muted">
                                     <p><i class="fas fa-camera-retro fa-2x"></i></p>
-                                    <p class="h2 font-weight-light pt-3">No posts yet</p>
+                                    <p class="h2 font-weight-light pt-3">{{ $t('classic.profile.noPosts') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -288,7 +288,7 @@
                             <div v-else class="col-12">
                                 <div class="py-5 text-center text-muted">
                                     <p><i class="fas fa-bookmark fa-2x"></i></p>
-                                    <p class="h2 font-weight-light pt-3">No saved bookmarks</p>
+                                    <p class="h2 font-weight-light pt-3">{{ $t('classic.profile.noBookmarks') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +308,7 @@
                         <div v-else>
                             <div class="py-5 text-center text-muted">
                                 <p><i class="fas fa-images fa-2x"></i></p>
-                                <p class="h2 font-weight-light pt-3">No collections yet</p>
+                                <p class="h2 font-weight-light pt-3">{{ $t('classic.profile.noCollections') }}</p>
                             </div>
                         </div>
                     </div>
@@ -316,8 +316,8 @@
                     <div v-if="mode == 'archives'">
                         <div v-if="archives.length" class="col-12 col-md-8 offset-md-2 px-0 mb-sm-3 timeline mt-5">
                             <div class="alert alert-info">
-                                <p class="mb-0">Posts you archive can only be seen by you.</p>
-                                <p class="mb-0">For more information see the <a href="/site/kb/sharing-media">Sharing Media</a> help center page.</p>
+                                <p class="mb-0">{{ $t('classic.profile.archiveNotice') }}</p>
+                                <i18n path="classic.profile.archiveMoreInfo" tag="p" class="mb-0"><template v-slot:link><a href="/site/kb/sharing-media">{{ $t('classic.profile.sharingMedia') }}</a></template></i18n>
                             </div>
 
                             <div v-for="(status, index) in archives">
@@ -346,19 +346,19 @@
         hide-footer
         centered
         scrollable
-        title="Following"
+        :title="$t('profile.following')"
         body-class="list-group-flush py-3 px-0"
         dialog-class="follow-modal">
         <div v-if="!followingLoading" class="list-group" style="max-height: 60vh;">
             <div v-if="!following.length" class="list-group-item border-0">
                 <p class="text-center mb-0 font-weight-bold text-muted py-5">
-                    <span class="text-dark">{{profileUsername}}</span> is not following yet</p>
+                    <i18n path="classic.profile.notFollowingYet" tag="span"><template v-slot:username><span class="text-dark">{{profileUsername}}</span></template></i18n></p>
             </div>
             <div v-else>
                 <div class="list-group-item border-0 py-1 mb-1" v-for="(user, index) in following" :key="'following_'+index">
                     <div class="media">
                         <a :href="profileUrlRedirect(user)">
-                            <img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="user.username + '’s avatar'" width="30px" loading="lazy" onerror="this.src='/storage/avatars/default.jpg?v=0';this.onerror=null;" v-once>
+                            <img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="$t('classic.profile.avatarAlt', { username: user.username })" width="30px" loading="lazy" onerror="this.src='/storage/avatars/default.jpg?v=0';this.onerror=null;" v-once>
                         </a>
                         <div class="media-body text-truncate">
                             <p class="mb-0" style="font-size: 14px">
@@ -374,23 +374,23 @@
                             </p>
                         </div>
                         <div v-if="owner">
-                            <a class="btn btn-outline-dark btn-sm font-weight-bold" href="#" @click.prevent="followModalAction(user.id, index, 'following')">Following</a>
+                            <a class="btn btn-outline-dark btn-sm font-weight-bold" href="#" @click.prevent="followModalAction(user.id, index, 'following')">{{ $t('profile.following') }}</a>
                         </div>
                     </div>
                 </div>
                 <div v-if="!followingLoading && following.length == 0" class="list-group-item border-0">
                     <div class="list-group-item border-0 pt-5">
-                        <p class="p-3 text-center mb-0 lead">No Results Found</p>
+                        <p class="p-3 text-center mb-0 lead">{{ $t('classic.profile.noResults') }}</p>
                     </div>
                 </div>
                 <div v-if="following.length > 0 && followingMore" class="list-group-item text-center" v-on:click="followingLoadMore()">
-                    <p class="mb-0 small text-muted font-weight-light cursor-pointer">Load more</p>
+                    <p class="mb-0 small text-muted font-weight-light cursor-pointer">{{ $t('classic.profile.loadMore') }}</p>
                 </div>
             </div>
         </div>
         <div v-else class="text-center py-5">
             <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">{{ $t('common.loading') }}</span>
             </div>
         </div>
     </b-modal>
@@ -399,21 +399,21 @@
         hide-footer
         centered
         scrollable
-        title="Followers"
+        :title="$t('profile.followers')"
         body-class="list-group-flush py-3 px-0"
         dialog-class="follow-modal"
         >
         <div v-if="!followerLoading" class="list-group" style="max-height: 60vh;">
             <div v-if="!followerLoading && !followers.length" class="list-group-item border-0">
                 <p class="text-center mb-0 font-weight-bold text-muted py-5">
-                    <span class="text-dark">{{profileUsername}}</span> has no followers yet</p>
+                    <i18n path="classic.profile.noFollowersYet" tag="span"><template v-slot:username><span class="text-dark">{{profileUsername}}</span></template></i18n></p>
             </div>
 
             <div v-else>
                 <div class="list-group-item border-0 py-1 mb-1" v-for="(user, index) in followers" :key="'follower_'+index">
                     <div class="media mb-0">
                         <a :href="profileUrlRedirect(user)">
-                            <img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="user.username + '’s avatar'" width="30px" height="30px" loading="lazy" onerror="this.src='/storage/avatars/default.jpg?v=0';this.onerror=null;" v-once>
+                            <img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="$t('classic.profile.avatarAlt', { username: user.username })" width="30px" height="30px" loading="lazy" onerror="this.src='/storage/avatars/default.jpg?v=0';this.onerror=null;" v-once>
                         </a>
                         <div class="media-body mb-0">
                             <p class="mb-0" style="font-size: 14px">
@@ -432,13 +432,13 @@
                     </div>
                 </div>
                 <div v-if="followers.length && followerMore" class="list-group-item text-center" v-on:click="followersLoadMore()">
-                    <p class="mb-0 small text-muted font-weight-light cursor-pointer">Load more</p>
+                    <p class="mb-0 small text-muted font-weight-light cursor-pointer">{{ $t('classic.profile.loadMore') }}</p>
                 </div>
             </div>
         </div>
         <div v-else class="text-center py-5">
             <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">{{ $t('common.loading') }}</span>
             </div>
         </div>
     </b-modal>
@@ -451,52 +451,52 @@
         body-class="list-group-flush p-0">
         <div class="list-group" v-if="relationship">
             <div class="list-group-item cursor-pointer text-center rounded text-dark" @click="copyProfileLink">
-                Copy Link
+                {{ $t('common.copyLink') }}
             </div>
             <div v-if="profile.locked == false" class="list-group-item cursor-pointer text-center rounded text-dark" @click="showEmbedProfileModal">
-                Embed
+                {{ $t('menu.embed') }}
             </div>
             <div v-if="user && !owner && !relationship.following" class="list-group-item cursor-pointer text-center rounded text-dark" @click="followProfile">
-                Follow
+                {{ $t('profile.follow') }}
             </div>
             <div v-if="user && !owner && relationship.following" class="list-group-item cursor-pointer text-center rounded" @click="followProfile">
-                Unfollow
+                {{ $t('profile.unfollow') }}
             </div>
             <div v-if="user && !owner && !relationship.muting" class="list-group-item cursor-pointer text-center rounded" @click="muteProfile">
-                Mute
+                {{ $t('classic.profile.mute') }}
             </div>
             <div v-if="user && !owner && relationship.muting" class="list-group-item cursor-pointer text-center rounded" @click="unmuteProfile">
-                Unmute
+                {{ $t('classic.profile.unmute') }}
             </div>
             <div v-if="user && !owner" class="list-group-item cursor-pointer text-center rounded text-dark" @click="reportProfile">
-                Report User
+                {{ $t('classic.profile.reportUser') }}
             </div>
             <div v-if="user && !owner && !relationship.blocking" class="list-group-item cursor-pointer text-center rounded text-dark" @click="blockProfile">
-                Block
+                {{ $t('classic.profile.block') }}
             </div>
             <div v-if="user && !owner && relationship.blocking" class="list-group-item cursor-pointer text-center rounded text-dark" @click="unblockProfile">
-                Unblock
+                {{ $t('classic.profile.unblock') }}
             </div>
             <div v-if="user && owner" class="list-group-item cursor-pointer text-center rounded text-dark" @click="redirect('/settings/home')">
-                Settings
+                {{ $t('classic.profile.settings') }}
             </div>
             <div class="list-group-item cursor-pointer text-center rounded text-dark" @click="redirect('/users/' + profileUsername + '.atom')">
-                Atom Feed
+                {{ $t('classic.profile.atomFeed') }}
             </div>
             <div class="list-group-item cursor-pointer text-center rounded text-muted font-weight-bold" @click="$refs.visitorContextMenu.hide()">
-                Close
+                {{ $t('common.close') }}
             </div>
         </div>
     </b-modal>
     <b-modal ref="sponsorModal"
         id="sponsor-modal"
         hide-footer
-        :title="'Sponsor ' + profileUsername"
+        :title="$t('classic.profile.sponsorTitle', { username: profileUsername })"
         centered
         size="md"
         body-class="px-5">
         <div>
-            <p class="font-weight-bold">External Links</p>
+            <p class="font-weight-bold">{{ $t('classic.profile.externalLinks') }}</p>
             <p v-if="sponsorList.patreon" class="pt-2">
                 <a :href="'https://' + sponsorList.patreon" rel="nofollow" class="font-weight-bold">{{sponsorList.patreon}}</a>
             </p>
@@ -519,8 +519,8 @@
         <div>
             <textarea class="form-control disabled text-monospace" rows="6" style="overflow-y:hidden;border: 1px solid #efefef; font-size: 12px; line-height: 18px; margin: 0 0 7px;resize:none;" v-model="ctxEmbedPayload" disabled=""></textarea>
             <hr>
-            <button :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed': 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'" @click="ctxCopyEmbed" :disabled="copiedEmbed">{{copiedEmbed ? 'Embed Code Copied!' : 'Copy Embed Code'}}</button>
-            <p class="mb-0 px-2 small text-muted">By using this embed, you agree to our <a href="/site/terms">Terms of Use</a></p>
+            <button :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed': 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'" @click="ctxCopyEmbed" :disabled="copiedEmbed">{{copiedEmbed ? $t('classic.profile.embedCopied') : $t('classic.profile.copyEmbed')}}</button>
+            <i18n path="classic.profile.embedAgree" tag="p" class="mb-0 px-2 small text-muted"><template v-slot:terms><a href="/site/terms">{{ $t('site.terms') }}</a></template></i18n>
         </div>
     </b-modal>
 </div>
@@ -770,8 +770,8 @@
                     this.ownerCheck();
                     this.loading = false;
                 }).catch(err => {
-                    swal('Oops, something went wrong',
-                        'Please release the page.',
+                    swal(this.$t('classic.profile.somethingWentWrong'),
+                        this.$t('classic.profile.reloadPage'),
                         'error');
                 });
             },
@@ -901,7 +901,7 @@
                         status.favourited = true;
                     }
                 }).catch(err => {
-                    swal('Error', 'Something went wrong, please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('classic.profile.errorTryLater'), 'error');
                 });
             },
 
@@ -920,7 +920,7 @@
                         status.reblogged = true;
                     }
                 }).catch(err => {
-                    swal('Error', 'Something went wrong, please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('classic.profile.errorTryLater'), 'error');
                 });
             },
 
@@ -1000,12 +1000,12 @@
                 }).then(res => {
                     this.fetchRelationships();
                     this.$refs.visitorContextMenu.hide();
-                    swal('Success', 'You have successfully muted ' + this.profile.acct, 'success');
+                    swal(this.$t('common.success'), this.$t('classic.profile.mutedSuccess', { acct: this.profile.acct }), 'success');
                 }).catch(err => {
                     if(err.response.status == 422) {
-                        swal('Error', err.response.data.error, 'error');
+                        swal(this.$t('common.error'), err.response.data.error, 'error');
                     } else {
-                        swal('Error', 'Something went wrong. Please try again later.', 'error');
+                        swal(this.$t('common.error'), this.$t('classic.profile.errorTryLaterDot'), 'error');
                     }
                 });
             },
@@ -1021,9 +1021,9 @@
                 }).then(res => {
                     this.fetchRelationships();
                     this.$refs.visitorContextMenu.hide();
-                    swal('Success', 'You have successfully unmuted ' + this.profile.acct, 'success');
+                    swal(this.$t('common.success'), this.$t('classic.profile.unmutedSuccess', { acct: this.profile.acct }), 'success');
                 }).catch(err => {
-                    swal('Error', 'Something went wrong. Please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('classic.profile.errorTryLaterDot'), 'error');
                 });
             },
 
@@ -1039,12 +1039,12 @@
                     this.warning = true;
                     this.fetchRelationships();
                     this.$refs.visitorContextMenu.hide();
-                    swal('Success', 'You have successfully blocked ' + this.profile.acct, 'success');
+                    swal(this.$t('common.success'), this.$t('classic.profile.blockedSuccess', { acct: this.profile.acct }), 'success');
                 }).catch(err => {
                     if(err.response.status == 422) {
-                        swal('Error', err.response.data.error, 'error');
+                        swal(this.$t('common.error'), err.response.data.error, 'error');
                     } else {
-                        swal('Error', 'Something went wrong. Please try again later.', 'error');
+                        swal(this.$t('common.error'), this.$t('classic.profile.errorTryLaterDot'), 'error');
                     }
                 });
             },
@@ -1060,9 +1060,9 @@
                 }).then(res => {
                     this.fetchRelationships();
                     this.$refs.visitorContextMenu.hide();
-                    swal('Success', 'You have successfully unblocked ' + this.profile.acct, 'success');
+                    swal(this.$t('common.success'), this.$t('classic.profile.unblockedSuccess', { acct: this.profile.acct }), 'success');
                 }).catch(err => {
-                    swal('Error', 'Something went wrong. Please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('classic.profile.errorTryLaterDot'), 'error');
                 });
             },
 
@@ -1076,9 +1076,9 @@
                     item: status.id
                 }).then(res => {
                     this.timeline.splice(index,1);
-                    swal('Success', 'You have successfully deleted this post', 'success');
+                    swal(this.$t('common.success'), this.$t('classic.profile.deletedSuccess'), 'success');
                 }).catch(err => {
-                    swal('Error', 'Something went wrong. Please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('classic.profile.errorTryLaterDot'), 'error');
                 });
             },
 
@@ -1104,7 +1104,7 @@
                     this.relationship = res.data;
                 }).catch(err => {
                     if(err.response.data.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     }
                 });
             },
@@ -1269,7 +1269,7 @@
                     }
                 }).catch(err => {
                     if(err.response.data.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     }
                 });
             },

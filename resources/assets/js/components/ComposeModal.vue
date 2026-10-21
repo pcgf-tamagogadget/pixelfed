@@ -8,7 +8,7 @@
             <div class="card status-card card-md-rounded-0 w-100 h-100 bg-light py-3" style="border-bottom: 1px solid #f1f1f1">
                 <div class="p-5 mt-2">
                     <b-progress :value="uploadProgress" :max="100" striped :animated="true"></b-progress>
-                    <p class="text-center mb-0 font-weight-bold">Uploading ... ({{uploadProgress}}%)</p>
+                    <p class="text-center mb-0 font-weight-bold">{{ $t('compose.common.uploading', { progress: uploadProgress }) }}</p>
                 </div>
             </div>
         </div>
@@ -20,9 +20,9 @@
                         <i class="fas fa-cog fa-lg text-muted"></i>
                     </span>
                     <span class="font-weight-bold">
-                        Camera Roll
+                        {{ $t('compose.modal.cameraRoll') }}
                     </span>
-                    <span class="text-primary font-weight-bold">Upload</span>
+                    <span class="text-primary font-weight-bold">{{ $t('compose.modal.upload') }}</span>
                 </div>
                 <div class="h-100 card-body p-0 border-top" style="width:100%; min-height: 400px;">
                     <div v-if="cameraRollMedia.length > 0" class="row p-0 m-0">
@@ -36,8 +36,8 @@
                     </div>
                     <div v-else class="w-100 h-100 d-flex justify-content-center align-items-center">
                         <span class="w-100 h-100">
-                            <button type="button" class="btn btn-primary">Upload</button>
-                            <button type="button" class="btn btn-primary" @click="fetchCameraRollDrafts()">Load Camera Roll</button>
+                            <button type="button" class="btn btn-primary">{{ $t('compose.modal.upload') }}</button>
+                            <button type="button" class="btn btn-primary" @click="fetchCameraRollDrafts()">{{ $t('compose.modal.loadCameraRoll') }}</button>
                         </span>
                     </div>
                 </div>
@@ -51,18 +51,18 @@
                         <i class="fas fa-info-circle fa-lg text-primary"></i>
                     </span>
                     <span class="font-weight-bold">
-                        New Poll
+                        {{ $t('compose.modal.newPoll') }}
                     </span>
                     <span v-if="postingPoll">
                         <div class="spinner-border spinner-border-sm" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ $t('common.loading') }}</span>
                         </div>
                     </span>
                     <button v-else-if="!postingPoll && pollOptions.length > 1 && composeText.length" class="btn btn-primary btn-sm font-weight-bold" @click="postNewPoll">
-                        <span>Create Poll</span>
+                        <span>{{ $t('compose.modal.createPoll') }}</span>
                     </button>
                     <span v-else class="font-weight-bold text-lighter">
-                        Create Poll
+                        {{ $t('compose.modal.createPoll') }}
                     </span>
                 </div>
                 <div class="h-100 card-body p-0 border-top" style="width:100%; min-height: 400px;">
@@ -71,9 +71,9 @@
                             <img :src="profile.avatar" width="42px" height="42px" class="rounded-circle">
                             <div class="media-body">
                                 <div class="form-group">
-                                    <label class="font-weight-bold text-muted small d-none">Caption</label>
+                                    <label class="font-weight-bold text-muted small d-none">{{ $t('compose.modal.caption') }}</label>
                                     <vue-tribute :options="tributeSettings">
-                                        <textarea class="form-control border-0 rounded-0 no-focus" rows="3" placeholder="Write a poll question..." style="" v-model="composeText" v-on:keyup="composeTextLength = composeText.length"></textarea>
+                                        <textarea class="form-control border-0 rounded-0 no-focus" rows="3" :placeholder="$t('compose.modal.pollQuestionPlaceholder')" style="" v-model="composeText" v-on:keyup="composeTextLength = composeText.length"></textarea>
                                     </vue-tribute>
                                     <p class="help-text small text-right text-muted mb-0">{{composeTextLength}}/{{config.uploader.max_caption_length}}</p>
                                 </div>
@@ -83,19 +83,19 @@
 
                     <div class="p-3">
                         <p class="font-weight-bold text-muted small">
-                            Poll Options
+                            {{ $t('compose.modal.pollOptions') }}
                         </p>
 
                         <div v-if="pollOptions.length < 4" class="form-group mb-4">
-                            <input type="text" class="form-control rounded-pill" placeholder="Add a poll option, press enter to save" v-model="pollOptionModel" @keyup.enter="savePollOption">
+                            <input type="text" class="form-control rounded-pill" :placeholder="$t('compose.modal.pollOptionPlaceholder')" v-model="pollOptionModel" @keyup.enter="savePollOption">
                         </div>
 
                         <div v-for="(option, index) in pollOptions" class="form-group mb-4 d-flex align-items-center" style="max-width:400px;position: relative;">
                             <span class="font-weight-bold mr-2" style="position: absolute;left: 10px;">{{ index + 1 }}.</span>
-                            <input v-if="pollOptions[index].length < 50" type="text" class="form-control rounded-pill" placeholder="Add a poll option, press enter to save" v-model="pollOptions[index]" style="padding-left: 30px;padding-right: 90px;">
-                            <textarea v-else class="form-control" v-model="pollOptions[index]" placeholder="Add a poll option, press enter to save" rows="3" style="padding-left: 30px;padding-right:90px;"></textarea>
+                            <input v-if="pollOptions[index].length < 50" type="text" class="form-control rounded-pill" :placeholder="$t('compose.modal.pollOptionPlaceholder')" v-model="pollOptions[index]" style="padding-left: 30px;padding-right: 90px;">
+                            <textarea v-else class="form-control" v-model="pollOptions[index]" :placeholder="$t('compose.modal.pollOptionPlaceholder')" rows="3" style="padding-left: 30px;padding-right:90px;"></textarea>
                             <button class="btn btn-danger btn-sm rounded-pill font-weight-bold" style="position: absolute;right: 5px;" @click="deletePollOption(index)">
-                                <i class="fas fa-trash"></i> Delete
+                                <i class="fas fa-trash"></i> {{ $t('common.delete') }}
                             </button>
                         </div>
 
@@ -104,28 +104,28 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="font-weight-bold text-muted small">
-                                    Poll Expiry
+                                    {{ $t('compose.modal.pollExpiry') }}
                                 </p>
 
                                 <div class="form-group">
                                     <select class="form-control rounded-pill" style="width: 200px;" v-model="pollExpiry">
-                                        <option value="60">1 hour</option>
-                                        <option value="360">6 hours</option>
-                                        <option value="1440" selected>24 hours</option>
-                                        <option value="10080">7 days</option>
+                                        <option value="60">{{ $t('compose.modal.oneHour') }}</option>
+                                        <option value="360">{{ $t('compose.modal.sixHours') }}</option>
+                                        <option value="1440" selected>{{ $t('compose.modal.twentyFourHours') }}</option>
+                                        <option value="10080">{{ $t('compose.modal.sevenDays') }}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div>
                                 <p class="font-weight-bold text-muted small">
-                                    Poll Visibility
+                                    {{ $t('compose.modal.pollVisibility') }}
                                 </p>
 
                                 <div class="form-group">
                                     <select class="form-control rounded-pill" style="max-width: 200px;" v-model="visibility">
-                                        <option value="public">Public</option>
-                                        <option value="private">Followers Only</option>
+                                        <option value="public">{{ $t('compose.common.public') }}</option>
+                                        <option value="private">{{ $t('compose.common.followersOnly') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                             <!-- <button v-if="config.uploader.album_limit > media.length" class="btn btn-outline-primary btn-sm font-weight-bold" @click.prevent="page = 'cameraRoll'" data-toggle="tooltip" data-placement="bottom" title="Upload another photo or video" ><i class="fas fa-chevron-left"></i> Camera Roll</button> -->
                             <button v-else class="btn btn-outline-secondary btn-sm font-weight-bold" disabled><i class="fas fa-plus"></i></button>
                             <b-tooltip target="cm-add-media-btn" triggers="hover">
-                                Upload another photo or video
+                                {{ $t('compose.modal.uploadAnother') }}
                             </b-tooltip>
                         </span>
                         <span v-else-if="page == 3">
@@ -164,26 +164,26 @@
                         <span class="font-weight-bold mb-0">{{pageTitle}}</span>
                     </div>
                     <div v-if="page == 2">
-                        <a v-if="media.length == 1" href="#" class="text-center text-dark" @click.prevent="showCropPhotoCard" title="Crop & Resize" id="cm-crop-btn"><i class="fas fa-crop-alt fa-lg"></i></a>
+                        <a v-if="media.length == 1" href="#" class="text-center text-dark" @click.prevent="showCropPhotoCard" :title="$t('compose.modal.cropResize')" id="cm-crop-btn"><i class="fas fa-crop-alt fa-lg"></i></a>
                         <b-tooltip target="cm-crop-btn" triggers="hover">
-                            Crop & Resize
+                            {{ $t('compose.modal.cropResize') }}
                         </b-tooltip>
                     </div>
                     <div>
                         <!-- <a v-if="page > 1" class="font-weight-bold text-decoration-none" href="#" @click.prevent="page--">Back</a> -->
                         <span v-if="pageLoading">
                             <div class="spinner-border spinner-border-sm" role="status">
-                                <span class="sr-only">Loading...</span>
+                                <span class="sr-only">{{ $t('common.loading') }}</span>
                             </div>
                         </span>
                         <span v-else>
-                            <a v-if="!pageLoading && (page > 1 && page <= 2) || (page == 1 && ids.length != 0) || page == 'cropPhoto'" class="font-weight-bold text-decoration-none" href="#" @click.prevent="nextPage">Next</a>
+                            <a v-if="!pageLoading && (page > 1 && page <= 2) || (page == 1 && ids.length != 0) || page == 'cropPhoto'" class="font-weight-bold text-decoration-none" href="#" @click.prevent="nextPage">{{ $t('common.next') }}</a>
                             <template v-if="!pageLoading && page == 3" >
                                 <b-spinner v-if="isPosting" small />
-                                <a v-else class="font-weight-bold text-decoration-none" href="#" @click.prevent="compose()">Post</a>
+                                <a v-else class="font-weight-bold text-decoration-none" href="#" @click.prevent="compose()">{{ $t('compose.modal.post') }}</a>
                             </template>
-                            <a v-if="!pageLoading && page == 'addText'" class="font-weight-bold text-decoration-none" href="#" @click.prevent="composeTextPost()">Post</a>
-                            <a v-if="!pageLoading && page == 'video-2'" class="font-weight-bold text-decoration-none" href="#" @click.prevent="compose()">Post</a>
+                            <a v-if="!pageLoading && page == 'addText'" class="font-weight-bold text-decoration-none" href="#" @click.prevent="composeTextPost()">{{ $t('compose.modal.post') }}</a>
+                            <a v-if="!pageLoading && page == 'video-2'" class="font-weight-bold text-decoration-none" href="#" @click.prevent="compose()">{{ $t('compose.modal.post') }}</a>
                         </span>
                     </div>
                 </div>
@@ -212,8 +212,8 @@
                             <div class="media px-3">
                                 <div class="media-body">
                                     <div class="form-group">
-                                        <label class="font-weight-bold text-muted small d-none">Body</label>
-                                        <textarea class="form-control border-0 rounded-0 no-focus" rows="7" placeholder="What's happening?" style="font-size:18px;resize:none" v-model="composeText" v-on:keyup="composeTextLength = composeText.length"></textarea>
+                                        <label class="font-weight-bold text-muted small d-none">{{ $t('compose.modal.body') }}</label>
+                                        <textarea class="form-control border-0 rounded-0 no-focus" rows="7" :placeholder="$t('compose.modal.whatsHappening')" style="font-size:18px;resize:none" v-model="composeText" v-on:keyup="composeTextLength = composeText.length"></textarea>
                                         <div class="border-bottom"></div>
                                         <p class="help-text small text-right text-muted mb-0 font-weight-bold">{{composeTextLength}}/{{config.uploader.max_caption_length}}</p>
                                         <p class="mb-0 mt-2">
@@ -226,7 +226,7 @@
                                             <a class="btn btn-outline-lighter rounded-pill mx-3" href="#" @click.prevent="showTagCard()">
                                                 <i class="fas fa-user-plus px-3"></i>
                                             </a> -->
-                                            <a class="btn rounded-pill mx-3 d-inline-flex align-items-center" href="#" :class="[nsfw ? 'btn-danger' : 'btn-outline-lighter']" style="height: 37px;" @click.prevent="nsfw = !nsfw" title="Mark as sensitive/not safe for work">
+                                            <a class="btn rounded-pill mx-3 d-inline-flex align-items-center" href="#" :class="[nsfw ? 'btn-danger' : 'btn-outline-lighter']" style="height: 37px;" @click.prevent="nsfw = !nsfw" :title="$t('compose.modal.markSensitive')">
                                                 <i class="far fa-flag px-3"></i> <span class="text-muted small font-weight-bold"></span>
                                             </a>
                                             <a class="btn btn-outline-lighter rounded-pill d-inline-flex align-items-center" href="#" style="height: 37px;" @click.prevent="showVisibilityCard()">
@@ -249,10 +249,10 @@
                                         </div>
                                         <div class="media-body text-left">
                                             <p class="mb-0">
-                                                <span class="h5 mt-0 font-weight-bold text-primary">New Post</span>
+                                                <span class="h5 mt-0 font-weight-bold text-primary">{{ $t('compose.modal.newPost') }}</span>
                                             </p>
-                                            <p class="mb-0 text-muted">Share up to {{config.uploader.album_limit}} photos or videos</p>
-                                            <p class="mb-0 text-muted small"><span class="font-weight-bold">{{config.uploader.media_types.split(',').map(v => v.split('/')[1]).join(', ')}}</span> allowed up to <span class="font-weight-bold">{{filesize(config.uploader.max_photo_size)}}</span></p>
+                                            <p class="mb-0 text-muted">{{ $t('compose.modal.shareUpTo', { count: config.uploader.album_limit }) }}</p>
+                                            <i18n path="compose.modal.allowedUpTo" tag="p" class="mb-0 text-muted small"><template v-slot:types><span class="font-weight-bold">{{config.uploader.media_types.split(',').map(v => v.split('/')[1]).join(', ')}}</span></template><template v-slot:size><span class="font-weight-bold">{{filesize(config.uploader.max_photo_size)}}</span></template></i18n>
                                         </div>
                                     </div>
                                 </div>
@@ -266,12 +266,12 @@
                                         </div>
                                         <div class="media-body text-left">
                                             <p class="mb-0">
-                                                <span class="h5 mt-0 font-weight-bold text-primary">New Text Post</span>
+                                                <span class="h5 mt-0 font-weight-bold text-primary">{{ $t('compose.modal.newTextPost') }}</span>
                                                 <sup class="float-right mt-2">
-                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">BETA</span>
+                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">{{ $t('compose.modal.beta') }}</span>
                                                 </sup>
                                             </p>
-                                            <p class="mb-0 text-muted">Share a text only post</p>
+                                            <p class="mb-0 text-muted">{{ $t('compose.modal.shareTextOnly') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -285,12 +285,12 @@
                                         </div>
                                         <div class="media-body text-left">
                                             <p class="mb-0">
-                                                <span class="h5 mt-0 font-weight-bold text-primary">New Story</span>
+                                                <span class="h5 mt-0 font-weight-bold text-primary">{{ $t('compose.modal.newStory') }}</span>
                                                 <sup class="float-right mt-2">
-                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">BETA</span>
+                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">{{ $t('compose.modal.beta') }}</span>
                                                 </sup>
                                             </p>
-                                            <p class="mb-0 text-muted">Add to your story</p>
+                                            <p class="mb-0 text-muted">{{ $t('compose.modal.addToYourStory') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -304,12 +304,12 @@
                                         </div>
                                         <div class="media-body text-left">
                                             <p class="mb-0">
-                                                <span class="h5 mt-0 font-weight-bold text-primary">New Poll</span>
+                                                <span class="h5 mt-0 font-weight-bold text-primary">{{ $t('compose.modal.newPoll') }}</span>
                                                 <sup class="float-right mt-2">
-                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">BETA</span>
+                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">{{ $t('compose.modal.beta') }}</span>
                                                 </sup>
                                             </p>
-                                            <p class="mb-0 text-muted">Create a poll</p>
+                                            <p class="mb-0 text-muted">{{ $t('compose.modal.createAPoll') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -323,19 +323,19 @@
                                         </div>
                                         <div class="media-body text-left">
                                             <p class="mb-0">
-                                                <span class="h5 mt-0 font-weight-bold text-primary">New Collection</span>
+                                                <span class="h5 mt-0 font-weight-bold text-primary">{{ $t('compose.modal.newCollection') }}</span>
                                                 <sup class="float-right mt-2">
-                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">BETA</span>
+                                                    <span class="btn btn-outline-lighter p-1 btn-sm font-weight-bold py-0" style="font-size:10px;line-height: 0.6">{{ $t('compose.modal.beta') }}</span>
                                                 </sup>
                                             </p>
-                                            <p class="mb-0 text-muted">New collection of posts</p>
+                                            <p class="mb-0 text-muted">{{ $t('compose.modal.newCollectionDesc') }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </a>
 
                             <p class="py-3">
-                                <a class="font-weight-bold" href="/site/help">Help</a>
+                                <a class="font-weight-bold" href="/site/help">{{ $t('navmenu.help') }}</a>
                             </p>
                         </div>
                     </div>
@@ -377,9 +377,9 @@
                                         </div>
                                         <div v-if="i == carouselCursor" class="text-center mb-0 small text-lighter font-weight-bold pt-2">
                                             <button class="btn btn-link" @click="mediaReorder('prev')"><i class="far fa-chevron-circle-left"></i></button>
-                                            <span class="cursor-pointer" @click.prevent="showCropPhotoCard">Crop</span>
-                                            <span class="cursor-pointer px-3" @click.prevent="showEditMediaCard()">Edit</span>
-                                            <span class="cursor-pointer" @click="deleteMedia()">Delete</span>
+                                            <span class="cursor-pointer" @click.prevent="showCropPhotoCard">{{ $t('compose.modal.crop') }}</span>
+                                            <span class="cursor-pointer px-3" @click.prevent="showEditMediaCard()">{{ $t('compose.common.edit') }}</span>
+                                            <span class="cursor-pointer" @click="deleteMedia()">{{ $t('common.delete') }}</span>
                                             <button class="btn btn-link" @click="mediaReorder('next')"><i class="far fa-chevron-circle-right"></i></button>
                                         </div>
                                 </li>
@@ -391,7 +391,7 @@
                             </div>
                         </div>
                         <div v-else>
-                            <p class="mb-0 p-5 text-center font-weight-bold">An error occured, please refresh the page.</p>
+                            <p class="mb-0 p-5 text-center font-weight-bold">{{ $t('compose.modal.errorRefresh') }}</p>
                         </div>
                     </div>
 
@@ -401,9 +401,9 @@
                                 <img :src="media[0].preview_url" width="42px" height="42px" class="mr-2">
                                 <div class="media-body">
                                     <div class="form-group">
-                                        <label class="font-weight-bold text-muted small d-none">Caption</label>
+                                        <label class="font-weight-bold text-muted small d-none">{{ $t('compose.modal.caption') }}</label>
                                         <vue-tribute :options="tributeSettings">
-                                            <textarea class="form-control border-0 rounded-0 no-focus" rows="3" placeholder="Write a caption..." style="" v-model="composeText" v-on:keyup="composeTextLength = composeText.length"></textarea>
+                                            <textarea class="form-control border-0 rounded-0 no-focus" rows="3" :placeholder="$t('compose.modal.captionPlaceholder')" style="" v-model="composeText" v-on:keyup="composeTextLength = composeText.length"></textarea>
                                         </vue-tribute>
                                         <p class="help-text small text-right text-muted mb-0">{{composeTextLength}}/{{config.uploader.max_caption_length}}</p>
                                     </div>
@@ -412,7 +412,7 @@
                         </div>
                         <div class="border-bottom">
                             <p class="px-4 mb-0 py-2 cursor-pointer d-flex justify-content-between" @click="showMediaDescriptionsCard()">
-                                <span>Alt Text</span>
+                                <span>{{ $t('compose.modal.altText') }}</span>
                                 <span>
                                     <i v-if="media && media.filter(m => m.alt).length == media.length" class="fas fa-check-circle fa-lg text-success"></i>
                                     <i v-else class="fas fa-chevron-right fa-lg text-lighter"></i>
@@ -422,7 +422,7 @@
                         <div class="border-bottom px-4 mb-0 py-2">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <div class="text-dark ">Sensitive/NSFW Media</div>
+                                    <div class="text-dark ">{{ $t('compose.modal.sensitiveMedia') }}</div>
                                 </div>
                                 <div>
                                     <div class="custom-control custom-switch" style="z-index: 9999;">
@@ -435,7 +435,7 @@
                             <div v-if="nsfw">
                                 <textarea
                                     class="form-control mt-3"
-                                    placeholder="Add an optional content warning or spoiler text"
+                                    :placeholder="$t('compose.modal.contentWarningPlaceholder')"
                                     maxlength="140"
                                     v-model="spoilerText">
                                 </textarea>
@@ -444,11 +444,11 @@
                             </div>
                         </div>
                         <div class="border-bottom">
-                            <p class="px-4 mb-0 py-2 cursor-pointer" @click="showTagCard()">Tag people</p>
+                            <p class="px-4 mb-0 py-2 cursor-pointer" @click="showTagCard()">{{ $t('compose.modal.tagPeople') }}</p>
                         </div>
                         <div class="border-bottom">
                             <p class="px-4 mb-0 py-2 cursor-pointer" @click="showCollectionCard()">
-                                <span>Add to Collection <span class="ml-2 badge badge-primary">NEW</span></span>
+                                <span>{{ $t('compose.modal.addToCollection') }} <span class="ml-2 badge badge-primary">{{ $t('compose.modal.new') }}</span></span>
                                 <span class="float-right">
                                     <span v-if="collectionsSelected.length" href="#" class="btn btn-outline-secondary btn-sm small mr-3 mt-n1 disabled" style="font-size:10px;padding:3px 5px;text-transform: uppercase" disabled>
                                         {{collectionsSelected.length}}
@@ -459,7 +459,7 @@
                         </div>
                         <div class="border-bottom">
                             <p class="px-4 mb-0 py-2 cursor-pointer" @click="showLicenseCard()">
-                                <span>Add license</span>
+                                <span>{{ $t('compose.modal.addLicense') }}</span>
                                 <span class="float-right">
                                     <a v-if="licenseTitle" href="#" @click.prevent="showLicenseCard()" class="btn btn-outline-secondary btn-sm small mr-3 mt-n1 disabled" style="font-size:10px;padding:3px;text-transform: uppercase" disabled>{{licenseTitle}}</a>
                                     <a href="#" @click.prevent="showLicenseCard()" class="text-decoration-none"><i class="fas fa-chevron-right fa-lg text-lighter"></i></a>
@@ -467,18 +467,18 @@
                             </p>
                         </div>
                         <div class="border-bottom">
-                            <p class="px-4 mb-0 py-2 cursor-pointer" @click="showLocationCard()" v-if="!place">Add location</p>
+                            <p class="px-4 mb-0 py-2 cursor-pointer" @click="showLocationCard()" v-if="!place">{{ $t('compose.modal.addLocation') }}</p>
                             <p v-else class="px-4 mb-0 py-2">
-                                <span class="text-lighter">Location:</span> {{place.name}}, {{place.country}}
+                                <span class="text-lighter">{{ $t('compose.modal.location') }}</span> {{place.name}}, {{place.country}}
                                 <span class="float-right">
-                                    <a href="#" @click.prevent="showLocationCard()" class="btn btn-outline-secondary btn-sm small mr-2" style="font-size:10px;padding:3px;text-transform: uppercase">Edit</a>
-                                    <a href="#" @click.prevent="place = false" class="btn btn-outline-secondary btn-sm small" style="font-size:10px;padding:3px;text-transform: uppercase">Remove</a>
+                                    <a href="#" @click.prevent="showLocationCard()" class="btn btn-outline-secondary btn-sm small mr-2" style="font-size:10px;padding:3px;text-transform: uppercase">{{ $t('compose.common.edit') }}</a>
+                                    <a href="#" @click.prevent="place = false" class="btn btn-outline-secondary btn-sm small" style="font-size:10px;padding:3px;text-transform: uppercase">{{ $t('compose.common.remove') }}</a>
                                 </span>
                             </p>
                         </div>
                         <div class="border-bottom">
                             <p class="px-4 mb-0 py-2">
-                                <span>Audience</span>
+                                <span>{{ $t('compose.modal.audience') }}</span>
                                 <span class="float-right">
                                     <a href="#" @click.prevent="showVisibilityCard()" class="btn btn-outline-secondary btn-sm small mr-3 mt-n1 disabled" style="font-size:10px;padding:3px;text-transform: uppercase" disabled>{{visibilityTag}}</a>
                                     <a href="#" @click.prevent="showVisibilityCard()" class="text-decoration-none"><i class="fas fa-chevron-right fa-lg text-lighter"></i></a>
@@ -498,7 +498,7 @@
                         </div> -->
 
                         <div style="min-height: 200px;">
-                            <p class="px-4 mb-0 py-2 small font-weight-bold text-muted cursor-pointer" @click="showAdvancedSettingsCard()">Advanced settings</p>
+                            <p class="px-4 mb-0 py-2 small font-weight-bold text-muted cursor-pointer" @click="showAdvancedSettingsCard()">{{ $t('compose.modal.advancedSettings') }}</p>
                         </div>
                     </div>
 
@@ -507,14 +507,14 @@
                             v-show="taggedUsernames.length < 10"
                             :search="tagSearch"
                             placeholder="@pixelfed"
-                            aria-label="Search usernames"
+                            :aria-label="$t('compose.modal.searchUsernames')"
                             :get-result-value="getTagResultValue"
                             @submit="onTagSubmitLocation"
                             ref="autocomplete"
                         >
                         </autocomplete>
-                        <p v-show="taggedUsernames.length < 10" class="font-weight-bold text-muted small">You can tag {{10 - taggedUsernames.length}} more {{taggedUsernames.length == 9 ? 'person' : 'people'}}!</p>
-                        <p class="font-weight-bold text-center mt-3">Tagged People</p>
+                        <p v-show="taggedUsernames.length < 10" class="font-weight-bold text-muted small">{{ taggedUsernames.length == 9 ? $t('compose.modal.canTagMorePerson', { count: 10 - taggedUsernames.length }) : $t('compose.modal.canTagMorePeople', { count: 10 - taggedUsernames.length }) }}</p>
+                        <p class="font-weight-bold text-center mt-3">{{ $t('compose.modal.taggedPeople') }}</p>
                         <div class="list-group">
                             <div v-for="(tag, index) in taggedUsernames" class="list-group-item d-flex justify-content-between">
                                 <div class="media">
@@ -525,29 +525,29 @@
                                 </div>
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input disabled" :id="'cci-tagged-privacy-switch'+index" v-model="tag.privacy" disabled>
-                                    <label class="custom-control-label font-weight-bold text-lighter" :for="'cci-tagged-privacy-switch'+index">{{tag.privacy ? 'Public' : 'Private'}}</label>
+                                    <label class="custom-control-label font-weight-bold text-lighter" :for="'cci-tagged-privacy-switch'+index">{{tag.privacy ? $t('compose.common.public') : $t('compose.common.private')}}</label>
                                 <a href="#" @click.prevent="untagUsername(index)" class="ml-3"><i class="fas fa-times text-muted"></i></a></div>
                             </div>
                             <div v-if="taggedUsernames.length == 0" class="list-group-item p-3">
-                                <p class="text-center mb-0 font-weight-bold text-lighter">Search usernames to tag.</p>
+                                <p class="text-center mb-0 font-weight-bold text-lighter">{{ $t('compose.modal.searchUsernamesToTag') }}</p>
                             </div>
                         </div>
-                        <p class="font-weight-bold text-center small text-muted pt-3 mb-0">When you tag someone, they are sent a notification.<br>For more information on tagging, <a href="#" class="text-primary" @click.prevent="showTagHelpCard()">click here</a>.</p>
+                        <p class="font-weight-bold text-center small text-muted pt-3 mb-0">{{ $t('compose.modal.tagNotification') }}<br><i18n path="compose.modal.tagMoreInfo"><template v-slot:link><a href="#" class="text-primary" @click.prevent="showTagHelpCard()">{{ $t('compose.modal.tagMoreInfoLink') }}</a></template></i18n></p>
                     </div>
 
                     <div v-else-if="page == 'tagPeopleHelp'" class="w-100 h-100 p-3">
-                        <p class="mb-0 text-center py-3 px-2 lead">Tagging someone is like mentioning them, with the option to make it private between you.</p>
+                        <p class="mb-0 text-center py-3 px-2 lead">{{ $t('compose.modal.tagHelpLead') }}</p>
                         <p class="mb-3 py-3 px-2 font-weight-lighter">
-                            You can choose to tag someone in public or private mode. Public mode will allow others to see who you tagged in the post and private mode tagged users will not be shown to others.
+                            {{ $t('compose.modal.tagHelpBody') }}
                         </p>
                     </div>
 
                     <div v-else-if="page == 'addLocation'" class="w-100 h-100 p-3">
-                        <p class="mb-0">Add Location</p>
+                        <p class="mb-0">{{ $t('compose.modal.addLocationTitle') }}</p>
                         <autocomplete
                             :search="locationSearch"
-                            placeholder="Search locations ..."
-                            aria-label="Search locations ..."
+                            :placeholder="$t('compose.modal.searchLocations')"
+                            :aria-label="$t('compose.modal.searchLocations')"
                             :get-result-value="getResultValue"
                             @submit="onSubmitLocation"
                         >
@@ -571,8 +571,8 @@
                             </div> -->
                             <div class="list-group-item d-flex justify-content-between">
                                 <div>
-                                    <div class="text-dark ">Turn off commenting</div>
-                                    <p class="text-muted small mb-0">Disables comments for this post, you can change this later.</p>
+                                    <div class="text-dark ">{{ $t('compose.modal.turnOffCommenting') }}</div>
+                                    <p class="text-muted small mb-0">{{ $t('compose.modal.turnOffCommentingDesc') }}</p>
                                 </div>
                                 <div>
                                     <div class="custom-control custom-switch" style="z-index: 9999;">
@@ -584,8 +584,8 @@
                             <a href="#" class="list-group-item" @click.prevent="showMediaDescriptionsCard()">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="text-dark">Media Descriptions</div>
-                                        <p class="text-muted small mb-0">Describe your photos for people with visual impairments.</p>
+                                        <div class="text-dark">{{ $t('compose.modal.mediaDescriptions') }}</div>
+                                        <p class="text-muted small mb-0">{{ $t('compose.modal.mediaDescriptionsDesc') }}</p>
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right fa-lg text-lighter"></i>
@@ -635,20 +635,20 @@
                                 class="list-group-item lead cursor-pointer"
                                 :class="{ 'text-primary': visibility == 'public' }"
                                 @click="toggleVisibility('public')">
-                                Public
+                                {{ $t('compose.common.public') }}
                             </div>
                             <div
                                 v-if="!profile.locked"
                                 class="list-group-item lead cursor-pointer"
                                 :class="{ 'text-primary': visibility == 'unlisted' }"
                                 @click="toggleVisibility('unlisted')">
-                                Unlisted
+                                {{ $t('compose.common.unlisted') }}
                             </div>
                             <div
                                 class="list-group-item lead cursor-pointer"
                                 :class="{ 'text-primary': visibility == 'private' }"
                                 @click="toggleVisibility('private')">
-                                Followers Only
+                                {{ $t('compose.common.followersOnly') }}
                             </div>
                         </div>
                     </div>
@@ -658,15 +658,15 @@
                             <div class="media">
                                 <img :src="m.preview_url" class="mr-3" width="50px" height="50px">
                                 <div class="media-body">
-                                    <textarea class="form-control" v-model="m.alt" placeholder="Add a media description here..." :maxlength="maxAltTextLength" rows="4"></textarea>
+                                    <textarea class="form-control" v-model="m.alt" :placeholder="$t('compose.modal.mediaDescriptionPlaceholder')" :maxlength="maxAltTextLength" rows="4"></textarea>
                                     <p class="help-text small text-right text-muted mb-0">{{m.alt ? m.alt.length : 0}}/{{maxAltTextLength}}</p>
                                 </div>
                             </div>
                             <hr>
                         </div>
                         <p class="d-flex justify-content-between mb-0">
-                            <button type="button" @click="goBack()" class="btn btn-link text-muted font-weight-bold text-decoration-none">Cancel</button>
-                            <button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">Save</button>
+                            <button type="button" @click="goBack()" class="btn btn-link text-muted font-weight-bold text-decoration-none">{{ $t('common.cancel') }}</button>
+                            <button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">{{ $t('compose.common.save') }}</button>
                         </p>
                     </div>
 
@@ -682,10 +682,10 @@
                                   <div class="media-body">
                                     <h5 class="mt-0">{{ collection.title }}</h5>
                                     <p class="mb-0 text-muted small">
-                                      <span>{{ collection.post_count }} Posts</span>
+                                      <span>{{ $t('compose.modal.postCount', { count: collection.post_count }) }}</span>
                                       <span>&middot;</span>
                                       <span v-if="collection.visibility === 'draft'" class="primary"><i class="far fa-lock fa-sm"></i> {{ $t("profile.draft")}}</span>
-                                      <span v-else>Created {{ timeAgo(collection.published_at) }} ago</span>
+                                      <span v-else>{{ $t('compose.modal.createdAgo', { time: timeAgo(collection.published_at) }) }}</span>
                                     </p>
                                   </div>
                                 </div>
@@ -695,25 +695,25 @@
                                 v-if="collectionsCanLoadMore"
                                 class="btn btn-light btn-block font-weight-bold mt-3"
                                 @click="loadMoreCollections">
-                                Load more
+                                {{ $t('compose.modal.loadMore') }}
                             </button>
                         </div>
                         <p class="d-flex justify-content-between mb-0">
-                            <button type="button" @click="clearSelectedCollections()" class="btn btn-link text-muted font-weight-bold text-decoration-none">Clear</button>
-                            <button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">Save</button>
+                            <button type="button" @click="clearSelectedCollections()" class="btn btn-link text-muted font-weight-bold text-decoration-none">{{ $t('compose.modal.clear') }}</button>
+                            <button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">{{ $t('compose.common.save') }}</button>
                         </p>
                     </div>
 
                     <div v-else-if="page == 'schedulePost'" class="w-100 h-100 p-3">
-                        <p class="text-center lead text-muted mb-0 py-5">This feature is not available yet.</p>
+                        <p class="text-center lead text-muted mb-0 py-5">{{ $t('compose.modal.notAvailable') }}</p>
                     </div>
 
                     <div v-else-if="page == 'mediaMetadata'" class="w-100 h-100 p-3">
-                        <p class="text-center lead text-muted mb-0 py-5">This feature is not available yet.</p>
+                        <p class="text-center lead text-muted mb-0 py-5">{{ $t('compose.modal.notAvailable') }}</p>
                     </div>
 
                     <div v-else-if="page == 'addToStory'" class="w-100 h-100 p-3">
-                        <p class="text-center lead text-muted mb-0 py-5">This feature is not available yet.</p>
+                        <p class="text-center lead text-muted mb-0 py-5">{{ $t('compose.modal.notAvailable') }}</p>
                     </div>
 
                     <div v-else-if="page == 'editMedia'" class="w-100 h-100 p-3">
@@ -721,15 +721,15 @@
                             <img :src="media[carouselCursor].preview_url" class="mr-3" width="50px" height="50px">
                             <div class="media-body">
                                 <div class="form-group">
-                                    <label class="font-weight-bold text-muted small">Media Description</label>
-                                    <textarea class="form-control" v-model="media[carouselCursor].alt" placeholder="Add a media description here..." :maxlength="config.uploader.max_altext_length"></textarea>
+                                    <label class="font-weight-bold text-muted small">{{ $t('compose.modal.mediaDescription') }}</label>
+                                    <textarea class="form-control" v-model="media[carouselCursor].alt" :placeholder="$t('compose.modal.mediaDescriptionPlaceholder')" :maxlength="config.uploader.max_altext_length"></textarea>
                                     <p class="help-text small text-muted mb-0 d-flex justify-content-between">
-                                        <span>Describe your photo for people with visual impairments.</span>
+                                        <span>{{ $t('compose.modal.describePhoto') }}</span>
                                         <span>{{media[carouselCursor].alt ? media[carouselCursor].alt.length : 0}}/{{config.uploader.max_altext_length}}</span>
                                     </p>
                                 </div>
                                 <div class="form-group">
-                                    <label class="font-weight-bold text-muted small">License</label>
+                                    <label class="font-weight-bold text-muted small">{{ $t('compose.modal.license') }}</label>
                                     <!-- <input type="text" class="form-control" v-model="media[carouselCursor].license" placeholder="All Rights Reserved (Default license)"> -->
                                     <!-- <p class="help-text small text-muted mb-0 d-flex justify-content-between">
                                         <span></span>
@@ -748,8 +748,8 @@
                         </div>
                         <hr>
                         <p class="d-flex justify-content-between mb-0">
-                            <button type="button" @click="goBack()" class="btn btn-link text-muted font-weight-bold text-decoration-none">Cancel</button>
-                            <button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">Save</button>
+                            <button type="button" @click="goBack()" class="btn btn-link text-muted font-weight-bold text-decoration-none">{{ $t('common.cancel') }}</button>
+                            <button type="button" @click="goBack()" class="btn btn-primary font-weight-bold">{{ $t('compose.common.save') }}</button>
                         </p>
                     </div>
 
@@ -758,8 +758,8 @@
                             <div class="media p-3">
                                 <img :src="media[0].preview_url" width="100px" height="70px" class="mr-2">
                                 <div class="media-body">
-                                    <p class="font-weight-bold mb-1">{{video.title ? video.title.slice(0,70) : 'Untitled'}}</p>
-                                    <p class="mb-0 text-muted small">{{video.description ? video.description.slice(0,90) : 'No description'}}</p>
+                                    <p class="font-weight-bold mb-1">{{video.title ? video.title.slice(0,70) : $t('compose.modal.untitled')}}</p>
+                                    <p class="mb-0 text-muted small">{{video.description ? video.description.slice(0,90) : $t('compose.modal.noDescription')}}</p>
                                 </div>
                             </div>
                         </div>
@@ -767,7 +767,7 @@
 
                         <div class="border-bottom d-flex justify-content-between px-4 mb-0 py-2 ">
                             <div>
-                                <div class="text-dark ">Contains NSFW Media</div>
+                                <div class="text-dark ">{{ $t('compose.modal.containsNsfw') }}</div>
                             </div>
                             <div>
                                 <div class="custom-control custom-switch" style="z-index: 9999;">
@@ -777,11 +777,11 @@
                             </div>
                         </div>
                         <div class="border-bottom">
-                            <p class="px-4 mb-0 py-2 cursor-pointer" @click="showLicenseCard()">Add license</p>
+                            <p class="px-4 mb-0 py-2 cursor-pointer" @click="showLicenseCard()">{{ $t('compose.modal.addLicense') }}</p>
                         </div>
                         <div class="border-bottom">
                             <p class="px-4 mb-0 py-2">
-                                <span>Audience</span>
+                                <span>{{ $t('compose.modal.audience') }}</span>
                                 <span class="float-right">
                                     <a href="#" @click.prevent="showVisibilityCard()" class="btn btn-outline-secondary btn-sm small mr-3 mt-n1 disabled" style="font-size:10px;padding:3px;text-transform: uppercase" disabled>{{visibilityTag}}</a>
                                     <a href="#" @click.prevent="showVisibilityCard()" class="text-decoration-none"><i class="fas fa-chevron-right fa-lg text-lighter"></i></a>
@@ -794,7 +794,7 @@
                                 <div class="d-flex align-items-center">
                                     <p class="mb-0 text-center">
                                         <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">Loading...</span>
+                                            <span class="sr-only">{{ $t('common.loading') }}</span>
                                         </div>
                                     </p>
                                     <p class="ml-3 mb-0 text-center font-weight-bold">
@@ -803,14 +803,14 @@
                                 </div>
                             </div> -->
                             <div class="form-group">
-                                <p class="small font-weight-bold text-muted mb-0">Title</p>
-                                <input class="form-control" v-model="video.title" placeholder="Add a good title">
+                                <p class="small font-weight-bold text-muted mb-0">{{ $t('compose.common.title') }}</p>
+                                <input class="form-control" v-model="video.title" :placeholder="$t('compose.modal.titlePlaceholder')">
                                 <p class="help-text mb-0 small text-muted">{{video.title.length}}/70</p>
                             </div>
 
                             <div class="form-group mb-0">
-                                <p class="small font-weight-bold text-muted mb-0">Description</p>
-                                <textarea class="form-control" v-model="video.description" placeholder="Add an optional description" maxlength="5000" rows="5"></textarea>
+                                <p class="small font-weight-bold text-muted mb-0">{{ $t('compose.common.description') }}</p>
+                                <textarea class="form-control" v-model="video.description" :placeholder="$t('compose.modal.descriptionPlaceholder')" maxlength="5000" rows="5"></textarea>
                                 <p class="help-text mb-0 small text-muted">{{video.description.length}}/5000</p>
                             </div>
                         </div>
@@ -880,7 +880,7 @@ export default {
             page: 1,
             composeState: 'publish',
             visibility: 'public',
-            visibilityTag: 'Public',
+            visibilityTag: this.$t('compose.common.public'),
             place: false,
             commentsDisabled: false,
             optimizeMedia: true,
@@ -949,47 +949,47 @@ export default {
             availableLicenses: [
                 {
                     id: 1,
-                    name: "All Rights Reserved",
+                    name: this.$t('compose.modal.licenses.allRightsReserved'),
                     title: ""
                 },
                 {
                     id: 5,
-                    name: "Public Domain Work",
+                    name: this.$t('compose.modal.licenses.publicDomainWork'),
                     title: ""
                 },
                 {
                     id: 6,
-                    name: "Public Domain Dedication (CC0)",
+                    name: this.$t('compose.modal.licenses.publicDomainDedication'),
                     title: "CC0"
                 },
                 {
                     id: 11,
-                    name: "Attribution",
+                    name: this.$t('compose.modal.licenses.attribution'),
                     title: "CC BY"
                 },
                 {
                     id: 12,
-                    name: "Attribution-ShareAlike",
+                    name: this.$t('compose.modal.licenses.attributionShareAlike'),
                     title: "CC BY-SA"
                 },
                 {
                     id: 13,
-                    name: "Attribution-NonCommercial",
+                    name: this.$t('compose.modal.licenses.attributionNonCommercial'),
                     title: "CC BY-NC"
                 },
                 {
                     id: 14,
-                    name: "Attribution-NonCommercial-ShareAlike",
+                    name: this.$t('compose.modal.licenses.attributionNonCommercialShareAlike'),
                     title: "CC BY-NC-SA"
                 },
                 {
                     id: 15,
-                    name: "Attribution-NoDerivs",
+                    name: this.$t('compose.modal.licenses.attributionNoDerivs'),
                     title: "CC BY-ND"
                 },
                 {
                     id: 16,
-                    name: "Attribution-NonCommercial-NoDerivs",
+                    name: this.$t('compose.modal.licenses.attributionNonCommercialNoDerivs'),
                     title: "CC BY-NC-ND"
                 }
             ],
@@ -1095,19 +1095,19 @@ export default {
         defineErrorMessage(errObject) {
             let msg;
             if (errObject.response) {
-                msg = errObject.response.data.message ? errObject.response.data.message : 'An unexpected error occured.';
+                msg = errObject.response.data.message ? errObject.response.data.message : this.$t('compose.common.unexpectedError');
             }
             else {
                 msg = errObject.message;
             }
-            return swal('Oops, something went wrong!', msg, 'error');
+            return swal(this.$t('compose.common.somethingWentWrong'), msg, 'error');
         },
 
         fetchProfile() {
             let tags = {
-                public: 'Public',
-                private: 'Followers Only',
-                unlisted: 'Unlisted'
+                public: this.$t('compose.common.public'),
+                private: this.$t('compose.common.followersOnly'),
+                unlisted: this.$t('compose.common.unlisted')
             }
             if(window._sharedData.curUser.id) {
                 this.profile = window._sharedData.curUser;
@@ -1118,7 +1118,7 @@ export default {
                 }
                 if(this.profile.locked == true) {
                     this.visibility = 'private';
-                    this.visibilityTag = 'Followers Only';
+                    this.visibilityTag = this.$t('compose.common.followersOnly');
                 }
             } else {
                 axios.get('/api/pixelfed/v1/accounts/verify_credentials').then(res => {
@@ -1131,7 +1131,7 @@ export default {
                     }
                     if(this.profile.locked == true) {
                         this.visibility = 'private';
-                        this.visibilityTag = 'Followers Only';
+                        this.visibilityTag = this.$t('compose.common.followersOnly');
                     }
                 }).catch(err => {
                 });
@@ -1148,7 +1148,7 @@ export default {
         },
 
         addText(event) {
-            this.pageTitle = 'New Text Post';
+            this.pageTitle = this.$t('compose.modal.newTextPost');
             this.page = 'addText';
             this.textMode = true;
             this.mode = 'text';
@@ -1163,14 +1163,14 @@ export default {
 
             files.forEach((file, i) => {
                 if(self.media && self.media.length >= self.config.uploader.album_limit) {
-                    swal('Error', 'You can only upload ' + self.config.uploader.album_limit + ' photos per album', 'error');
+                    swal(self.$t('common.error'), self.$t('compose.common.albumLimit', { limit: self.config.uploader.album_limit }), 'error');
                     self.page = 2;
                     return;
                 }
                 let acceptedMimes = self.config.uploader.media_types.split(',');
                 let validated = $.inArray(file.type, acceptedMimes);
                 if(validated == -1) {
-                    swal('Invalid File Type', 'The file you are trying to add is not a valid mime type. Please upload a '+self.config.uploader.media_types+' only.', 'error');
+                    swal(self.$t('compose.common.invalidFileType'), self.$t('compose.common.invalidFileTypeMsg', { types: self.config.uploader.media_types }), 'error');
                     self.page = 2;
                     return;
                 }
@@ -1240,12 +1240,12 @@ export default {
                 }).catch(function(e) {
                     switch(e.response.status) {
                         case 403:
-                            swal('Account size limit reached', 'Contact your admin for assistance.', 'error');
+                            swal(self.$t('compose.modal.accountSizeLimit'), self.$t('compose.modal.contactAdmin'), 'error');
                             self.page = 2;
                         break;
 
                         case 413:
-                            swal('File is too large', 'The file you uploaded has the size of ' + self.formatBytes(file.size) + '. Unfortunately, only images up to ' + self.formatBytes(self.config.uploader.max_photo_size  * 1024) + ' are supported.\nPlease resize the file and try again.', 'error');
+                            swal(self.$t('compose.modal.fileTooLarge'), self.$t('compose.modal.fileTooLargeMsg', { size: self.formatBytes(file.size), max: self.formatBytes(self.config.uploader.max_photo_size  * 1024) }), 'error');
                             self.page = 2;
                         break;
 
@@ -1258,33 +1258,33 @@ export default {
                             } else if (e.response.data && e.response.data.message) {
                                 validationMsg = (fileInfo.file.name ? fileInfo.file.name + ': ' : '') + e.response.data.message;
                             } else {
-                                validationMsg = 'A validation error occurred.';
+                                validationMsg = self.$t('compose.modal.validationError');
                             }
-                            swal('Upload Failed', validationMsg, 'error');
+                            swal(self.$t('compose.common.uploadFailed'), validationMsg, 'error');
                             self.page = 2;
                         break;
 
                         case 451:
-                            swal('Banned Content', 'This content has been banned and cannot be uploaded.', 'error');
+                            swal(self.$t('compose.modal.bannedContent'), self.$t('compose.modal.bannedContentMsg'), 'error');
                             self.page = 2;
                         break;
 
                         case 429:
-                            swal('Limit Reached', 'You can upload up to 250 photos or videos per day and you\'ve reached that limit. Please try again later.', 'error');
+                            swal(self.$t('compose.modal.limitReached'), self.$t('compose.modal.dailyLimitMsg'), 'error');
                             self.page = 2;
                         break;
 
                         case 500:
-                            swal('Error', e.response.data.message, 'error');
+                            swal(self.$t('common.error'), e.response.data.message, 'error');
                             self.page = 2;
                         break;
 
                         default:
-                            let defaultMsg = 'An unexpected error occurred.';
+                            let defaultMsg = self.$t('compose.common.unexpectedError');
                             if (e.response && e.response.data && e.response.data.message) {
                                 defaultMsg = (fileInfo.file.name ? fileInfo.file.name + ': ' : '') + e.response.data.message;
                             }
-                            swal('Oops, something went wrong!', defaultMsg, 'error');
+                            swal(self.$t('compose.common.somethingWentWrong'), defaultMsg, 'error');
                             self.page = 2;
                         break;
                     }
@@ -1300,7 +1300,7 @@ export default {
         },
 
         async deleteMedia() {
-            if(window.confirm('Are you sure you want to delete this media?') == false) {
+            if(window.confirm(this.$t('compose.common.deleteMediaConfirm')) == false) {
                 return;
             }
             let id = this.media[this.carouselCursor].id;
@@ -1314,7 +1314,7 @@ export default {
                     })
                 }
                 catch(err) {
-                    swal('Whoops!', 'An error occured when attempting to delete this, please try again', 'error');
+                    swal(this.$t('compose.common.whoops'), this.$t('compose.common.deleteError'), 'error');
                     return
                 }
             }
@@ -1357,7 +1357,7 @@ export default {
             }
 
             if(this.composeText.length > this.config.uploader.max_caption_length) {
-                swal('Error', 'Caption is too long', 'error');
+                swal(this.$t('common.error'), this.$t('compose.common.captionTooLong'), 'error');
                 return;
             }
 
@@ -1379,13 +1379,13 @@ export default {
                         });
 
                         if(count.length) {
-                            swal('Missing media descriptions', 'You have enabled mandatory media descriptions. Please add media descriptions under Advanced settings to proceed. For more information, please see the media settings page.', 'warning');
+                            swal(this.$t('compose.modal.missingDescriptions'), this.$t('compose.modal.missingDescriptionsMsg'), 'warning');
                             this.isPosting = false;
                             return;
                         }
                     }
                     if(this.media.length == 0) {
-                        swal('Whoops!', 'You need to add media before you can save this!', 'warning');
+                        swal(this.$t('compose.common.whoops'), this.$t('compose.common.addMediaFirst'), 'warning');
                         return;
                     }
                     if(this.composeText == 'Add optional caption...') {
@@ -1424,7 +1424,7 @@ export default {
                         switch(err.response.status) {
                             case 400:
                                 if (err.response.data.error == "Must contain a single photo or video or multiple photos.") {
-                                    swal("Wrong types of mixed media", "The album must contain a single photo or video or multiple photos.", 'error');
+                                    swal(this.$t('compose.modal.wrongMixedMedia'), this.$t('compose.modal.wrongMixedMediaMsg'), 'error');
                                 }
                                 else {
                                     this.defineErrorMessage(err);
@@ -1457,7 +1457,7 @@ export default {
             let state = this.composeState;
 
             if(this.composeText.length > this.config.uploader.max_caption_length) {
-                swal('Error', 'Caption is too long', 'error');
+                swal(this.$t('common.error'), this.$t('compose.common.captionTooLong'), 'error');
                 return;
             }
 
@@ -1476,8 +1476,8 @@ export default {
                         let data = res.data;
                         window.location.href = data;
                     }).catch(err => {
-                        let msg = err.response.data.message ? err.response.data.message : 'An unexpected error occured.'
-                        swal('Oops, something went wrong!', msg, 'error');
+                        let msg = err.response.data.message ? err.response.data.message : this.$t('compose.common.unexpectedError')
+                        swal(this.$t('compose.common.somethingWentWrong'), msg, 'error');
                     });
                     return;
                 break;
@@ -1644,22 +1644,22 @@ export default {
         },
 
         showTagCard() {
-            this.pageTitle = 'Tag People';
+            this.pageTitle = this.$t('compose.modal.tagPeopleTitle');
             this.page = 'tagPeople';
         },
 
         showTagHelpCard() {
-            this.pageTitle = 'About Tag People';
+            this.pageTitle = this.$t('compose.modal.aboutTagPeople');
             this.page = 'tagPeopleHelp';
         },
 
         showLocationCard() {
-            this.pageTitle = 'Add Location';
+            this.pageTitle = this.$t('compose.modal.addLocationTitle');
             this.page = 'addLocation';
         },
 
         showAdvancedSettingsCard() {
-            this.pageTitle = 'Advanced Settings';
+            this.pageTitle = this.$t('compose.modal.advancedSettingsTitle');
             this.page = 'advancedSettings';
         },
 
@@ -1688,12 +1688,12 @@ export default {
                 break;
 
                 case 'video':
-                    this.pageTitle = 'Edit Video Details';
+                    this.pageTitle = this.$t('compose.modal.editVideoDetails');
                     this.page = 'video-2';
                 break;
 
                 case 'text':
-                    this.pageTitle = 'New Text Post';
+                    this.pageTitle = this.$t('compose.modal.newTextPost');
                     this.page = 'addText';
                 break;
             }
@@ -1701,25 +1701,25 @@ export default {
         },
 
         showVisibilityCard() {
-            this.pageTitle = 'Post Visibility';
+            this.pageTitle = this.$t('compose.modal.postVisibility');
             this.page = 'visibility';
         },
 
         showAddToStoryCard() {
-            this.pageTitle = 'Add to Story';
+            this.pageTitle = this.$t('compose.modal.addToStory');
             this.page = 'addToStory';
         },
 
         showCropPhotoCard() {
-            this.pageTitle = 'Edit Photo';
+            this.pageTitle = this.$t('compose.modal.editPhoto');
             this.page = 'cropPhoto';
         },
 
         toggleVisibility(state) {
             let tags = {
-                public: 'Public',
-                private: 'Followers Only',
-                unlisted: 'Unlisted'
+                public: this.$t('compose.common.public'),
+                private: this.$t('compose.common.followersOnly'),
+                unlisted: this.$t('compose.common.unlisted')
             }
             this.visibility = state;
             this.visibilityTag = tags[state];
@@ -1731,34 +1731,34 @@ export default {
                 break;
 
                 case 'video':
-                    this.pageTitle = 'Edit Video Details';
+                    this.pageTitle = this.$t('compose.modal.editVideoDetails');
                     this.page = 'video-2';
                 break;
 
                 case 'text':
-                    this.pageTitle = 'New Text Post';
+                    this.pageTitle = this.$t('compose.modal.newTextPost');
                     this.page = 'addText';
                 break;
             }
         },
 
         showMediaDescriptionsCard() {
-            this.pageTitle = 'Media Descriptions';
+            this.pageTitle = this.$t('compose.modal.mediaDescriptions');
             this.page = 'altText';
         },
 
         showAddToCollectionsCard() {
-            this.pageTitle = 'Add to Collection';
+            this.pageTitle = this.$t('compose.modal.addToCollection');
             this.page = 'addToCollection';
         },
 
         showSchedulePostCard() {
-            this.pageTitle = 'Schedule Post';
+            this.pageTitle = this.$t('compose.modal.schedulePost');
             this.page = 'schedulePost';
         },
 
         showEditMediaCard() {
-            this.pageTitle = 'Edit Media';
+            this.pageTitle = this.$t('compose.modal.editMedia');
             this.page = 'editMedia';
         },
 
@@ -1810,11 +1810,11 @@ export default {
 
         showTextOptions() {
             this.page = 'textOptions';
-            this.pageTitle = 'Text Post Options';
+            this.pageTitle = this.$t('compose.modal.textPostOptions');
         },
 
         showLicenseCard() {
-            this.pageTitle = 'Select a License';
+            this.pageTitle = this.$t('compose.modal.selectLicense');
             this.page = 'licensePicker';
         },
 
@@ -1838,12 +1838,12 @@ export default {
                 break;
 
                 case 'video':
-                    this.pageTitle = 'Edit Video Details';
+                    this.pageTitle = this.$t('compose.modal.editVideoDetails');
                     this.page = 'video-2';
                 break;
 
                 case 'text':
-                    this.pageTitle = 'New Text Post';
+                    this.pageTitle = this.$t('compose.modal.newTextPost');
                     this.page = 'addText';
                 break;
             }
@@ -1877,7 +1877,7 @@ export default {
                 pollOptions: this.pollOptions
             }).then(res => {
                 if(!res.data.hasOwnProperty('url')) {
-                    swal('Oops!', 'An error occured while attempting to create this poll. Please refresh the page and try again.', 'error');
+                    swal(this.$t('common.oops'), this.$t('compose.modal.pollError'), 'error');
                     this.postingPoll = false;
                     return;
                 }
@@ -1886,12 +1886,12 @@ export default {
                 if(err.response.data.hasOwnProperty('error')) {
                     if(err.response.data.error == 'Duplicate detected.') {
                         this.postingPoll = false;
-                        swal('Oops!', 'The poll you are trying to create is similar to an existing poll you created. Please make the poll question (caption) unique.', 'error');
+                        swal(this.$t('common.oops'), this.$t('compose.modal.pollDuplicate'), 'error');
                         return;
                     }
                 }
                 this.postingPoll = false;
-                swal('Oops!', 'An error occured while attempting to create this poll. Please refresh the page and try again.', 'error');
+                swal(this.$t('common.oops'), this.$t('compose.modal.pollError'), 'error');
             })
         },
 
@@ -1900,7 +1900,7 @@ export default {
         },
 
         showCollectionCard() {
-            this.pageTitle = 'Add to Collection(s)';
+            this.pageTitle = this.$t('compose.modal.addToCollections');
             this.page = 'addToCollection';
 
             if(!this.collectionsLoaded) {
@@ -1921,7 +1921,7 @@ export default {
         toggleCollectionItem(index) {
             if(!this.collectionsSelected.includes(index)) {
                 if(this.collectionsSelected.length == 7) {
-                    swal('Oops!', 'You can only share to 5 collections.', 'info');
+                    swal(this.$t('common.oops'), this.$t('compose.modal.collectionLimit'), 'info');
                     return;
                 }
                 this.collectionsSelected.push(index);
@@ -1932,7 +1932,7 @@ export default {
 
         clearSelectedCollections() {
             this.collectionsSelected = [];
-            this.pageTitle = 'Compose';
+            this.pageTitle = this.$t('compose.modal.compose');
             this.page = 3;
         },
 

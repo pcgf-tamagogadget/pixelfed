@@ -5,18 +5,18 @@
             <div v-if="!error" class="card shadow-none border" style="border-radius: 20px;">
                 <div v-if="!loaded && !existing && !maxUsesReached" class="card-body d-flex align-items-center flex-column" style="min-height: 400px;">
                     <div class="w-100">
-                        <p class="lead text-center font-weight-bold">Sign-in with Mastodon</p>
+                        <p class="lead text-center font-weight-bold">{{ $t('spa.remoteAuthStart.title') }}</p>
                         <hr />
                     </div>
                     <div class="w-100 d-flex align-items-center justify-content-center flex-grow-1 flex-column gap-1">
                         <div class="position-relative w-100">
-                            <p class="pa-center">Please wait...</p>
+                            <p class="pa-center">{{ $t('spa.remoteAuthGettingStarted.pleaseWait') }}</p>
                             <instagram-loader></instagram-loader>
                         </div>
                         <div class="w-100">
                             <hr>
                             <p class="text-center mb-0">
-                                <a class="font-weight-bold" href="/login">Go back to login</a>
+                                <a class="font-weight-bold" href="/login">{{ $t('spa.remoteAuthStart.backToLogin') }}</a>
                             </p>
                         </div>
                     </div>
@@ -24,38 +24,38 @@
 
                 <div v-else-if="!loaded && !existing && maxUsesReached" class="card-body d-flex align-items-center flex-column" style="min-height: 660px;">
                     <div class="w-100">
-                        <p class="lead text-center font-weight-bold">Sign-in with Mastodon</p>
+                        <p class="lead text-center font-weight-bold">{{ $t('spa.remoteAuthStart.title') }}</p>
                         <hr />
                     </div>
                     <div class="w-100 d-flex align-items-center justify-content-center flex-grow-1 flex-column gap-1">
 
-                        <p class="lead text-center font-weight-bold mt-3">Oops!</p>
+                        <p class="lead text-center font-weight-bold mt-3">{{ $t('common.oops') }}</p>
 
-                        <p class="mb-2 text-center">We cannot complete your request at this time</p>
-                        <p class="mb-3 text-center text-xs">It appears that you've signed-in on other Pixelfed instances and reached the max limit that we accept.</p>
+                        <p class="mb-2 text-center">{{ $t('spa.remoteAuthGettingStarted.cannotComplete') }}</p>
+                        <p class="mb-3 text-center text-xs">{{ $t('spa.remoteAuthGettingStarted.maxUsesReached') }}</p>
                     </div>
 
                     <div class="w-100">
                         <p class="text-center mb-0">
-                            <a class="font-weight-bold" href="/site/contact">Contact Support</a>
+                            <a class="font-weight-bold" href="/site/contact">{{ $t('spa.remoteAuthGettingStarted.contactSupport') }}</a>
                         </p>
                         <hr>
                         <p class="text-center mb-0">
-                            <a class="font-weight-bold" href="/login">Go back to login</a>
+                            <a class="font-weight-bold" href="/login">{{ $t('spa.remoteAuthStart.backToLogin') }}</a>
                         </p>
                     </div>
                 </div>
 
                 <div v-else-if="!loaded && existing" class="card-body d-flex align-items-center flex-column" style="min-height: 660px;">
                     <div class="w-100">
-                        <p class="lead text-center font-weight-bold">Sign-in with Mastodon</p>
+                        <p class="lead text-center font-weight-bold">{{ $t('spa.remoteAuthStart.title') }}</p>
                         <hr />
                     </div>
                     <div class="w-100 d-flex align-items-center justify-content-center flex-grow-1 flex-column gap-1">
                         <b-spinner />
                         <div class="text-center">
-                            <p class="lead mb-0">Welcome back!</p>
-                            <p class="text-xs text-muted">One moment please, we're logging you in...</p>
+                            <p class="lead mb-0">{{ $t('spa.remoteAuthGettingStarted.welcomeBack') }}</p>
+                            <p class="text-xs text-muted">{{ $t('spa.remoteAuthGettingStarted.loggingIn') }}</p>
                         </div>
                     </div>
                 </div>
@@ -65,29 +65,29 @@
             <div v-else class="card shadow-none border">
                 <div class="card-body d-flex align-items-center flex-column" style="min-height: 660px;">
                     <div class="w-100">
-                        <p class="lead text-center font-weight-bold">Sign-in with Mastodon</p>
+                        <p class="lead text-center font-weight-bold">{{ $t('spa.remoteAuthStart.title') }}</p>
                         <hr />
                     </div>
                     <div class="w-100 d-flex align-items-center justify-content-center flex-grow-1 flex-column gap-1">
 
-                        <p class="lead text-center font-weight-bold mt-3">Oops, something went wrong!</p>
+                        <p class="lead text-center font-weight-bold mt-3">{{ $t('spa.remoteAuthGettingStarted.somethingWrong') }}</p>
 
-                        <p class="mb-3">We cannot complete your request at this time, please try again later.</p>
+                        <p class="mb-3">{{ $t('spa.remoteAuthGettingStarted.tryAgainLater') }}</p>
 
-                        <p class="text-xs text-muted mb-1">This can happen for a few different reasons:</p>
+                        <p class="text-xs text-muted mb-1">{{ $t('spa.remoteAuthGettingStarted.reasons') }}</p>
 
                         <ul class="text-xs text-muted">
-                            <li>The remote instance cannot be reached</li>
-                            <li>The remote instance is not supported yet</li>
-                            <li>The remote instance has been disabled by admins</li>
-                            <li>The remote instance does not allow remote logins</li>
+                            <li>{{ $t('spa.remoteAuthGettingStarted.reasonUnreachable') }}</li>
+                            <li>{{ $t('spa.remoteAuthGettingStarted.reasonUnsupported') }}</li>
+                            <li>{{ $t('spa.remoteAuthGettingStarted.reasonDisabled') }}</li>
+                            <li>{{ $t('spa.remoteAuthGettingStarted.reasonNoRemoteLogin') }}</li>
                         </ul>
                     </div>
 
                     <div class="w-100">
                         <hr>
                         <p class="text-center mb-0">
-                            <a class="font-weight-bold" href="/login">Go back to login</a>
+                            <a class="font-weight-bold" href="/login">{{ $t('spa.remoteAuthStart.backToLogin') }}</a>
                         </p>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                 axios.post('/auth/raw/mastodon/s/check')
                 .then(res => {
                     if(!res && !res.hasOwnProperty('action')) {
-                        swal('Oops!', 'An unexpected error occured, please try again later', 'error');
+                        swal(this.$t('common.oops'), this.$t('spa.remoteAuthGettingStarted.unexpectedError'), 'error');
                         return;
                     }
 

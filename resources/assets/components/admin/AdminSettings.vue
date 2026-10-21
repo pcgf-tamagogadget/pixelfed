@@ -5,8 +5,8 @@
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
-                        <p class="display-1 text-white d-inline-block mb-0">Settings</p>
-                        <p class="h3 text-white font-weight-light">Manage your server settings</p>
+                        <p class="display-1 text-white d-inline-block mb-0">{{ $t('admin.settings.title') }}</p>
+                        <p class="h3 text-white font-weight-light">{{ $t('admin.settings.subtitle') }}</p>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         <div v-for="tab in tabs" class="nav-item">
                             <a class="nav-link mb-sm-3" :class="{ active: tabIndex === tab.id }" href="#" @click.prevent="toggleTab(tab.id)">
                                 <i :class="tab.icon"></i>
-                                <span class="ml-2">{{ tab.title }}</span>
+                                <span class="ml-2">{{ $t(tab.title) }}</span>
                             </a>
                         </div>
                     </div>
@@ -34,69 +34,69 @@
                         <div class="tab-content">
 
                             <div v-if="tabIndex === 1" class="tab-pane fade show active">
-                                <tab-header title="Settings" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('overview')" />
+                                <tab-header :title="$t('admin.settings.title')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('overview')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body" style="padding: 1.1rem 1.6rem">
                                             <div class="form-group mb-0">
-                                                <label for="form-summary" class="font-weight-bold">Registration Status</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.settings.overview.registrationStatus') }}</label>
                                                 <select v-model="features.registration_status" class="form-control form-control-muted">
-                                                    <option value="open" >Open - Anyone can register</option>
-                                                    <option value="filtered">Filtered - Anyone can apply (Curated Onboarding)</option>
-                                                    <option value="closed">Closed - Nobody can register</option>
+                                                    <option value="open" >{{ $t('admin.settings.overview.registrationOpen') }}</option>
+                                                    <option value="filtered">{{ $t('admin.settings.overview.registrationFiltered') }}</option>
+                                                    <option value="closed">{{ $t('admin.settings.overview.registrationClosed') }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <checkbox
-                                            name="Cloud Storage"
+                                            :name="$t('admin.settings.fields.cloudStorage.name')"
                                             :value="features.cloud_storage"
-                                            description="Store photos and videos on S3 compatible object storage providers."
+                                            :description="$t('admin.settings.fields.cloudStorage.description')"
                                             @change="handleChange($event, 'features', 'cloud_storage')"
                                         />
 
                                         <checkbox
-                                            name="ActivityPub"
+                                            :name="$t('admin.settings.fields.activitypub.name')"
                                             :value="features.activitypub_enabled"
-                                            description="ActivityPub federation, compatible with Pixelfed, Mastodon and other projects."
+                                            :description="$t('admin.settings.fields.activitypub.description')"
                                             @change="handleChange($event, 'features', 'activitypub_enabled')"
                                         />
 
                                         <checkbox
-                                            name="Authorized Fetch Mode"
+                                            :name="$t('admin.settings.fields.authorizedFetchMode.name')"
                                             :value="features.authorized_fetch"
-                                            description="Strictly enforce domain restrictions by enabling Authorized Fetch mode."
+                                            :description="$t('admin.settings.fields.authorizedFetchMode.description')"
                                             @change="handleChange($event, 'features', 'authorized_fetch')"
                                         />
 
                                         <checkbox
-                                            name="Account Migration"
+                                            :name="$t('admin.settings.fields.accountMigration.name')"
                                             :value="features.account_migration"
-                                            description="Allow local accounts to migrate to other local or remote accounts."
+                                            :description="$t('admin.settings.fields.accountMigration.description')"
                                             @change="handleChange($event, 'features', 'account_migration')"
                                         />
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <checkbox
-                                            name="Mobile APIs"
+                                            :name="$t('admin.settings.fields.mobileApis.name')"
                                             :value="features.mobile_apis"
-                                            description="Enable apis required for official mobile app support and 3rd party apps."
+                                            :description="$t('admin.settings.fields.mobileApis.description')"
                                             @change="handleChange($event, 'features', 'mobile_apis')"
                                         />
 
                                         <checkbox
-                                            name="Stories"
+                                            :name="$t('admin.settings.fields.stories.name')"
                                             :value="features.stories"
-                                            description="Allow users to share federated ephemeral Stories that disappear after 24 hours."
+                                            :description="$t('admin.settings.fields.stories.description')"
                                             @change="handleChange($event, 'features', 'stories')"
                                         />
 
                                         <checkbox
-                                            name="Instagram Import"
+                                            :name="$t('admin.settings.fields.instagramImport.name')"
                                             :value="features.instagram_import"
-                                            description="Enable users to use the <span class='font-weight-bold'>experimental</span> Instagram Import support."
+                                            :description="$t('admin.settings.fields.instagramImport.description')"
                                             @change="handleChange($event, 'features', 'instagram_import')"
                                         />
 
@@ -108,9 +108,9 @@
                                         /> -->
 
                                         <checkbox
-                                            name="Spam detection"
+                                            :name="$t('admin.settings.fields.spamDetection.name')"
                                             :value="features.autospam_enabled"
-                                            description="Detect and remove spam from timelines using the automated Autospam detection."
+                                            :description="$t('admin.settings.fields.spamDetection.description')"
                                             @change="handleChange($event, 'features', 'autospam_enabled')"
                                         />
                                     </div>
@@ -118,33 +118,33 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'landing'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Landing" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('landing')" />
+                                <tab-header :title="$t('admin.settings.tabs.landing')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('landing')" />
 
                                 <div class="row">
                                    <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body" style="padding: 1.1rem 1.6rem">
                                             <div class="form-group mb-0">
-                                                <label for="form-summary" class="font-weight-bold">Admin Account</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.settings.landing.adminAccount') }}</label>
                                                 <select v-model="landing.current_admin" class="form-control form-control-muted">
-                                                    <option disabled="" value="0">Select a designated admin</option>
+                                                    <option disabled="" value="0">{{ $t('admin.settings.landing.selectAdmin') }}</option>
                                                     <option v-for="(acct, index) in landing.admins" :key="'pfc-' + acct + index" :value="acct.profile_id">{{ acct.username }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <checkbox
-                                            name="Show Directory"
+                                            :name="$t('admin.settings.fields.showDirectory.name')"
                                             :value="landing.show_directory"
-                                            description="Show the account directory on the landing page for guest users."
+                                            :description="$t('admin.settings.fields.showDirectory.description')"
                                             @change="handleChange($event, 'landing', 'show_directory')"
                                         />
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <checkbox
-                                            name="Show Explore Feed"
+                                            :name="$t('admin.settings.fields.showExploreFeed.name')"
                                             :value="landing.show_explore"
-                                            description="Show the explore feed of popular posts on the landing page for guest users."
+                                            :description="$t('admin.settings.fields.showExploreFeed.description')"
                                             @change="handleChange($event, 'landing', 'show_explore')"
                                         />
                                     </div>
@@ -152,26 +152,26 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'branding'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Branding" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('branding')" />
+                                <tab-header :title="$t('admin.settings.tabs.branding')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('branding')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-8">
                                         <div class="card shadow-none border card-body" style="padding: 1.1rem 1.6rem">
                                             <div class="form-group mb-1">
-                                                <label for="form-summary" class="font-weight-bold">Server Name</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.settings.branding.serverName') }}</label>
                                                 <input
                                                     class="form-control form-control-muted"
                                                     placeholder="Pixelfed"
                                                     v-model="branding.name" />
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                The instance name used in titles, metadata and apis.
+                                                {{ $t('admin.settings.branding.serverNameHelp') }}
                                             </p>
                                         </div>
 
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label for="form-summary" class="font-weight-bold">Short Description</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.settings.branding.shortDescription') }}</label>
                                                 <textarea
                                                     class="form-control form-control-muted"
                                                     placeholder="Pixelfed"
@@ -179,13 +179,13 @@
                                                     v-model="branding.short_description"></textarea>
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                Short description of instance used on various pages and apis.
+                                                {{ $t('admin.settings.branding.shortDescriptionHelp') }}
                                             </p>
                                         </div>
 
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label for="form-summary" class="font-weight-bold">Long Description</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.settings.branding.longDescription') }}</label>
                                                 <textarea
                                                     class="form-control form-control-muted"
                                                     placeholder="Pixelfed"
@@ -193,32 +193,32 @@
                                                     v-model="branding.long_description"></textarea>
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                Longer description of instance used on about page.
+                                                {{ $t('admin.settings.branding.longDescriptionHelp') }}
                                             </p>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-4">
                                         <p>
-                                            <a class="btn btn-dark btn-block" href="/i/admin/settings/custom-css">Edit Custom CSS</a>
+                                            <a class="btn btn-dark btn-block" href="/i/admin/settings/custom-css">{{ $t('admin.settings.branding.editCustomCss') }}</a>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div v-else-if="tabIndex === 'media'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Media" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('media')" />
+                                <tab-header :title="$t('admin.settings.tabs.media')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('media')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label class="font-weight-bold text-muted">Max Media Size</label>
+                                                <label class="font-weight-bold text-muted">{{ $t('admin.settings.media.maxMediaSize') }}</label>
                                                 <div class="input-group mb-0">
                                                     <input
                                                         type="text"
                                                         class="form-control"
                                                         placeholder="15000"
-                                                        aria-label="Max media size"
+                                                        :aria-label="$t('admin.settings.media.maxMediaSize')"
                                                         aria-describedby="maxMediaSize"
                                                         v-model="media.max_photo_size">
                                                     <div class="input-group-append">
@@ -227,27 +227,27 @@
                                                 </div>
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                Maximum file upload size in KB
+                                                {{ $t('admin.settings.media.maxMediaSizeHelp') }}
                                             </p>
                                         </div>
 
                                         <checkbox
-                                            name="Optimize Images"
+                                            :name="$t('admin.settings.fields.optimizeImages.name')"
                                             :value="media.optimize_image"
-                                            description="Enable to optimize images and generate thumbnails for local image media uploads."
+                                            :description="$t('admin.settings.fields.optimizeImages.description')"
                                             @change="handleChange($event, 'media', 'optimize_image')"
                                         />
 
                                         <checkbox
-                                            name="Optimize Video"
+                                            :name="$t('admin.settings.fields.optimizeVideo.name')"
                                             :value="media.optimize_video"
-                                            description="Enable to generate video thumbnails for local video media uploads."
+                                            :description="$t('admin.settings.fields.optimizeVideo.description')"
                                             @change="handleChange($event, 'media', 'optimize_video')"
                                         />
 
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label class="font-weight-bold text-muted">Media Types</label>
+                                                <label class="font-weight-bold text-muted">{{ $t('admin.settings.media.mediaTypes') }}</label>
 
                                                 <div class="list-group">
                                                     <div v-for="(mediaType, key) in mediaTypes" class="list-group-item py-2">
@@ -264,14 +264,14 @@
                                                 </div>
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                Supported mime types for media uploads
+                                                {{ $t('admin.settings.media.mediaTypesHelp') }}
                                             </p>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label class="font-weight-bold text-muted">Photo Album Limit</label>
+                                                <label class="font-weight-bold text-muted">{{ $t('admin.settings.media.albumLimit') }}</label>
                                                 <input
                                                     type="number"
                                                     min="1"
@@ -281,14 +281,14 @@
                                                     v-model="media.max_album_length">
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                The maximum number of photos or videos per album
+                                                {{ $t('admin.settings.media.albumLimitHelp') }}
                                             </p>
                                         </div>
 
                                         <transition name="fade">
                                             <div v-if="media.optimize_image" class="card shadow-none border card-body">
                                                 <div class="form-group mb-1">
-                                                    <label class="font-weight-bold text-muted">Image Quality</label>
+                                                    <label class="font-weight-bold text-muted">{{ $t('admin.settings.media.imageQuality') }}</label>
                                                     <input
                                                         type="number"
                                                         min="20"
@@ -298,7 +298,7 @@
                                                         v-model="media.image_quality">
                                                 </div>
                                                 <p class="help-text small text-muted mb-0">
-                                                    Image optimization quality from 0-100%.
+                                                    {{ $t('admin.settings.media.imageQualityHelp') }}
                                                 </p>
                                             </div>
                                         </transition>
@@ -307,14 +307,14 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'platform'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Platform" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('platform')" />
+                                <tab-header :title="$t('admin.settings.tabs.platform')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('platform')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <checkbox
-                                            name="Allow Profile Embeds"
+                                            :name="$t('admin.settings.fields.allowProfileEmbeds.name')"
                                             :value="platform.allow_profile_embeds"
-                                            description="Allow anyone to embed public profiles on other websites."
+                                            :description="$t('admin.settings.fields.allowProfileEmbeds.description')"
                                             @change="handleChange($event, 'platform', 'allow_profile_embeds')"
                                         />
 
@@ -328,17 +328,17 @@
                                                         id="platform1"
                                                         :disabled="features.registration_status !== 'open'"
                                                         v-model="platform.allow_app_registration">
-                                                    <label class="custom-control-label font-weight-bold" for="platform1">Allow App Registrations</label>
+                                                    <label class="custom-control-label font-weight-bold" for="platform1">{{ $t('admin.settings.platform.allowAppRegistrations') }}</label>
                                                 </div>
-                                                <p v-if="features.registration_status !== 'open'" class="mb-0 small text-muted">Requires open registration to be enabled.</p>
-                                                <p v-else class="mb-0 small">Allow users to register via the official Pixelfed mobile application.</p>
+                                                <p v-if="features.registration_status !== 'open'" class="mb-0 small text-muted">{{ $t('admin.settings.platform.requiresOpenRegistration') }}</p>
+                                                <p v-else class="mb-0 small">{{ $t('admin.settings.platform.allowAppRegistrationsHelp') }}</p>
                                             </div>
                                         </div>
 
                                         <checkbox
-                                            name="Custom Emoji"
+                                            :name="$t('admin.settings.fields.customEmoji.name')"
                                             :value="platform.custom_emoji_enabled"
-                                            description="Enable federated custom emoji that is compatible with Mastodon, Pleroma and others."
+                                            :description="$t('admin.settings.fields.customEmoji.description')"
                                             @change="handleChange($event, 'platform', 'custom_emoji_enabled')"
                                         />
 
@@ -374,9 +374,9 @@
 
                                     <div class="col-12 col-md-6">
                                         <checkbox
-                                            name="Allow Post Embeds"
+                                            :name="$t('admin.settings.fields.allowPostEmbeds.name')"
                                             :value="platform.allow_post_embeds"
-                                            description="Allow anyone to embed public posts on other websites."
+                                            :description="$t('admin.settings.fields.allowPostEmbeds.description')"
                                             @change="handleChange($event, 'platform', 'allow_post_embeds')"
                                         />
 
@@ -389,10 +389,10 @@
                                                         class="custom-control-input"
                                                         id="hcp"
                                                         v-model="platform.captcha_enabled">
-                                                    <label class="custom-control-label font-weight-bold" for="hcp">Enable Captcha</label>
+                                                    <label class="custom-control-label font-weight-bold" for="hcp">{{ $t('admin.settings.platform.enableCaptcha') }}</label>
                                                 </div>
                                                 <p class="help-text small text-muted mb-0">
-                                                    Select a captcha provider on high risk pages.
+                                                    {{ $t('admin.settings.platform.captchaHelp') }}
                                                 </p>
                                             </div>
                                             <template v-if="platform.captcha_enabled">
@@ -400,7 +400,7 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small font-weight-bold">Captcha Provider</label>
+                                                            <label class="text-muted small font-weight-bold">{{ $t('admin.settings.platform.captchaProvider') }}</label>
                                                             <select
                                                                 class="form-control"
                                                                 name="captcha_driver"
@@ -417,7 +417,7 @@
                                                 <div class="row" v-if="platform.captcha_driver === 'hcaptcha'">
                                                     <div class="col-12 col-md-6">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">hCaptcha Sitekey</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.sitekey', { provider: 'hCaptcha' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
@@ -427,7 +427,7 @@
                                                     </div>
                                                     <div class="col-12 col-md-6">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">hCaptcha Secret</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.secret', { provider: 'hCaptcha' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
@@ -441,7 +441,7 @@
                                                 <div class="row" v-else-if="platform.captcha_driver === 'turnstile'">
                                                     <div class="col-12 col-md-6">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">Turnstile Sitekey</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.sitekey', { provider: 'Turnstile' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
@@ -451,7 +451,7 @@
                                                     </div>
                                                     <div class="col-12 col-md-6">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">Turnstile Secret</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.secret', { provider: 'Turnstile' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
@@ -465,19 +465,19 @@
                                                 <div class="row" v-else-if="platform.captcha_driver === 'cap'">
                                                     <div class="col-12">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">Cap Endpoint</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.endpoint', { provider: 'Cap' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
                                                                 name="captcha_cap_endpoint"
                                                                 placeholder="https://cap.example.com"
                                                                 v-model="platform.captcha_cap_endpoint">
-                                                            <small class="form-text text-muted">Base URL of your Cap instance, without the site key.</small>
+                                                            <small class="form-text text-muted">{{ $t('admin.settings.platform.capEndpointHelp') }}</small>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-6">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">Cap Sitekey</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.sitekey', { provider: 'Cap' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
@@ -487,7 +487,7 @@
                                                     </div>
                                                     <div class="col-12 col-md-6">
                                                         <div class="form-group my-1">
-                                                            <label class="text-muted small">Cap Secret</label>
+                                                            <label class="text-muted small">{{ $t('admin.settings.platform.secret', { provider: 'Cap' }) }}</label>
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
@@ -497,7 +497,7 @@
                                                     </div>
                                                 </div>
                                                 <hr class="mt-2 mb-4">
-                                                <label class="text-muted small font-weight-bold d-block mb-2">Select pages to render captcha</label>
+                                                <label class="text-muted small font-weight-bold d-block mb-2">{{ $t('admin.settings.platform.captchaPages') }}</label>
                                                 <div class="row">
                                                     <div class="col-12 col-lg-6 mb-3">
                                                         <div class="custom-control custom-checkbox">
@@ -507,7 +507,7 @@
                                                                 class="custom-control-input"
                                                                 id="captcha_on_login"
                                                                 v-model="platform.captcha_on_login">
-                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_login">Login</label>
+                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_login">{{ $t('admin.settings.platform.pageLogin') }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6 mb-3">
@@ -518,7 +518,7 @@
                                                                 class="custom-control-input"
                                                                 id="captcha_on_register"
                                                                 v-model="platform.captcha_on_register">
-                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_register">Register</label>
+                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_register">{{ $t('admin.settings.platform.pageRegister') }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6 mb-3">
@@ -529,7 +529,7 @@
                                                                 class="custom-control-input"
                                                                 id="captcha_on_forgot_password"
                                                                 v-model="platform.captcha_on_forgot_password">
-                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_forgot_password">Forgot Password</label>
+                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_forgot_password">{{ $t('admin.settings.platform.pageForgotPassword') }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6 mb-3">
@@ -540,7 +540,7 @@
                                                                 class="custom-control-input"
                                                                 id="captcha_on_password_reset"
                                                                 v-model="platform.captcha_on_password_reset">
-                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_password_reset">Password Reset</label>
+                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_password_reset">{{ $t('admin.settings.platform.pagePasswordReset') }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6 mb-3">
@@ -551,7 +551,7 @@
                                                                 class="custom-control-input"
                                                                 id="captcha_on_curated_register"
                                                                 v-model="platform.captcha_on_curated_register">
-                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_curated_register">Curated Register</label>
+                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_curated_register">{{ $t('admin.settings.platform.pageCuratedRegister') }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6 mb-3">
@@ -562,7 +562,7 @@
                                                                 class="custom-control-input"
                                                                 id="captcha_on_forgot_email"
                                                                 v-model="platform.captcha_on_forgot_email">
-                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_forgot_email">Forgot Email</label>
+                                                            <label class="custom-control-label font-weight-bold" for="captcha_on_forgot_email">{{ $t('admin.settings.platform.pageForgotEmail') }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -602,13 +602,13 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'posts'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Posts" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('posts')" />
+                                <tab-header :title="$t('admin.settings.tabs.posts')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('posts')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label class="font-weight-bold text-muted">Max Caption Length</label>
+                                                <label class="font-weight-bold text-muted">{{ $t('admin.settings.posts.maxCaptionLength') }}</label>
                                                 <input
                                                     type="number"
                                                     min="1"
@@ -618,7 +618,7 @@
                                                     v-model="posts.max_caption_length">
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                The maximum character count of post captions. We recommend a limit between 500-2000.
+                                                {{ $t('admin.settings.posts.maxCaptionLengthHelp') }}
                                             </p>
                                         </div>
                                     </div>
@@ -626,7 +626,7 @@
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label class="font-weight-bold text-muted">Max Alttext Length</label>
+                                                <label class="font-weight-bold text-muted">{{ $t('admin.settings.posts.maxAltTextLength') }}</label>
                                                 <input
                                                     type="number"
                                                     min="1"
@@ -636,7 +636,7 @@
                                                     v-model="posts.max_altext_length">
                                             </div>
                                             <p class="help-text small text-muted mb-0">
-                                                The maximum character count of post media alttext captions. We recommend a limit between 2000-10000.
+                                                {{ $t('admin.settings.posts.maxAltTextLengthHelp') }}
                                             </p>
                                         </div>
                                     </div>
@@ -644,16 +644,16 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'rules'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Rules" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('rules')" />
+                                <tab-header :title="$t('admin.settings.tabs.rules')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('rules')" />
 
                                 <div class="row">
                                     <div class="col-12 mb-3">
                                         <div v-if="hasDuplicateRulesComputed" class="alert alert-danger">
-                                            <p class="font-weight-bold mb-0">Duplicate rules detected, you should fix this!</p>
+                                            <p class="font-weight-bold mb-0">{{ $t('admin.settings.rules.duplicates') }}</p>
                                         </div>
                                         <div class="position-relative">
                                             <div class="card shadow-none border">
-                                                <div class="card-header py-2 bg-primary text-white font-weight-bold text-center">Active Rules</div>
+                                                <div class="card-header py-2 bg-primary text-white font-weight-bold text-center">{{ $t('admin.settings.rules.activeRules') }}</div>
                                                 <div class="list-group list-group-flush">
                                                     <div
                                                         v-for="(rule, idx) in rulesComputed"
@@ -683,12 +683,12 @@
 
 
                                                     <div v-if="!rules || !rules.length" class="list-group-item">
-                                                        <p class="text-center mb-0">No rules set!</p>
+                                                        <p class="text-center mb-0">{{ $t('admin.settings.rules.noRules') }}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div v-if="!showAllRules && rules.length > 2" class="d-flex justify-content-center" style="position:absolute;width: 100%;padding-top: 10rem;bottom:0;background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1));">
-                                                <button class="btn btn-dark font-weight-bold rounded-pill btn-block" @click.prevent="showAllRules = true">Show all rules</button>
+                                                <button class="btn btn-dark font-weight-bold rounded-pill btn-block" @click.prevent="showAllRules = true">{{ $t('admin.settings.rules.showAll') }}</button>
                                         </div>
                                         </div>
                                     </div>
@@ -696,7 +696,7 @@
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body">
                                             <div class="form-group mb-1">
-                                                <label class="font-weight-bold text-muted">Add New Rule</label>
+                                                <label class="font-weight-bold text-muted">{{ $t('admin.settings.rules.addNewRule') }}</label>
                                                 <textarea
                                                     type="text"
                                                     class="form-control"
@@ -704,13 +704,13 @@
                                                     rows="5"
                                                     minlength="5"
                                                     maxlength="1000"
-                                                    placeholder="Add your new rule here..."
+                                                    :placeholder="$t('admin.settings.rules.addNewRulePlaceholder')"
                                                     :disabled="isSubmittingNewRule || isDeletingRule"
                                                     v-model="newRule"></textarea>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <p class="help-text small text-muted mb-0">
-                                                    Add a new rule
+                                                    {{ $t('admin.settings.rules.addNewRuleHelp') }}
                                                 </p>
                                                 <p class="help-text small text-muted mb-0">
                                                     {{ newRule && newRule.length ? newRule.length : 0 }}/1000
@@ -721,17 +721,17 @@
                                                 <button
                                                     class="btn btn-primary btn-sm btn-block font-weight-bold rounded-pill"
                                                     :disabled="!newRule || !newRule.length || isSubmittingNewRule || isDeletingRule"
-                                                    @click.prevent="handleAddRule">Add Rule</button>
+                                                    @click.prevent="handleAddRule">{{ $t('admin.settings.rules.addRule') }}</button>
                                             </p>
                                         </div>
 
-                                        <button v-if="rules && rules.length" class="btn btn-outline-danger rounded-pill btn-block btn-sm" @click.prevent="handleDeleteAllRules">Delete all rules</button>
+                                        <button v-if="rules && rules.length" class="btn btn-outline-danger rounded-pill btn-block btn-sm" @click.prevent="handleDeleteAllRules">{{ $t('admin.settings.rules.deleteAll') }}</button>
                                     </div>
 
                                     <div v-if="suggestedRulesComputed && suggestedRulesComputed.length" class="col-12 col-md-6">
                                         <div class="border-bottom pb-2 mb-3 d-flex justify-content-between align-items-center">
-                                            <p class="font-weight-bold mb-0">Suggested Rules</p>
-                                            <a v-if="!rules.length" class="font-weight-bold small" href="#" @click.prevent="importAllDefaultRules">Import All</a>
+                                            <p class="font-weight-bold mb-0">{{ $t('admin.settings.rules.suggested') }}</p>
+                                            <a v-if="!rules.length" class="font-weight-bold small" href="#" @click.prevent="importAllDefaultRules">{{ $t('admin.settings.rules.importAll') }}</a>
                                         </div>
 
                                         <div class="list-group">
@@ -746,20 +746,20 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'storage'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Storage" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('storage')" />
+                                <tab-header :title="$t('admin.settings.tabs.storage')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('storage')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="card shadow-none border card-body" style="padding: 1.1rem 1.6rem">
                                             <div class="form-group mb-0">
-                                                <label for="form-summary" class="font-weight-bold">Primary Storage Disk</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.settings.storage.primaryDisk') }}</label>
                                                 <select v-model="storage.primary_disk" class="form-control form-control-muted">
-                                                    <option value="local" >Local</option>
+                                                    <option value="local" >{{ $t('admin.settings.storage.local') }}</option>
                                                     <option value="cloud">Cloud/S3</option>
                                                 </select>
                                             </div>
                                             <p class="help-text small text-muted mt-2 mb-0">
-                                                The storage disk where avatars and media uploads are stored.
+                                                {{ $t('admin.settings.storage.primaryDiskHelp') }}
                                             </p>
                                         </div>
                                     </div>
@@ -767,7 +767,7 @@
                                     <div class="col-12 col-md-6">
                                         <div class="card border">
                                             <div class="card-header bg-gradient-primary">
-                                                <p class="text-center mb-0 text-white font-weight-bold">Cloud Disk Config</p>
+                                                <p class="text-center mb-0 text-white font-weight-bold">{{ $t('admin.settings.storage.cloudDiskConfig') }}</p>
                                             </div>
 
                                             <div v-if="!showDiskConfig" class="card-body">
@@ -776,13 +776,13 @@
                                                         class="btn btn-primary bg-gradient-primary shadow-lg rounded-pill"
                                                         href="#"
                                                         @click.prevent="showDiskConfig = true">
-                                                        View/Edit
+                                                        {{ $t('admin.settings.storage.viewEdit') }}
                                                     </a>
                                                 </p>
                                             </div>
                                             <div v-else class="card-body">
                                                 <div class="form-group mb-4 d-flex align-items-center gap-1">
-                                                    <label for="form-summary" class="font-weight-bold mb-0">Disk</label>
+                                                    <label for="form-summary" class="font-weight-bold mb-0">{{ $t('admin.settings.storage.disk') }}</label>
                                                     <select v-model="storage.disk_config.driver" class="form-control form-control-muted mb-0">
                                                         <option value="s3" >S3</option>
                                                         <option value="spaces">DigitalOcean Spaces</option>
@@ -790,7 +790,7 @@
                                                 </div>
 
                                                 <form-input
-                                                    name="Key"
+                                                    :name="$t('admin.settings.fields.key.name')"
                                                     :value="storage.disk_config.key"
                                                     description=""
                                                     :isCard="false"
@@ -798,7 +798,7 @@
                                                     @change="handleSubChange($event, 'storage', 'disk_config', 'key')"
                                                 />
                                                 <form-input
-                                                    name="Secret"
+                                                    :name="$t('admin.settings.fields.secret.name')"
                                                     :value="storage.disk_config.secret"
                                                     description=""
                                                     :isCard="false"
@@ -806,7 +806,7 @@
                                                     @change="handleSubChange($event, 'storage', 'disk_config', 'secret')"
                                                 />
                                                 <form-input
-                                                    name="Region"
+                                                    :name="$t('admin.settings.fields.region.name')"
                                                     :value="storage.disk_config.region"
                                                     description=""
                                                     :isCard="false"
@@ -814,7 +814,7 @@
                                                     @change="handleSubChange($event, 'storage', 'disk_config', 'region')"
                                                 />
                                                 <form-input
-                                                    name="Bucket"
+                                                    :name="$t('admin.settings.fields.bucket.name')"
                                                     :value="storage.disk_config.bucket"
                                                     description=""
                                                     :isCard="false"
@@ -822,7 +822,7 @@
                                                     @change="handleSubChange($event, 'storage', 'disk_config', 'bucket')"
                                                 />
                                                 <form-input
-                                                    name="Endpoint"
+                                                    :name="$t('admin.settings.fields.endpoint.name')"
                                                     :value="storage.disk_config.endpoint"
                                                     description=""
                                                     :isCard="false"
@@ -830,7 +830,7 @@
                                                     @change="handleSubChange($event, 'storage', 'disk_config', 'endpoint')"
                                                 />
                                                 <form-input
-                                                    name="Visibility"
+                                                    :name="$t('admin.settings.fields.visibility.name')"
                                                     :value="storage.disk_config.visibility"
                                                     description=""
                                                     :isCard="false"
@@ -839,7 +839,7 @@
                                                     @change="handleSubChange($event, 'storage', 'disk_config', 'visibility')"
                                                 />
                                                 <form-input
-                                                    name="Url"
+                                                    :name="$t('admin.settings.fields.url.name')"
                                                     :value="storage.disk_config.url"
                                                     description=""
                                                     :isCard="false"
@@ -854,35 +854,35 @@
                             </div>
 
                             <div v-else-if="tabIndex === 'users'" class="tab-pane fade show active" role="tabpanel">
-                                <tab-header title="Users" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('users')" />
+                                <tab-header :title="$t('admin.settings.tabs.users')" :saving="isSubmitting" :saved="isSubmittingTimeout" @save="handleSave('users')" />
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <checkbox
-                                            name="Require Email Verifications"
+                                            :name="$t('admin.settings.fields.requireEmailVerifications.name')"
                                             :value="users.require_email_verification"
-                                            description="Require users to verify their email address is valid before they can use the account."
+                                            :description="$t('admin.settings.fields.requireEmailVerifications.description')"
                                             @change="handleChange($event, 'users', 'require_email_verification')"
                                         />
 
                                         <form-input
-                                            name="Max User Blocks"
+                                            :name="$t('admin.settings.fields.maxUserBlocks.name')"
                                             :value="users.max_user_blocks.toString()"
-                                            description="The max number of account blocks per user."
+                                            :description="$t('admin.settings.fields.maxUserBlocks.description')"
                                             @change="handleChange($event, 'users', 'max_user_blocks')"
                                         />
 
                                         <form-input
-                                            name="Max User Mutes"
+                                            :name="$t('admin.settings.fields.maxUserMutes.name')"
                                             :value="users.max_user_mutes.toString()"
-                                            description="The max number of account mutes per user."
+                                            :description="$t('admin.settings.fields.maxUserMutes.description')"
                                             @change="handleChange($event, 'users', 'max_user_mutes')"
                                         />
 
                                         <form-input
-                                            name="Max User Domain Blocks"
+                                            :name="$t('admin.settings.fields.maxUserDomainBlocks.name')"
                                             :value="users.max_domain_blocks.toString()"
-                                            description="The max number of domain blocks per user."
+                                            :description="$t('admin.settings.fields.maxUserDomainBlocks.description')"
                                             @change="handleChange($event, 'users', 'max_domain_blocks')"
                                         />
                                     </div>
@@ -892,9 +892,9 @@
                                             <div class="form-group mb-0">
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" name="enforce_account_limit" class="custom-control-input" id="users2" v-model="users.enforce_account_limit">
-                                                    <label class="custom-control-label font-weight-bold" for="users2">Enforce Account Limit</label>
+                                                    <label class="custom-control-label font-weight-bold" for="users2">{{ $t('admin.settings.users.enforceAccountLimit') }}</label>
                                                 </div>
-                                                <p class="mb-0 small">Set a storage limit per user account for all uploaded media (photo + video).</p>
+                                                <p class="mb-0 small">{{ $t('admin.settings.users.enforceAccountLimitHelp') }}</p>
                                             </div>
                                             <transition name="fade">
                                             <div v-if="users.enforce_account_limit">
@@ -905,7 +905,7 @@
                                                             type="text"
                                                             class="form-control"
                                                             placeholder="15000"
-                                                            aria-label="Max account size"
+                                                            :aria-label="$t('admin.settings.users.maxAccountSize')"
                                                             aria-describedby="maxMediaSize"
                                                             v-model="users.max_account_size">
                                                         <div class="input-group-append">
@@ -914,7 +914,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="help-text small text-muted mb-0">
-                                                    Maximum file storage limit per user account.
+                                                    {{ $t('admin.settings.users.maxAccountSizeHelp') }}
                                                 </p>
                                             </div>
                                             </transition>
@@ -925,9 +925,9 @@
                                                 <div class="form-group mb-0">
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" name="admin_autofollow" class="custom-control-input" id="users4" v-model="users.admin_autofollow">
-                                                        <label class="custom-control-label font-weight-bold" for="users4">Autofollow Accounts</label>
+                                                        <label class="custom-control-label font-weight-bold" for="users4">{{ $t('admin.settings.users.autofollow') }}</label>
                                                     </div>
-                                                    <p class="mb-0 small">Force new accounts to follow accounts you specify below</p>
+                                                    <p class="mb-0 small">{{ $t('admin.settings.users.autofollowHelp') }}</p>
                                                 </div>
                                             </div>
                                             <transition name="fade">
@@ -941,7 +941,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-else class="list-group-item">
-                                                        <p class="text-center mb-0">No autofollow accounts active.</p>
+                                                        <p class="text-center mb-0">{{ $t('admin.settings.users.noAutofollow') }}</p>
                                                     </div>
                                                 </div>
                                             </transition>
@@ -949,7 +949,7 @@
                                                 <div v-if="users.admin_autofollow && (users.admin_autofollow_accounts && users.admin_autofollow_accounts.length < 5)" class="card-footer">
                                                     <button
                                                         class="btn btn-primary btn-block rounded-pill"
-                                                        @click.prevent="addAutofollow">Add Autofollow Account</button>
+                                                        @click.prevent="addAutofollow">{{ $t('admin.settings.users.addAutofollow') }}</button>
                                                 </div>
                                             </transition>
                                         </div>
@@ -966,7 +966,7 @@
 <div v-else>
     <div class="container my-5 py-5 text-center">
         <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">{{ $t('common.loading') }}</span>
         </div>
     </div>
 </div>
@@ -1002,16 +1002,17 @@
                     'storage'
                 ],
                 tabs: [
-                    { id: 1, title: "Overview", icon: "far fa-home" },
+                    // `title` holds a translation key, rendered with $t() in the template
+                    { id: 1, title: "admin.settings.tabs.overview", icon: "far fa-home" },
                     // { id: 2, title: "Status", icon: "far fa-asterisk" },
-                    { id: 'landing', title: "Landing", icon: "far fa-info-circle" },
-                    { id: 'branding', title: "Branding", icon: "far fa-user-crown" },
-                    { id: 'media', title: "Media", icon: "far fa-image" },
-                    { id: 'platform', title: "Platform", icon: "far fa-database" },
-                    { id: 'posts', title: "Posts", icon: "far fa-heart" },
-                    { id: 'rules', title: "Rules", icon: "far fa-eye-slash" },
-                    { id: 'storage', title: "Storage", icon: "far fa-hdd" },
-                    { id: 'users', title: "Users", icon: "far fa-users" },
+                    { id: 'landing', title: "admin.settings.tabs.landing", icon: "far fa-info-circle" },
+                    { id: 'branding', title: "admin.settings.tabs.branding", icon: "far fa-user-crown" },
+                    { id: 'media', title: "admin.settings.tabs.media", icon: "far fa-image" },
+                    { id: 'platform', title: "admin.settings.tabs.platform", icon: "far fa-database" },
+                    { id: 'posts', title: "admin.settings.tabs.posts", icon: "far fa-heart" },
+                    { id: 'rules', title: "admin.settings.tabs.rules", icon: "far fa-eye-slash" },
+                    { id: 'storage', title: "admin.settings.tabs.storage", icon: "far fa-hdd" },
+                    { id: 'users', title: "admin.settings.tabs.users", icon: "far fa-users" },
                 ],
 
                 isSubmitting: false,
@@ -1234,12 +1235,12 @@
 
             formatDateTime(ts) {
                 let date = new Date(ts);
-                return new Intl.DateTimeFormat('en-US', {dateStyle: 'medium', timeStyle: 'short'}).format(date);
+                return new Intl.DateTimeFormat((document.documentElement.lang || 'en-US'), {dateStyle: 'medium', timeStyle: 'short'}).format(date);
             },
 
             formatDate(ts) {
                 let date = new Date(ts);
-                return new Intl.DateTimeFormat('en-US', {month: 'short', year: 'numeric'}).format(date);
+                return new Intl.DateTimeFormat((document.documentElement.lang || 'en-US'), {month: 'short', year: 'numeric'}).format(date);
             },
 
             formatTimestamp(ts) {
@@ -1290,7 +1291,7 @@
                 })
                 .catch(err => {
                     if(err.response.data && err.response.data?.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     }
                     this.isSubmittingNewRule = false;
                 })
@@ -1339,8 +1340,8 @@
                 this.isDeletingRule = true;
 
                 swal({
-                    title: 'Confirm',
-                    text: 'Are you sure you want to delete all rules?',
+                    title: this.$t('admin.settings.confirm'),
+                    text: this.$t('admin.settings.rules.confirmDeleteAll'),
                     buttons: true,
                     dangerMode: true,
                 }).then(res => {
@@ -1367,7 +1368,7 @@
                 }).then(res => {
                     this.users.admin_autofollow_accounts = res.data.accounts;
                 }).catch(err => {
-                    swal("Oops!", "An error occurred, please try again later!", "error");
+                    swal(this.$t('common.oops'), this.$t('admin.settings.errorTryLater'), "error");
                 });
             },
 
@@ -1375,10 +1376,10 @@
                 $event.currentTarget?.blur();
 
                 swal({
-                    text: 'Enter account username',
+                    text: this.$t('admin.settings.users.enterUsername'),
                     content: "input",
                     button: {
-                        text: "Add Autofollow",
+                        text: this.$t('admin.settings.users.addAutofollowButton'),
                         closeModal: false,
                     },
                 }).then(username => {
@@ -1389,7 +1390,7 @@
                     })
                     .then(res => {
                         if(!res.data.accounts.map(acc => acc.toLowerCase()).includes(username.toLowerCase())) {
-                            swal("Oops!", "The account you attempted to add does not exist or cannot be added!", "error");
+                            swal(this.$t('common.oops'), this.$t('admin.settings.users.autofollowInvalid'), "error");
                         }
                         this.users.admin_autofollow_accounts = res.data.accounts;
                         swal.stopLoading();
@@ -1397,9 +1398,9 @@
                     })
                     .catch(err => {
                         if(err.response.data && err.response.data.message) {
-                            swal('Error', err.response.data.message, 'error');
+                            swal(this.$t('common.error'), err.response.data.message, 'error');
                         } else {
-                            swal("Oops!", "The account you attempted to add does not exist or cannot be added!", "error");
+                            swal(this.$t('common.oops'), this.$t('admin.settings.users.autofollowInvalid'), "error");
                         }
                         swal.stopLoading();
                         swal.close();
@@ -1471,9 +1472,9 @@
                 .catch(err => {
                     this.isSubmitting = false;
                     if(err.response.data && err.response.data.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     } else {
-                        swal('Oops!', 'An error occured', 'error');
+                        swal(this.$t('common.oops'), this.$t('admin.settings.errorOccurred'), 'error');
                     }
                 })
             },
@@ -1495,9 +1496,9 @@
                 }).catch(err => {
                     this.isSubmitting = false;
                     if(err.response.data && err.response.data.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     } else {
-                        swal('Oops!', 'An error occured', 'error');
+                        swal(this.$t('common.oops'), this.$t('admin.settings.errorOccurred'), 'error');
                     }
                 })
             },
@@ -1538,9 +1539,9 @@
                 .catch(err => {
                     this.isSubmitting = false;
                     if(err.response.data && err.response.data.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     } else {
-                        swal('Oops!', 'An error occured', 'error');
+                        swal(this.$t('common.oops'), this.$t('admin.settings.errorOccurred'), 'error');
                     }
                 })
             },
@@ -1563,9 +1564,9 @@
                     }, 4000);
                 }).catch(err => {
                     if(err.response.data.message) {
-                        swal('Error', err.response.data.message, 'error');
+                        swal(this.$t('common.error'), err.response.data.message, 'error');
                     } else {
-                        swal('Error', 'An unexpected error occurred, please try again!', 'error');
+                        swal(this.$t('common.error'), this.$t('admin.settings.unexpectedError'), 'error');
                     }
                     this.isSubmitting = false;
                 })
@@ -1597,12 +1598,12 @@
                             let wrapper = document.createElement('div');
                             wrapper.appendChild(el);
                             swal({
-                                title: 'Invalid S3 Credentials',
+                                title: this.$t('admin.settings.storage.invalidS3'),
                                 content: wrapper,
                                 icon: 'error'
                             });
                         } else {
-                            swal('Error', err.response.data.message, 'error');
+                            swal(this.$t('common.error'), err.response.data.message, 'error');
                         }
                     }
                     this.isSubmitting = false;

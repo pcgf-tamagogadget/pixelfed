@@ -10,8 +10,8 @@
 				<div class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">Server Timelines</h1>
-					<p class="font-default lead">Browse timelines of a specific instance</p>
+					<h1 class="font-default">{{ $t('spa.discoverServerFeed.title') }}</h1>
+					<p class="font-default lead">{{ $t('spa.discoverServerFeed.subtitle') }}</p>
 
 					<hr>
 
@@ -25,10 +25,10 @@
 						:status="post"
 						/>
 
-					<p v-if="!initialTab && !isLoading && feed.length == 0" class="lead">No posts found :(</p>
+					<p v-if="!initialTab && !isLoading && feed.length == 0" class="lead">{{ $t('spa.discoverServerFeed.noPosts') }}</p>
 
 					<div v-if="initialTab === true">
-						<p v-if="config.server.mode == 'allowlist'" class="lead">Select an instance from the menu</p>
+						<p v-if="config.server.mode == 'allowlist'" class="lead">{{ $t('spa.discoverServerFeed.selectInstance') }}</p>
 					</div>
 				</div>
 
@@ -73,11 +73,11 @@ export default {
 			feed: [],
 			breadcrumbItems: [
 				{
-					text: 'Discover',
+					text: this.$t('navmenu.discover'),
 					href: '/i/web/discover'
 				},
 				{
-					text: 'Server Timelines',
+					text: this.$t('spa.discoverServerFeed.title'),
 					active: true
 				}
 			]

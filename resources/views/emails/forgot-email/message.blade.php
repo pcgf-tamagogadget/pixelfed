@@ -1,33 +1,33 @@
 @component('mail::message')
-Hello,
+{{ __('emails.common.hello') }}
 
-You recently requested to know the email address associated with your username [**{{'@' . $user->username}}**]({{$user->url()}}) on [**{{config('pixelfed.domain.app')}}**]({{config('app.url')}}).
+{!! __('emails.forgotEmail.intro', ['username' => '[**'.e('@' . $user->username).'**]('.e($user->url()).')', 'domain' => '[**'.e(config('pixelfed.domain.app')).'**]('.e(config('app.url')).')']) !!}
 
-We're here to assist! Simply tap on the Login button below.
+{{ __('emails.forgotEmail.assist') }}
 
 <x-mail::button :url="url('/login?email=' . urlencode($user->email))" color="success">
-Login to my <strong>{{'@' . $user->username}}</strong> account
+{!! __('emails.forgotEmail.button', ['username' => '<strong>'.e('@' . $user->username).'</strong>']) !!}
 </x-mail::button>
 
 ----
 <br>
 
-The email address linked to your username is:
+{{ __('emails.forgotEmail.linked') }}
 <x-mail::panel>
 <p>
 <strong>{{$user->email}}</strong>
 </p>
 </x-mail::panel>
 
-You can use this email address to log in to your account.
+{{ __('emails.forgotEmail.useIt') }}
 
-<small>If needed, you can [reset your password]({{ route('password.request')}}). For security reasons, we recommend keeping your account information, including your email address, updated and secure. If you did not make this request or if you have any other questions or concerns, please feel free to [contact our support team]({{route('site.contact')}}).</small>
+<small>{{ __('emails.forgotEmail.security', ['reset' => route('password.request'), 'contact' => route('site.contact')]) }}</small>
 
-Thank you for being a part of our community!
+{{ __('emails.forgotEmail.thankYou') }}
 
-Best regards,<br>
+{{ __('emails.common.bestRegards') }}<br>
 <a href="{{ config('app.url') }}"><strong>{{ config('pixelfed.domain.app') }}</strong></a>
 <br>
 <hr>
-<p style="font-size:10pt;">This is an automated message, please be aware that replies to this email cannot be monitored or responded to.</p>
+<p style="font-size:10pt;">{{ __('emails.common.automated') }}</p>
 @endcomponent

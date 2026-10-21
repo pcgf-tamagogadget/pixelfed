@@ -5,15 +5,15 @@
                 <div class="header-body">
                     <div class="row align-items-center py-4">
                         <div class="col-lg-6 col-7">
-                            <p class="display-1 text-white d-inline-block mb-0">Moderation</p>
+                            <p class="display-1 text-white d-inline-block mb-0">{{ $t('admin.reports.title') }}</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-6 col-lg-3">
                             <div class="mb-3">
-                                <h5 class="text-light text-uppercase mb-0">Active Reports</h5>
+                                <h5 class="text-light text-uppercase mb-0">{{ $t('admin.reports.activeReports') }}</h5>
                                 <span class="text-white h2 font-weight-bold mb-0 human-size" data-toggle="tooltip"
-                                    data-placement="bottom" :title="stats.open + ' open reports'">
+                                    data-placement="bottom" :title="$t('admin.reports.openReportsTooltip', { count: stats.open })">
                                     {{ prettyCount(stats.open) }}
                                 </span>
                             </div>
@@ -21,18 +21,18 @@
 
                         <div class="col-12 col-sm-6 col-lg-3">
                             <div class="mb-3">
-                                <h5 class="text-light text-uppercase mb-0">Active Spam Detections</h5>
+                                <h5 class="text-light text-uppercase mb-0">{{ $t('admin.reports.activeSpamDetections') }}</h5>
                                 <span class="text-white h2 font-weight-bold mb-0 human-size" data-toggle="tooltip"
-                                    data-placement="bottom" :title="stats.autospam_open + ' open spam detections'">{{
+                                    data-placement="bottom" :title="$t('admin.reports.openSpamTooltip', { count: stats.autospam_open })">{{
                                         prettyCount(stats.autospam_open) }}</span>
                             </div>
                         </div>
 
                         <div class="col-12 col-sm-6 col-lg-3">
                             <div class="mb-3">
-                                <h5 class="text-light text-uppercase mb-0">Total Reports</h5>
+                                <h5 class="text-light text-uppercase mb-0">{{ $t('admin.reports.totalReports') }}</h5>
                                 <span class="text-white h2 font-weight-bold mb-0 human-size" data-toggle="tooltip"
-                                    data-placement="bottom" :title="stats.total + ' total reports'">{{
+                                    data-placement="bottom" :title="$t('admin.reports.totalReportsTooltip', { count: stats.total })">{{
                                         prettyCount(stats.total) }}
                                 </span>
                             </div>
@@ -40,9 +40,9 @@
 
                         <div class="col-12 col-sm-6 col-lg-3">
                             <div class="mb-3">
-                                <h5 class="text-light text-uppercase mb-0">Total Spam Detections</h5>
+                                <h5 class="text-light text-uppercase mb-0">{{ $t('admin.reports.totalSpamDetections') }}</h5>
                                 <span class="text-white h2 font-weight-bold mb-0 human-size" data-toggle="tooltip"
-                                    data-placement="bottom" :title="stats.autospam + ' total spam detections'">
+                                    data-placement="bottom" :title="$t('admin.reports.totalSpamTooltip', { count: stats.autospam })">
                                     {{ prettyCount(stats.autospam) }}
                                 </span>
                             </div>
@@ -65,7 +65,7 @@
                                 <a :class="['nav-link d-flex align-items-center', { active: tabIndex == 0 }]" href="#"
                                     @click.prevent="toggleTab(0)">
 
-                                    <span>Open Reports</span>
+                                    <span>{{ $t('admin.reports.tabOpen') }}</span>
                                     <span v-if="stats.open"
                                         class="badge badge-sm badge-floating badge-danger border-white ml-2"
                                         style="background-color: red;color:white;font-size:11px;">
@@ -77,7 +77,7 @@
                                 <a :class="['nav-link d-flex align-items-center', { active: tabIndex == 2 }]" href="#"
                                     @click.prevent="toggleTab(2)">
 
-                                    <span>Spam Detections</span>
+                                    <span>{{ $t('admin.reports.tabSpam') }}</span>
                                     <span v-if="stats.autospam_open"
                                         class="badge badge-sm badge-floating badge-danger border-white ml-2"
                                         style="background-color: red;color:white;font-size:11px;">
@@ -89,7 +89,7 @@
                                 <a :class="['nav-link d-flex align-items-center', { active: tabIndex == 3 }]" href="#"
                                     @click.prevent="toggleTab(3)">
 
-                                    <span>Remote Reports</span>
+                                    <span>{{ $t('admin.reports.tabRemote') }}</span>
                                     <span v-if="stats.remote_open"
                                         class="badge badge-sm badge-floating badge-danger border-white ml-2"
                                         style="background-color: red;color:white;font-size:11px;">
@@ -100,7 +100,7 @@
                             <li class="d-none d-md-block nav-item">
                                 <a :class="['nav-link d-flex align-items-center', { active: tabIndex == 1 }]" href="#"
                                     @click.prevent="toggleTab(1)">
-                                    <span>Closed Reports</span>
+                                    <span>{{ $t('admin.reports.tabClosed') }}</span>
                                     <span v-if="stats.autospam_open"
                                         class="badge badge-sm badge-floating badge-secondary border-white ml-2"
                                         style="font-size:11px;">
@@ -111,7 +111,7 @@
                             <li class="d-none d-md-block nav-item">
                                 <a href="/i/admin/reports/email-verifications"
                                     class="nav-link d-flex align-items-center">
-                                    <span>Email Verification Requests</span>
+                                    <span>{{ $t('admin.reports.tabEmailVerification') }}</span>
                                     <span v-if="stats.email_verification_requests"
                                         class="badge badge-sm badge-floating badge-secondary border-white ml-2"
                                         style="font-size:11px;">
@@ -122,7 +122,7 @@
                             <li class="d-none d-md-block nav-item">
                                 <a :class="['nav-link d-flex align-items-center', { active: tabIndex == 4 }]" href="#"
                                     @click.prevent="toggleTab(4)">
-                                    <span>Moderated Profiles</span>
+                                    <span>{{ $t('admin.reports.tabModeratedProfiles') }}</span>
                                 </a>
                             </li>
                         </ul>
@@ -134,11 +134,11 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Report</th>
-                                <th scope="col">Reported Account</th>
-                                <th scope="col">Reported By</th>
-                                <th scope="col">Created</th>
-                                <th scope="col">View Report</th>
+                                <th scope="col">{{ $t('admin.reports.report') }}</th>
+                                <th scope="col">{{ $t('admin.reports.reportedAccount') }}</th>
+                                <th scope="col">{{ $t('admin.reports.reportedBy') }}</th>
+                                <th scope="col">{{ $t('admin.reports.created') }}</th>
+                                <th scope="col">{{ $t('admin.reports.viewReport') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,9 +164,9 @@
                                                 <p class="font-weight-bold mb-0" style="font-size: 14px;">
                                                     @{{ report.reported.username }}</p>
                                                 <div class="d-flex small text-muted mb-0" style="gap: 0.5rem;">
-                                                    <span>{{ report.reported.followers_count }} Followers</span>
+                                                    <span>{{ $t('admin.reports.followersCount', { count: report.reported.followers_count }) }}</span>
                                                     <span>·</span>
-                                                    <span>Joined {{ timeAgo(report.reported.created_at) }}</span>
+                                                    <span>{{ $t('admin.reports.joined', { time: timeAgo(report.reported.created_at) }) }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -185,9 +185,9 @@
                                                 <p class="font-weight-bold mb-0" style="font-size: 14px;">
                                                     @{{ report.reporter.username }}</p>
                                                 <div class="d-flex small text-muted mb-0" style="gap: 0.5rem;">
-                                                    <span>{{ report.reporter.followers_count }} Followers</span>
+                                                    <span>{{ $t('admin.reports.followersCount', { count: report.reporter.followers_count }) }}</span>
                                                     <span>·</span>
-                                                    <span>Joined {{ timeAgo(report.reporter.created_at) }}</span>
+                                                    <span>{{ $t('admin.reports.joined', { time: timeAgo(report.reporter.created_at) }) }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,7 +195,7 @@
                                 </td>
                                 <td class="font-weight-bold align-middle">{{ timeAgo(report.created_at) }}</td>
                                 <td class="align-middle"><a href="#" class="btn btn-primary btn-sm"
-                                        @click.prevent="viewReport(report)">View</a></td>
+                                        @click.prevent="viewReport(report)">{{ $t('admin.reports.view') }}</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -206,8 +206,8 @@
                                 <p class="mt-3 mb-0"><i class="far fa-check-circle fa-5x text-success"></i></p>
                                 <p class="lead">
                                     {{ tabIndex === 0 ?
-                                        'No Active Reports Found!' :
-                                        'No Closed Reports Found!' }}
+                                        $t('admin.reports.noActiveReports') :
+                                        $t('admin.reports.noClosedReports') }}
                                 </p>
                             </div>
                         </div>
@@ -217,10 +217,10 @@
                 <div v-if="[0, 1].includes(this.tabIndex) && reports.length && (pagination.prev || pagination.next)"
                     class="d-flex align-items-center justify-content-center">
                     <button class="btn btn-primary rounded-pill" :disabled="!pagination.prev" @click="paginate('prev')">
-                        Prev
+                        {{ $t('admin.reports.prev') }}
                     </button>
                     <button class="btn btn-primary rounded-pill" :disabled="!pagination.next" @click="paginate('next')">
-                        Next
+                        {{ $t('common.next') }}
                     </button>
                 </div>
 
@@ -230,10 +230,10 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Report</th>
-                                    <th scope="col">Reported Account</th>
-                                    <th scope="col">Created</th>
-                                    <th scope="col">View Report</th>
+                                    <th scope="col">{{ $t('admin.reports.report') }}</th>
+                                    <th scope="col">{{ $t('admin.reports.reportedAccount') }}</th>
+                                    <th scope="col">{{ $t('admin.reports.created') }}</th>
+                                    <th scope="col">{{ $t('admin.reports.viewReport') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -244,7 +244,7 @@
                                         </a>
                                     </td>
                                     <td class="align-middle">
-                                        <p class="text-capitalize font-weight-bold mb-0">Spam Post</p>
+                                        <p class="text-capitalize font-weight-bold mb-0">{{ $t('admin.reports.spamPost') }}</p>
                                     </td>
                                     <td class="align-middle">
                                         <a v-if="report.status && report.status.account"
@@ -259,11 +259,9 @@
                                                     <p class="font-weight-bold mb-0" style="font-size: 14px;">
                                                         @{{ report.status.account.username }}</p>
                                                     <div class="d-flex small text-muted mb-0" style="gap: 0.5rem;">
-                                                        <span>{{ report.status.account.followers_count }}
-                                                            Followers</span>
+                                                        <span>{{ $t('admin.reports.followersCount', { count: report.status.account.followers_count }) }}</span>
                                                         <span>·</span>
-                                                        <span>Joined {{ timeAgo(report.status.account.created_at)
-                                                            }}</span>
+                                                        <span>{{ $t('admin.reports.joined', { time: timeAgo(report.status.account.created_at) }) }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -271,7 +269,7 @@
                                     </td>
                                     <td class="font-weight-bold align-middle">{{ timeAgo(report.created_at) }}</td>
                                     <td class="align-middle"><a href="#" class="btn btn-primary btn-sm"
-                                            @click.prevent="viewSpamReport(report)">View</a></td>
+                                            @click.prevent="viewSpamReport(report)">{{ $t('admin.reports.view') }}</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -280,7 +278,7 @@
                             <div class="card card-body p-5">
                                 <div class="d-flex justify-content-between align-items-center flex-column">
                                     <p class="mt-3 mb-0"><i class="far fa-check-circle fa-5x text-success"></i></p>
-                                    <p class="lead">No Spam Reports Found!</p>
+                                    <p class="lead">{{ $t('admin.reports.noSpamReports') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -295,11 +293,11 @@
                     class="d-flex align-items-center justify-content-center">
                     <button class="btn btn-primary rounded-pill" :disabled="!autospamPagination.prev"
                         @click="autospamPaginate('prev')">
-                        Prev
+                        {{ $t('admin.reports.prev') }}
                     </button>
                     <button class="btn btn-primary rounded-pill" :disabled="!autospamPagination.next"
                         @click="autospamPaginate('next')">
-                        Next
+                        {{ $t('common.next') }}
                     </button>
                 </div>
 
@@ -308,11 +306,11 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Instance</th>
-                                <th scope="col">Reported Account</th>
-                                <th scope="col">Comment</th>
-                                <th scope="col">Created</th>
-                                <th scope="col">View Report</th>
+                                <th scope="col">{{ $t('admin.reports.instance') }}</th>
+                                <th scope="col">{{ $t('admin.reports.reportedAccount') }}</th>
+                                <th scope="col">{{ $t('admin.reports.comment') }}</th>
+                                <th scope="col">{{ $t('admin.reports.created') }}</th>
+                                <th scope="col">{{ $t('admin.reports.viewReport') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -339,9 +337,9 @@
                                                     @{{ report.reported.username }}
                                                 </p>
                                                 <div class="d-flex small text-muted mb-0" style="gap: 0.5rem;">
-                                                    <span>{{ report.reported.followers_count }} Followers</span>
+                                                    <span>{{ $t('admin.reports.followersCount', { count: report.reported.followers_count }) }}</span>
                                                     <span>·</span>
-                                                    <span>Joined {{ timeAgo(report.reported.created_at) }}</span>
+                                                    <span>{{ $t('admin.reports.joined', { time: timeAgo(report.reported.created_at) }) }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -355,7 +353,7 @@
                                 </td>
                                 <td class="font-weight-bold align-middle">{{ timeAgo(report.created_at) }}</td>
                                 <td class="align-middle"><a href="#" class="btn btn-primary btn-sm"
-                                        @click.prevent="showRemoteReport(report)">View</a></td>
+                                        @click.prevent="showRemoteReport(report)">{{ $t('admin.reports.view') }}</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -366,8 +364,8 @@
                                 <p class="mt-3 mb-0"><i class="far fa-check-circle fa-5x text-success"></i></p>
                                 <p class="lead">
                                     {{ tabIndex === 0 ?
-                                        'No Active Reports Found!' :
-                                        'No Closed Reports Found!' }}
+                                        $t('admin.reports.noActiveReports') :
+                                        $t('admin.reports.noClosedReports') }}
                                 </p>
                             </div>
                         </div>
@@ -378,11 +376,11 @@
                     class="d-flex align-items-center justify-content-center">
                     <button class="btn btn-primary rounded-pill" :disabled="!pagination.prev"
                         @click="remoteReportPaginate('prev')">
-                        Prev
+                        {{ $t('admin.reports.prev') }}
                     </button>
                     <button class="btn btn-primary rounded-pill" :disabled="!pagination.next"
                         @click="remoteReportPaginate('next')">
-                        Next
+                        {{ $t('common.next') }}
                     </button>
                 </div>
 
@@ -397,17 +395,16 @@
                                             <i class="fas fa-search"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="username" placeholder="Search by username"
+                                    <input type="text" name="username" :placeholder="$t('admin.reports.searchByUsername')"
                                         class="form-control" v-model="moderatedProfilesSearchInput">
                                 </div>
                             </div>
                         </form>
                         <div class="d-flex gap-1">
                             <button type="button" class="btn btn-outline-primary fw-bold"
-                                @click="exportModeratedProfiles()">Export</button>
+                                @click="exportModeratedProfiles()">{{ $t('admin.reports.export') }}</button>
                             <button type="button" class="btn btn-primary fw-bold"
-                                @click.prevent="addModeratedProfile()">Add Moderated
-                                Profile</button>
+                                @click.prevent="addModeratedProfile()">{{ $t('admin.reports.addModeratedProfile') }}</button>
                         </div>
                     </div>
 
@@ -415,10 +412,10 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Moderation</th>
-                                <th scope="col">Comment</th>
-                                <th scope="col">Created</th>
+                                <th scope="col">{{ $t('admin.reports.username') }}</th>
+                                <th scope="col">{{ $t('admin.reports.moderation') }}</th>
+                                <th scope="col">{{ $t('admin.reports.comment') }}</th>
+                                <th scope="col">{{ $t('admin.reports.created') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -460,14 +457,13 @@
 
                                 <template v-if="moderatedProfilesSearchInput">
                                     <p class="mt-3 mb-0"><i class="far fa-times fa-5x text-danger"></i></p>
-                                    <p class="lead">No results found!</p>
-                                    <button class="btn btn-primary" @click.prevent="clearModeratedProfileSearch()">Go
-                                        back</button>
+                                    <p class="lead">{{ $t('admin.reports.noResults') }}</p>
+                                    <button class="btn btn-primary" @click.prevent="clearModeratedProfileSearch()">{{ $t('admin.reports.goBack') }}</button>
                                 </template>
 
                                 <template v-else>
                                     <p class="mt-3 mb-0"><i class="far fa-check-circle fa-5x text-success"></i></p>
-                                    <p class="lead">No active moderation accounts found!</p>
+                                    <p class="lead">{{ $t('admin.reports.noModeratedProfiles') }}</p>
                                 </template>
                             </div>
                         </div>
@@ -477,19 +473,19 @@
                         class="mt-3 d-flex align-items-center justify-content-center">
                         <button class="btn btn-primary rounded-pill" :disabled="!moderatedProfilesPagination.prev"
                             @click="paginateModeratedAccounts('prev')">
-                            Prev
+                            {{ $t('admin.reports.prev') }}
                         </button>
                         <button class="btn btn-primary rounded-pill" :disabled="!moderatedProfilesPagination.next"
                             @click="paginateModeratedAccounts('next')">
-                            Next
+                            {{ $t('common.next') }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <b-modal v-model="showReportModal" :title="tabIndex === 0 ? 'View Report' : 'Viewing Closed Report'"
-            :ok-only="true" ok-title="Close" ok-variant="outline-primary">
+        <b-modal v-model="showReportModal" :title="tabIndex === 0 ? $t('admin.reports.viewReport') : $t('admin.reports.viewingClosedReport')"
+            :ok-only="true" :ok-title="$t('common.close')" ok-variant="outline-primary">
             <div v-if="viewingReportLoading" class="d-flex align-items-center justify-content-center">
                 <b-spinner />
             </div>
@@ -497,18 +493,18 @@
             <template v-else>
                 <div v-if="viewingReport" class="list-group">
                     <div class="list-group-item d-flex align-items-center justify-content-between">
-                        <div class="text-muted small">Type</div>
+                        <div class="text-muted small">{{ $t('admin.reports.type') }}</div>
                         <div class="font-weight-bold text-capitalize" v-html="reportLabel(viewingReport)"></div>
                     </div>
                     <div v-if="viewingReport.admin_seen_at"
                         class="list-group-item d-flex align-items-center justify-content-between">
-                        <div class="text-muted small">Report Closed</div>
+                        <div class="text-muted small">{{ $t('admin.reports.reportClosed') }}</div>
                         <div class="font-weight-bold text-capitalize">{{ formatDate(viewingReport.admin_seen_at) }}
                         </div>
                     </div>
                     <div v-if="viewingReport.reporter_message" class="list-group-item d-flex flex-column"
                         style="gap:10px;">
-                        <div class="text-muted small">Message</div>
+                        <div class="text-muted small">{{ $t('admin.reports.message') }}</div>
                         <p class="mb-0 read-more" style="font-size: 12px;overflow-y: hidden;">{{
                             viewingReport.reporter_message }}</p>
                     </div>
@@ -518,7 +514,7 @@
                     <div v-if="viewingReport && viewingReport.reported"
                         class="list-group-item d-flex align-items-center justify-content-between flex-column flex-grow-1"
                         style="gap:0.4rem;">
-                        <div class="text-muted small font-weight-bold mt-n1">Reported Account</div>
+                        <div class="text-muted small font-weight-bold mt-n1">{{ $t('admin.reports.reportedAccount') }}</div>
 
                         <a v-if="viewingReport.reported && viewingReport.reported.id"
                             :href="`/i/web/profile/${viewingReport.reported.id}`" target="_blank" class="text-primary">
@@ -533,9 +529,9 @@
                                         :class="[viewingReport.reported.is_admin ? 'text-danger' : '']">
                                         @{{ viewingReport.reported.acct }}</p>
                                     <div class="d-flex text-muted mb-0" style="font-size: 10px;gap: 0.5rem;">
-                                        <span>{{ viewingReport.reported.followers_count }} Followers</span>
+                                        <span>{{ $t('admin.reports.followersCount', { count: viewingReport.reported.followers_count }) }}</span>
                                         <span>·</span>
-                                        <span>Joined {{ timeAgo(viewingReport.reported.created_at) }}</span>
+                                        <span>{{ $t('admin.reports.joined', { time: timeAgo(viewingReport.reported.created_at) }) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -545,7 +541,7 @@
                     <div v-if="viewingReport && viewingReport.reporter"
                         class="list-group-item d-flex align-items-center justify-content-between flex-column flex-grow-1"
                         style="gap:0.4rem;">
-                        <div class="text-muted small font-weight-bold mt-n1">Reporter Account</div>
+                        <div class="text-muted small font-weight-bold mt-n1">{{ $t('admin.reports.reporterAccount') }}</div>
 
                         <a v-if="viewingReport.reporter && viewingReport.reporter?.id"
                             :href="`/i/web/profile/${viewingReport.reporter?.id}`" target="_blank" class="text-primary">
@@ -559,9 +555,9 @@
                                         style="font-size: 12px;max-width: 140px;line-height: 16px;">
                                         @{{ viewingReport.reporter.acct }}</p>
                                     <div class="d-flex text-muted mb-0" style="font-size: 10px;gap: 0.5rem;">
-                                        <span>{{ viewingReport.reporter.followers_count }} Followers</span>
+                                        <span>{{ $t('admin.reports.followersCount', { count: viewingReport.reporter.followers_count }) }}</span>
                                         <span>·</span>
-                                        <span>Joined {{ timeAgo(viewingReport.reporter.created_at) }}</span>
+                                        <span>{{ $t('admin.reports.joined', { time: timeAgo(viewingReport.reporter.created_at) }) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -574,8 +570,8 @@
                     <div v-if="viewingReport && viewingReport.status && viewingReport.status.media_attachments.length"
                         class="list-group-item d-flex flex-column flex-grow-1" style="gap:0.4rem;">
                         <div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-                            <div>Reported Post</div>
-                            <a class="font-weight-bold" :href="viewingReport.status.url" target="_blank">View</a>
+                            <div>{{ $t('admin.reports.reportedPost') }}</div>
+                            <a class="font-weight-bold" :href="viewingReport.status.url" target="_blank">{{ $t('admin.reports.view') }}</a>
                         </div>
 
                         <img v-if="viewingReport.status.media_attachments[0].type === 'image'"
@@ -590,8 +586,8 @@
                     <div v-if="viewingReport && viewingReport.status"
                         class="list-group-item d-flex flex-column flex-grow-1" style="gap:0.4rem;">
                         <div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-                            <div>Reported Post Caption</div>
-                            <a class="font-weight-bold" :href="viewingReport.status.url" target="_blank">View</a>
+                            <div>{{ $t('admin.reports.reportedPostCaption') }}</div>
+                            <a class="font-weight-bold" :href="viewingReport.status.url" target="_blank">{{ $t('admin.reports.view') }}</a>
                         </div>
                         <p class="mb-0 read-more" style="font-size:12px;overflow-y: hidden">{{
                             viewingReport.status.content_text }}</p>
@@ -603,8 +599,8 @@
                     <div v-if="viewingReport && viewingReport.story"
                         class="list-group-item d-flex flex-column flex-grow-1" style="gap:0.4rem;">
                         <div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-                            <div>Reported Story</div>
-                            <a class="font-weight-bold" :href="viewingReport.story.url" target="_blank">View</a>
+                            <div>{{ $t('admin.reports.reportedStory') }}</div>
+                            <a class="font-weight-bold" :href="viewingReport.story.url" target="_blank">{{ $t('admin.reports.view') }}</a>
                         </div>
 
                         <img v-if="viewingReport.story.type === 'photo'" :src="viewingReport.story.media_src"
@@ -621,76 +617,76 @@
                     <div
                         v-if="viewingReport && ['App\\Profile', 'App\\Models\\Profile'].includes(viewingReport.object_type)">
                         <button class="btn btn-dark btn-block rounded-pill"
-                            @click="handleAction('profile', 'ignore')">Ignore Report</button>
+                            @click="handleAction('profile', 'ignore')">{{ $t('admin.reports.ignoreReport') }}</button>
                         <hr v-if="viewingReport.reported && viewingReport.reported.id && !viewingReport.reported.is_admin"
                             class="mt-3 mb-1">
                         <div v-if="viewingReport.reported && viewingReport.reported.id && !viewingReport.reported.is_admin"
                             class="d-flex flex-row mt-2" style="gap:0.3rem;">
                             <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('profile', 'nsfw')">
-                                Mark all Posts NSFW
+                                {{ $t('admin.reports.markAllPostsNsfw') }}
                             </button>
                             <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('profile', 'unlist')">
-                                Unlist all Posts
+                                {{ $t('admin.reports.unlistAllPosts') }}
                             </button>
                         </div>
                         <button
                             v-if="viewingReport.reported && viewingReport.reported.id && !viewingReport.reported.is_admin"
                             class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-2"
                             @click="handleAction('profile', 'delete')">
-                            Delete Profile
+                            {{ $t('admin.reports.deleteProfile') }}
                         </button>
                     </div>
 
                     <div
                         v-else-if="viewingReport && ['App\\Status', 'App\\Models\\Status'].includes(viewingReport.object_type) && viewingReport.status">
                         <button class="btn btn-dark btn-block rounded-pill"
-                            @click="handleAction('post', 'ignore')">Ignore Report</button>
+                            @click="handleAction('post', 'ignore')">{{ $t('admin.reports.ignoreReport') }}</button>
                         <hr v-if="viewingReport && viewingReport.reported && !viewingReport.reported.is_admin"
                             class="mt-3 mb-1">
                         <div v-if="viewingReport && viewingReport.reported && !viewingReport.reported.is_admin"
                             class="d-flex flex-row mt-2" style="gap:0.3rem;">
                             <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                @click="handleAction('post', 'nsfw')">Mark Post NSFW</button>
+                                @click="handleAction('post', 'nsfw')">{{ $t('admin.reports.markPostNsfw') }}</button>
                             <button v-if="viewingReport.status.visibility === 'public'"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                @click="handleAction('post', 'unlist')">Unlist Post</button>
+                                @click="handleAction('post', 'unlist')">{{ $t('admin.reports.unlistPost') }}</button>
                             <button v-else-if="viewingReport.status.visibility === 'unlisted'"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                @click="handleAction('post', 'private')">Make Post Private</button>
+                                @click="handleAction('post', 'private')">{{ $t('admin.reports.makePostPrivate') }}</button>
                         </div>
                         <div v-if="viewingReport && viewingReport.reported && !viewingReport.reported.is_admin"
                             class="d-flex flex-row mt-2" style="gap:0.3rem;">
                             <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                @click="handleAction('profile', 'nsfw')">Make all NSFW</button>
+                                @click="handleAction('profile', 'nsfw')">{{ $t('admin.reports.makeAllNsfw') }}</button>
                             <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                @click="handleAction('profile', 'unlist')">Make all Unlisted</button>
+                                @click="handleAction('profile', 'unlist')">{{ $t('admin.reports.makeAllUnlisted') }}</button>
                             <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                @click="handleAction('profile', 'private')">Make all Private</button>
+                                @click="handleAction('profile', 'private')">{{ $t('admin.reports.makeAllPrivate') }}</button>
                         </div>
                         <div v-if="viewingReport && viewingReport.reported && !viewingReport.reported.is_admin">
                             <hr class="my-2">
                             <div class="d-flex flex-row mt-2" style="gap:0.3rem;">
                                 <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                    @click="handleAction('post', 'delete')">Delete Post</button>
+                                    @click="handleAction('post', 'delete')">{{ $t('admin.reports.deletePost') }}</button>
                                 <button class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
-                                    @click="handleAction('profile', 'delete')">Delete Account</button>
+                                    @click="handleAction('profile', 'delete')">{{ $t('admin.reports.deleteAccount') }}</button>
                             </div>
                         </div>
                     </div>
 
                     <div v-else-if="viewingReport && viewingReport.object_type === 'App\\Story'">
                         <button class="btn btn-dark btn-block rounded-pill"
-                            @click="handleAction('story', 'ignore')">Ignore Report</button>
+                            @click="handleAction('story', 'ignore')">{{ $t('admin.reports.ignoreReport') }}</button>
                         <hr v-if="viewingReport && viewingReport.reported && !viewingReport.reported.is_admin"
                             class="mt-3 mb-1">
                         <div v-if="viewingReport && viewingReport.reported && !viewingReport.reported.is_admin">
                             <div class="d-flex flex-row mt-2" style="gap:0.3rem;">
                                 <button class="btn btn-danger btn-block rounded-pill mt-0"
-                                    @click="handleAction('story', 'delete')">Delete Story</button>
+                                    @click="handleAction('story', 'delete')">{{ $t('admin.reports.deleteStory') }}</button>
                                 <button class="btn btn-outline-danger btn-block rounded-pill mt-0"
-                                    @click="handleAction('story', 'delete-all')">Delete All Stories</button>
+                                    @click="handleAction('story', 'delete-all')">{{ $t('admin.reports.deleteAllStories') }}</button>
                             </div>
                         </div>
 
@@ -698,7 +694,7 @@
                             <hr class="my-2">
                             <div class="d-flex flex-row mt-2" style="gap:0.3rem;">
                                 <button class="btn btn-outline-danger btn-sm btn-block rounded-pill mt-0"
-                                    @click="handleAction('profile', 'delete')">Delete Account</button>
+                                    @click="handleAction('profile', 'delete')">{{ $t('admin.reports.deleteAccount') }}</button>
                             </div>
                         </div>
                     </div>
@@ -706,7 +702,7 @@
             </template>
         </b-modal>
 
-        <b-modal v-model="showSpamReportModal" title="Potential Spam Post Detected" :ok-only="true" ok-title="Close"
+        <b-modal v-model="showSpamReportModal" :title="$t('admin.reports.potentialSpam')" :ok-only="true" :ok-title="$t('common.close')"
             ok-variant="outline-primary">
             <div v-if="viewingSpamReportLoading" class="d-flex align-items-center justify-content-center">
                 <b-spinner />
@@ -717,7 +713,7 @@
                     <div v-if="viewingSpamReport && viewingSpamReport.status && viewingSpamReport.status.account"
                         class="list-group-item d-flex align-items-center justify-content-between flex-column flex-grow-1"
                         style="gap:0.4rem;">
-                        <div class="text-muted small font-weight-bold mt-n1">Reported Account</div>
+                        <div class="text-muted small font-weight-bold mt-n1">{{ $t('admin.reports.reportedAccount') }}</div>
 
                         <a v-if="viewingSpamReport.status.account && viewingSpamReport.status.account.id"
                             :href="`/i/web/profile/${viewingSpamReport.status.account.id}`" target="_blank"
@@ -733,9 +729,9 @@
                                         :class="[viewingSpamReport.status.account.is_admin ? 'text-danger' : '']">
                                         @{{ viewingSpamReport.status.account.acct }}</p>
                                     <div class="d-flex text-muted mb-0" style="font-size: 10px;gap: 0.5rem;">
-                                        <span>{{ viewingSpamReport.status.account.followers_count }} Followers</span>
+                                        <span>{{ $t('admin.reports.followersCount', { count: viewingSpamReport.status.account.followers_count }) }}</span>
                                         <span>·</span>
-                                        <span>Joined {{ timeAgo(viewingSpamReport.status.account.created_at) }}</span>
+                                        <span>{{ $t('admin.reports.joined', { time: timeAgo(viewingSpamReport.status.account.created_at) }) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -747,8 +743,8 @@
                     <div v-if="viewingSpamReport && viewingSpamReport.status && viewingSpamReport.status.media_attachments.length"
                         class="list-group-item d-flex flex-column flex-grow-1" style="gap:0.4rem;">
                         <div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-                            <div>Reported Post</div>
-                            <a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">View</a>
+                            <div>{{ $t('admin.reports.reportedPost') }}</div>
+                            <a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">{{ $t('admin.reports.view') }}</a>
                         </div>
 
                         <img v-if="viewingSpamReport.status.media_attachments[0].type === 'image'"
@@ -766,8 +762,8 @@
                         viewingSpamReport.status.content_text.length"
                         class="list-group-item d-flex flex-column flex-grow-1" style="gap:0.4rem;">
                         <div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-                            <div>Reported Post Caption</div>
-                            <a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">View</a>
+                            <div>{{ $t('admin.reports.reportedPostCaption') }}</div>
+                            <a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">{{ $t('admin.reports.view') }}</a>
                         </div>
                         <p class="mb-0 read-more" style="font-size:12px;overflow-y: hidden">{{
                             viewingSpamReport.status.content_text }}</p>
@@ -778,12 +774,12 @@
                     <div>
                         <button type="button" class="btn btn-dark btn-block rounded-pill"
                             @click="handleSpamAction('mark-read')">
-                            Mark as Read
+                            {{ $t('admin.reports.markAsRead') }}
                         </button>
 
                         <button type="button" class="btn btn-danger btn-block rounded-pill"
                             @click="handleSpamAction('mark-not-spam')">
-                            Mark As Not Spam
+                            {{ $t('admin.reports.markAsNotSpam') }}
                         </button>
 
                         <hr class="mt-3 mb-1">
@@ -791,12 +787,12 @@
                         <div class="d-flex flex-row mt-2" style="gap:0.3rem;">
                             <button type="button" class="btn btn-dark btn-block btn-sm rounded-pill mt-0"
                                 @click="handleSpamAction('mark-all-read')">
-                                Mark All As Read
+                                {{ $t('admin.reports.markAllAsRead') }}
                             </button>
 
                             <button type="button" class="btn btn-dark btn-block btn-sm rounded-pill mt-0"
                                 @click="handleSpamAction('mark-all-not-spam')">
-                                Mark All As Not Spam
+                                {{ $t('admin.reports.markAllAsNotSpam') }}
                             </button>
                         </div>
 
@@ -805,7 +801,7 @@
                             <div class="d-flex flex-row mt-2" style="gap:0.3rem;">
                                 <button type="button" class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                     @click="handleSpamAction('delete-profile')">
-                                    Delete Account
+                                    {{ $t('admin.reports.deleteAccount') }}
                                 </button>
                             </div>
                         </div>
@@ -829,9 +825,9 @@
                             <div class="flex-grow-1">
                                 <i class="far fa-shield-alt"></i>
                             </div>
-                            <h5 class="mb-0 lead mt-0 font-weight-bold">Moderated Profile</h5>
+                            <h5 class="mb-0 lead mt-0 font-weight-bold">{{ $t('admin.reports.moderatedProfile') }}</h5>
                             <div class="flex-grow-1">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                <button type="button" class="close" data-dismiss="modal" :aria-label="$t('common.close')"
                                     @click="closeModeratedProfileModal()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -851,7 +847,7 @@
                         </div>
                         <p v-if="modModalData?.profile?.remote_url" class="small text-muted text-right mb-1">
                             <a :href="modModalData?.profile?.remote_url" rel="noreferrer" target="_blank">
-                                View remote profile
+                                {{ $t('admin.reports.viewRemoteProfile') }}
                             </a>
                         </p>
 
@@ -860,10 +856,10 @@
                                 <div class="mp-form-label">
                                     <div class="d-flex flex-column">
                                         <p class="mb-0 font-weight-bold">
-                                            Banned
+                                            {{ $t('admin.reports.mod.banned') }}
                                         </p>
                                         <p class="mb-0 small text-muted">
-                                            Ban any activities from this account.
+                                            {{ $t('admin.reports.mod.bannedHelp') }}
                                         </p>
                                     </div>
                                 </div>
@@ -878,10 +874,10 @@
                                 <div class="mp-form-label">
                                     <div class="d-flex flex-column">
                                         <p class="mb-0 font-weight-bold">
-                                            No Autolink
+                                            {{ $t('admin.reports.mod.noAutolink') }}
                                         </p>
                                         <p class="mb-0 small text-muted">
-                                            Disable hashtag, mention and url autolinking from this account.
+                                            {{ $t('admin.reports.mod.noAutolinkHelp') }}
                                         </p>
                                     </div>
                                 </div>
@@ -896,10 +892,10 @@
                                 <div class="mp-form-label">
                                     <div class="d-flex flex-column">
                                         <p class="mb-0 font-weight-bold">
-                                            No DMs
+                                            {{ $t('admin.reports.mod.noDms') }}
                                         </p>
                                         <p class="mb-0 small text-muted">
-                                            Ignore DMs from this account.
+                                            {{ $t('admin.reports.mod.noDmsHelp') }}
                                         </p>
                                     </div>
                                 </div>
@@ -914,10 +910,10 @@
                                 <div class="mp-form-label">
                                     <div class="d-flex flex-column">
                                         <p class="mb-0 font-weight-bold">
-                                            No Trending
+                                            {{ $t('admin.reports.mod.noTrending') }}
                                         </p>
                                         <p class="mb-0 small text-muted">
-                                            Prevent posts from this account from appearing in trending lists or feeds.
+                                            {{ $t('admin.reports.mod.noTrendingHelp') }}
                                         </p>
                                     </div>
                                 </div>
@@ -932,10 +928,10 @@
                                 <div class="mp-form-label">
                                     <div class="d-flex flex-column">
                                         <p class="mb-0 font-weight-bold">
-                                            Mark NSFW
+                                            {{ $t('admin.reports.mod.nsfw') }}
                                         </p>
                                         <p class="mb-0 small text-muted">
-                                            Mark all posts as sensitive, and apply CWs to future posts.
+                                            {{ $t('admin.reports.mod.nsfwHelp') }}
                                         </p>
                                     </div>
                                 </div>
@@ -950,10 +946,10 @@
                                 <div class="mp-form-label">
                                     <div class="d-flex flex-column">
                                         <p class="mb-0 font-weight-bold">
-                                            Mark Unlisted
+                                            {{ $t('admin.reports.mod.unlisted') }}
                                         </p>
                                         <p class="mb-0 small text-muted">
-                                            Mark all future posts as unlisted, hidden from global/tag feeds.
+                                            {{ $t('admin.reports.mod.unlistedHelp') }}
                                         </p>
                                     </div>
                                 </div>
@@ -966,19 +962,19 @@
                         </div>
 
                         <div class="py-3">
-                            <label class="small text-muted">Account Notes (only visible to admins)</label>
+                            <label class="small text-muted">{{ $t('admin.reports.accountNotes') }}</label>
                             <textarea class="form-control" v-model="modModalData.note"
-                                placeholder="Add an optional note" maxlength="500"></textarea>
+                                :placeholder="$t('admin.reports.addOptionalNote')" maxlength="500"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-between align-items-center">
                         <button type="button" class="btn btn-link text-dark" data-dismiss="modal"
-                            @click="closeModeratedProfileModal()">Close</button>
+                            @click="closeModeratedProfileModal()">{{ $t('common.close') }}</button>
                         <div class="d-flex flex-grow-1 align-items-center gap-1">
                             <button type="button" class="btn btn-danger"
-                                @click.prevent="handleModProfileModalDelete()">Delete</button>
+                                @click.prevent="handleModProfileModalDelete()">{{ $t('common.delete') }}</button>
                             <button type="button" class="btn btn-primary btn-block"
-                                @click.prevent="handleModProfileModalUpdate()">Save</button>
+                                @click.prevent="handleModProfileModalUpdate()">{{ $t('admin.reports.save') }}</button>
                         </div>
                     </div>
                 </div>
@@ -1123,15 +1119,15 @@ export default {
             switch (report.object_type) {
                 case 'App\\Profile':
                 case 'App\\Models\\Profile':
-                    return `${report.type} Profile`;
+                    return this.$t('admin.reports.labelProfile', { type: report.type });
                     break;
                 case 'App\\Status':
                 case 'App\\Models\\Status':
-                    return `${report.type} Post`;
+                    return this.$t('admin.reports.labelPost', { type: report.type });
                     break;
                 case 'App\\Story':
                 case 'App\\Models\\Story':
-                    return `${report.type} Story`;
+                    return this.$t('admin.reports.labelStory', { type: report.type });
                     break;
             }
         },
@@ -1259,7 +1255,7 @@ export default {
                 action_type: type
             })
                 .catch(err => {
-                    swal('Error', err.response.data.error, 'error');
+                    swal(this.$t('common.error'), err.response.data.error, 'error');
                 })
                 .finally(() => {
                     this.viewingReportLoading = true;
@@ -1275,59 +1271,59 @@ export default {
             if (type === 'profile') {
                 switch (action) {
                     case 'ignore':
-                        return 'Are you sure you want to ignore this profile report?';
+                        return this.$t('admin.reports.confirm.ignoreProfile');
                         break;
 
                     case 'nsfw':
-                        return 'Are you sure you want to mark this profile as NSFW?';
+                        return this.$t('admin.reports.confirm.nsfwProfile');
                         break;
 
                     case 'unlist':
-                        return 'Are you sure you want to mark all posts by this profile as unlisted?';
+                        return this.$t('admin.reports.confirm.unlistProfile');
                         break;
 
                     case 'private':
-                        return 'Are you sure you want to mark all posts by this profile as private?';
+                        return this.$t('admin.reports.confirm.privateProfile');
                         break;
 
                     case 'delete':
-                        return 'Are you sure you want to delete this profile?';
+                        return this.$t('admin.reports.confirm.deleteProfile');
                         break;
                 }
             } else if (type === 'post') {
                 switch (action) {
                     case 'ignore':
-                        return 'Are you sure you want to ignore this post report?';
+                        return this.$t('admin.reports.confirm.ignorePost');
                         break;
 
                     case 'nsfw':
-                        return 'Are you sure you want to mark this post as NSFW?';
+                        return this.$t('admin.reports.confirm.nsfwPost');
                         break;
 
                     case 'unlist':
-                        return 'Are you sure you want to mark this post as unlisted?';
+                        return this.$t('admin.reports.confirm.unlistPost');
                         break;
 
                     case 'private':
-                        return 'Are you sure you want to mark this post as private?';
+                        return this.$t('admin.reports.confirm.privatePost');
                         break;
 
                     case 'delete':
-                        return 'Are you sure you want to delete this post?';
+                        return this.$t('admin.reports.confirm.deletePost');
                         break;
                 }
             } else if (type === 'story') {
                 switch (action) {
                     case 'ignore':
-                        return 'Are you sure you want to ignore this story report?';
+                        return this.$t('admin.reports.confirm.ignoreStory');
                         break;
 
                     case 'delete':
-                        return 'Are you sure you want to delete this story?';
+                        return this.$t('admin.reports.confirm.deleteStory');
                         break;
 
                     case 'delete-all':
-                        return 'Are you sure you want to delete all stories by this account?';
+                        return this.$t('admin.reports.confirm.deleteAllStories');
                         break;
                 }
             }
@@ -1367,15 +1363,15 @@ export default {
         getSpamActionLabel(action) {
             switch (action) {
                 case 'mark-all-read':
-                    return 'Are you sure you want to mark all spam reports by this account as read?';
+                    return this.$t('admin.reports.confirm.spamMarkAllRead');
                     break;
 
                 case 'mark-all-not-spam':
-                    return 'Are you sure you want to mark all spam reports by this account as not spam?';
+                    return this.$t('admin.reports.confirm.spamMarkAllNotSpam');
                     break;
 
                 case 'delete-profile':
-                    return 'Are you sure you want to delete this profile?';
+                    return this.$t('admin.reports.confirm.deleteProfile');
                     break;
             }
         },
@@ -1396,7 +1392,7 @@ export default {
                 action: action,
             })
                 .catch(err => {
-                    swal('Error', err.response.data.error, 'error');
+                    swal(this.$t('common.error'), err.response.data.error, 'error');
                 })
                 .finally(() => {
                     this.viewingSpamReportLoading = true;
@@ -1447,7 +1443,7 @@ export default {
 
         getModerationLabels(acct) {
             if (acct.is_banned) {
-                return `<span class="badge badge-danger">Banned</span>`
+                return `<span class="badge badge-danger">${this.$t('admin.reports.modLabels.banned')}</span>`
             }
 
             let labels = [];
@@ -1459,9 +1455,18 @@ export default {
             if (acct.is_nsfw) labels.push('NSFW')
             if (acct.is_unlisted) labels.push('Unlisted')
 
+            const labelKeys = {
+                'Banned': 'banned',
+                'No Autolink': 'noAutolink',
+                'No DMS': 'noDms',
+                'No Trending': 'noTrending',
+                'NSFW': 'nsfw',
+                'Unlisted': 'unlisted',
+            };
+
             return labels.map((item, index) => {
                 const colorClass = item === 'Banned' ? 'danger' : 'primary';
-                return `<span class="badge badge-${colorClass}">${item}</span>`;
+                return `<span class="badge badge-${colorClass}">${this.$t('admin.reports.modLabels.' + labelKeys[item])}</span>`;
             }).join(' ');
         },
 
@@ -1498,15 +1503,15 @@ export default {
                 window.history.pushState(null, null, `/i/admin/reports?tab=moderated-profiles`)
                 window.location.reload();
             }).catch(error => {
-                let errorMessage = 'An error occurred';
+                let errorMessage = this.$t('admin.reports.errorOccurred');
                 if (error.response) {
-                    errorMessage = `Error ${error.response.status}: ${error.response.data.error || error.response.data.message || error.response.statusText}`;
+                    errorMessage = this.$t('admin.reports.errorWithStatus', { status: error.response.status, message: error.response.data.error || error.response.data.message || error.response.statusText });
                 } else if (error.request) {
-                    errorMessage = 'No response received from server';
+                    errorMessage = this.$t('admin.reports.noResponse');
                 } else {
                     errorMessage = error.message;
                 }
-                swal('Error', errorMessage, 'error')
+                swal(this.$t('common.error'), errorMessage, 'error')
             }).finally(() => {
                 $(this.$refs.moderatedProfileModal).modal('hide');
             })
@@ -1514,12 +1519,12 @@ export default {
 
         handleModProfileModalDelete() {
             swal({
-                title: 'Confirm Delete',
-                text: 'Are you sure you want to delete this moderated profile ruleset?',
+                title: this.$t('admin.reports.confirmDeleteTitle'),
+                text: this.$t('admin.reports.confirmDeleteRuleset'),
                 buttons: {
-                    cancel: "Cancel",
+                    cancel: this.$t('common.cancel'),
                     danger: {
-                        text: "Delete",
+                        text: this.$t('common.delete'),
                         value: 'delete',
                     }
                 }
@@ -1554,33 +1559,33 @@ export default {
                     $(this.$refs.moderatedProfileModal).modal('show');
                 }).catch(err => {
                     window.history.pushState(null, null, '/i/admin/reports?tab=moderated-profiles');
-                    swal('Error', 'Invalid moderated profile id!', 'error');
+                    swal(this.$t('common.error'), this.$t('admin.reports.invalidModeratedProfileId'), 'error');
                 })
         },
 
         addModeratedProfile() {
             swal({
-                text: 'Enter profile URL (ie: https://mastodon.social/@Mastodon)',
+                text: this.$t('admin.reports.enterProfileUrl'),
                 content: "input",
                 button: {
-                    text: "Add",
+                    text: this.$t('admin.reports.add'),
                     closeModal: false,
                 },
             }).then(val => {
                 if (!val) throw null;
 
                 if (val.startsWith('@')) {
-                    swal('Error', 'Invalid URL, webfinger is not supported yet.', 'error');
+                    swal(this.$t('common.error'), this.$t('admin.reports.invalidUrlWebfinger'), 'error');
                     throw null;
                 }
 
                 if (!val.startsWith('http')) {
-                    swal('Error', 'Invalid URL', 'error');
+                    swal(this.$t('common.error'), this.$t('admin.reports.invalidUrl'), 'error');
                     throw null;
                 }
 
                 if (val.indexOf('.') === -1) {
-                    swal('Error', 'Invalid URL', 'error');
+                    swal(this.$t('common.error'), this.$t('admin.reports.invalidUrl'), 'error');
                     throw null;
                 }
 
@@ -1599,9 +1604,9 @@ export default {
             }).catch(err => {
                 if (err) {
                     if (err?.response?.data?.error) {
-                        swal("Error", err?.response?.data?.error, "error");
+                        swal(this.$t('common.error'), err?.response?.data?.error, "error");
                     } else {
-                        swal("Error", "Something went wrong!", "error");
+                        swal(this.$t('common.error'), this.$t('admin.reports.somethingWentWrong'), "error");
                     }
                 } else {
                     swal.stopLoading();
@@ -1631,8 +1636,8 @@ export default {
                     el.click();
 
                     swal(
-                        'Success!',
-                        'You have successfully exported the moderated profile backup.',
+                        this.$t('admin.reports.successTitle'),
+                        this.$t('admin.reports.exported'),
                         'success'
                     )
                 })

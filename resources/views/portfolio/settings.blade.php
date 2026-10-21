@@ -7,7 +7,7 @@
 			<span class="logo-mark px-3"><span class="text-gradient-primary">portfolio</span></span>
 		</div>
         <div class="col-12 mb-5 col-md-4 text-md-right">
-            <h1 class="font-weight-bold">Settings</h1>
+            <h1 class="font-weight-bold">{{ __('pages.portfolio.settings') }}</h1>
         </div>
 	</div>
 

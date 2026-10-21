@@ -2,16 +2,16 @@
 
 @section('section')
   <div class="title">
-    <h3 class="font-weight-bold">Status #{{$status->id}}</h3>
+    <h3 class="font-weight-bold">{{ __('admin_panel.statuses.show.title', ['id' => $status->id]) }}</h3>
   </div>
 
   <hr>
 
   <div>
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-outline-secondary">View Details</button>
-      <button type="button" class="btn btn-outline-secondary">View User Stats</button>
-      <button type="button" class="btn btn-outline-danger">Delete</button>
+      <button type="button" class="btn btn-outline-secondary">{{ __('admin_panel.statuses.show.viewDetails') }}</button>
+      <button type="button" class="btn btn-outline-secondary">{{ __('admin_panel.statuses.show.viewUserStats') }}</button>
+      <button type="button" class="btn btn-outline-danger">{{ __('admin_panel.common.delete') }}</button>
     </div>
   </div>
 

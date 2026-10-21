@@ -19,85 +19,124 @@
 						<div class="media-body font-weight-light">
 							<div v-if="n.type == 'favourite'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> liked your <a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">post</a>.
+									<i18n path="classic.activity.liked" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">{{ $t('classic.activity.wordPost') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'comment'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your <a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">post</a>.
+									<i18n path="classic.activity.commented" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">{{ $t('classic.activity.wordPost') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'group:comment'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your <a class="font-weight-bold" v-bind:href="n.group_post_url">group post</a>.
+									<i18n path="classic.activity.commentedGroupPost" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="n.group_post_url">{{ $t('classic.activity.wordGroupPost') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'story:react'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> reacted to your <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">story</a>.
+									<i18n path="classic.activity.reactedStory" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.activity.wordStory') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'story:comment'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">story</a>.
+									<i18n path="classic.activity.commentedStory" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.activity.wordStory') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'mention'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> <a class="font-weight-bold" v-bind:href="mentionUrl(n.status)">mentioned</a> you.
+									<i18n path="classic.activity.mentioned" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="mentionUrl(n.status)">{{ $t('classic.activity.wordMentioned') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'follow'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> followed you.
+									<i18n path="classic.activity.followed" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'share'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> shared your <a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">post</a>.
+									<i18n path="classic.activity.shared" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">{{ $t('classic.activity.wordPost') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'modlog'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{truncate(n.account.username)}}</a> updated a <a class="font-weight-bold" v-bind:href="n.modlog.url">modlog</a>.
+									<i18n path="classic.activity.updatedModlog" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="n.modlog.url">{{ $t('classic.activity.wordModlog') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'tagged'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> tagged you in a <a class="font-weight-bold" v-bind:href="n.tagged.post_url">post</a>.
+									<i18n path="classic.activity.tagged" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="n.tagged.post_url">{{ $t('classic.activity.wordPost') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'direct'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> sent a <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">dm</a>.
+									<i18n path="classic.activity.sentDm" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.activity.wordDm') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'direct'">
 								<p class="my-0">
-									<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> sent a <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">dm</a>.
+									<i18n path="classic.activity.sentDm" tag="span">
+										<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+										<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.activity.wordDm') }}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'group.join.approved'">
 								<p class="my-0">
-									Your application to join <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> was approved!
+									<i18n path="classic.activity.groupApproved" tag="span">
+										<template v-slot:group><a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a></template>
+									</i18n>
 								</p>
 							</div>
 
 							<div v-else-if="n.type == 'group.join.rejected'">
 								<p class="my-0">
-									Your application to join <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> was rejected. You can re-apply to join in 6 months.
+									<i18n path="classic.activity.groupRejected" tag="span">
+										<template v-slot:group><a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a></template>
+									</i18n>
 								</p>
 							</div>
 
@@ -128,7 +167,7 @@
 								</a>
 							</div> -->
 							<div v-else>
-								<a v-if="viewContext(n) != '/'" class="btn btn-outline-primary py-0 font-weight-bold" :href="viewContext(n)">View</a>
+								<a v-if="viewContext(n) != '/'" class="btn btn-outline-primary py-0 font-weight-bold" :href="viewContext(n)">{{ $t('classic.activity.view') }}</a>
 							</div>
 						</div>
 					</div>
@@ -140,7 +179,7 @@
 					</div>
 					<div v-if="notifications.length == 0" class="text-lighter text-center py-3">
 						<p class="mb-0"><i class="fas fa-inbox fa-3x"></i></p>
-						<p class="mb-0 small font-weight-bold">0 Notifications!</p>
+						<p class="mb-0 small font-weight-bold">{{ $t('classic.activity.zeroNotifications') }}</p>
 					</div>
 				</div>
 			</div>

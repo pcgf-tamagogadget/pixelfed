@@ -4,74 +4,70 @@
             body-class="list-group-flush p-0 rounded">
             <div class="list-group text-center">
                 <div v-if="status.visibility !== 'archived'" class="list-group-item rounded cursor-pointer"
-                    @click="ctxMenuGoToPost()">View Post</div>
+                    @click="ctxMenuGoToPost()">{{ $t('menu.viewPost') }}</div>
                 <div v-if="status.visibility !== 'archived'" class="list-group-item rounded cursor-pointer"
-                    @click="ctxMenuGoToProfile()">View Profile</div>
-                <div class="list-group-item rounded cursor-pointer" @click="ctxMenuCopyLink()">Copy Link</div> -->
+                    @click="ctxMenuGoToProfile()">{{ $t('menu.viewProfile') }}</div>
+                <div class="list-group-item rounded cursor-pointer" @click="ctxMenuCopyLink()">{{ $t('common.copyLink') }}</div> -->
                 <div v-if="status.visibility !== 'archived'" class="list-group-item rounded cursor-pointer"
-                    @click="ctxMenuShare()">Share</div>
+                    @click="ctxMenuShare()">{{ $t('common.share') }}</div>
                 <div v-if="status && profile && profile.is_admin == true && status.visibility !== 'archived'"
-                    class="list-group-item rounded cursor-pointer" @click="ctxModMenuShow()">Moderation Tools</div>
+                    class="list-group-item rounded cursor-pointer" @click="ctxModMenuShow()">{{ $t('menu.moderationTools') }}</div>
                 <div v-if="status && status.account.id != profile.id"
-                    class="list-group-item rounded cursor-pointer text-danger" @click="ctxMenuReportPost()">Report</div>
+                    class="list-group-item rounded cursor-pointer text-danger" @click="ctxMenuReportPost()">{{ $t('menu.report') }}</div>
                 <div v-if="status && profile.id == status.account.id && status.visibility !== 'archived'"
-                    class="list-group-item rounded cursor-pointer text-danger" @click="archivePost(status)">Archive
+                    class="list-group-item rounded cursor-pointer text-danger" @click="archivePost(status)">{{ $t('menu.archive') }}
                 </div>
                 <div v-if="status && profile.id == status.account.id && status.visibility == 'archived'"
-                    class="list-group-item rounded cursor-pointer text-danger" @click="unarchivePost(status)">Unarchive
+                    class="list-group-item rounded cursor-pointer text-danger" @click="unarchivePost(status)">{{ $t('menu.unarchive') }}
                 </div>
                 <div v-if="status && profile.id == status.account.id && status.visibility !== 'archived'"
                     class="list-group-item menu-option text-danger" @click="editPost(status)">
-                    Edit
+                    {{ $t('classic.contextMenu.edit') }}
                 </div>
                 <div v-if="status && (profile.is_admin || profile.id == status.account.id) && status.visibility !== 'archived'"
-                    class="list-group-item rounded cursor-pointer text-danger" @click="deletePost(status)">Delete</div>
-                <div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxMenu()">Cancel</div>
+                    class="list-group-item rounded cursor-pointer text-danger" @click="deletePost(status)">{{ $t('common.delete') }}</div>
+                <div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxMenu()">{{ $t('common.cancel') }}</div>
             </div>
         </b-modal>
         <b-modal ref="ctxModModal" id="ctx-mod-modal" hide-header hide-footer centered rounded size="sm"
             body-class="list-group-flush p-0 rounded">
             <div class="list-group text-center">
                 <p class="py-2 px-3 mb-0">
-                <div class="text-center font-weight-bold text-danger">Moderation Tools</div>
-                <div class="small text-center text-muted">Select one of the following options</div>
+                <div class="text-center font-weight-bold text-danger">{{ $t('menu.moderationTools') }}</div>
+                <div class="small text-center text-muted">{{ $t('menu.selectOneOption') }}</div>
                 </p>
-                <div class="list-group-item rounded cursor-pointer" @click="moderatePost(status, 'unlist')">Unlist from
-                    Timelines</div>
+                <div class="list-group-item rounded cursor-pointer" @click="moderatePost(status, 'unlist')">{{ $t('menu.unlistFromTimelines') }}</div>
                 <div v-if="status.sensitive" class="list-group-item rounded cursor-pointer"
-                    @click="moderatePost(status, 'remcw')">Remove Content Warning</div>
-                <div v-else class="list-group-item rounded cursor-pointer" @click="moderatePost(status, 'addcw')">Add
-                    Content Warning</div>
+                    @click="moderatePost(status, 'remcw')">{{ $t('menu.removeCW') }}</div>
+                <div v-else class="list-group-item rounded cursor-pointer" @click="moderatePost(status, 'addcw')">{{ $t('menu.addCW') }}</div>
                 <div class="list-group-item rounded cursor-pointer" @click="moderatePost(status, 'spammer')">
-                    Mark as Spammer<br />
-                    <span class="small">Unlist + CW existing and future posts</span>
+                    {{ $t('menu.markAsSpammer') }}<br />
+                    <span class="small">{{ $t('menu.markAsSpammerText') }}</span>
                 </div>
-                <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModMenuClose()">Cancel</div>
+                <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModMenuClose()">{{ $t('common.cancel') }}</div>
             </div>
         </b-modal>
         <b-modal ref="ctxModOtherModal" id="ctx-mod-other-modal" hide-header hide-footer centered rounded size="sm"
             body-class="list-group-flush p-0 rounded">
             <div class="list-group text-center">
                 <p class="py-2 px-3 mb-0">
-                <div class="text-center font-weight-bold text-danger">Moderation Tools</div>
-                <div class="small text-center text-muted">Select one of the following options</div>
+                <div class="text-center font-weight-bold text-danger">{{ $t('menu.moderationTools') }}</div>
+                <div class="small text-center text-muted">{{ $t('menu.selectOneOption') }}</div>
                 </p>
-                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">Unlist
-                    Posts</div>
-                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">Moderation
-                    Log</div>
-                <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModOtherMenuClose()">Cancel
+                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">{{ $t('classic.contextMenu.unlistPosts') }}</div>
+                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">{{ $t('classic.contextMenu.moderationLog') }}</div>
+                <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModOtherMenuClose()">{{ $t('common.cancel') }}
                 </div>
             </div>
         </b-modal>
-        <b-modal ref="ctxShareModal" id="ctx-share-modal" title="Share" hide-footer hide-header centered rounded
+        <b-modal ref="ctxShareModal" id="ctx-share-modal" :title="$t('common.share')" hide-footer hide-header centered rounded
             size="sm" body-class="list-group-flush p-0 rounded text-center">
             <div class="list-group-item rounded cursor-pointer" @click="shareStatus(status, $event)">{{ status.reblogged
-                ? 'Unshare' : 'Share' }} to Followers</div>
-            <div class="list-group-item rounded cursor-pointer" @click="ctxMenuCopyLink()">Copy Link</div>
+                ? $t('classic.contextMenu.unshareToFollowers') : $t('classic.contextMenu.shareToFollowers') }}</div>
+            <div class="list-group-item rounded cursor-pointer" @click="ctxMenuCopyLink()">{{ $t('common.copyLink') }}</div>
             <div v-if="status && status.local == true && !status.in_reply_to_id"
-                class="list-group-item rounded cursor-pointer" @click="ctxMenuEmbed()">Embed</div>
-            <div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxShareMenu()">Cancel</div>
+                class="list-group-item rounded cursor-pointer" @click="ctxMenuEmbed()">{{ $t('menu.embed') }}</div>
+            <div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxShareMenu()">{{ $t('common.cancel') }}</div>
         </b-modal>
         <b-modal ref="ctxEmbedModal" id="ctx-embed-modal" hide-header hide-footer centered rounded size="md"
             body-class="p-2 rounded">
@@ -86,20 +82,20 @@
                         <input class="form-check-input" type="checkbox" v-model="ctxEmbedShowCaption"
                             :disabled="ctxEmbedCompactMode == true">
                         <label class="form-check-label font-weight-light">
-                            Show Caption
+                            {{ $t('menu.showCaption') }}
                         </label>
                     </div>
                     <div class="form-check mr-3">
                         <input class="form-check-input" type="checkbox" v-model="ctxEmbedShowLikes"
                             :disabled="ctxEmbedCompactMode == true">
                         <label class="form-check-label font-weight-light">
-                            Show Likes
+                            {{ $t('menu.showLikes') }}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" v-model="ctxEmbedCompactMode">
                         <label class="form-check-label font-weight-light">
-                            Compact Mode
+                            {{ $t('menu.compactMode') }}
                         </label>
                     </div>
                 </div>
@@ -107,52 +103,52 @@
                 <button
                     :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed' : 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'"
                     @click="ctxCopyEmbed" :disabled="copiedEmbed">{{
-                        copiedEmbed ? 'Embed Code Copied!' : 'Copy Embed Code' }}
+                        copiedEmbed ? $t('classic.contextMenu.embedCopied') : $t('classic.contextMenu.copyEmbed') }}
                 </button>
-                <p class="mb-0 px-2 small text-muted">By using this embed, you agree to our <a href="/site/terms">Terms
-                        of Use</a></p>
+                <i18n path="classic.contextMenu.embedAgree" tag="p" class="mb-0 px-2 small text-muted">
+                    <template v-slot:terms><a href="/site/terms">{{ $t('site.terms') }}</a></template>
+                </i18n>
             </div>
         </b-modal>
         <b-modal ref="ctxReport" id="ctx-report" hide-header hide-footer centered rounded size="sm"
             body-class="list-group-flush p-0 rounded">
             <p class="py-2 px-3 mb-0">
-            <div class="text-center font-weight-bold text-danger">Report</div>
-            <div class="small text-center text-muted">Select one of the following options</div>
+            <div class="text-center font-weight-bold text-danger">{{ $t('menu.report') }}</div>
+            <div class="small text-center text-muted">{{ $t('menu.selectOneOption') }}</div>
             </p>
             <div class="list-group text-center">
-                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('spam')">Spam
+                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('spam')">{{ $t('menu.spam') }}
                 </div>
                 <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('sensitive')">
-                    Sensitive Content</div>
+                    {{ $t('menu.sensitive') }}</div>
                 <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('abusive')">
-                    Abusive or Harmful</div>
+                    {{ $t('menu.abusive') }}</div>
                 <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="openCtxReportOtherMenu()">
-                    Other</div>
+                    {{ $t('common.other') }}</div>
                 <!-- <div class="list-group-item rounded cursor-pointer" @click="ctxReportMenuGoBack()">Go Back</div> -->
-                <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportMenuGoBack()">Cancel
+                <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportMenuGoBack()">{{ $t('common.cancel') }}
                 </div>
             </div>
         </b-modal>
         <b-modal ref="ctxReportOther" id="ctx-report-other" hide-header hide-footer centered rounded size="sm"
             body-class="list-group-flush p-0 rounded">
             <p class="py-2 px-3 mb-0">
-            <div class="text-center font-weight-bold text-danger">Report</div>
-            <div class="small text-center text-muted">Select one of the following options</div>
+            <div class="text-center font-weight-bold text-danger">{{ $t('menu.report') }}</div>
+            <div class="small text-center text-muted">{{ $t('menu.selectOneOption') }}</div>
             </p>
             <div class="list-group text-center">
                 <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('underage')">
-                    Underage Account</div>
+                    {{ $t('menu.underageAccount') }}</div>
                 <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('copyright')">
-                    Copyright Infringement</div>
+                    {{ $t('menu.copyrightInfringement') }}</div>
                 <div class="list-group-item rounded cursor-pointer font-weight-bold"
-                    @click="sendReport('impersonation')">Impersonation</div>
-                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('scam')">Scam or
-                    Fraud</div>
+                    @click="sendReport('impersonation')">{{ $t('menu.impersonation') }}</div>
+                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('scam')">{{ $t('menu.scamOrFraud') }}</div>
                 <!-- <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('terrorism')">Terrorism Related</div> -->
                 <!-- <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('other')">Other or Not listed</div> -->
                 <!-- <div class="list-group-item rounded cursor-pointer" @click="ctxReportOtherMenuGoBack()">Go Back</div> -->
                 <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportOtherMenuGoBack()">
-                    Cancel</div>
+                    {{ $t('common.cancel') }}</div>
             </div>
         </b-modal>
         <b-modal ref="ctxConfirm" id="ctx-confirm" hide-header hide-footer centered rounded size="sm"
@@ -163,9 +159,9 @@
             <div class="d-flex border-top btn-group btn-group-block rounded-0" role="group">
                 <button type="button"
                     class="btn btn-outline-lighter border-left-0 border-top-0 border-bottom-0 border-right py-2"
-                    style="color: rgb(0,122,255) !important;" @click.prevent="confirmModalCancel()">Cancel</button>
+                    style="color: rgb(0,122,255) !important;" @click.prevent="confirmModalCancel()">{{ $t('common.cancel') }}</button>
                 <button type="button" class="btn btn-outline-lighter border-0" style="color: rgb(0,122,255) !important;"
-                    @click.prevent="confirmModalConfirm()">Confirm</button>
+                    @click.prevent="confirmModalConfirm()">{{ $t('classic.contextMenu.confirm') }}</button>
             </div>
         </b-modal>
     </div>
@@ -188,7 +184,7 @@ export default {
             ctxEmbedShowCaption: true,
             ctxEmbedShowLikes: false,
             ctxEmbedCompactMode: false,
-            confirmModalTitle: 'Are you sure?',
+            confirmModalTitle: this.$t('classic.contextMenu.areYouSure'),
             confirmModalIdentifer: null,
             confirmModalType: false,
         }
@@ -353,8 +349,8 @@ export default {
             let id = this.ctxMenuStatus.id;
 
             swal({
-                'title': 'Confirm Report',
-                'text': 'Are you sure you want to report this post?',
+                'title': this.$t('menu.confirmReport'),
+                'text': this.$t('menu.confirmReportText'),
                 'icon': 'warning',
                 'buttons': true,
                 'dangerMode': true
@@ -366,9 +362,9 @@ export default {
                         'id': id,
                     }).then(res => {
                         this.closeCtxMenu();
-                        swal('Report Sent!', 'We have successfully received your report.', 'success');
+                        swal(this.$t('menu.reportSent'), this.$t('menu.reportSentText'), 'success');
                     }).catch(err => {
-                        swal('Oops!', 'There was an issue reporting this post.', 'error');
+                        swal(this.$t('common.oops'), this.$t('menu.reportSentError'), 'error');
                     })
                 } else {
                     this.closeCtxMenu();
@@ -399,7 +395,7 @@ export default {
 
         closeConfirmModal() {
             this.closeModals();
-            this.confirmModalTitle = 'Are you sure?';
+            this.confirmModalTitle = this.$t('classic.contextMenu.areYouSure');
             this.confirmModalType = false;
             this.confirmModalIdentifer = null;
         },
@@ -417,7 +413,7 @@ export default {
                         this.closeConfirmModal();
                     }).catch(err => {
                         this.closeConfirmModal();
-                        swal('Error', 'Something went wrong. Please try again later.', 'error');
+                        swal(this.$t('common.error'), this.$t('classic.contextMenu.errorTryLaterDot'), 'error');
                     });
                     break;
             }
@@ -436,9 +432,9 @@ export default {
             let self = this;
             switch (action) {
                 case 'addcw':
-                    msg = 'Are you sure you want to add a content warning to this post?';
+                    msg = this.$t('menu.modAddCWConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('classic.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -450,14 +446,14 @@ export default {
                                 item_id: status.id,
                                 item_type: 'status'
                             }).then(res => {
-                                swal('Success', 'Successfully added content warning', 'success');
+                                swal(this.$t('common.success'), this.$t('menu.modCWSuccess'), 'success');
                                 status.sensitive = true;
                                 self.closeModals();
                                 self.ctxModMenuClose();
                             }).catch(err => {
                                 swal(
-                                    'Error',
-                                    'Something went wrong, please try again later.',
+                                    self.$t('common.error'),
+                                    self.$t('classic.contextMenu.errorTryLater'),
                                     'error'
                                 );
                                 self.closeModals();
@@ -468,9 +464,9 @@ export default {
                     break;
 
                 case 'remcw':
-                    msg = 'Are you sure you want to remove the content warning on this post?';
+                    msg = this.$t('menu.modRemoveCWConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('classic.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -482,14 +478,14 @@ export default {
                                 item_id: status.id,
                                 item_type: 'status'
                             }).then(res => {
-                                swal('Success', 'Successfully added content warning', 'success');
+                                swal(this.$t('common.success'), this.$t('menu.modCWSuccess'), 'success');
                                 status.sensitive = false;
                                 self.closeModals();
                                 self.ctxModMenuClose();
                             }).catch(err => {
                                 swal(
-                                    'Error',
-                                    'Something went wrong, please try again later.',
+                                    self.$t('common.error'),
+                                    self.$t('classic.contextMenu.errorTryLater'),
                                     'error'
                                 );
                                 self.closeModals();
@@ -500,9 +496,9 @@ export default {
                     break;
 
                 case 'unlist':
-                    msg = 'Are you sure you want to unlist this post?';
+                    msg = this.$t('menu.modUnlistConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('classic.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -517,15 +513,15 @@ export default {
                                 this.feed = this.feed.filter(f => {
                                     return f.id != status.id;
                                 });
-                                swal('Success', 'Successfully unlisted post', 'success');
+                                swal(this.$t('common.success'), this.$t('menu.modUnlistSuccess'), 'success');
                                 self.closeModals();
                                 self.ctxModMenuClose();
                             }).catch(err => {
                                 self.closeModals();
                                 self.ctxModMenuClose();
                                 swal(
-                                    'Error',
-                                    'Something went wrong, please try again later.',
+                                    self.$t('common.error'),
+                                    self.$t('classic.contextMenu.errorTryLater'),
                                     'error'
                                 );
                             });
@@ -534,9 +530,9 @@ export default {
                     break;
 
                 case 'spammer':
-                    msg = 'Are you sure you want to mark this user as a spammer? All existing and future posts will be unlisted on timelines and a content warning will be applied.';
+                    msg = this.$t('menu.modMarkAsSpammerConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('classic.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -548,15 +544,15 @@ export default {
                                 item_id: status.id,
                                 item_type: 'status'
                             }).then(res => {
-                                swal('Success', 'Successfully marked account as spammer', 'success');
+                                swal(this.$t('common.success'), this.$t('menu.modMarkAsSpammerSuccess'), 'success');
                                 self.closeModals();
                                 self.ctxModMenuClose();
                             }).catch(err => {
                                 self.closeModals();
                                 self.ctxModMenuClose();
                                 swal(
-                                    'Error',
-                                    'Something went wrong, please try again later.',
+                                    self.$t('common.error'),
+                                    self.$t('classic.contextMenu.errorTryLater'),
                                     'error'
                                 );
                             });
@@ -579,12 +575,12 @@ export default {
                 status.reblogs_count = res.data.count;
                 status.reblogged = !status.reblogged;
                 if (status.reblogged) {
-                    swal('Success', 'You shared this post', 'success');
+                    swal(this.$t('common.success'), this.$t('classic.contextMenu.sharedPost'), 'success');
                 } else {
-                    swal('Success', 'You unshared this post', 'success');
+                    swal(this.$t('common.success'), this.$t('classic.contextMenu.unsharedPost'), 'success');
                 }
             }).catch(err => {
-                swal('Error', 'Something went wrong, please try again later.', 'error');
+                swal(this.$t('common.error'), this.$t('classic.contextMenu.errorTryLater'), 'error');
             });
         },
 
@@ -609,7 +605,7 @@ export default {
                 return;
             }
 
-            if (window.confirm('Are you sure you want to delete this post?') == false) {
+            if (window.confirm(this.$t('menu.deletePostConfirm')) == false) {
                 return;
             }
 
@@ -620,7 +616,7 @@ export default {
                 this.$emit('status-delete', status.id);
                 this.closeModals();
             }).catch(err => {
-                swal('Error', 'Something went wrong. Please try again later.', 'error');
+                swal(this.$t('common.error'), this.$t('classic.contextMenu.errorTryLaterDot'), 'error');
             });
         },
 
@@ -637,7 +633,7 @@ export default {
         },
 
         archivePost(status) {
-            if (window.confirm('Are you sure you want to archive this post?') == false) {
+            if (window.confirm(this.$t('menu.archivePostConfirm')) == false) {
                 return;
             }
 
@@ -654,7 +650,7 @@ export default {
         },
 
         unarchivePost(status) {
-            if (window.confirm('Are you sure you want to unarchive this post?') == false) {
+            if (window.confirm(this.$t('menu.unarchivePostConfirm')) == false) {
                 return;
             }
 

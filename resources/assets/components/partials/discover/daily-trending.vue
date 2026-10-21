@@ -4,9 +4,9 @@
 			<div class="card-body m-5">
 				<div class="row d-flex align-items-center">
 					<div class="col-12 col-md-5">
-						<p class="font-default text-light mb-0">Popular and trending posts</p>
-						<h1 class="display-4 font-default text-white" style="font-weight: 700;">Daily Trending</h1>
-						<button class="btn btn-outline-light rounded-pill" @click="viewMore()">View more trending posts</button>
+						<p class="font-default text-light mb-0">{{ $t('spa.discoverDailyTrending.subtitle') }}</p>
+						<h1 class="display-4 font-default text-white" style="font-weight: 700;">{{ $t('spa.discoverDailyTrending.title') }}</h1>
+						<button class="btn btn-outline-light rounded-pill" @click="viewMore()">{{ $t('spa.discoverDailyTrending.viewMore') }}</button>
 					</div>
 					<div class="col-12 col-md-7">
 						<div v-if="isLoaded" class="row">

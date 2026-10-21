@@ -5,8 +5,8 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
       <div></div>
-      <a href="/account/activity" class="cursor-pointer font-weight-bold text-dark">Notifications</a>
-      <a href="/account/follow-requests" class="cursor-pointer font-weight-bold text-primary">Follow Requests</a>
+      <a href="/account/activity" class="cursor-pointer font-weight-bold text-dark">{{ __('pages.account.notifications') }}</a>
+      <a href="/account/follow-requests" class="cursor-pointer font-weight-bold text-primary">{{ __('pages.account.followRequests') }}</a>
       <div></div>
     </div>
   </div>
@@ -21,11 +21,11 @@
             <img src="{{$follow->follower->avatarUrl()}}" width="32px" class="rounded-circle">
           </span>
           <span class="notification-text">
-            <a class="font-weight-bold text-dark" href="{{$follow->follower->url()}}">{{$follow->follower->username}}</a> {{__('wants to follow you')}}
+            <a class="font-weight-bold text-dark" href="{{$follow->follower->url()}}">{{$follow->follower->username}}</a> {{ __('pages.account.wantsToFollow') }}
             <span class="text-muted notification-timestamp pl-1">{{$follow->created_at->diffForHumans(null, true, true)}}</span>
           </span>
           <span class="float-right">
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="btn-group" role="group" aria-label="{{ __('pages.account.requestActions') }}">
               <button type="button" class="btn btn-outline-default request-action" data-id="{{$follow->id}}" data-action="reject"><i class="fas fa-times text-danger"></i></button>
               <button type="button" class="btn btn-outline-default request-action" data-id="{{$follow->id}}" data-action="accept"><i class="fas fa-check text-success"></i></button>
             </div>
@@ -39,7 +39,7 @@
     </div>
     @else
     <div class="text-center pt-5">
-      <p class="font-weight-bold text-muted">You don't have any follow requests</p>
+      <p class="font-weight-bold text-muted">{{ __('pages.account.noFollowRequests') }}</p>
     </div>
     @endif
 
@@ -62,12 +62,12 @@ $(document).ready(function() {
       id: id
     }).then((res) => {
       if(action == 'accept') {
-        swal('Successfully accepted!', 'You have successfully approved that follow request.', 'success');
+        swal(@json(__('pages.account.acceptedTitle')), @json(__('pages.account.acceptedBody')), 'success');
       } else {
-        swal('Successfully rejected!', 'You have successfully rejected that follow request.', 'success');
+        swal(@json(__('pages.account.rejectedTitle')), @json(__('pages.account.rejectedBody')), 'success');
       }
     }).catch((res) => {
-      swal('Oops!', 'Something went wrong, please try again later', 'error');
+      swal(@json(__('pages.common.oops')), @json(__('pages.common.somethingWentWrong')), 'error');
     });
     let parent = el.parents().eq(2);
     parent.fadeOut();

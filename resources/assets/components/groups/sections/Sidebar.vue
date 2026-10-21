@@ -2,7 +2,7 @@
     <div class="col-3 shadow groups-sidenav">
         <div class="p-1">
             <div class="d-flex justify-content-between align-items-center py-3">
-                <p class="h2 font-weight-bold mb-0">Groups</p>
+                <p class="h2 font-weight-bold mb-0">{{ $t('groups.sidebar.groups') }}</p>
                 <a class="btn btn-light px-2 rounded-circle" href="/settings/home">
                     <i class="fas fa-cog fa-lg"></i>
                 </a>
@@ -11,8 +11,8 @@
             <div class="mb-3">
                 <autocomplete
                     :search="autocompleteSearch"
-                    placeholder="Search groups by name"
-                    aria-label="Search groups by name"
+                    :placeholder="$t('groups.sidebar.searchPlaceholder')"
+                    :aria-label="$t('groups.sidebar.searchPlaceholder')"
                     :get-result-value="getSearchResultValue"
                     :debounceTime="700"
                     @submit="onSearchSubmit"
@@ -32,17 +32,17 @@
                                 <div class="media-body text-truncate mr-3">
                                     <p class="result-name mb-n1 font-weight-bold">
                                         {{ truncateName(result.name) }}
-                                        <span v-if="result.verified" class="fa-stack ml-n2" title="Verified Group" data-toggle="tooltip">
+                                        <span v-if="result.verified" class="fa-stack ml-n2" :title="$t('groups.sidebar.verifiedGroup')" data-toggle="tooltip">
                                             <i class="fas fa-circle fa-stack-1x fa-lg" style="color: #22a7f0cc;font-size:18px"></i>
                                             <i class="fas fa-check fa-stack-1x text-white" style="font-size:10px"></i>
                                         </span>
                                     </p>
                                     <p class="mb-0 text-muted" style="font-size: 10px;">
-                                        <span v-if="!result.local" title="Remote Group">
+                                        <span v-if="!result.local" :title="$t('groups.sidebar.remoteGroup')">
                                             <i class="far fa-globe"></i>
                                         </span>
                                         <span v-if="!result.local">·</span>
-                                        <span class="font-weight-bold">{{ result.member_count }} members</span>
+                                        <span class="font-weight-bold">{{ $t('groups.sidebar.memberCount', { count: result.member_count }) }}</span>
                                     </p>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
             <router-link
                 to="/groups/create"
                 class="btn btn-primary btn-block rounded-pill font-weight-bold mt-3">
-                <i class="fas fa-plus mr-2"></i> Create New Group
+                <i class="fas fa-plus mr-2"></i> {{ $t('groups.sidebar.createNewGroup') }}
             </router-link>
 
             <hr>
@@ -119,9 +119,9 @@
             return {
                 initialLoad: false,
                 tabs: [
-                    { name: 'Your Feed', icon: 'fas fa-list', path: '/groups/feed' },
-                    { name: 'Discover', icon: 'fas fa-compass', path: '/groups/discover' },
-                    { name: 'Your Groups', icon: 'fas fa-list', path: '/groups/joins' },
+                    { name: this.$t('groups.sidebar.yourFeed'), icon: 'fas fa-list', path: '/groups/feed' },
+                    { name: this.$t('groups.sidebar.discover'), icon: 'fas fa-compass', path: '/groups/discover' },
+                    { name: this.$t('groups.sidebar.yourGroups'), icon: 'fas fa-list', path: '/groups/joins' },
                     // { name: 'Notifications', icon: 'far fa-bell', path: '/groups/notifications' },
                     // { name: 'Find Remote Group', icon: 'far fa-search-plus', path: '/groups/search' },
                 ],
@@ -148,7 +148,7 @@
 
                 if(input.startsWith('#')) {
                     this.$bvToast.toast(input, {
-                        title: 'Hashtag detected',
+                        title: this.$t('groups.sidebar.hashtagDetected'),
                         variant: 'info',
                         autoHideDelay: 5000
                     });
@@ -166,7 +166,7 @@
 
                     if(err.response.status === 422) {
                         this.$bvToast.toast(err.response.data.error.message, {
-                            title: 'Cannot display search results',
+                            title: this.$t('groups.sidebar.cannotDisplaySearchResults'),
                             variant: 'danger',
                             autoHideDelay: 5000
                         });

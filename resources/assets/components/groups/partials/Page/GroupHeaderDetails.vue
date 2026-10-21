@@ -13,13 +13,13 @@
 
             <div v-if="!group || !group.name" class="media-body">
                 <h3 class="d-flex align-items-start">
-                    <span>Loading...</span>
+                    <span>{{ $t('common.loading') }}</span>
                 </h3>
             </div>
             <div v-else class="media-body px-3">
                 <h3 class="d-flex align-items-start">
                     <span>{{ group.name.slice(0,118) }}</span>
-                    <sup v-if="group.verified" class="fa-stack ml-n2" title="Verified Group" data-toggle="tooltip">
+                    <sup v-if="group.verified" class="fa-stack ml-n2" :title="$t('groups.groupHeaderDetails.verifiedGroup')" data-toggle="tooltip">
                         <i class="fas fa-circle fa-stack-1x fa-lg" style="color: #22a7f0cc;font-size:18px"></i>
                         <i class="fas fa-check fa-stack-1x text-white" style="font-size:10px"></i>
                     </sup>
@@ -27,17 +27,17 @@
                 <p class="text-muted mb-0" style="font-weight: 300;">
                     <span>
                         <i class="fas fa-globe mr-1"></i>
-                        {{ group.membership == 'all' ? 'Public Group' : 'Private Group'}}
+                        {{ group.membership == 'all' ? $t('groups.groupHeaderDetails.publicGroup') : $t('groups.groupHeaderDetails.privateGroup') }}
                     </span>
                     <span class="mx-2">
                         ·
                     </span>
-                    <span>{{ group.member_count == 1 ? group.member_count + ' Member' : group.member_count + ' Members' }}</span>
+                    <span>{{ group.member_count == 1 ? $t('groups.groupHeaderDetails.memberCountOne', { count: group.member_count }) : $t('groups.groupHeaderDetails.memberCount', { count: group.member_count }) }}</span>
                     <span class="mx-2">
                         ·
                     </span>
-                    <span v-if="group.local" class="rounded member-label">Local</span>
-                    <span v-else class="rounded remote-label">Remote</span>
+                    <span v-if="group.local" class="rounded member-label">{{ $t('groups.groupHeaderDetails.local') }}</span>
+                    <span v-else class="rounded remote-label">{{ $t('groups.groupHeaderDetails.remote') }}</span>
                     <span v-if="group.self && group.self.hasOwnProperty('role') && group.self.role">
                         <span class="mx-2">
                             ·
@@ -50,13 +50,13 @@
         <div v-if="group && group.self">
             <button v-if="!isMember && !group.self.is_requested" class="btn btn-primary cta-btn font-weight-bold" @click="joinGroup" :disabled="requestingMembership">
                 <span v-if="!requestingMembership">
-                    {{ group.membership == 'all' ? 'Join' : 'Request Membership' }}
+                    {{ group.membership == 'all' ? $t('groups.groupHeaderDetails.join') : $t('groups.groupHeaderDetails.requestMembership') }}
                 </span>
                 <div
                     v-else
                     class="spinner-border spinner-border-sm"
                     role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">{{ $t('common.loading') }}</span>
                 </div>
             </button>
 
@@ -64,7 +64,7 @@
                 v-else-if="!isMember && group.self.is_requested"
                 class="btn btn-light border cta-btn font-weight-bold"
                 @click.prevent="cancelJoinRequest">
-                <i class="fas fa-user-clock mr-1"></i> Requested to Join
+                <i class="fas fa-user-clock mr-1"></i> {{ $t('groups.groupHeaderDetails.requestedToJoin') }}
             </button>
 
             <button
@@ -72,7 +72,7 @@
                 type="button"
                 class="btn btn-light border cta-btn font-weight-bold"
                 @click.prevent="leaveGroup">
-                <i class="fas sign-out-alt mr-1"></i> Leave Group
+                <i class="fas sign-out-alt mr-1"></i> {{ $t('groups.groupHeaderDetails.leaveGroup') }}
             </button>
 
             <!-- <div v-if="isAdmin">
@@ -121,13 +121,13 @@
 
                     if(body.status == 422) {
                         this.requestingMembership = false;
-                        swal('Oops!', body.data.error, 'error');
+                        swal(this.$t('common.oops'), body.data.error, 'error');
                     }
                 });
             },
 
             cancelJoinRequest() {
-                if(!window.confirm('Are you sure you want to cancel your request to join this group?')) {
+                if(!window.confirm(this.$t('groups.groupHeaderDetails.confirmCancelRequest'))) {
                     return;
                 }
 
@@ -139,13 +139,13 @@
                     let body = err.response;
 
                     if(body.status == 422) {
-                        swal('Oops!', body.data.error, 'error');
+                        swal(this.$t('common.oops'), body.data.error, 'error');
                     }
                 });
             },
 
             leaveGroup() {
-                if(!window.confirm('Are you sure you want to leave this group? Any content you shared will remain accessible. You won\'t be able to rejoin for 24 hours.')) {
+                if(!window.confirm(this.$t('groups.groupHeaderDetails.confirmLeave'))) {
                     return;
                 }
 

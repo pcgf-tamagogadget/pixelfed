@@ -1,15 +1,15 @@
 @component('mail::message')
-# New Support Message
+# {{ __('emails.contactAdmin.title') }}
 
 <br>
 
 @if($contact->response_requested)
-**This user has requested a response from you.**
+**{{ __('emails.contactAdmin.responseRequested') }}**
 @endif
 
 <br>
 
-[**{{$contact->user->username}}**]({{$contact->user->url()}}) has sent the following message:
+{!! __('emails.contactAdmin.sentMessage', ['user' => '[**'.e($contact->user->username).'**]('.e($contact->user->url()).')']) !!}
 
 @component('mail::panel')
 {{ $contact->message }}
@@ -17,7 +17,7 @@
 
 
 @component('mail::button', ['url' => $contact->adminUrl(), 'color' => 'primary'])
-View Message
+{{ __('emails.contactAdmin.button') }}
 @endcomponent
 
 @endcomponent

@@ -4,11 +4,11 @@
 
 @section('section')
 <div class="title">
-	<h3 class="font-weight-bold">Maintenance</h3>
-	<p class="lead">Enable maintenance mode</p>
+	<h3 class="font-weight-bold">{{ __('admin_panel.settings.maintenance.title') }}</h3>
+	<p class="lead">{{ __('admin_panel.settings.maintenance.subtitle') }}</p>
 </div>
 <hr>
 <p class="alert alert-warning">
-	<strong>Feature Unavailable:</strong> This feature will be released in a future version.
+	<strong>{{ __('admin_panel.common.featureUnavailable') }}</strong> {{ __('admin_panel.common.futureVersion') }}
 </p>
 @endsection

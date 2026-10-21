@@ -1,18 +1,18 @@
 @component('mail::message')
 <div class="otcontainer">
 
-## Verify Your Email Address
+## {{ __('emails.iar.title') }}
         
 <p class="ottext">
-    Hello,
+    {{ __('emails.common.hello') }}
 </p>
 
 <p class="ottext">
-    Thank you for signing up to {{config('pixelfed.domain.app')}}!
+    {{ __('emails.iar.thanks', ['domain' => config('pixelfed.domain.app')]) }}
 </p>
 
 <p class="ottext">
-    To complete your registration, please enter the following verification code:
+    {{ __('emails.iar.enterCode') }}
 </p>
 
 <div class="otcode">
@@ -20,11 +20,11 @@
 </div>
 
 <p class="ottext">
-This code will expire in 4 hours. If you didn't request this verification, please ignore this email.
+{{ __('emails.iar.expires') }}
 </p>
 
 <div class="otfooter">
-<p>If you're having trouble with the verification code, please contact our <a href="{{route('site.help')}}">support team</a>.</p>
+<p>{!! __('emails.iar.trouble', ['link' => '<a href="'.e(route('site.help')).'">'.e(__('emails.iar.supportTeam')).'</a>']) !!}</p>
 </div>
 
 </div>

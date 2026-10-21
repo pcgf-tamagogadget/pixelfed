@@ -7,7 +7,7 @@
 		<div class="header-body">
 			<div class="row align-items-center py-4">
 				<div class="col-lg-6 col-7">
-					<p class="display-1 text-white d-inline-block mb-0">Dashboard</p>
+					<p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.dashboard.home.title') }}</p>
 				</div>
 			</div>
 			<div v-if="loaded.stats" class="row">
@@ -16,7 +16,7 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">Total posts</h5>
+									<h5 class="card-title text-uppercase text-muted mb-0">{{ __('admin_panel.dashboard.home.totalPosts') }}</h5>
 									<span class="h2 font-weight-bold mb-0" v-text="stats.statuses"></span>
 								</div>
 								<div class="col-auto">
@@ -33,7 +33,7 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">Total users</h5>
+									<h5 class="card-title text-uppercase text-muted mb-0">{{ __('admin_panel.dashboard.home.totalUsers') }}</h5>
 									<span class="h2 font-weight-bold mb-0" v-text="stats.users"></span>
 								</div>
 								<div class="col-auto">
@@ -50,7 +50,7 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">Reports</h5>
+									<h5 class="card-title text-uppercase text-muted mb-0">{{ __('admin_panel.dashboard.home.reports') }}</h5>
 									<span class="h2 font-weight-bold mb-0" v-text="stats.reports"></span>
 								</div>
 								<div class="col-auto">
@@ -67,7 +67,7 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">Messages</h5>
+									<h5 class="card-title text-uppercase text-muted mb-0">{{ __('admin_panel.dashboard.home.messages') }}</h5>
 									<span class="h2 font-weight-bold mb-0" v-text="stats.contact"></span>
 								</div>
 								<div class="col-auto">
@@ -91,8 +91,8 @@
 				<div class="card-header bg-transparent">
 					<div class="row align-items-center">
 						<div class="col">
-							<h6 class="text-light text-uppercase ls-1 mb-1">New</h6>
-							<h5 class="h3 text-white mb-0">Accounts</h5>
+							<h6 class="text-light text-uppercase ls-1 mb-1">{{ __('admin_panel.dashboard.home.new') }}</h6>
+							<h5 class="h3 text-white mb-0">{{ __('admin_panel.dashboard.home.accounts') }}</h5>
 						</div>
 					</div>
 				</div>
@@ -113,12 +113,12 @@
 								<a :href="`/i/admin/users/show/${item.user_id}`" class="d-flex flex-row align-items-center">
 									<img :src="item.avatar" class="avatar" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg?v=0';"/>
 									<div v-if="item.status && item.status == 'deleted'">
-										<span v-text="item.username" class="font-weight-bold text-danger">Loading...</span>
-										<span class="ml-2 badge badge-danger">Deleted</span>
+										<span v-text="item.username" class="font-weight-bold text-danger">{{ __('admin_panel.common.loading') }}</span>
+										<span class="ml-2 badge badge-danger">{{ __('admin_panel.dashboard.home.deleted') }}</span>
 									</div>
 									<div v-else>
-										<div v-text="item.username" class="font-weight-bold">Loading...</div>
-										<div v-if="item.note_text" v-text="renderNote(item.note_text)" class="note">Loading...</div>
+										<div v-text="item.username" class="font-weight-bold">{{ __('admin_panel.common.loading') }}</div>
+										<div v-if="item.note_text" v-text="renderNote(item.note_text)" class="note">{{ __('admin_panel.common.loading') }}</div>
 									</div>
 								</a>
 							</template>
@@ -126,12 +126,12 @@
 								<span class="d-flex flex-row align-items-center">
 									<img :src="item.avatar" class="avatar" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg?v=0';"/>
 									<div v-if="item.status && item.status == 'deleted'">
-										<span v-text="item.username" class="font-weight-bold text-danger">Loading...</span>
-										<span class="ml-2 badge badge-danger">Deleted</span>
+										<span v-text="item.username" class="font-weight-bold text-danger">{{ __('admin_panel.common.loading') }}</span>
+										<span class="ml-2 badge badge-danger">{{ __('admin_panel.dashboard.home.deleted') }}</span>
 									</div>
 									<div v-else>
-										<div v-text="item.username" class="font-weight-bold">Loading...</div>
-										<div v-if="item.note_text" v-text="renderNote(item.note_text)" class="note">Loading...</div>
+										<div v-text="item.username" class="font-weight-bold">{{ __('admin_panel.common.loading') }}</div>
+										<div v-if="item.note_text" v-text="renderNote(item.note_text)" class="note">{{ __('admin_panel.common.loading') }}</div>
 									</div>
 								</span>
 							</template>
@@ -144,7 +144,7 @@
 						</div>
 					</div>
 
-					<a v-if="pagination.accounts" class="list-group-item font-weight-bold justify-content-center" href="#" @click.prevent="loadMoreAccounts()">Load more</a>
+					<a v-if="pagination.accounts" class="list-group-item font-weight-bold justify-content-center" href="#" @click.prevent="loadMoreAccounts()">{{ __('admin_panel.dashboard.home.loadMore') }}</a>
 				</div>
 
 			</div>
@@ -153,7 +153,7 @@
 					class="btn btn-danger font-weight-bold btn-block mt-n4 mb-3"
 					href="#"
 					@@click.prevent="handleSelectedDeletes">
-					Delete Selected Accounts
+					{{ __('admin_panel.dashboard.home.deleteSelectedAccounts') }}
 				</a>
 			</template>
 		</div>
@@ -163,8 +163,8 @@
 				<div class="card-header bg-transparent">
 					<div class="row align-items-center">
 						<div class="col">
-							<h6 class="text-light text-uppercase ls-1 mb-1">New</h6>
-							<h5 class="h3 text-white mb-0">Posts</h5>
+							<h6 class="text-light text-uppercase ls-1 mb-1">{{ __('admin_panel.dashboard.home.new') }}</h6>
+							<h5 class="h3 text-white mb-0">{{ __('admin_panel.dashboard.home.posts') }}</h5>
 						</div>
 					</div>
 				</div>
@@ -180,13 +180,13 @@
 						<div v-if="item.account" class="d-flex align-items-center mr-1">
 							<img :src="item.account.avatar" class="avatar" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg?v=0';"/>
 							<div>
-								<div v-text="item.account.acct" class="font-weight-bold">Loading...</div>
-								<div v-if="item.content" v-text="renderNote(item.content_text)" class="note">Loading...</div>
+								<div v-text="item.account.acct" class="font-weight-bold">{{ __('admin_panel.common.loading') }}</div>
+								<div v-if="item.content" v-text="renderNote(item.content_text)" class="note">{{ __('admin_panel.common.loading') }}</div>
 								<div v-else class="badge badge-primary" v-text="item.pf_type" style="font-size:9px"></div>
 							</div>
 						</div>
 						<div v-else>
-							<div class="text-muted font-weight-bold">Deleted or unavailable post</div>
+							<div class="text-muted font-weight-bold">{{ __('admin_panel.dashboard.home.postUnavailable') }}</div>
 						</div>
 
 						<div>
@@ -196,7 +196,7 @@
 						</div>
 					</a>
 
-					<a v-if="pagination.posts" class="list-group-item font-weight-bold justify-content-center" href="#" @click.prevent="loadMorePosts()">Load more</a>
+					<a v-if="pagination.posts" class="list-group-item font-weight-bold justify-content-center" href="#" @click.prevent="loadMorePosts()">{{ __('admin_panel.dashboard.home.loadMore') }}</a>
 				</div>
 			</div>
 		</div>
@@ -206,8 +206,8 @@
 				<div class="card-header bg-transparent">
 					<div class="row align-items-center">
 						<div class="col">
-							<h6 class="text-light text-uppercase ls-1 mb-1">New</h6>
-							<h5 class="h3 text-white mb-0">Instances</h5>
+							<h6 class="text-light text-uppercase ls-1 mb-1">{{ __('admin_panel.dashboard.home.new') }}</h6>
+							<h5 class="h3 text-white mb-0">{{ __('admin_panel.dashboard.home.instances') }}</h5>
 						</div>
 					</div>
 				</div>
@@ -220,7 +220,7 @@
 						class="list-group-item"
 						:href="`/i/admin/instances/show/${item.id}`">
 
-						<div v-text="item.domain" class="font-weight-bold">Loading...</div>
+						<div v-text="item.domain" class="font-weight-bold">{{ __('admin_panel.common.loading') }}</div>
 
 						<div>
 							<div class="d-flex" style="font-size: 13px;">
@@ -234,7 +234,7 @@
 						</div>
 					</a>
 
-					<a v-if="pagination.instances" class="list-group-item font-weight-bold justify-content-center" href="#" @click.prevent="loadMoreInstances()">Load more</a>
+					<a v-if="pagination.instances" class="list-group-item font-weight-bold justify-content-center" href="#" @click.prevent="loadMoreInstances()">{{ __('admin_panel.dashboard.home.loadMore') }}</a>
 				</div>
 			</div>
 		</div>
@@ -245,6 +245,7 @@
 <script type="text/javascript">
 	let app = new Vue({
 		el: '#panel',
+		i18n: App.i18n(),
 
 		data: {
 			stats: {
@@ -379,7 +380,7 @@
 				let title = document.createElement('div');
 				let list = document.createElement('ul');
 				list.classList.add('list-group')
-				title.innerHTML = '<p class="font-weight-bold text-danger">Are you sure you want to delete the following accounts:</p>';
+				title.innerHTML = '<p class="font-weight-bold text-danger">' + @json(__('admin_panel.dashboard.home.confirmDeleteAccounts')) + '</p>';
 				wrapper.appendChild(title);
 				this.accountsSelected.map(a => {
 					let el = document.createElement('li');
@@ -396,13 +397,13 @@
 				})
 				wrapper.appendChild(list);
 				swal({
-					title: 'Confirm',
+					title: @json(__('admin_panel.dashboard.home.confirm')),
 					content: wrapper,
 					icon: 'warning',
 					buttons: {
-						cancel: "Cancel",
+						cancel: @json(__('admin_panel.common.cancel')),
 						delete: {
-							text: "Delete",
+							text: @json(__('admin_panel.common.delete')),
 							value: "delete",
 							className: "swal-button--danger"
 						}
@@ -411,7 +412,7 @@
 				.then(async (val) => {
 					if (val === 'delete') {
 						swal({
-							title: 'Deleting accounts...',
+							title: @json(__('admin_panel.dashboard.home.deletingAccounts')),
 							icon: 'success',
 							timer: 3000,
 						});

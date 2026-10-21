@@ -7,10 +7,10 @@
       <div class="card-body p-0">
         <ul class="nav nav-tabs d-flex text-center">
           <li class="nav-item flex-fill">
-            <a class="nav-link font-weight-bold text-uppercase active" href="{{route('notifications.following')}}">Following</a>
+            <a class="nav-link font-weight-bold text-uppercase active" href="{{route('notifications.following')}}">{{ __('pages.account.following.tabFollowing') }}</a>
           </li>
           <li class="nav-item flex-fill">
-            <a class="nav-link font-weight-bold text-uppercase" href="{{route('notifications')}}">My Notifications</a>
+            <a class="nav-link font-weight-bold text-uppercase" href="{{route('notifications')}}">{{ __('pages.account.following.tabMine') }}</a>
           </li>
         </ul>
       </div>
@@ -46,7 +46,7 @@
           <span class="notification-text">
             <a class="font-weight-bold text-dark" href="{{$notification->actor->url()}}">{{$notification->actor->username}}</a>
 
-            {{__('liked a post by')}}
+            {{ __('pages.account.following.likedPostBy') }}
             
             <a class="font-weight-bold text-dark" href="{{$notification->item->profile->url()}}">{{$notification->item->profile->username}}</a>
 
@@ -66,7 +66,7 @@
           <span class="notification-text">
             <a class="font-weight-bold text-dark" href="{{$notification->actor->url()}}">{{$notification->actor->username}}</a>
 
-            {{__('started following')}}
+            {{ __('pages.account.following.startedFollowing') }}
             
             <a class="font-weight-bold text-dark" href="{{$notification->item->url()}}">{{$notification->item->username}}</a>
 
@@ -84,7 +84,7 @@
       </div>
     @else
       <div class="mt-4">
-        <div class="alert alert-info font-weight-bold">No unread notifications found.</div>
+        <div class="alert alert-info font-weight-bold">{{ __('pages.account.following.noUnread') }}</div>
       </div>
     @endif
   </div>

@@ -61,7 +61,7 @@
         <div class="card card-default mb-4">
             <div class="card-header font-weight-bold bg-white">
                 <div class="apps-header">
-                    <span>Authorized Applications</span>
+                    <span>{{ $t('classic.authorizedClients.title') }}</span>
 
                     <ul class="nav nav-pills apps-tabs">
                         <li class="nav-item" v-for="tab in tabs" :key="tab.id">
@@ -78,15 +78,15 @@
                     <!-- Loading -->
                     <div v-if="loading" class="apps-state">
                         <div class="spinner-border spinner-border-sm mr-2" role="status"></div>
-                        Loading
+                        {{ $t('classic.authorizedClients.loading') }}
                     </div>
 
                     <!-- Error -->
                     <div v-else-if="error" class="apps-state">
                         <div class="text-center">
-                            <p class="mb-2">Unable to load applications.</p>
+                            <p class="mb-2">{{ $t('classic.authorizedClients.loadError') }}</p>
                             <a class="btn btn-outline-secondary btn-sm font-weight-bold" @click="fetchTokens(true)">
-                                Try again
+                                {{ $t('classic.authorizedClients.tryAgain') }}
                             </a>
                         </div>
                     </div>
@@ -101,9 +101,9 @@
                         <table class="table mb-0">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Scopes</th>
-                                    <th>Expires</th>
+                                    <th>{{ $t('classic.authorizedClients.name') }}</th>
+                                    <th>{{ $t('classic.authorizedClients.scopes') }}</th>
+                                    <th>{{ $t('classic.authorizedClients.expires') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -116,11 +116,11 @@
                                         <div class="font-weight-bold app-name">
                                             {{ token.name }}
                                             <span class="badge ml-1" :class="getStatusBadge(token.status)">
-                                                {{ token.status }}
+                                                {{ $te('classic.authorizedClients.status.' + token.status) ? $t('classic.authorizedClients.status.' + token.status) : token.status }}
                                             </span>
                                         </div>
                                         <small class="text-muted" v-if="token.created_at" style="font-size:12px;">
-                                            Authorized {{ formatDate(token.created_at) }}
+                                            {{ $t('classic.authorizedClients.authorized', { date: formatDate(token.created_at) }) }}
                                         </small>
                                     </td>
 
@@ -129,16 +129,16 @@
                                         <template v-if="token.scopes && token.scopes.length > 0">
                                             <span v-for="scope in token.scopes" :key="scope" class="badge mr-1 mb-1"
                                                 :class="getScopeBadge(scope)">
-                                                {{ scope === '*' ? 'all scopes' : scope }}
+                                                {{ scope === '*' ? $t('classic.authorizedClients.allScopes') : scope }}
                                             </span>
                                         </template>
-                                        <span v-else class="text-muted">None</span>
+                                        <span v-else class="text-muted">{{ $t('classic.authorizedClients.none') }}</span>
                                     </td>
 
                                     <!-- Expires -->
                                     <td style="white-space: nowrap;">
                                         <span v-if="!token.expires_at" class="text-muted" style="font-size:12px;">
-                                            Never
+                                            {{ $t('classic.authorizedClients.never') }}
                                         </span>
                                         <span v-else :class="{ 'text-danger': token.status === 'expired' }"
                                             style="font-size:12px;">
@@ -151,7 +151,7 @@
                                         <button v-if="token.status === 'active' && !token.current_session" type="button"
                                             class="btn btn-danger btn-sm font-weight-bold"
                                             :disabled="revoking === token.id" @click="revoke(token)">
-                                            {{ revoking === token.id ? 'Revoking' : 'Revoke' }}
+                                            {{ revoking === token.id ? $t('classic.authorizedClients.revoking') : $t('classic.authorizedClients.revoke') }}
                                         </button>
                                     </td>
                                 </tr>
@@ -162,7 +162,7 @@
                         <div v-if="nextCursor" class="text-center py-3 border-top">
                             <button type="button" class="btn btn-outline-secondary btn-sm font-weight-bold"
                                 :disabled="loadingMore" @click="fetchTokens(false)">
-                                {{ loadingMore ? 'Loading' : 'Load more' }}
+                                {{ loadingMore ? $t('classic.authorizedClients.loading') : $t('classic.authorizedClients.loadMore') }}
                             </button>
                         </div>
                     </template>
@@ -181,11 +181,6 @@ export default {
         return {
             tokens: [],
             filter: 'active',
-            tabs: [
-                { id: 'all', label: 'All' },
-                { id: 'active', label: 'Active' },
-                { id: 'revoked', label: 'Revoked' }
-            ],
             limit: 20,
             nextCursor: null,
             loading: true,
@@ -197,16 +192,24 @@ export default {
     },
 
     computed: {
+        tabs() {
+            return [
+                { id: 'all', label: this.$t('classic.authorizedClients.tabs.all') },
+                { id: 'active', label: this.$t('classic.authorizedClients.tabs.active') },
+                { id: 'revoked', label: this.$t('classic.authorizedClients.tabs.revoked') }
+            ];
+        },
+
         emptyMessage() {
             switch (this.filter) {
                 case 'active':
-                    return 'No active applications.';
+                    return this.$t('classic.authorizedClients.emptyActive');
 
                 case 'revoked':
-                    return 'No revoked or expired applications.';
+                    return this.$t('classic.authorizedClients.emptyRevoked');
 
                 default:
-                    return 'You have not authorized any applications.';
+                    return this.$t('classic.authorizedClients.emptyAll');
             }
         }
     },
@@ -336,7 +339,7 @@ export default {
                     }
                 })
                 .catch(() => {
-                    swal('Error', 'Unable to revoke this application. Please try again.', 'error');
+                    swal(this.$t('common.error'), this.$t('classic.authorizedClients.revokeError'), 'error');
                 })
                 .then(() => {
                     this.revoking = null;

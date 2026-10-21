@@ -1,11 +1,11 @@
-@extends('layouts.app',['title' => 'Welcome to ' . config_cache('app.name')])
+@extends('layouts.app',['title' => __('pages.home.welcome', ['app' => config_cache('app.name')])])
 
 @section('content')
 <div class="container mt-4">
     <div class="row justify-content-center" style="min-height: 60vh">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+                <div class="card-header">{{ __('pages.home.dashboard') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,13 +14,13 @@
                         </div>
                     @endif
 
-                    <p class="lead mb-0">Welcome to {{config_cache('app.name')}}!</p>
+                    <p class="lead mb-0">{{ __('pages.home.welcomeExclaim', ['app' => config_cache('app.name')]) }}</p>
                 </div>
             </div>
 
             <a class="card mt-3 text-primary font-weight-bold text-center" href="{{route('timeline.personal')}}">
                 <div class="card-body">
-                    Take me to my timeline
+                    {{ __('pages.home.toTimeline') }}
                 </div>
             </a>
         </div>

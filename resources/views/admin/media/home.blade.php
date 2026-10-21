@@ -2,13 +2,13 @@
 
 @section('section')
 <div class="title">
-	<h3 class="font-weight-bold d-inline-block">Media</h3>
+	<h3 class="font-weight-bold d-inline-block">{{ __('admin_panel.media.home.title') }}</h3>
 	<span class="float-right">
 		<a class="btn btn-{{request()->input('layout')!=='banned'?'primary':'light'}} btn-sm font-weight-bold" href="{{route('admin.media')}}">
-			All
+			{{ __('admin_panel.media.home.all') }}
 		</a>
 		<a class="btn btn-{{request()->input('layout')=='banned'?'primary':'light'}} btn-sm mr-3 font-weight-bold" href="{{route('admin.media',['layout'=>'banned', 'page' => request()->input('page') ?? 1])}}">
-			Banned
+			{{ __('admin_panel.media.home.banned') }}
 		</a>
 		<div class="dropdown d-inline-block">
 			<button class="btn btn-light btn-sm dropdown-toggle font-weight-bold" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,9 +20,9 @@
 						<input type="hidden" name="layout" value=""></input>
 						<input type="hidden" name="page" value="{{request()->input('page')}}"></input>
 						<div class="input-group input-group-sm">
-							<input class="form-control" name="search" placeholder="Filter by username, mime type" autocomplete="off"></input>
+							<input class="form-control" name="search" placeholder="{{ __('admin_panel.media.home.filterPlaceholder') }}" autocomplete="off"></input>
 							<div class="input-group-append">
-								<button class="btn btn-outline-primary" type="submit">Filter</button>
+								<button class="btn btn-outline-primary" type="submit">{{ __('admin_panel.media.home.filter') }}</button>
 							</div>
 						</div>
 					</form>
@@ -51,12 +51,12 @@
 <hr>
 
 @if(request()->filled('search'))
-<p class="h4 pb-3">Showing results for: <i>{{request()->input('search')}}</i></p>
+<p class="h4 pb-3">{{ __('admin_panel.media.home.showingResultsFor') }} <i>{{request()->input('search')}}</i></p>
 @endif
 
 @if(request()->input('layout') == 'banned')
 <p class="text-right">
-	<a class="btn btn-primary py-0 px-5" href="/i/admin/media/?layout=addbanned">Add Banned Media</a>
+	<a class="btn btn-primary py-0 px-5" href="/i/admin/media/?layout=addbanned">{{ __('admin_panel.media.home.addBannedMedia') }}</a>
 </p>
 <ul class="list-group">
 	@foreach($media as $b)
@@ -68,8 +68,8 @@
 				</span>
 				<span class="d-inline-block">
 					<p class="mb-0 small text-monospace">{{$b->sha256}}</p>
-					<p class="mb-0 font-weight-bold">{{$b->name ?? 'Untitled'}}</p>
-					<p class="mb-0 small">{{$b->description ?? 'No description'}}</p>
+					<p class="mb-0 font-weight-bold">{{ $b->name ?? __('admin_panel.media.home.untitled') }}</p>
+					<p class="mb-0 small">{{ $b->description ?? __('admin_panel.media.home.noDescription') }}</p>
 				</span>
 			</div>
 			<div class="small font-weight-bold">
@@ -93,28 +93,28 @@
 <div class="row">
 	<div class="col-12 col-md-6 offset-md-3">
 		<div class="card shadow-none border">
-			<div class="card-header font-weight-bold">Add Banned Media</div>
+			<div class="card-header font-weight-bold">{{ __('admin_panel.media.home.addBannedMedia') }}</div>
 			<div class="card-body">
 				<form method="post" action="/i/admin/media/block/add">
 					@csrf
 					<div class="form-group">
-						<label for="input3" class="text-muted font-weight-bold">SHA256 Hash</label>
+						<label for="input3" class="text-muted font-weight-bold">{{ __('admin_panel.media.home.sha256Hash') }}</label>
 						<input type="text" class="form-control" id="input3" aria-describedby="input3Help" name="hash">
-						<small id="input3Help" class="form-text text-muted">Required</small>
+						<small id="input3Help" class="form-text text-muted">{{ __('admin_panel.media.home.required') }}</small>
 					</div>
 					<hr>
 					<div class="form-group">
-						<label for="input1" class="text-muted font-weight-bold">Name</label>
+						<label for="input1" class="text-muted font-weight-bold">{{ __('admin_panel.media.home.name') }}</label>
 						<input type="text" class="form-control" id="input1" aria-describedby="input1Help" name="name">
-						<small id="input1Help" class="form-text text-muted">Optional</small>
+						<small id="input1Help" class="form-text text-muted">{{ __('admin_panel.media.home.optional') }}</small>
 					</div>
 					<div class="form-group">
-						<label for="input2" class="text-muted font-weight-bold">Description</label>
+						<label for="input2" class="text-muted font-weight-bold">{{ __('admin_panel.media.home.description') }}</label>
 						<textarea class="form-control" id="input2" aria-describedby="input2Help" rows="3" name="description"></textarea>
-						<small id="input2Help" class="form-text text-muted">Optional</small>
+						<small id="input2Help" class="form-text text-muted">{{ __('admin_panel.media.home.optional') }}</small>
 					</div>
 					<hr>
-					<button type="submit" class="btn btn-primary btn-block font-weight-bold">Ban</button>
+					<button type="submit" class="btn btn-primary btn-block font-weight-bold">{{ __('admin_panel.media.home.ban') }}</button>
 				</form>
 			</div>
 		</div>
@@ -135,17 +135,17 @@
 				</a>
 			</div>
 			<div>
-				<p class="mb-0 small">status id: <a href="/p/{{\App\Services\HashidService::encode($status->status_id)}}" class="font-weight-bold text-monospace">{{$status->status_id}}</a></p>
-				<p class="mb-0 small">profile id: <a href="/i/admin/profiles/edit/{{$status->profile_id}}" class="font-weight-bold text-monospace">{{$status->profile_id}}</a></p>
+				<p class="mb-0 small">{{ __('admin_panel.media.home.statusId') }}: <a href="/p/{{\App\Services\HashidService::encode($status->status_id)}}" class="font-weight-bold text-monospace">{{$status->status_id}}</a></p>
+				<p class="mb-0 small">{{ __('admin_panel.media.home.profileId') }}: <a href="/i/admin/profiles/edit/{{$status->profile_id}}" class="font-weight-bold text-monospace">{{$status->profile_id}}</a></p>
 			</div>
 			<div>
-				<p class="mb-0 small">size: <span class="filesize font-weight-bold" data-size="{{$status->size}}">0</span></p>
-				<p class="mb-0 small">mime: <span class="font-weight-bold">{{$status->mime}}</span></p>
+				<p class="mb-0 small">{{ __('admin_panel.media.home.size') }}: <span class="filesize font-weight-bold" data-size="{{$status->size}}">0</span></p>
+				<p class="mb-0 small">{{ __('admin_panel.media.home.mime') }}: <span class="font-weight-bold">{{$status->mime}}</span></p>
 			</div>
 			<div>
-				<p class="mb-0 small">content warning:  <i class="fas {{$status->is_nsfw  ? 'fa-check text-danger':'fa-times text-dark'}}"></i></p>
+				<p class="mb-0 small">{{ __('admin_panel.media.home.contentWarning') }}:  <i class="fas {{$status->is_nsfw  ? 'fa-check text-danger':'fa-times text-dark'}}"></i></p>
 				<p class="mb-0 small">
-					remote media: <i class="fas {{$status->remote_media ? 'fa-check text-danger':'fa-times text-dark'}}"></i></p>
+					{{ __('admin_panel.media.home.remoteMedia') }}: <i class="fas {{$status->remote_media ? 'fa-check text-danger':'fa-times text-dark'}}"></i></p>
 			</div>
 		</div>
 	</li>

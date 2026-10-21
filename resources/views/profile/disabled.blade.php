@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => "Account Temporarily Unavailable"])
+@extends('layouts.app',['title' => __('profile.page.temporarilyUnavailable')])
 
 @section('content')
 <div class="container">

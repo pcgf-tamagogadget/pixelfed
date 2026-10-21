@@ -21,6 +21,14 @@ class ExportLanguages extends Command
     protected $description = 'Build and export js localization files.';
 
     /**
+     * Translation groups exported to the frontend in addition to web.php.
+     * Must not collide with a top-level key of web.php.
+     *
+     * @var array<int, string>
+     */
+    public const FRONTEND_GROUPS = ['admin', 'classic', 'compose', 'groups', 'spa'];
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -67,6 +75,19 @@ class ExportLanguages extends Command
 
         foreach ($langs as $lang) {
             $strings = \Lang::get('web', [], $lang);
+            $strings = is_array($strings) ? $strings : [];
+
+            // Extra Vue-only groups are nested under their group name, e.g.
+            // lang/ja-JP/admin.php → $t('admin.reports.title'). Loaded without
+            // fallback so untranslated locales don't embed English copies;
+            // vue-i18n falls back to en-US at runtime instead.
+            foreach (self::FRONTEND_GROUPS as $group) {
+                $groupStrings = app('translation.loader')->load($lang, $group);
+                if ($groupStrings !== []) {
+                    $strings[$group] = $groupStrings;
+                }
+            }
+
             $strings = $this->stripEmptyStrings($strings);
             $json = json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             $path = "{$exportDir}{$lang}.json";

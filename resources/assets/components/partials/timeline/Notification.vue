@@ -85,7 +85,7 @@
 
 			<div v-else>
 				<p class="my-0 d-flex justify-content-between align-items-center">
-					<span class="font-weight-bold">Notification</span>
+					<span class="font-weight-bold">{{ $t('spa.timelineNotification.notification') }}</span>
 					<span style="font-size:8px;">e_{{ n.type }}::{{ n.id }}</span>
 				</p>
 			</div>

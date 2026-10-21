@@ -10,8 +10,8 @@
 				<div class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">Account Insights</h1>
-					<p class="font-default lead">A brief overview of your account</p>
+					<h1 class="font-default">{{ $t('spa.discoverInsights.title') }}</h1>
+					<p class="font-default lead">{{ $t('spa.discoverInsights.subtitle') }}</p>
 					<hr>
 
 					<div class="row">
@@ -19,7 +19,7 @@
 							<div class="card bg-midnight">
 								<div class="card-body font-default text-white">
 									<h1 class="display-4 mb-n2">{{ formatCount(profile.statuses_count) }}</h1>
-									<p class="primary lead mb-0 font-weight-bold">Posts</p>
+									<p class="primary lead mb-0 font-weight-bold">{{ $t('profile.posts') }}</p>
 								</div>
 							</div>
 						</div>
@@ -28,14 +28,14 @@
 							<div class="card bg-midnight">
 								<div class="card-body font-default text-white">
 									<h1 class="display-4 mb-n2">{{ formatCount(profile.followers_count) }}</h1>
-									<p class="primary lead mb-0 font-weight-bold">Followers</p>
+									<p class="primary lead mb-0 font-weight-bold">{{ $t('profile.followers') }}</p>
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<div v-if="profile.statuses_count" class="card my-3 bg-midnight">
-						<div class="card-header bg-dark border-bottom border-primary text-white font-default lead">Popular Posts</div>
+						<div class="card-header bg-dark border-bottom border-primary text-white font-default lead">{{ $t('spa.discoverInsights.popularPosts') }}</div>
 						<div v-if="!popularLoaded" class="card-body text-white">
 							<b-spinner/>
 						</div>
@@ -52,13 +52,13 @@
 									<div class="media-body">
 										<p class="media-caption mb-0">{{ post.content_text.slice(0, 40) }}</p>
 										<p class="mb-0">
-											<span class="font-weight-bold">{{ post.favourites_count }} Likes</span>
+											<span class="font-weight-bold">{{ $t('spa.discoverInsights.likesCount', { count: post.favourites_count }) }}</span>
 											<span class="mx-2">·</span>
-											<span class="text-muted">Posted {{ timeago(post.created_at) }} ago</span>
+											<span class="text-muted">{{ $t('spa.discoverInsights.postedAgo', { time: timeago(post.created_at) }) }}</span>
 										</p>
 									</div>
 
-									<button class="btn btn-primary primary font-weight-bold rounded-pill" @click="gotoPost(post)">View</button>
+									<button class="btn btn-primary primary font-weight-bold rounded-pill" @click="gotoPost(post)">{{ $t('spa.discoverInsights.view') }}</button>
 								</div>
 							</li>
 						</ul>
@@ -91,11 +91,11 @@ export default {
 			popularLoaded: false,
 			breadcrumbItems: [
 				{
-					text: 'Discover',
+					text: this.$t('navmenu.discover'),
 					href: '/i/web/discover'
 				},
 				{
-					text: 'Account Insights',
+					text: this.$t('spa.discoverInsights.title'),
 					active: true
 				}
 			]

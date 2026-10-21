@@ -4,14 +4,14 @@
             <div class="profile-timeline">
                 <div class="row p-0 mt-5">
                     <div class="col-12 mb-4 d-flex justify-content-between align-items-center flex-column flex-lg-row">
-                        <p class="d-block d-md-none h1 font-weight-bold mb-3 font-default">Trending</p>
-                        <p class="d-none d-md-block display-4 font-weight-bold mb-0 font-default">Trending</p>
+                        <p class="d-block d-md-none h1 font-weight-bold mb-3 font-default">{{ $t('spa.discoverFeed.trending') }}</p>
+                        <p class="d-none d-md-block display-4 font-weight-bold mb-0 font-default">{{ $t('spa.discoverFeed.trending') }}</p>
 
                         <div>
                             <div class="btn-group trending-range">
-                                <button @click="rangeToggle('daily')" :class="range == 'daily' ? 'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-danger':'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-outline-danger'">Today</button>
-                                <button @click="rangeToggle('monthly')" :class="range == 'monthly' ? 'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-danger':'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-outline-danger'">This month</button>
-                                <button @click="rangeToggle('yearly')" :class="range == 'yearly' ? 'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-danger':'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-outline-danger'">This year</button>
+                                <button @click="rangeToggle('daily')" :class="range == 'daily' ? 'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-danger':'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-outline-danger'">{{ $t('spa.discoverFeed.today') }}</button>
+                                <button @click="rangeToggle('monthly')" :class="range == 'monthly' ? 'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-danger':'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-outline-danger'">{{ $t('spa.discoverFeed.thisMonth') }}</button>
+                                <button @click="rangeToggle('yearly')" :class="range == 'yearly' ? 'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-danger':'btn py-1 font-weight-bold px-3 text-uppercase btn-sm btn-outline-danger'">{{ $t('spa.discoverFeed.thisYear') }}</button>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                         </a>
                     </div>
                     <div v-else class="col-12 d-flex align-items-center justify-content-center bg-light border" style="min-height: 40vh;">
-                        <div class="h2">No posts found :(</div>
+                        <div class="h2">{{ $t('spa.discoverFeed.noPosts') }}</div>
                     </div>
                 </div>
 
@@ -94,11 +94,11 @@
                 range: 'daily',
                 breadcrumbItems: [
                     {
-                        text: 'Discover',
+                        text: this.$t('navmenu.discover'),
                         href: '/i/web/discover'
                     },
                     {
-                        text: 'Trending',
+                        text: this.$t('spa.discoverFeed.trending'),
                         active: true
                     }
                 ]

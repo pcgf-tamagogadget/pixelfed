@@ -3,17 +3,17 @@
     <div class="col-12 border-top group-feed-component-menu px-5">
         <ul class="nav font-weight-bold group-feed-component-menu-nav">
             <li class="nav-item">
-                <router-link :to="`/groups/${group.id}/about`" class="nav-link">About</router-link>
+                <router-link :to="`/groups/${group.id}/about`" class="nav-link">{{ $t('groups.groupNavTabs.about') }}</router-link>
             </li>
             <li class="nav-item">
-                <router-link :to="`/groups/${group.id}`" class="nav-link" exact>Feed</router-link>
+                <router-link :to="`/groups/${group.id}`" class="nav-link" exact>{{ $t('groups.groupNavTabs.feed') }}</router-link>
             </li>
             <li v-if="group?.self && group.self.is_member" class="nav-item">
-                <router-link :to="`/groups/${group.id}/topics`" class="nav-link">Topics</router-link>
+                <router-link :to="`/groups/${group.id}/topics`" class="nav-link">{{ $t('groups.groupNavTabs.topics') }}</router-link>
             </li>
             <li v-if="group?.self && group.self.is_member" class="nav-item">
                 <router-link :to="`/groups/${group.id}/members`" class="nav-link">
-                    Members
+                    {{ $t('groups.groupNavTabs.members') }}
                     <span v-if="group.self.is_member && isAdmin && atabs.request_count" class="badge badge-danger rounded-pill ml-2" style="height: 20px;padding:4px 8px;font-size: 11px;">{{atabs.request_count}}</span>
                 </router-link>
             </li>
@@ -21,7 +21,7 @@
                 <a :class="{active: tab == 'events'}" class="nav-link" href="#" @click.prevent="switchTab('events')">Events</a>
             </li> -->
             <li v-if="group?.self && group.self.is_member" class="nav-item">
-                <router-link :to="`/groups/${group.id}/media`" class="nav-link">Media</router-link>
+                <router-link :to="`/groups/${group.id}/media`" class="nav-link">{{ $t('groups.groupNavTabs.media') }}</router-link>
             </li>
             <!-- <li v-if="group.self.is_member" class="nav-item">
                 <a class="nav-link" href="#">Popular</a>
@@ -49,7 +49,7 @@
             </li> -->
             <li v-if="group?.self && group.self.is_member && isAdmin" class="nav-item">
                 <router-link :to="`/groups/${group.id}/moderation`" class="nav-link d-flex align-items-top">
-                    <span class="mr-2">Moderation</span>
+                    <span class="mr-2">{{ $t('groups.groupNavTabs.moderation') }}</span>
                     <span v-if="atabs.moderation_count" class="badge badge-danger rounded-pill" style="height: 20px;padding:4px 8px;font-size: 11px;">{{atabs.moderation_count}}</span>
                 </router-link>
             </li>
@@ -67,19 +67,19 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#" @click.prevent="copyLink">
-                        Copy Group Link
+                        {{ $t('groups.groupNavTabs.copyGroupLink') }}
                     </a>
 
                     <a class="dropdown-item" href="#" @click.prevent="showInviteModal">
-                        Invite friends
+                        {{ $t('groups.groupNavTabs.inviteFriends') }}
                     </a>
 
                     <a v-if="!isAdmin" class="dropdown-item" href="#" @click.prevent="reportGroup">
-                        Report Group
+                        {{ $t('groups.groupNavTabs.reportGroup') }}
                     </a>
 
                     <a v-if="isAdmin" class="dropdown-item" :href="group.url + '/settings'">
-                        Settings
+                        {{ $t('groups.groupNavTabs.settings') }}
                     </a>
                 </div>
             </div>

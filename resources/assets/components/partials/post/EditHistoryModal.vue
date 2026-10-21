@@ -14,7 +14,7 @@
 				<template v-if="historyIndex === undefined">
 					<div class="d-flex flex-grow-1 justify-content-between align-items-center">
 						<span style="width:40px;"></span>
-						<h5 class="font-weight-bold mb-0">Post History</h5>
+						<h5 class="font-weight-bold mb-0">{{ $t('spa.editHistoryModal.title') }}</h5>
 						<b-button size="sm" variant="link" @click="close()">
 							<i class="far fa-times text-dark fa-lg"></i>
 						</b-button>
@@ -39,7 +39,7 @@
 									<span class="font-weight-bold">{{ allHistory[0].account.username }}</span>
 								</div>
 
-								<div>{{ historyIndex == (allHistory.length - 1) ? 'created' : 'edited' }} {{ formatTime(allHistory[historyIndex].created_at) }}</div>
+								<div>{{ historyIndex == (allHistory.length - 1) ? $t('spa.editHistoryModal.createdAt', { time: formatTime(allHistory[historyIndex].created_at) }) : $t('spa.editHistoryModal.editedAt', { time: formatTime(allHistory[historyIndex].created_at) }) }}</div>
 							</div>
 						</div>
 
@@ -69,7 +69,7 @@
 										onerror="this.src='/storage/avatars/default.jpg';this.onerror=null;">
 									<span class="font-weight-bold">{{ history.account.username }}</span>
 								</div>
-								<div>{{ idx == (allHistory.length - 1) ? 'created' : 'edited' }} {{ formatTime(history.created_at) }}</div>
+								<div>{{ idx == (allHistory.length - 1) ? $t('spa.editHistoryModal.createdAt', { time: formatTime(history.created_at) }) : $t('spa.editHistoryModal.editedAt', { time: formatTime(history.created_at) }) }}</div>
 							</div>
 
 							<a class="stretched-link text-decoration-none" href="#" @click.prevent="historyIndex = idx">
@@ -209,25 +209,25 @@
 					return "0s";
 				}
 				if (interval >= 1) {
-					return interval + (interval == 1 ? ' year' : ' years') + " ago";
+					return interval == 1 ? this.$t('spa.editHistoryModal.yearAgo', { count: interval }) : this.$t('spa.editHistoryModal.yearsAgo', { count: interval });
 				}
 				interval = Math.floor(seconds / 604800);
 				if (interval >= 1) {
-					return interval + (interval == 1 ? ' week' : ' weeks') + " ago";
+					return interval == 1 ? this.$t('spa.editHistoryModal.weekAgo', { count: interval }) : this.$t('spa.editHistoryModal.weeksAgo', { count: interval });
 				}
 				interval = Math.floor(seconds / 86400);
 				if (interval >= 1) {
-					return interval + (interval == 1 ? ' day' : ' days') + " ago";
+					return interval == 1 ? this.$t('spa.editHistoryModal.dayAgo', { count: interval }) : this.$t('spa.editHistoryModal.daysAgo', { count: interval });
 				}
 				interval = Math.floor(seconds / 3600);
 				if (interval >= 1) {
-					return interval + (interval == 1 ? ' hour' : ' hours') + " ago";
+					return interval == 1 ? this.$t('spa.editHistoryModal.hourAgo', { count: interval }) : this.$t('spa.editHistoryModal.hoursAgo', { count: interval });
 				}
 				interval = Math.floor(seconds / 60);
 				if (interval >= 1) {
-					return interval + (interval == 1 ? ' minute' : ' minutes') + " ago";
+					return interval == 1 ? this.$t('spa.editHistoryModal.minuteAgo', { count: interval }) : this.$t('spa.editHistoryModal.minutesAgo', { count: interval });
 				}
-				return Math.floor(seconds) + " seconds ago";
+				return this.$t('spa.editHistoryModal.secondsAgo', { count: Math.floor(seconds) });
 			},
 
 			postType() {

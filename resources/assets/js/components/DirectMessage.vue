@@ -28,19 +28,19 @@
 				<ul class="list-group list-group-flush dm-wrapper" style="height:60vh;overflow-y: scroll;">
 					<li class="list-group-item border-0">
 						<p class="text-center small text-muted">
-							Conversation with <span class="font-weight-bold">{{thread.username}}</span>
+							<i18n path="classic.directMessage.conversationWith" tag="span"><template v-slot:user><span class="font-weight-bold">{{thread.username}}</span></template></i18n>
 						</p>
 						<hr>
 					</li>
 					<li v-if="showLoadMore && thread.messages && thread.messages.length > 5" class="list-group-item border-0 mt-n4">
 						<p class="text-center small text-muted">
-							<button v-if="!loadingMessages" class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" @click="loadOlderMessages()">Load Older Messages</button>
-							<button v-else class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" disabled>Loading...</button>
+							<button v-if="!loadingMessages" class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" @click="loadOlderMessages()">{{ $t('classic.directMessage.loadOlder') }}</button>
+							<button v-else class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" disabled>{{ $t('common.loading') }}</button>
 						</p>
 					</li> 
 					<li v-for="(convo, index) in thread.messages" class="list-group-item border-0 chat-msg cursor-pointer" @click="openCtxMenu(convo, index)">
 						<div v-if="!convo.isAuthor" class="media d-inline-flex mb-0">
-							<img v-if="!hideAvatars" class="mr-3 mt-2 rounded-circle img-thumbnail" :src="thread.avatar" alt="avatar" width="32" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+							<img v-if="!hideAvatars" class="mr-3 mt-2 rounded-circle img-thumbnail" :src="thread.avatar" :alt="$t('classic.directMessage.avatar')" width="32" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
 							<div class="media-body">
 								<p v-if="convo.type == 'photo' || convo.type == 'photos'" class="pill-to p-0 shadow">
 									<img :src="convo.media" width="140" style="border-radius:20px;" onerror="this.onerror=null;this.src='/storage/no-preview.png';">
@@ -72,7 +72,7 @@
 												<i class="fas fa-play fa-2x text-white"></i>
 											</p>
 											<p class="mb-0 small font-weight-bold text-white">
-												Play
+												{{ $t('classic.directMessage.play') }}
 											</p>
 										</div>
 									</span>
@@ -99,12 +99,12 @@
 									{{convo.text}}
 								</p>
 								<p v-if="convo.type == 'story:react'" class="small text-muted mb-0 ml-0">
-									<span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span> reacted your story
+									<i18n path="classic.directMessage.theyReacted" tag="span"><template v-slot:user><span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span></template></i18n>
 								</p>
 								<p v-if="convo.type == 'story:comment'" class="small text-muted mb-0 ml-0">
-									<span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span> replied to your story
+									<i18n path="classic.directMessage.theyReplied" tag="span"><template v-slot:user><span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span></template></i18n>
 								</p>
-								<p v-if="!hideTimestamps" class="small text-muted font-weight-bold d-flex align-items-center justify-content-start" data-timestamp="timestamp"> <span v-if="convo.hidden" class="mr-2 small" title="Filtered Message" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-lock"></i></span> {{convo.timeAgo}}</p>
+								<p v-if="!hideTimestamps" class="small text-muted font-weight-bold d-flex align-items-center justify-content-start" data-timestamp="timestamp"> <span v-if="convo.hidden" class="mr-2 small" :title="$t('classic.directMessage.filteredMessage')" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-lock"></i></span> {{convo.timeAgo}}</p>
 								<p v-else>&nbsp;</p>
 							</div>
 						</div>
@@ -140,7 +140,7 @@
 												<i class="fas fa-play fa-2x text-white"></i>
 											</p>
 											<p class="mb-0 small font-weight-bold">
-												Play
+												{{ $t('classic.directMessage.play') }}
 											</p>
 										</div>
 									</span>
@@ -167,24 +167,24 @@
 									{{convo.text}}
 								</p>
 								<p v-if="convo.type == 'story:react'" class="small text-muted text-right mb-0 mr-0">
-									You reacted to <span class="font-weight-bold">{{ convo.meta.story_username }}</span>'s story
+									<i18n path="classic.directMessage.youReacted" tag="span"><template v-slot:user><span class="font-weight-bold">{{ convo.meta.story_username }}</span></template></i18n>
 								</p>
 								<p v-if="convo.type == 'story:comment'" class="small text-muted text-right mb-0 mr-0">
-									You replied to <span class="font-weight-bold">{{ convo.meta.story_username }}</span>'s story
+									<i18n path="classic.directMessage.youReplied" tag="span"><template v-slot:user><span class="font-weight-bold">{{ convo.meta.story_username }}</span></template></i18n>
 								</p>
-								<p v-if="!hideTimestamps" class="small text-muted font-weight-bold text-right"> <span v-if="convo.hidden" class="mr-2 small" title="Filtered Message" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-lock"></i></span> {{convo.timeAgo}}
+								<p v-if="!hideTimestamps" class="small text-muted font-weight-bold text-right"> <span v-if="convo.hidden" class="mr-2 small" :title="$t('classic.directMessage.filteredMessage')" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-lock"></i></span> {{convo.timeAgo}}
 								</p>
 								<p v-else>&nbsp;</p>
 							</div>
-							<img v-if="!hideAvatars" class="ml-3 mt-2 rounded-circle img-thumbnail" :src="profile.avatar" alt="avatar" width="32" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+							<img v-if="!hideAvatars" class="ml-3 mt-2 rounded-circle img-thumbnail" :src="profile.avatar" :alt="$t('classic.directMessage.avatar')" width="32" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
 						</div>
 					</li>
 
 				</ul>
 				<div class="card-footer bg-white p-0">
 					<form class="border-0 rounded-0 align-middle" method="post" action="#">
-						<textarea class="form-control border-0 rounded-0 no-focus" name="comment" placeholder="Reply ..." autocomplete="off" autocorrect="off" style="height:86px;line-height: 18px;max-height:80px;resize: none; padding-right:115.22px;" v-model="replyText" :disabled="blocked"></textarea>
-						<input type="button" value="Send" :class="[replyText.length ? 'd-inline-block btn btn-sm btn-primary rounded-pill font-weight-bold reply-btn text-decoration-none text-uppercase' : 'd-inline-block btn btn-sm btn-primary rounded-pill font-weight-bold reply-btn text-decoration-none text-uppercase disabled']" :disabled="replyText.length == 0" @click.prevent="sendMessage"/>
+						<textarea class="form-control border-0 rounded-0 no-focus" name="comment" :placeholder="$t('classic.directMessage.replyPlaceholder')" autocomplete="off" autocorrect="off" style="height:86px;line-height: 18px;max-height:80px;resize: none; padding-right:115.22px;" v-model="replyText" :disabled="blocked"></textarea>
+						<input type="button" :value="$t('classic.directMessage.send')" :class="[replyText.length ? 'd-inline-block btn btn-sm btn-primary rounded-pill font-weight-bold reply-btn text-decoration-none text-uppercase' : 'd-inline-block btn btn-sm btn-primary rounded-pill font-weight-bold reply-btn text-decoration-none text-uppercase disabled']" :disabled="replyText.length == 0" @click.prevent="sendMessage"/>
 					</form>
 				</div>
 				<div class="card-footer p-0">
@@ -200,7 +200,7 @@
 							</span> -->
 							<span class="btn btn-primary btn-sm font-weight-bold py-0 px-3 rounded-pill" @click="uploadMedia">
 								<i class="fas fa-upload mr-1"></i>
-								Add Photo/Video
+								{{ $t('classic.directMessage.addMedia') }}
 							</span>
 						</span>
 						<input type="file" id="uploadMedia" class="d-none" name="uploadMedia" accept="image/jpeg,image/png,image/gif,video/mp4" >
@@ -220,9 +220,9 @@
 						</a>
 					</span>
 					<span>
-						<p class="mb-0 lead font-weight-bold py-2">Message Settings</p>
+						<p class="mb-0 lead font-weight-bold py-2">{{ $t('classic.directMessage.messageSettings') }}</p>
 					</span>
-					<span class="text-lighter" data-toggle="tooltip" data-placement="bottom" title="Have a nice day!"><i class="far fa-smile fa-lg"></i></span>
+					<span class="text-lighter" data-toggle="tooltip" data-placement="bottom" :title="$t('classic.directMessage.niceDay')"><i class="far fa-smile fa-lg"></i></span>
 				</div>
 				<ul class="list-group list-group-flush dm-wrapper" style="height: 698px;">
 					<div class="list-group-item media border-bottom">
@@ -231,7 +231,7 @@
 							<label class="custom-control-label" for="customSwitch0"></label>
 						</div>
 						<div class="d-inline-block ml-3 font-weight-bold">
-							Hide Avatars
+							{{ $t('classic.directMessage.hideAvatars') }}
 						</div>
 					</div>
 					<div class="list-group-item media border-bottom">
@@ -240,7 +240,7 @@
 							<label class="custom-control-label" for="customSwitch1"></label>
 						</div>
 						<div class="d-inline-block ml-3 font-weight-bold">
-							Hide Timestamps
+							{{ $t('classic.directMessage.hideTimestamps') }}
 						</div>
 					</div>
 					<div class="list-group-item media border-bottom">
@@ -249,7 +249,7 @@
 							<label class="custom-control-label" for="customSwitch2"></label>
 						</div>
 						<div class="d-inline-block ml-3 font-weight-bold">
-							Larger Text
+							{{ $t('classic.directMessage.largerText') }}
 						</div>
 					</div>
 					<!-- <div class="list-group-item media border-bottom">
@@ -267,8 +267,8 @@
 							<label class="custom-control-label" for="customSwitch4"></label>
 						</div>
 						<div class="d-inline-block ml-3 font-weight-bold">
-							Mute Notifications 
-							<p class="small mb-0">You will not receive any direct message notifications from <strong>{{thread.username}}</strong>.</p>
+							{{ $t('classic.directMessage.muteNotifications') }}
+							<i18n path="classic.directMessage.muteNotificationsHelp" tag="p" class="small mb-0"><template v-slot:user><strong>{{thread.username}}</strong></template></i18n>
 						</div>
 					</div>
 				</ul>
@@ -284,20 +284,20 @@
 	size="sm"
 	body-class="list-group-flush p-0 rounded">
 	<div class="list-group text-center">
-		<div v-if="ctxContext && ctxContext.type == 'photo'" class="list-group-item rounded cursor-pointer font-weight-bold text-dark" @click="viewOriginal()">View Original</div>
-		<div v-if="ctxContext && ctxContext.type == 'video'" class="list-group-item rounded cursor-pointer font-weight-bold text-dark" @click="viewOriginal()">Play</div>
+		<div v-if="ctxContext && ctxContext.type == 'photo'" class="list-group-item rounded cursor-pointer font-weight-bold text-dark" @click="viewOriginal()">{{ $t('classic.directMessage.viewOriginal') }}</div>
+		<div v-if="ctxContext && ctxContext.type == 'video'" class="list-group-item rounded cursor-pointer font-weight-bold text-dark" @click="viewOriginal()">{{ $t('classic.directMessage.play') }}</div>
 		<div v-if="ctxContext && ctxContext.type == 'link'" class="list-group-item rounded cursor-pointer" @click="clickLink()">
 			<p class="mb-0" style="font-size:12px;">
-				Navigate to 
+				{{ $t('classic.directMessage.navigateTo') }}
 			</p>
 			<p class="mb-0 font-weight-bold text-dark">
 				{{this.ctxContext.meta.domain}}
 			</p>
 		</div>
-		<div v-if="ctxContext && (ctxContext.type == 'text' || ctxContext.type == 'emoji' || ctxContext.type == 'link')" class="list-group-item rounded cursor-pointer text-dark" @click="copyText()">Copy</div>
-		<div v-if="ctxContext && !ctxContext.isAuthor" class="list-group-item rounded cursor-pointer text-muted" @click="reportMessage()">Report</div>
-		<div v-if="ctxContext && ctxContext.isAuthor" class="list-group-item rounded cursor-pointer text-muted" @click="deleteMessage()">Delete</div>
-		<div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxMenu()">Cancel</div>
+		<div v-if="ctxContext && (ctxContext.type == 'text' || ctxContext.type == 'emoji' || ctxContext.type == 'link')" class="list-group-item rounded cursor-pointer text-dark" @click="copyText()">{{ $t('classic.directMessage.copy') }}</div>
+		<div v-if="ctxContext && !ctxContext.isAuthor" class="list-group-item rounded cursor-pointer text-muted" @click="reportMessage()">{{ $t('classic.directMessage.report') }}</div>
+		<div v-if="ctxContext && ctxContext.isAuthor" class="list-group-item rounded cursor-pointer text-muted" @click="deleteMessage()">{{ $t('classic.directMessage.delete') }}</div>
+		<div class="list-group-item rounded cursor-pointer text-lighter" @click="closeCtxMenu()">{{ $t('classic.directMessage.cancel') }}</div>
 	</div>
 	</b-modal>
 </div>
@@ -505,7 +505,7 @@
 				}).catch(err => {
 					if(err.response.status == 403) {
 						self.blocked = true;
-						swal('Profile Unavailable', 'You cannot message this profile at this time.', 'error');
+						swal(self.$t('classic.directMessage.profileUnavailable'), self.$t('classic.directMessage.cannotMessage'), 'error');
 					}
 				})
 				this.replyText = '';
@@ -527,7 +527,7 @@
 
 			deleteMessage() {
 				let self = this;
-				let c = window.confirm('Are you sure you want to delete this message?');
+				let c = window.confirm(self.$t('classic.directMessage.confirmDelete'));
 				if(c) {
 					axios.delete('/api/direct/message', {
 						params: {
@@ -573,7 +573,7 @@
 					let acceptedMimes = self.config.uploader.media_types.split(',');
 					let validated = $.inArray(type, acceptedMimes);
 					if(validated == -1) {
-						swal('Invalid File Type', 'The file you are trying to add is not a valid mime type. Please upload a '+self.config.uploader.media_types+' only.', 'error');
+						swal(self.$t('classic.directMessage.invalidFileType'), self.$t('classic.directMessage.invalidFileTypeText', { types: self.config.uploader.media_types }), 'error');
 						self.uploading = false;
 						return;
 					}
@@ -614,13 +614,13 @@
 							case 451:
 							self.uploading = false;
 							io.value = null;
-							swal('Banned Content', 'This content has been banned and cannot be uploaded.', 'error');
+							swal(self.$t('classic.directMessage.bannedContent'), self.$t('classic.directMessage.bannedContentText'), 'error');
 							break;
 
 							default:
 							self.uploading = false;
 							io.value = null;
-							swal('Oops, something went wrong!', 'An unexpected error occurred.', 'error');
+							swal(self.$t('classic.directMessage.uploadError'), self.$t('classic.directMessage.unexpectedError'), 'error');
 							break;
 						}
 					});

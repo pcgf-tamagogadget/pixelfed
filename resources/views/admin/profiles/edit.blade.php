@@ -2,9 +2,9 @@
 
 @section('section')
   <div class="title d-flex justify-content-between align-items-center">
-    <span><a href="{{route('admin.profiles')}}" class="btn btn-outline-secondary btn-sm font-weight-bold">Back</a></span>
-    <h3 class="font-weight-bold">Edit Profile</h3>
-    <span><a href="#" class="btn btn-outline-primary btn-sm font-weight-bold disabled">Enable Editing</a></span>
+    <span><a href="{{route('admin.profiles')}}" class="btn btn-outline-secondary btn-sm font-weight-bold">{{ __('admin_panel.common.back') }}</a></span>
+    <h3 class="font-weight-bold">{{ __('admin_panel.profiles.edit.title') }}</h3>
+    <span><a href="#" class="btn btn-outline-primary btn-sm font-weight-bold disabled">{{ __('admin_panel.profiles.edit.enableEditing') }}</a></span>
   </div>
   <hr>
 
@@ -24,40 +24,40 @@
         <tbody>
           @if($user)
           <tr>
-            <th scope="row">user id</th>
+            <th scope="row">{{ __('admin_panel.profiles.edit.userId') }}</th>
             <td>{{$user->id}}</td>
           </tr>
           @endif
           <tr>
-            <th scope="row">profile id</th>
+            <th scope="row">{{ __('admin_panel.profiles.edit.profileId') }}</th>
             <td>{{$profile->id}}</td>
           </tr>
           <tr>
-            <th scope="row">username</th>
+            <th scope="row">{{ __('admin_panel.profiles.edit.username') }}</th>
             <td>
               {{$profile->username}}
               @if($user && $user->is_admin == true)
-                <span class="badge badge-danger ml-3">Admin</span>
+                <span class="badge badge-danger ml-3">{{ __('admin_panel.profiles.edit.admin') }}</span>
               @endif
             </td>
           </tr>
           <tr>
-            <th scope="row">display name</th>
+            <th scope="row">{{ __('admin_panel.profiles.edit.displayName') }}</th>
             <td>{{$profile->name}}</td>
           </tr>
           <tr>
-            <th scope="row">joined</th>
+            <th scope="row">{{ __('admin_panel.profiles.edit.joined') }}</th>
             <td>{{$profile->created_at->format('M j Y')}}</td>
           </tr>
           @if($user)
           <tr>
-            <th scope="row">email</th>
+            <th scope="row">{{ __('admin_panel.profiles.edit.email') }}</th>
             <td>
                 {{$user->email}}
               @if($user->email_verified_at)
-              <span class="text-success font-weight-bold small pl-2">Verified</span>
+              <span class="text-success font-weight-bold small pl-2">{{ __('admin_panel.profiles.edit.verified') }}</span>
               @else
-              <span class="text-danger font-weight-bold small pl-2">Unverified</span>
+              <span class="text-danger font-weight-bold small pl-2">{{ __('admin_panel.profiles.edit.unverified') }}</span>
               @endif
             </td>
           </tr>
@@ -82,7 +82,7 @@
   		<div class="card">
   			<div class="card-body text-center">
   				<p class="h4 mb-0 font-weight-bold">{{$profile->statusCount()}}</p>
-  				<p class="text-muted font-weight-bold small mb-0">Posts</p>
+  				<p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.posts') }}</p>
   			</div>
   		</div>
   	</div>
@@ -90,7 +90,7 @@
       <div class="card">
         <div class="card-body text-center">
           <p class="h4 mb-0 font-weight-bold">{{$profile->followingCount()}}</p>
-          <p class="text-muted font-weight-bold small mb-0">Following</p>
+          <p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.following') }}</p>
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@
       <div class="card">
         <div class="card-body text-center">
           <p class="h4 mb-0 font-weight-bold">{{$profile->followerCount()}}</p>
-          <p class="text-muted font-weight-bold small mb-0">Followers</p>
+          <p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.followers') }}</p>
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@
   		<div class="card">
   			<div class="card-body text-center">
   				<p class="h4 mb-0 font-weight-bold">{{$profile->bookmarks()->count()}}</p>
-  				<p class="text-muted font-weight-bold small mb-0">Bookmarks</p>
+  				<p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.bookmarks') }}</p>
   			</div>
   		</div>
   	</div>
@@ -114,7 +114,7 @@
       <div class="card">
         <div class="card-body text-center">
           <p class="h4 mb-0 font-weight-bold">{{$profile->likes()->count()}}</p>
-          <p class="text-muted font-weight-bold small mb-0">Likes</p>
+          <p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.likes') }}</p>
         </div>
       </div>
     </div>
@@ -122,7 +122,7 @@
   		<div class="card">
   			<div class="card-body text-center">
   				<p class="h4 mb-0 font-weight-bold">{{$profile->reports()->count()}}</p>
-  				<p class="text-muted font-weight-bold small mb-0">Reports Made</p>
+  				<p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.reportsMade') }}</p>
   			</div>
   		</div>
   	</div>
@@ -130,7 +130,7 @@
   		<div class="card">
   			<div class="card-body text-center">
   				<p class="h4 mb-0 font-weight-bold">{{PrettyNumber::size($profile->media()->sum('size'))}}</p>
-  				<p class="text-muted font-weight-bold small mb-0">Storage Used</p>
+  				<p class="text-muted font-weight-bold small mb-0">{{ __('admin_panel.profiles.edit.storageUsed') }}</p>
   			</div>
   		</div>
   	</div>
@@ -166,7 +166,7 @@
   <hr> --}}
   <div class="mx-3">
       <div class="sub-title h4 font-weight-bold mb-4">
-        Account Actions
+        {{ __('admin_panel.profiles.edit.accountActions') }}
       </div>
       <div class="row">
 
@@ -174,41 +174,32 @@
           <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
             @csrf
             <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-primary py-0 font-weight-bold">Enforce CW</button>
-            <p class="help-text text-muted font-weight-bold small">Adds a CW to every post made by this account.</p>
+            <button class="btn btn-outline-primary py-0 font-weight-bold">{{ __('admin_panel.profiles.edit.enforceCw') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.enforceCwHelp') }}</p>
           </form>
         </div>
         <div class="col-12 col-md-4">
           <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
             @csrf
             <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-primary py-0 font-weight-bold">Unlisted Posts</button>
-            <p class="help-text text-muted font-weight-bold small">Removes account from public/network timelines.</p>
+            <button class="btn btn-outline-primary py-0 font-weight-bold">{{ __('admin_panel.profiles.edit.unlistedPosts') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.unlistedPostsHelp') }}</p>
           </form>
         </div>
         <div class="col-12 col-md-4">
           <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
             @csrf
             <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-primary py-0 font-weight-bold">No Autolinking</button>
-            <p class="help-text text-muted font-weight-bold small">Do not transform mentions, hashtags or urls into HTML.</p>
+            <button class="btn btn-outline-primary py-0 font-weight-bold">{{ __('admin_panel.profiles.edit.noAutolinking') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.noAutolinkingHelp') }}</p>
           </form>
         </div>
         <div class="col-12 col-md-4">
           <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
             @csrf
             <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-primary py-0 font-weight-bold">Disable Account</button>
-            <p class="help-text text-muted font-weight-bold small">Temporarily disable account until next time user log in.</p>
-          </form>
-        </div>
-
-        <div class="col-12 col-md-4">
-          <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
-            @csrf
-            <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-primary py-0 font-weight-bold">Suspend Account</button>
-            <p class="help-text text-muted font-weight-bold small">This prevents any new interactions, without deleting existing data.</p>
+            <button class="btn btn-outline-primary py-0 font-weight-bold">{{ __('admin_panel.profiles.edit.disableAccount') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.disableAccountHelp') }}</p>
           </form>
         </div>
 
@@ -216,8 +207,17 @@
           <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
             @csrf
             <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-danger py-0 font-weight-bold">Lock down Account</button>
-            <p class="help-text text-muted font-weight-bold small">This disables the account and changes the password, forcing account to reset password via verified email.</p>
+            <button class="btn btn-outline-primary py-0 font-weight-bold">{{ __('admin_panel.profiles.edit.suspendAccount') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.suspendAccountHelp') }}</p>
+          </form>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
+            @csrf
+            <input type="hidden" name="profile_id" value="{{$profile->id}}">
+            <button class="btn btn-outline-danger py-0 font-weight-bold">{{ __('admin_panel.profiles.edit.lockDownAccount') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.lockDownAccountHelp') }}</p>
           </form>
         </div>
 
@@ -225,8 +225,8 @@
           <form method="post" action="/i/admin/users/moderation/update" class="pb-3">
             @csrf
             <input type="hidden" name="profile_id" value="{{$profile->id}}">
-            <button class="btn btn-outline-danger font-weight-bold btn-block">Delete Account</button>
-            <p class="help-text text-muted font-weight-bold small">Permanently delete this account.</p>
+            <button class="btn btn-outline-danger font-weight-bold btn-block">{{ __('admin_panel.profiles.edit.deleteAccount') }}</button>
+            <p class="help-text text-muted font-weight-bold small">{{ __('admin_panel.profiles.edit.deleteAccountHelp') }}</p>
           </form>
         </div>
       </div>

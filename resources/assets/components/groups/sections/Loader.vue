@@ -3,9 +3,9 @@
         <div v-if="!loaded" class="d-flex w-100 h-100 py-5 justify-content-center align-items-center">
             <div class="text-center">
                 <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">{{ $t('common.loading') }}</span>
                 </div>
-                <p class="text-center font-weight-bold mt-1">Loading...</p>
+                <p class="text-center font-weight-bold mt-1">{{ $t('common.loading') }}</p>
             </div>
         </div>
     </div>

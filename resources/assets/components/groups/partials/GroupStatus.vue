@@ -30,8 +30,8 @@
 											<i class="far fa-exclamation-triangle fa-2x text-lighter"></i>
 										</div>
 										<div class="media-body">
-											<p class="font-weight-bold mb-0">Warning, may contain sensitive content. </p>
-											<p class="mb-0 text-lighter small text-center font-weight-bold">Click to view</p>
+											<p class="font-weight-bold mb-0">{{ $t('groups.groupStatus.sensitiveWarning') }} </p>
+											<p class="mb-0 text-lighter small text-center font-weight-bold">{{ $t('groups.groupStatus.clickToView') }}</p>
 										</div>
 									</div>
 								</div>
@@ -76,11 +76,11 @@
 								<div v-if="status.favourites_count || status.reply_count" class="border-top my-0">
 									<div class="d-flex justify-content-between py-2" style="font-size: 14px;">
 										<button v-if="status.favourites_count" class="btn btn-light py-0 text-decoration-none text-dark" style="font-size: 12px; font-weight: 600;" @click="showLikesModal($event)">
-											{{ status.favourites_count }} {{ status.favourites_count == 1 ? 'Like' : 'Likes' }}
+											{{ status.favourites_count }} {{ status.favourites_count == 1 ? $t('common.like') : $t('common.likes') }}
 										</button>
 
 										<button v-if="status.reply_count" class="btn btn-light py-0 text-decoration-none text-dark" style="font-size: 12px; font-weight: 600;" @click="commentFocus($event)">
-											{{ status.reply_count }} {{ status.reply_count == 1 ? 'Comment' : 'Comments' }}
+											{{ status.reply_count }} {{ status.reply_count == 1 ? $t('common.comment') : $t('common.comments') }}
 										</button>
 									</div>
 								</div>
@@ -96,20 +96,20 @@
 										<div>
 											<button :id="'lr__'+status.id" class="btn btn-link py-0 text-decoration-none" :class="{ 'font-weight-bold': status.favourited, 'text-primary': status.favourited, 'text-muted': !status.favourited }" @click="likeStatus(status, $event);">
 												<i class="far fa-heart mr-1"></i>
-												{{ status.favourited ? 'Liked' : 'Like' }}
+												{{ status.favourited ? $t('common.liked') : $t('common.like') }}
 											</button>
 										</div>
 
 										<button class="btn btn-link py-0 text-decoration-none text-muted" @click="commentFocus($event)">
 											<i class="far fa-comment cursor-pointer text-muted mr-1">
 											</i>
-											Comment
+											{{ $t('common.comment') }}
 										</button>
 
 										<button class="btn btn-link py-0 text-decoration-none" disabled>
 											<i class="fas fa-external-link-alt cursor-pointer text-muted mr-1">
 											</i>
-											Share
+											{{ $t('common.share') }}
 										</button>
 									</div>
 								</div>
@@ -137,24 +137,26 @@
 							<div>
 								<button :id="'lr__'+status.id" class="btn btn-link py-0 text-decoration-none" :class="{ 'font-weight-bold': status.favourited, 'text-primary': status.favourited, 'text-muted': !status.favourited }" @click="likeStatus(status, $event);">
 									<i class="far fa-heart mr-1"></i>
-									{{ status.favourited ? 'Liked' : 'Like' }}
+									{{ status.favourited ? $t('common.liked') : $t('common.like') }}
 								</button>
 
 								<b-popover :target="'lr__'+status.id" triggers="hover" placement="top">
-									<template #title>Popover Title</template>
-									I am popover <b>component</b> content!
+									<template #title>{{ $t('groups.groupStatus.popoverTitle') }}</template>
+									<i18n path="groups.groupStatus.popoverContent" tag="span">
+										<template #component><b>{{ $t('groups.groupStatus.popoverComponent') }}</b></template>
+									</i18n>
 								</b-popover>
 							</div>
 
 							<button class="btn btn-link py-0 text-decoration-none text-muted" @click="commentFocus($event)">
 								<i class="far fa-comment cursor-pointer text-muted mr-1"></i>
-								Comment
+								{{ $t('common.comment') }}
 							</button>
 
 							<button class="btn btn-link py-0 text-decoration-none" disabled>
 								<i class="fas fa-external-link-alt cursor-pointer text-muted mr-1">
 								</i>
-								Share
+								{{ $t('common.share') }}
 							</button>
 						</div>
 					</div>
@@ -424,7 +426,7 @@
 		<div v-else class="card card-body shadow-none border mb-3" style="height: 200px;">
 			<div class="w-100 h-100 d-flex justify-content-center align-items-center">
 				<div class="spinner-border text-primary" role="status">
-					<span class="sr-only">Loading...</span>
+					<span class="sr-only">{{ $t('common.loading') }}</span>
 				</div>
 			</div>
 		</div>
@@ -679,7 +681,7 @@
 					break;
 
 					case 'from':
-					return usr + '<span class="text-lighter font-weight-bold"> <span class="font-weight-normal">from</span> ' + dom + '</span>';
+					return usr + '<span class="text-lighter font-weight-bold"> <span class="font-weight-normal">' + this.$t('groups.groupStatus.from') + '</span> ' + dom + '</span>';
 					break;
 
 					case 'custom':
@@ -714,9 +716,9 @@
 					}
 				}).catch(err => {
 					if(err.response.status == 422) {
-						swal('Error', err.response.data.error, 'error');
+						swal(this.$t('common.error'), err.response.data.error, 'error');
 					} else {
-						swal('Error', 'Something went wrong, please try again later.', 'error');
+						swal(this.$t('common.error'), this.$t('common.errorMsg'), 'error');
 					}
 				});
 				window.navigator.vibrate(200);
@@ -734,7 +736,7 @@
 				let limit = this.config.uploader.max_caption_length;
 				if(comment.length > limit) {
 					this.replySending = false;
-					swal('Comment Too Long', 'Please make sure your comment is '+limit+' characters or less.', 'error');
+					swal(this.$t('groups.groupStatus.commentTooLong'), this.$t('groups.groupStatus.commentTooLongMsg', { limit: limit }), 'error');
 					return;
 				}
 				axios.post('/i/comment', {

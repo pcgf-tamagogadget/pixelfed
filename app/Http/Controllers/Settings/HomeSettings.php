@@ -62,7 +62,7 @@ trait HomeSettings
         );
         $bio = $request->filled('bio') ? strip_tags(Purify::clean($request->input('bio'))) : null;
         $website = $request->input('website');
-        $language = $request->input('language');
+        $language = $request->filled('language') ? Localization::normalizeLocale($request->input('language')) : null;
         $user = $request->user();
         $profile = $user->profile;
         $pronouns = $request->input('pronouns');

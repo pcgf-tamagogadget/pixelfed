@@ -31,12 +31,12 @@
         <a class="nav-link font-weight-light text-muted" href="{{route('help.embed')}}">{{__('helpcenter.embed')}}</a>
       </li> --}}
       <li class="nav-item {{request()->is('*/import')?'active':''}}">
-        <a class="nav-link font-weight-light text-muted" href="{{route('help.import')}}">Instagram Import</a>
+        <a class="nav-link font-weight-light text-muted" href="{{route('help.import')}}">{{ __('helpcenter.import.navLabel') }}</a>
       </li>
       @if((bool) config_cache('instance.curated_registration.enabled'))
       <li class="nav-item {{request()->is('*/curated-onboarding')?'active':''}}">
         <a class="nav-link font-weight-light text-muted" href="{{route('help.curated-onboarding')}}">
-          Curated Onboarding
+          {{ __('helpcenter.curatedOnboarding.title') }}
         </a>
       </li>
       @endif

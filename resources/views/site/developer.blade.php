@@ -3,25 +3,25 @@
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Developer API</h3>
+    <h3 class="font-weight-bold">{{ __('site.developer.title') }}</h3>
   </div>
   <hr>
   <section>
-    <p class="lead">Developers can use Pixelfed APIs to build rich experiences and extend Pixelfed in new ways.</p>
+    <p class="lead">{{ __('site.developer.intro') }}</p>
     <div class="row pt-5">
       <div class="col-12 col-md-6 pb-3">
         <div class="card">
           <div class="card-header font-weight-bold">CLASSIC API <span class="badge badge-primary">v1.0</span></div>
           <div class="card-body">
             <ul class="pl-2 font-weight-bold text-muted">
-              <li>Mastodon/Pleroma Compatible</li>
-              <li>OAuth App support</li>
-              <li>Developer Dashboard</li>
-              <li>Developer Tools</li>
+              <li>{{ __('site.developer.mastodonCompatible') }}</li>
+              <li>{{ __('site.developer.oauthSupport') }}</li>
+              <li>{{ __('site.developer.dashboard') }}</li>
+              <li>{{ __('site.developer.tools') }}</li>
             </ul>
           </div>
           <div class="card-footer">
-            <p class="font-weight-bold text-muted text-center mb-0">Coming Soon</p>
+            <p class="font-weight-bold text-muted text-center mb-0">{{ __('site.developer.comingSoon') }}</p>
           </div>
         </div>
       </div>
@@ -37,19 +37,19 @@
             </ul>
           </div>
           <div class="card-footer">
-            <p class="font-weight-bold text-muted text-center mb-0">Coming Soon</p>
+            <p class="font-weight-bold text-muted text-center mb-0">{{ __('site.developer.comingSoon') }}</p>
           </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
         <div class="card">
-          <div class="card-header font-weight-bold">OTHER</div>
+          <div class="card-header font-weight-bold">{{ __('site.developer.other') }}</div>
           <div class="card-body">
             <ul class="pl-2 font-weight-bold text-muted mb-0">
-              <li><a href="#">Authentication</a></li>
-              <li><a href="#">Clients</a></li>
-              <li><a href="#">Rate Limiting</a></li>
-              <li><a href="#">ActivityPub Endpoints</a></li>
+              <li><a href="#">{{ __('site.developer.authentication') }}</a></li>
+              <li><a href="#">{{ __('site.developer.clients') }}</a></li>
+              <li><a href="#">{{ __('site.developer.rateLimiting') }}</a></li>
+              <li><a href="#">{{ __('site.developer.activitypubEndpoints') }}</a></li>
               <li><a href="#">Atom/RSS Feeds</a></li>
               <li><a href="#">NodeInfo</a></li>
               <li><a href="#">Webfinger</a></li>
@@ -62,5 +62,5 @@
 @endsection
 
 @push('meta')
-<meta property="og:description" content="Developer API">
+<meta property="og:description" content="{{ __('site.developer.title') }}">
 @endpush

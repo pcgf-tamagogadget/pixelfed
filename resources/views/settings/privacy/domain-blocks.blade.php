@@ -5,11 +5,11 @@
     <div class="d-flex justify-content-between align-items-center">
         <div class="title d-flex align-items-center" style="gap: 1rem;">
             <p class="mb-0"><a href="/settings/privacy"><i class="far fa-chevron-left fa-lg"></i></a></p>
-            <h3 class="font-weight-bold mb-0">Domain Blocks</h3>
+            <h3 class="font-weight-bold mb-0">{{ __('settings.domain_blocks.title') }}</h3>
         </div>
     </div>
 
-    <p class="mt-3 mb-n2 small">You can block entire domains, this prevents users on that instance from interacting with your content and from you seeing content from that domain on public feeds.</p>
+    <p class="mt-3 mb-n2 small">{{ __('settings.domain_blocks.you_can_block_entire_domains_etc') }}</p>
 
     <hr />
 
@@ -21,15 +21,15 @@
         <div class="mb-3 d-flex flex-column flex-md-row justify-content-between align-items-center" style="gap: 2rem;">
             <div style="width: 60%;">
                 <div class="input-group align-items-center">
-                    <input class="form-control form-control-sm rounded-lg" v-model="q" placeholder="Search by domain..." style="padding-right: 60px;" :disabled="!blocks || !blocks.length">
+                    <input class="form-control form-control-sm rounded-lg" v-model="q" placeholder="{{ __('settings.domain_blocks.search_by_domain') }}" style="padding-right: 60px;" :disabled="!blocks || !blocks.length">
                     <div style="margin-left: -60px;width: 60px;z-index:3">
-                        <button class="btn btn-link" type="button" style="font-size: 12px;text-decoration: none;" v-html="q && q.length ? 'Clear': '&nbsp;'" @click="searchAction()"></button>
+                        <button class="btn btn-link" type="button" style="font-size: 12px;text-decoration: none;" v-html="q && q.length ? {{ json_encode(__('settings.domain_blocks.clear')) }} : '&nbsp;'" @click="searchAction()"></button>
                     </div>
                 </div>
             </div>
 
             <button type="button" class="btn btn-outline-primary btn-sm font-weight-bold px-3 flex-grow" @click="openModal">
-                <i class="fas fa-plus mr-1"></i> New Block
+                <i class="fas fa-plus mr-1"></i> {{ __('settings.domain_blocks.new_block') }}
             </button>
         </div>
         <div v-if="blocks && blocks.length" class="list-group">
@@ -41,33 +41,33 @@
                     <span v-text="item"></span>
                 </span>
                 <span class="btn-group">
-                    <button type="button" class="btn btn-link btn-sm px-3 font-weight-bold" @click="handleUnblock(item)">Unblock</button>
+                    <button type="button" class="btn btn-link btn-sm px-3 font-weight-bold" @click="handleUnblock(item)">{{ __('settings.privacy.unblock') }}</button>
                 </span>
                 </div>
             </div>
         </div>
 
-        <nav v-if="blocks && blocks.length && chunks && chunks.length > 1" class="mt-3" aria-label="Domain block pagination">
+        <nav v-if="blocks && blocks.length && chunks && chunks.length > 1" class="mt-3" aria-label="{{ __('settings.domain_blocks.domain_block_pagination') }}">
             <ul class="pagination justify-content-center" style="gap: 1rem">
                 <li
                     class="page-item"
                     :class="[ !index ? 'disabled' : 'font-weight-bold' ]"
                     :disabled="!index"
                     @click="paginate('prev')">
-                    <span class="page-link px-5 rounded-lg">Previous</span>
+                    <span class="page-link px-5 rounded-lg">{{ __('settings.domain_blocks.previous') }}</span>
                 </li>
                 <li
                     class="page-item"
                     :class="[ index + 1 === chunks.length ? 'disabled' : 'font-weight-bold' ]"
                     @click="paginate('next')">
-                    <span class="page-link px-5 rounded-lg" href="#">Next</span>
+                    <span class="page-link px-5 rounded-lg" href="#">{{ __('settings.domain_blocks.next') }}</span>
                 </li>
             </ul>
         </nav>
 
         <div v-if="!blocks || !blocks.length">
             <hr />
-            <p class="lead text-center font-weight-bold">You are not blocking any domains.</p>
+            <p class="lead text-center font-weight-bold">{{ __('settings.domain_blocks.you_are_not_blocking_any_domains') }}</p>
         </div>
     </div>
 </div>
@@ -77,6 +77,7 @@
 <script type="text/javascript">
     let app = new Vue({
         el: '#content',
+        i18n: App.i18n(),
 
         data: {
             loaded: false,
@@ -188,11 +189,11 @@
 
             openModal() {
                 swal({
-                    title: 'Domain Block',
-                    text: 'Add domain to block, must start with https://',
+                    title: @json(__('settings.domain_blocks.domain_block')),
+                    text: @json(__('settings.domain_blocks.add_domain_to_block_must_start_with_https')),
                     content: "input",
                     button: {
-                        text: "Block",
+                        text: @json(__('settings.privacy.block')),
                         closeModal: false,
                     }
                 }).then(val => {
@@ -217,7 +218,7 @@
                         swal.stopLoading()
                         swal.close()
                         if(err.response?.data?.message || err.response?.data?.error) {
-                            swal('Error', err.response?.data?.message ?? err.response?.data?.error, 'error')
+                            swal(@json(__('settings.error')), err.response?.data?.message ?? err.response?.data?.error, 'error')
                         }
                     })
                 })

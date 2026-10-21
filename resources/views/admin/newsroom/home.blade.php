@@ -7,14 +7,14 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <p class="display-1 text-white mb-0">Newsroom</p>
-                    <p class="lead text-white my-0">Manage News and Platform Tips</p>
+                    <p class="display-1 text-white mb-0">{{ __('admin_panel.newsroom.home.title') }}</p>
+                    <p class="lead text-white my-0">{{ __('admin_panel.newsroom.home.subtitle') }}</p>
                 </div>
 
                 <div class="col-lg-6 col-5">
                     <div class="text-right">
-                        <a class="btn btn-danger px-4" style="font-size:13px;" href="{{route('admin.newsroom.create')}}">New Announcement</a>
-                        <a class="btn btn-dark px-4 mr-3" style="font-size:13px;" href="/site/newsroom">View Newsroom <i class="fas fa-chevron-right fa-sm text-lighter ml-1"></i></a>
+                        <a class="btn btn-danger px-4" style="font-size:13px;" href="{{route('admin.newsroom.create')}}">{{ __('admin_panel.newsroom.home.newAnnouncement') }}</a>
+                        <a class="btn btn-dark px-4 mr-3" style="font-size:13px;" href="/site/newsroom">{{ __('admin_panel.newsroom.home.viewNewsroom') }} <i class="fas fa-chevron-right fa-sm text-lighter ml-1"></i></a>
                     </div>
                 </div>
             </div>
@@ -30,11 +30,11 @@
                 <table class="table table-dark">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Slug</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Updated</th>
+                            <th scope="col">{{ __('admin_panel.common.id') }}</th>
+                            <th scope="col">{{ __('admin_panel.newsroom.home.colTitle') }}</th>
+                            <th scope="col">{{ __('admin_panel.newsroom.home.slug') }}</th>
+                            <th scope="col">{{ __('admin_panel.common.status') }}</th>
+                            <th scope="col">{{ __('admin_panel.newsroom.home.updated') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,9 +60,9 @@
                             </td>
                             <td class="font-weight-bold">
                                 @if($news->published_at != null)
-                                  <span class="badge badge-success font-weight-bold mr-3">PUBLISHED</span>
+                                  <span class="badge badge-success font-weight-bold mr-3">{{ __('admin_panel.newsroom.home.published') }}</span>
                                 @else
-                                  <span class="badge badge-dark font-weight-bold mr-3">DRAFT</span>
+                                  <span class="badge badge-dark font-weight-bold mr-3">{{ __('admin_panel.newsroom.home.draft') }}</span>
                                 @endif
                             </td>
 
@@ -79,7 +79,7 @@
             </div>
             @else
             <div class="card-body text-center">
-                <p class="lead mb-0 p-5">No Announcements Found!</p>
+                <p class="lead mb-0 p-5">{{ __('admin_panel.newsroom.home.noAnnouncements') }}</p>
             </div>
             @endif
       </div>

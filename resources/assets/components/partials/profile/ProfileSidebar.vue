@@ -47,7 +47,7 @@
                 <div>
                     <img :src="getAvatar()" class="avatar img-fluid shadow border"
                          onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
-                    <p v-if="profile.is_admin" class="text-right" style="margin-top: -30px;"><span class="admin-label">Admin</span>
+                    <p v-if="profile.is_admin" class="text-right" style="margin-top: -30px;"><span class="admin-label">{{ $t('profile.admin') }}</span>
                     </p>
                 </div>
                 <!-- <button class="btn btn-link">
@@ -63,30 +63,29 @@
                     </template>
 
                     <b-dropdown-item v-if="profile.local" href="#" link-class="font-weight-bold"
-                                     @click.prevent="goToOldProfile()">View in old UI
+                                     @click.prevent="goToOldProfile()">{{ $t('spa.profileSidebar.viewInOldUi') }}
                     </b-dropdown-item>
                     <b-dropdown-item href="#" link-class="font-weight-bold"
-                                     @click.prevent="copyTextToClipboard(profile.url)">Copy Link
+                                     @click.prevent="copyTextToClipboard(profile.url)">{{ $t('common.copyLink') }}
                     </b-dropdown-item>
 
 
                     <b-dropdown-item v-if="profile.local" :href="'/users/' + profile.username + '.atom'"
-                                     link-class="font-weight-bold">Atom feed
+                                     link-class="font-weight-bold">{{ $t('spa.profileSidebar.atomFeed') }}
                     </b-dropdown-item>
 
                     <div v-if="profile.id == user.id">
                         <b-dropdown-divider></b-dropdown-divider>
                         <b-dropdown-item href="/settings/home" link-class="font-weight-bold">
-                            <i class="far fa-cog mr-1"></i> Settings
+                            <i class="far fa-cog mr-1"></i> {{ $t('navmenu.settings') }}
                         </b-dropdown-item>
                     </div>
 
                     <div v-else>
-                        <b-dropdown-item v-if="!profile.local" :href="profile.url" link-class="font-weight-bold">View
-                            Remote Profile
+                        <b-dropdown-item v-if="!profile.local" :href="profile.url" link-class="font-weight-bold">{{ $t('spa.profileSidebar.viewRemoteProfile') }}
                         </b-dropdown-item>
                         <b-dropdown-item :href="'/i/web/direct/thread/' + profile.id" link-class="font-weight-bold">
-                            Direct Message
+                            {{ $t('spa.profileSidebar.directMessage') }}
                         </b-dropdown-item>
                     </div>
 
@@ -94,15 +93,15 @@
                         <b-dropdown-divider></b-dropdown-divider>
 
                         <b-dropdown-item link-class="font-weight-bold" @click="handleMute()">
-                            {{ relationship.muting ? 'Unmute' : 'Mute' }}
+                            {{ relationship.muting ? $t('spa.profileSidebar.unmute') : $t('spa.profileSidebar.mute') }}
                         </b-dropdown-item>
 
                         <b-dropdown-item link-class="font-weight-bold" @click="handleBlock()">
-                            {{ relationship.blocking ? 'Unblock' : 'Block' }}
+                            {{ relationship.blocking ? $t('spa.profileSidebar.unblock') : $t('spa.profileSidebar.block') }}
                         </b-dropdown-item>
 
                         <b-dropdown-item :href="'/i/report?type=user&id=' + profile.id"
-                                         link-class="text-danger font-weight-bold">Report
+                                         link-class="text-danger font-weight-bold">{{ $t('menu.report') }}
                         </b-dropdown-item>
                     </div>
                 </b-dropdown>
@@ -162,7 +161,7 @@
                     <a class="btn btn-light font-weight-bold btn-block follow-btn" href="/settings/home">{{ $t('profile.editProfile') }}</a>
 					<a v-if="!profile.locked" class="btn btn-light font-weight-bold btn-block follow-btn mt-md-n4" href="/i/web/my-portfolio">
                        {{ $t("profile.myPortifolio") }}
-                        <span class="badge badge-success ml-1">NEW</span>
+                        <span class="badge badge-success ml-1">{{ $t('spa.profileSidebar.newBadge') }}</span>
                     </a>
                 </div>
 
@@ -171,7 +170,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center ft-std text-white mb-2">
                                 <i class="far fa-exclamation-triangle mr-2 text-white"></i>
-                                Account has moved to:
+                                {{ $t('spa.profileSidebar.movedTo') }}
                             </div>
                             <p class="mb-0 lead ft-std text-white text-break">
                                 <router-link :to="`/i/web/profile/${profile.moved.id}`"
@@ -188,10 +187,9 @@
                             class="btn btn-primary font-weight-bold btn-block follow-btn"
                             @click="follow"
                             :disabled="relationship.blocking">
-                            Request Follow
+                            {{ $t('spa.profileSidebar.requestFollow') }}
                         </button>
-                        <p v-if="relationship.blocking" class="mt-n4 text-lighter" style="font-size: 11px">You need to
-                            unblock this account before you can request to follow.</p>
+                        <p v-if="relationship.blocking" class="mt-n4 text-lighter" style="font-size: 11px">{{ $t('spa.profileSidebar.unblockToRequestFollow') }}</p>
                     </template>
 
                     <div v-else-if="relationship.requested">
@@ -200,7 +198,7 @@
                         </button>
 
                         <p class="small font-weight-bold text-center mt-n4">
-                            <a href="#" @click.prevent="cancelFollowRequest()">Cancel Follow Request</a>
+                            <a href="#" @click.prevent="cancelFollowRequest()">{{ $t('spa.profileSidebar.cancelFollowRequest') }}</a>
                         </p>
                     </div>
 
@@ -220,8 +218,7 @@
                             :disabled="relationship.blocking">
                             {{ $t('profile.follow') }}
                         </button>
-                        <p v-if="relationship.blocking" class="mt-n4 text-lighter" style="font-size: 11px">You need to
-                            unblock this account before you can follow.</p>
+                        <p v-if="relationship.blocking" class="mt-n4 text-lighter" style="font-size: 11px">{{ $t('spa.profileSidebar.unblockToFollow') }}</p>
                     </template>
 
                     <button
@@ -242,31 +239,31 @@
                         </template>
 
                         <b-dropdown-item v-if="profile.local" href="#" link-class="font-weight-bold"
-                                         @click.prevent="goToOldProfile()">View in old UI
+                                         @click.prevent="goToOldProfile()">{{ $t('spa.profileSidebar.viewInOldUi') }}
                         </b-dropdown-item>
                         <b-dropdown-item href="#" link-class="font-weight-bold"
-                                         @click.prevent="copyTextToClipboard(profile.url)">Copy Link
+                                         @click.prevent="copyTextToClipboard(profile.url)">{{ $t('common.copyLink') }}
                         </b-dropdown-item>
 
 
                         <b-dropdown-item v-if="profile.local" :href="'/users/' + profile.username + '.atom'"
-                                         link-class="font-weight-bold">Atom feed
+                                         link-class="font-weight-bold">{{ $t('spa.profileSidebar.atomFeed') }}
                         </b-dropdown-item>
 
                         <div v-if="profile.id == user.id">
                             <b-dropdown-divider></b-dropdown-divider>
                             <b-dropdown-item href="/settings/home" link-class="font-weight-bold">
-                                <i class="far fa-cog mr-1"></i> Settings
+                                <i class="far fa-cog mr-1"></i> {{ $t('navmenu.settings') }}
                             </b-dropdown-item>
                         </div>
 
                         <div v-else>
                             <b-dropdown-item v-if="!profile.local" :href="profile.url" link-class="font-weight-bold">
-                                View Remote Profile
+                                {{ $t('spa.profileSidebar.viewRemoteProfile') }}
                             </b-dropdown-item>
 
                             <b-dropdown-item :href="'/i/web/direct/thread/' + profile.id" link-class="font-weight-bold">
-                                Direct Message
+                                {{ $t('spa.profileSidebar.directMessage') }}
                             </b-dropdown-item>
                         </div>
 
@@ -274,14 +271,14 @@
                             <b-dropdown-divider></b-dropdown-divider>
 
                             <b-dropdown-item link-class="font-weight-bold" @click="handleMute()">
-                                {{ relationship.muting ? 'Unmute' : 'Mute' }}
+                                {{ relationship.muting ? $t('spa.profileSidebar.unmute') : $t('spa.profileSidebar.mute') }}
                             </b-dropdown-item>
 
                             <b-dropdown-item link-class="font-weight-bold" @click="handleBlock()">
-                                {{ relationship.blocking ? 'Unblock' : 'Block' }}
+                                {{ relationship.blocking ? $t('spa.profileSidebar.unblock') : $t('spa.profileSidebar.block') }}
                             </b-dropdown-item>
 
-                            <b-dropdown-item :href="'/i/report?type=user&id=' + profile.id" link-class="text-danger font-weight-bold">Report
+                            <b-dropdown-item :href="'/i/report?type=user&id=' + profile.id" link-class="text-danger font-weight-bold">{{ $t('menu.report') }}
                             </b-dropdown-item>
                         </div>
                     </b-dropdown>
@@ -320,7 +317,7 @@
 
 						<span class="float-right primary">
 							<i class="far fa-info-circle" v-b-tooltip.hover
-                               title="This user is from a remote server and may have created their account before this date"></i>
+                               :title="$t('spa.profileSidebar.remoteJoinedTooltip')"></i>
 						</span>
 					</span>
                 </p>
@@ -336,7 +333,7 @@
             </div>
 
             <div class="d-none d-md-block sidebar-attribution">
-                <a href="https://pixelfed.org" class="font-weight-bold">Powered by Pixelfed</a>
+                <a href="https://pixelfed.org" class="font-weight-bold">{{ $t('powered_by_pixelfed') }}</a>
             </div>
         </div>
 
@@ -345,11 +342,11 @@
             centered
             hide-footer
             ok-only
-            ok-title="Close"
+            :ok-title="$t('common.close')"
             ok-variant="light"
             :scrollable="true"
             body-class="p-md-5"
-            title="Bio"
+            :title="$t('spa.profileSidebar.bio')"
         >
             <div v-html="profile.note"></div>
         </b-modal>
@@ -457,9 +454,7 @@ export default {
 
         getJoinedDate() {
             let d = new Date(this.profile.created_at);
-            let month = new Intl.DateTimeFormat("en-US", {month: "long"}).format(d);
-            let year = d.getFullYear();
-            return `${month} ${year}`;
+            return new Intl.DateTimeFormat(document.documentElement.lang || 'en-US', {year: 'numeric', month: 'long'}).format(d);
         },
 
         follow() {
@@ -547,16 +542,16 @@ export default {
                 item: this.profile.id
             }).then(res => {
                 this.$emit('updateRelationship', res.data);
-                swal('Success', 'You have successfully ' + msg + ' ' + this.profile.acct, 'success');
+                swal(this.$t('common.success'), msg === 'muted' ? this.$t('spa.profileSidebar.mutedSuccess', { username: this.profile.acct }) : this.$t('spa.profileSidebar.unmutedSuccess', { username: this.profile.acct }), 'success');
             }).catch(err => {
                 if (err.response.status === 422) {
                     swal({
-                        title: 'Error',
+                        title: this.$t('common.error'),
                         text: err.response?.data?.error,
                         icon: "error",
                         buttons: {
                             review: {
-                                text: "Review muted accounts",
+                                text: this.$t('spa.profileSidebar.reviewMuted'),
                                 value: "review",
                                 className: "btn-primary"
                             },
@@ -570,7 +565,7 @@ export default {
                             }
                         });
                 } else {
-                    swal('Error', 'Something went wrong. Please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('common.errorMsg'), 'error');
                 }
             });
         },
@@ -583,16 +578,16 @@ export default {
                 item: this.profile.id
             }).then(res => {
                 this.$emit('updateRelationship', res.data);
-                swal('Success', 'You have successfully ' + msg + 'ed ' + this.profile.acct, 'success');
+                swal(this.$t('common.success'), msg === 'block' ? this.$t('spa.profileSidebar.blockedSuccess', { username: this.profile.acct }) : this.$t('spa.profileSidebar.unblockedSuccess', { username: this.profile.acct }), 'success');
             }).catch(err => {
                 if (err.response.status === 422) {
                     swal({
-                        title: 'Error',
+                        title: this.$t('common.error'),
                         text: err.response?.data?.error,
                         icon: "error",
                         buttons: {
                             review: {
-                                text: "Review blocked accounts",
+                                text: this.$t('spa.profileSidebar.reviewBlocked'),
                                 value: "review",
                                 className: "btn-primary"
                             },
@@ -606,13 +601,13 @@ export default {
                             }
                         });
                 } else {
-                    swal('Error', 'Something went wrong. Please try again later.', 'error');
+                    swal(this.$t('common.error'), this.$t('common.errorMsg'), 'error');
                 }
             });
         },
 
         cancelFollowRequest() {
-            if (!window.confirm('Are you sure you want to cancel your follow request?')) {
+            if (!window.confirm(this.$t('spa.profileSidebar.cancelFollowRequestConfirm'))) {
                 return;
             }
             event.currentTarget.blur();

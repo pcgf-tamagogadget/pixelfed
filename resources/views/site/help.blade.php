@@ -29,8 +29,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.gettingStarted')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">How can I create an account?</p>
-              <p class="small text-dark font-weight-bold mb-0">How can I change my bio?</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.createAccount') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.changeBio') }}</p>
             </div>
           </div>
         </div>
@@ -45,8 +45,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.hashtags')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">What are hashtags?</p>
-              <p class="small text-dark font-weight-bold mb-0">Hashtag Tips</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.whatAreHashtags') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.hashtagsPage.tipsTitle') }}</p>
             </div>
           </div>
         </div>
@@ -61,8 +61,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.sharingMedia')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">How do I create a post?</p>
-              <p class="small text-dark font-weight-bold mb-0">How do I add a filter?</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.sharingMediaPage.q1') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.addFilter') }}</p>
             </div>
           </div>
         </div>
@@ -77,8 +77,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.discover')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">What is Discover?</p>
-              <p class="small text-dark font-weight-bold mb-0">What are Discover Categories?</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.whatIsDiscover') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.whatAreDiscoverCategories') }}</p>
             </div>
           </div>
         </div>
@@ -93,8 +93,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.profile')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">How can I make my account private?</p>
-              <p class="small text-dark font-weight-bold mb-0">How can I secure my account?</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.makePrivate') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.yourProfile.q8') }}</p>
             </div>
           </div>
         </div>
@@ -109,8 +109,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.directMessages')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">How do I use Pixelfed Direct?</p>
-              <p class="small text-dark font-weight-bold mb-0">How do I unsend a message?</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.dm.q1') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.unsendMessage') }}</p>
             </div>
           </div>
         </div>
@@ -141,8 +141,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.timelines')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">Personal Timeline</p>
-              <p class="small text-dark font-weight-bold mb-0">Public Timeline</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.personalTimeline') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.publicTimeline') }}</p>
             </div>
           </div>
         </div>
@@ -158,8 +158,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.communityGuidelines')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">Content that will be removed</p>
-              <p class="small text-dark font-weight-bold mb-0">Content that is explicitly disallowed</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.contentRemoved') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.contentDisallowed') }}</p>
             </div>
           </div>
         </div>
@@ -206,8 +206,8 @@
             </p>
             <p class="text-center text-muted font-weight-bold h4 mb-0">{{__('helpcenter.safetyTips')}}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">Know the rules</p>
-              <p class="small text-dark font-weight-bold mb-0">Make your account or posts private</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.safetyTipsPage.rulesTitle') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.safetyTipsPage.privateTitle') }}</p>
             </div>
           </div>
         </div>
@@ -261,10 +261,10 @@
             <p class="py-1 text-center">
               <i class="far fa-file-import text-lighter fa-2x"></i>
             </p>
-            <p class="text-center text-muted font-weight-bold h4 mb-0">Import</p>
+            <p class="text-center text-muted font-weight-bold h4 mb-0">{{ __('helpcenter.import.title') }}</p>
             <div class="text-center pt-3">
-              <p class="small text-dark font-weight-bold mb-0">How to Import from Instagram</p>
-              <p class="small text-dark font-weight-bold mb-0">Troubleshooting Imports</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.importFromInstagram') }}</p>
+              <p class="small text-dark font-weight-bold mb-0">{{ __('helpcenter.home.troubleshootingImports') }}</p>
             </div>
           </div>
         </div>
@@ -274,5 +274,5 @@
 @endsection
 
 @push('meta')
-<meta property="og:description" content="Help">
+<meta property="og:description" content="{{ __('site.help') }}">
 @endpush

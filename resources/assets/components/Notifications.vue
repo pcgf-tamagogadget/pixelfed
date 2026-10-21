@@ -16,7 +16,7 @@
                     <template v-else-if="tabIndex === 10">
                         <div class="d-flex align-items-center mb-3">
                             <a class="text-muted" href="#" @click.prevent="tabIndex = 0" style="opacity:0.3">
-                                <i class="far fa-chevron-circle-left fa-2x mr-3" title="Go back to notifications"></i>
+                                <i class="far fa-chevron-circle-left fa-2x mr-3" :title="$t('spa.notificationsPage.goBack')"></i>
                             </a>
                             <h1 class="font-weight-bold">
                             {{  $t("notifications.followRequest") }}
@@ -76,14 +76,14 @@
                                         <i class="far fa-exclamation-circle mr-3 text-warning"></i>
                                         <div class="media-body">
                                             <p class="mb-0">
-                                                <strong>{{ followRequests.count }} follow {{ followRequests.count > 1 ? 'requests' : 'request' }}</strong>
+                                                <strong>{{ followRequests.count > 1 ? $t('spa.notificationsPage.followRequestsCount', { count: followRequests.count }) : $t('spa.notificationsPage.followRequestCount', { count: followRequests.count }) }}</strong>
                                             </p>
                                         </div>
                                         <a
                                             class="ml-2 small d-flex font-weight-bold primary text-uppercase mb-0"
                                             href="#"
                                             @click.prevent="showFollowRequests()">
-                                            View<span class="d-none d-md-block">&nbsp;Follow Requests</span>
+                                            <span class="d-md-none">{{ $t('spa.notificationsPage.view') }}</span><span class="d-none d-md-block">{{ $t('spa.notificationsPage.viewFollowRequests') }}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -119,11 +119,11 @@
                                                 <div class="d-flex text-lighter" style="font-size:11px">
                                                     <span class="mr-3">
                                                         <span class="font-weight-bold">{{ acct.account.statuses_count }}</span>
-                                                        <span>Posts</span>
+                                                        <span>{{ $t('profile.posts') }}</span>
                                                     </span>
                                                     <span>
                                                         <span class="font-weight-bold">{{ acct.account.followers_count }}</span>
-                                                        <span>Followers</span>
+                                                        <span>{{ $t('profile.followers') }}</span>
                                                     </span>
                                                 </div>
                                             </div>
@@ -168,7 +168,7 @@
                                         <div v-if="filteredEmpty">
                                             <div class="card card-body shadow-sm border-0 d-flex flex-row align-items-center" style="border-radius: 20px;gap:1rem;">
                                                 <i class="far fa-inbox fa-2x text-muted"></i>
-                                                <div class="font-weight-bold">No recent {{ tabs[tabIndex].name }}!</div>
+                                                <div class="font-weight-bold">{{ $t('spa.notificationsPage.noRecent', { type: tabs[tabIndex].name }) }}</div>
                                             </div>
                                         </div>
 
@@ -228,7 +228,7 @@
                 tabs: [
                     {
                         id: 'all',
-                        name: 'All',
+                        name: this.$t('spa.notificationsPage.all'),
                         icon: 'far fa-bell',
                         types: []
                     },
@@ -582,7 +582,7 @@
             },
 
             handleFollowRequest(action, index) {
-                if(!window.confirm('Are you sure you want to ' + action + ' this follow request?')) {
+                if(!window.confirm(action === 'accept' ? this.$t('spa.notificationsPage.confirmAccept') : this.$t('spa.notificationsPage.confirmReject'))) {
                     return;
                 }
 

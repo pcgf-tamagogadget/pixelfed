@@ -13,7 +13,7 @@
 						</p>
 
 						<p class="font-weight-bold mb-0">
-							<a v-if="range === 'daily'" :href="post.url" class="text-bluegray-500" target="_blank">Posted {{ timeago(post.created_at) }} ago</a>
+							<a v-if="range === 'daily'" :href="post.url" class="text-bluegray-500" target="_blank">{{ $t('spa.landingPostCard.postedAgo', { time: timeago(post.created_at) }) }}</a>
 							<a v-else :href="post.url" class="text-bluegray-400" target="_blank">{{ $t('menu.viewPost') }}</a>
 						</p>
 					</div>

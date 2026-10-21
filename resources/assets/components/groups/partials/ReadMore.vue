@@ -8,7 +8,7 @@
 				class="font-weight-bold text-muted" href="#"
 				style="display: block;white-space: nowrap;"
 				@click.prevent="readMore">
-				<i class="d-none fas fa-caret-down"></i> Read more...
+				<i class="d-none fas fa-caret-down"></i> {{ $t('groups.readMore.readMore') }}
 			</a>
 		</div>
 	</div>

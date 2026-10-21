@@ -14,7 +14,7 @@
 									<i class="far fa-chevron-left fa-lg"></i>
 								</button>
 
-								<div>Direct Message</div>
+								<div>{{ $t('spa.directMessage.title') }}</div>
 
 								<button class="btn btn-light rounded-pill text-dark" @click="showOptions()">
 									<i class="far fa-cog fa-lg"></i>
@@ -23,7 +23,7 @@
 							<ul class="list-group list-group-flush" style="position:relative;">
 								<li class="list-group-item border-bottom sticky-top">
 									<p class="text-center small text-muted mb-0">
-										Conversation with <span class="font-weight-bold">{{thread.username}}</span>
+										<i18n path="spa.directMessage.conversationWith" tag="span"><template v-slot:username><span class="font-weight-bold">{{thread.username}}</span></template></i18n>
 									</p>
 								</li>
 							</ul>
@@ -36,15 +36,15 @@
 											<i class="fas fa-exclamation-triangle text-danger fa-lg mr-3"></i>
 										</div>
 										<div>
-											<p class="small warning-text mb-0 font-weight-bold"><span class="d-inline d-lg-none">DMs</span><span class="d-none d-lg-inline">Direct messages on Pixelfed</span> are not end-to-end encrypted.
+											<p class="small warning-text mb-0 font-weight-bold"><span class="d-inline d-lg-none">{{ $t('spa.directMessage.privacyWarningShort') }}</span><span class="d-none d-lg-inline">{{ $t('spa.directMessage.privacyWarningLong') }}</span>
 											</p>
 											<p class="small warning-text mb-0 font-weight-bold">
-												Use caution when sharing sensitive data.
+												{{ $t('spa.directMessage.privacyWarningCaution') }}
 											</p>
 										</div>
 										<button class="btn btn-link text-decoration-none" @click="togglePrivacyWarning">
 											<i class="far fa-times-circle fa-lg"></i>
-											<span class="d-none d-lg-block">Close</span>
+											<span class="d-none d-lg-block">{{ $t('common.close') }}</span>
 										</button>
 									</div>
 								</li>
@@ -64,8 +64,8 @@
 
 								<li v-if="showLoadMore && thread.messages && thread.messages.length > 5" class="list-group-item border-0">
 									<p class="text-center small text-muted">
-										<button v-if="!loadingMessages" class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" @click="loadOlderMessages()">Load Older Messages</button>
-										<button v-else class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" disabled>Loading...</button>
+										<button v-if="!loadingMessages" class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" @click="loadOlderMessages()">{{ $t('spa.directMessage.loadOlder') }}</button>
+										<button v-else class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" disabled>{{ $t('common.loading') }}</button>
 									</p>
 								</li>
 							</ul>
@@ -79,7 +79,7 @@
 									<div class="dm-reply-form-input-group">
 										<input
 											class="form-control form-control-lg"
-											placeholder="Type a message..."
+											:placeholder="$t('spa.directMessage.typeMessage')"
 											:disabled="uploading"
 											v-model="replyText">
 
@@ -101,7 +101,7 @@
 							</div>
 
 							<div v-if="uploading" class="card-footer dm-status-bar">
-								<p>Uploading ({{uploadProgress}}%) ...</p>
+								<p>{{ $t('spa.directMessage.uploading', { progress: uploadProgress }) }}</p>
 							</div>
 
 							<div v-if="showReplyLong" class="card-footer dm-status-bar">
@@ -109,7 +109,7 @@
 							</div>
 
 							<div v-if="showReplyTooLong" class="card-footer dm-status-bar">
-								<p class="text-danger">{{ replyText.length }}/500 - Your message exceeds the limit of 500 characters</p>
+								<p class="text-danger">{{ replyText.length }}/500 - {{ $t('spa.directMessage.tooLong', { limit: 500 }) }}</p>
 							</div>
 
 							<div class="d-none card-footer p-0">
@@ -125,7 +125,7 @@
 										</span> -->
 										<span class="btn btn-primary btn-sm font-weight-bold py-0 px-3 rounded-pill" @click="uploadMedia">
 											<i class="fas fa-upload mr-1"></i>
-											Add Photo/Video
+											{{ $t('spa.directMessage.addMedia') }}
 										</span>
 									</span>
 									<input type="file" id="uploadMedia" class="d-none" name="uploadMedia" accept="image/jpeg,image/png,image/gif,video/mp4" >
@@ -142,7 +142,7 @@
 									<i class="far fa-chevron-left fa-lg"></i>
 								</button>
 
-								<div>Direct Message Settings</div>
+								<div>{{ $t('spa.directMessage.settingsTitle') }}</div>
 
 								<div class="btn btn-light rounded-pill text-dark">
 									<i class="far fa-smile fa-lg"></i>
@@ -156,7 +156,7 @@
 										<label class="custom-control-label" for="customSwitch0"></label>
 									</div>
 									<div class="d-inline-block ml-3 font-weight-bold">
-										Hide Avatars
+										{{ $t('spa.directMessage.hideAvatars') }}
 									</div>
 								</div>
 								<div class="list-group-item media border-bottom">
@@ -165,7 +165,7 @@
 										<label class="custom-control-label" for="customSwitch1"></label>
 									</div>
 									<div class="d-inline-block ml-3 font-weight-bold">
-										Hide Timestamps
+										{{ $t('spa.directMessage.hideTimestamps') }}
 									</div>
 								</div>
 								<div class="list-group-item media border-bottom">
@@ -174,7 +174,7 @@
 										<label class="custom-control-label" for="customSwitch2"></label>
 									</div>
 									<div class="d-inline-block ml-3 font-weight-bold">
-										Larger Text
+										{{ $t('spa.directMessage.largerText') }}
 									</div>
 								</div>
 								<!-- <div class="list-group-item media border-bottom">
@@ -192,8 +192,8 @@
 										<label class="custom-control-label" for="customSwitch4"></label>
 									</div>
 									<div class="d-inline-block ml-3 font-weight-bold">
-										Mute Notifications
-										<p class="small mb-0">You will not receive any direct message notifications from <strong>{{thread.username}}</strong>.</p>
+										{{ $t('spa.directMessage.muteNotifications') }}
+										<i18n path="spa.directMessage.muteNotificationsHelp" tag="p" class="small mb-0"><template v-slot:username><strong>{{thread.username}}</strong></template></i18n>
 									</div>
 								</div>
 								<div class="list-group-item media border-bottom d-flex align-items-center">
@@ -202,8 +202,8 @@
 										<label class="custom-control-label" for="customSwitch5"></label>
 									</div>
 									<div class="d-inline-block ml-3 font-weight-bold">
-										Show Privacy Warning
-										<p class="small mb-0">Show privacy warning indicating that direct messages are not end-to-end encrypted and that caution is advised when sending sensitive/confidential information.</p>
+										{{ $t('spa.directMessage.showPrivacyWarning') }}
+										<p class="small mb-0">{{ $t('spa.directMessage.showPrivacyWarningHelp') }}</p>
 									</div>
 								</div>
 							</ul>
@@ -214,7 +214,7 @@
 				<div v-if="conversationProfile" class="col-md-3 d-none d-md-block">
 					<div class="card shadow-sm mb-3" style="border-radius: 15px;">
 						<div class="small card-header font-weight-bold text-uppercase text-lighter" style="letter-spacing: -0.3px;">
-							Conversation
+							{{ $t('spa.directMessage.conversation') }}
 						</div>
 						<div class="card-body p-2">
 							<div class="media user-card user-select-none">
@@ -236,10 +236,10 @@
 									</p>
 									<p class="stats">
 										<span class="stats-following">
-											<span class="following-count">{{ formatCount(conversationProfile.following_count) }}</span> Following
+											<span class="following-count">{{ formatCount(conversationProfile.following_count) }}</span> {{ $t('profile.following') }}
 										</span>
 										<span class="stats-followers">
-											<span class="followers-count">{{ formatCount(conversationProfile.followers_count) }}</span> Followers
+											<span class="followers-count">{{ formatCount(conversationProfile.followers_count) }}</span> {{ $t('profile.followers') }}
 										</span>
 									</p>
 								</div>
@@ -457,10 +457,10 @@
 					// }, 300);
 				}).catch(err => {
 					if(err.response.status == 400) {
-						swal('Error', err.response.data.error, 'error');
+						swal(this.$t('common.error'), err.response.data.error, 'error');
 					} else if(err.response.status == 403) {
 						self.blocked = true;
-						swal('Profile Unavailable', 'You cannot message this profile at this time.', 'error');
+						swal(this.$t('spa.directMessage.profileUnavailable'), this.$t('spa.directMessage.profileUnavailableText'), 'error');
 					}
 				})
 				this.replyText = '';
@@ -471,7 +471,7 @@
 			},
 
 			deleteMessage(index) {
-				let c = window.confirm('Are you sure you want to delete this message?');
+				let c = window.confirm(this.$t('spa.directMessage.deleteConfirm'));
 				if(c) {
 					axios.delete('/api/direct/message', {
 						params: {
@@ -518,7 +518,7 @@
 					let acceptedMimes = self.config.uploader.media_types.split(',');
 					let validated = $.inArray(type, acceptedMimes);
 					if(validated == -1) {
-						swal('Invalid File Type', 'The file you are trying to add is not a valid mime type. Please upload a '+self.config.uploader.media_types+' only.', 'error');
+						swal(self.$t('spa.directMessage.invalidFileType'), self.$t('spa.directMessage.invalidFileTypeText', { types: self.config.uploader.media_types }), 'error');
 						self.uploading = false;
 						return;
 					}
@@ -560,13 +560,13 @@
 								case 451:
 								self.uploading = false;
 								io.value = null;
-								swal('Banned Content', 'This content has been banned and cannot be uploaded.', 'error');
+								swal(self.$t('spa.directMessage.bannedContent'), self.$t('spa.directMessage.bannedContentText'), 'error');
 								break;
 
 								default:
 								self.uploading = false;
 								io.value = null;
-								swal('Oops, something went wrong!', 'An unexpected error occurred.', 'error');
+								swal(self.$t('spa.directMessage.uploadError'), self.$t('spa.directMessage.uploadErrorText'), 'error');
 								break;
 							}
 						}

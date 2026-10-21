@@ -6,8 +6,8 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-8 col-12">
-                    <p class="display-1 text-white d-inline-block mb-0">Curated Onboarding</p>
-                    <p class="text-white mb-0">The ideal solution for communities seeking a balance between open registration and invite-only membership</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.curatedRegister.shared.title') }}</p>
+                    <p class="text-white mb-0">{{ __('admin_panel.curatedRegister.shared.tagline') }}</p>
                 </div>
             </div>
         </div>
@@ -22,18 +22,18 @@
         @if($records && $records->count())
         <div class="select-all-menu" style="display: none;">
             <form class="form-inline" id="select-form">
-                <p class="mb-2 align-middle text-sm mr-2 font-weight-bold text-muted">Select an action:</p>
-                <label class="sr-only" for="actionInput">Action</label>
+                <p class="mb-2 align-middle text-sm mr-2 font-weight-bold text-muted">{{ __('admin_panel.curatedRegister.index.selectAnAction') }}</p>
+                <label class="sr-only" for="actionInput">{{ __('admin_panel.curatedRegister.index.action') }}</label>
                 <select class="custom-select mb-2 mr-sm-2" id="actionInput">
-                    <option selected disabled>Select action</option>
-                    <option value="silently-reject-all" data-action="silently reject">Silently reject all</option>
-                    <option value="email-reject-all" data-action="reject all w/ email">Reject all w/ email</option>
+                    <option selected disabled>{{ __('admin_panel.curatedRegister.index.selectAction') }}</option>
+                    <option value="silently-reject-all" data-action="silently reject">{{ __('admin_panel.curatedRegister.index.silentlyRejectAll') }}</option>
+                    <option value="email-reject-all" data-action="reject all w/ email">{{ __('admin_panel.curatedRegister.index.rejectAllWithEmail') }}</option>
                     <option disabled value="">-------------------</option>
-                    <option value="request-info" data-action="request more info">Request more info</option>
+                    <option value="request-info" data-action="request more info">{{ __('admin_panel.curatedRegister.index.requestMoreInfo') }}</option>
                     <option disabled value="">-------------------</option>
-                    <option value="approve-all" data-action="approve all">Approve all</option>
+                    <option value="approve-all" data-action="approve all">{{ __('admin_panel.curatedRegister.index.approveAll') }}</option>
                 </select>
-                <button type="submit" class="btn btn-primary mb-2" id="actionInputButton" disabled>Submit</button>
+                <button type="submit" class="btn btn-primary mb-2" id="actionInputButton" disabled>{{ __('admin_panel.common.submit') }}</button>
             </form>
         </div>
         <div class="table-responsive rounded">
@@ -46,14 +46,14 @@
                                 <label class="custom-control-label" for="selectall"></label>
                             </div>
                         </th>
-                        <th scope="col">ID</th>
-                        <th scope="col">Username</th>
+                        <th scope="col">{{ __('admin_panel.common.id') }}</th>
+                        <th scope="col">{{ __('admin_panel.common.username') }}</th>
                         @if(in_array($filter, ['all', 'open', 'awaiting', 'responses']))
-                        <th scope="col">Status</th>
+                        <th scope="col">{{ __('admin_panel.common.status') }}</th>
                         @endif
-                        <th scope="col">Reason for Joining</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Created</th>
+                        <th scope="col">{{ __('admin_panel.curatedRegister.index.reasonForJoining') }}</th>
+                        <th scope="col">{{ __('admin_panel.curatedRegister.index.email') }}</th>
+                        <th scope="col">{{ __('admin_panel.common.created') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,7 +102,7 @@
         <div class="card">
             <div class="card-body">
                 <p class="text-center"><i class="far fa-check-circle fa-6x text-success"></i></p>
-                <p class="lead text-center">No {{ request()->filled('filter') ? request()->filter : 'open' }} applications found!</p>
+                <p class="lead text-center">{{ __('admin_panel.curatedRegister.index.noApplications.' . (request()->filled('filter') ? request()->filter : 'open')) }}</p>
             </div>
         </div>
         @endif
@@ -172,27 +172,27 @@
         }
 
         let actionMap = {
-            'silently-reject-all': 'silently reject all these applications?',
-            'email-reject-all': 'reject and notify applicants via email?',
-            'request-info': 'request more info from these applicants?',
-            'approve-all': 'approve all these applicants?',
+            'silently-reject-all': @json(__('admin_panel.curatedRegister.index.confirmSilentlyRejectAll')),
+            'email-reject-all': @json(__('admin_panel.curatedRegister.index.confirmEmailRejectAll')),
+            'request-info': @json(__('admin_panel.curatedRegister.index.confirmRequestInfo')),
+            'approve-all': @json(__('admin_panel.curatedRegister.index.confirmApproveAll')),
         }
 
         let wrapper = document.createElement('div');
         let warning = document.createElement('p');
         warning.classList.add('text-left');
-        warning.innerHTML = 'Are you sure you want to ' + actionMap[action];
+        warning.innerHTML = actionMap[action];
         wrapper.appendChild(warning)
 
         swal({
-            title: "Confirm",
+            title: @json(__('admin_panel.curatedRegister.index.confirm')),
             content: wrapper,
             icon: "warning",
             dangerMode: true,
             buttons: {
-                cancel: "Cancel",
+                cancel: @json(__('admin_panel.common.cancel')),
                 confirm: {
-                  text: "Proceed",
+                  text: @json(__('admin_panel.curatedRegister.index.proceed')),
                   value: "proceed",
                 }
             },
@@ -206,7 +206,7 @@
                     let warning = document.createElement('p');
                     wrapper.classList.add('list-group')
                     warning.classList.add('text-left');
-                    warning.innerHTML = 'Select a message to send:';
+                    warning.innerHTML = @json(__('admin_panel.curatedRegister.index.selectMessageToSend'));
                     wrapper.appendChild(warning);
 
                     messages.forEach(m => {
@@ -221,7 +221,7 @@
                     })
 
                     swal({
-                        title: "Select Message Template",
+                        title: @json(__('admin_panel.curatedRegister.index.selectMessageTemplate')),
                         content: wrapper,
                         icon: "warning",
                         dangerMode: true,
@@ -243,7 +243,7 @@
                         window.location.reload()
                     })
                     .catch((error) => {
-                        swal('Error', 'An error occured, please try again later!', 'error');
+                        swal(@json(__('admin_panel.curatedRegister.index.error')), @json(__('admin_panel.curatedRegister.index.errorTryAgain')), 'error');
                         console.error('Promise chain failed:', error);
                     });
                 }
@@ -253,14 +253,14 @@
 
     function handleRequestType(type, ids) {
         swal({
-            title: 'Confirm Message Request',
+            title: @json(__('admin_panel.curatedRegister.index.confirmMessageRequest')),
             text: type.content,
             icon: "warning",
             dangerMode: true,
             buttons: {
-                cancel: "Cancel",
+                cancel: @json(__('admin_panel.common.cancel')),
                 confirm: {
-                  text: "Proceed",
+                  text: @json(__('admin_panel.curatedRegister.index.proceed')),
                   value: "proceed",
                 }
             }
@@ -281,7 +281,7 @@
                     window.location.reload()
                 })
                 .catch((error) => {
-                    swal('Error', 'An error occured, please try again later!', 'error');
+                    swal(@json(__('admin_panel.curatedRegister.index.error')), @json(__('admin_panel.curatedRegister.index.errorTryAgain')), 'error');
                     console.error('Promise chain failed:', error);
                 });
             } else {

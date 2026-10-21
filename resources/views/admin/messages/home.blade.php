@@ -7,7 +7,7 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <p class="display-1 text-white d-inline-block mb-0">Messages</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.messages.home.title') }}</p>
                 </div>
             </div>
         </div>
@@ -33,15 +33,15 @@
         <div class="col-12">
             <ul class="nav nav-pills my-3">
                 <li class="nav-item">
-                    <a class="nav-link {{$sort=='all'?'active':''}}" href="?sort=all">All</a>
+                    <a class="nav-link {{$sort=='all'?'active':''}}" href="?sort=all">{{ __('admin_panel.messages.home.all') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{$sort=='open'?'active':''}}" href="?sort=open">Open</a>
+                    <a class="nav-link {{$sort=='open'?'active':''}}" href="?sort=open">{{ __('admin_panel.messages.home.open') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{$sort=='closed'?'active':''}}" href="?sort=closed">Closed</a>
+                    <a class="nav-link {{$sort=='closed'?'active':''}}" href="?sort=closed">{{ __('admin_panel.messages.home.closed') }}</a>
                 </li>
             </ul>
         </div>
@@ -51,9 +51,9 @@
                 <thead class="bg-light">
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Created</th>
+                    <th scope="col">{{ __('admin_panel.messages.home.user') }}</th>
+                    <th scope="col">{{ __('admin_panel.messages.home.message') }}</th>
+                    <th scope="col">{{ __('admin_panel.common.created') }}</th>
                   </tr>
                 </thead>
                 <tbody>

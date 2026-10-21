@@ -5,26 +5,26 @@
                 <div v-if="tabIndex === 0" class="card-body d-flex align-items-center justify-content-center">
                     <div class="text-center">
                         <b-spinner variant="muted" />
-                        <p class="text-muted mb-0">Loading...</p>
+                        <p class="text-muted mb-0">{{ $t('common.loading') }}</p>
                     </div>
                 </div>
 
                 <div v-else-if="tabIndex === 1" class="card-body">
                     <div class="d-flex justify-content-center my-3">
-                        <img src="/img/pixelfed-icon-color.png" width="60" alt="Pixelfed logo" />
+                        <img src="/img/pixelfed-icon-color.png" width="60" :alt="$t('admin.invite.logoAlt')" />
                     </div>
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <p class="lead mb-1 text-muted">You've been invited to join</p>
+                        <p class="lead mb-1 text-muted">{{ $t('admin.invite.invitedToJoin') }}</p>
                         <p class="h3 mb-2">{{ instance.uri }}</p>
                         <p class="mb-0 text-muted">
-                            <span>{{ instance.stats.user_count.toLocaleString('en-CA', { compactDisplay: "short", notation: "compact"}) }} users</span>
+                            <span>{{ $t('admin.invite.usersCount', { count: instance.stats.user_count.toLocaleString('en-CA', { compactDisplay: "short", notation: "compact"}) }) }}</span>
                             <span>·</span>
-                            <span>{{ instance.stats.status_count.toLocaleString('en-CA', { compactDisplay: "short", notation: "compact"}) }} posts</span>
+                            <span>{{ $t('admin.invite.postsCount', { count: instance.stats.status_count.toLocaleString('en-CA', { compactDisplay: "short", notation: "compact"}) }) }}</span>
                         </p>
 
                         <div v-if="inviteConfig.message != 'You\'ve been invited to join'">
                             <div class="admin-message">
-                                <p class="small text-light mb-0">Message from admin(s):</p>
+                                <p class="small text-light mb-0">{{ $t('admin.invite.messageFromAdmins') }}</p>
                                 {{ inviteConfig.message }}
                             </div>
                         </div>
@@ -32,11 +32,11 @@
 
                     <div class="mt-5">
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="username">{{ $t('admin.invite.username') }}</label>
                             <input
                                 type="text"
                                 class="form-control form-control-lg"
-                                placeholder="What should everyone call you?"
+                                :placeholder="$t('admin.invite.usernamePlaceholder')"
                                 minlength="2"
                                 maxlength="30"
                                 v-model="form.username" />
@@ -55,35 +55,36 @@
                                 <b-spinner small />
                             </template>
                             <template v-else>
-                                Continue
+                                {{ $t('common.continue') }}
                             </template>
                         </button>
 
                         <p class="login-link">
-                            <a href="/login">Already have an account?</a>
+                            <a href="/login">{{ $t('admin.invite.alreadyHaveAccount') }}</a>
                         </p>
 
-                        <p class="register-terms">
-                            By registering, you agree to our <a href="/site/terms">Terms of Service</a> and <a href="/site/privacy">Privacy Policy</a>.
-                        </p>
+                        <i18n path="admin.invite.registerTerms" tag="p" class="register-terms">
+                            <template v-slot:terms><a href="/site/terms">{{ $t('admin.invite.termsOfService') }}</a></template>
+                            <template v-slot:privacy><a href="/site/privacy">{{ $t('admin.invite.privacyPolicy') }}</a></template>
+                        </i18n>
                     </div>
                 </div>
 
                 <div v-else-if="tabIndex === 2" class="card-body">
                     <div class="d-flex justify-content-center my-3">
-                        <img src="/img/pixelfed-icon-color.png" width="60" alt="Pixelfed logo" />
+                        <img src="/img/pixelfed-icon-color.png" width="60" :alt="$t('admin.invite.logoAlt')" />
                     </div>
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <p class="lead mb-1 text-muted">You've been invited to join</p>
+                        <p class="lead mb-1 text-muted">{{ $t('admin.invite.invitedToJoin') }}</p>
                         <p class="h3 mb-2">{{ instance.uri }}</p>
                     </div>
                     <div class="mt-5">
                         <div class="form-group">
-                            <label for="username">Email Address</label>
+                            <label for="username">{{ $t('admin.invite.emailAddress') }}</label>
                             <input
                                 type="email"
                                 class="form-control form-control-lg"
-                                placeholder="Your email address"
+                                :placeholder="$t('admin.invite.emailPlaceholder')"
                                 v-model="form.email" />
 
                             <p v-if="errors.email" class="form-text text-danger">
@@ -100,7 +101,7 @@
                                 <b-spinner small />
                             </template>
                             <template v-else>
-                                Continue
+                                {{ $t('common.continue') }}
                             </template>
                         </button>
                     </div>
@@ -108,19 +109,19 @@
 
                 <div v-else-if="tabIndex === 3" class="card-body">
                     <div class="d-flex justify-content-center my-3">
-                        <img src="/img/pixelfed-icon-color.png" width="60" alt="Pixelfed logo" />
+                        <img src="/img/pixelfed-icon-color.png" width="60" :alt="$t('admin.invite.logoAlt')" />
                     </div>
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <p class="lead mb-1 text-muted">You've been invited to join</p>
+                        <p class="lead mb-1 text-muted">{{ $t('admin.invite.invitedToJoin') }}</p>
                         <p class="h3 mb-2">{{ instance.uri }}</p>
                     </div>
                     <div class="mt-5">
                         <div class="form-group">
-                            <label for="username">Password</label>
+                            <label for="username">{{ $t('admin.invite.password') }}</label>
                             <input
                                 type="password"
                                 class="form-control form-control-lg"
-                                placeholder="Use a secure password"
+                                :placeholder="$t('admin.invite.passwordPlaceholder')"
                                 minlength="8"
                                 v-model="form.password" />
 
@@ -138,7 +139,7 @@
                                 <b-spinner small />
                             </template>
                             <template v-else>
-                                Continue
+                                {{ $t('common.continue') }}
                             </template>
                         </button>
                     </div>
@@ -146,19 +147,19 @@
 
                 <div v-else-if="tabIndex === 4" class="card-body">
                     <div class="d-flex justify-content-center my-3">
-                        <img src="/img/pixelfed-icon-color.png" width="60" alt="Pixelfed logo" />
+                        <img src="/img/pixelfed-icon-color.png" width="60" :alt="$t('admin.invite.logoAlt')" />
                     </div>
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <p class="lead mb-1 text-muted">You've been invited to join</p>
+                        <p class="lead mb-1 text-muted">{{ $t('admin.invite.invitedToJoin') }}</p>
                         <p class="h3 mb-2">{{ instance.uri }}</p>
                     </div>
                     <div class="mt-5">
                         <div class="form-group">
-                            <label for="username">Confirm Password</label>
+                            <label for="username">{{ $t('admin.invite.confirmPassword') }}</label>
                             <input
                                 type="password"
                                 class="form-control form-control-lg"
-                                placeholder="Use a secure password"
+                                :placeholder="$t('admin.invite.passwordPlaceholder')"
                                 minlength="8"
                                 v-model="form.password_confirm" />
 
@@ -176,7 +177,7 @@
                                 <b-spinner small />
                             </template>
                             <template v-else>
-                                Continue
+                                {{ $t('common.continue') }}
                             </template>
                         </button>
                     </div>
@@ -184,19 +185,19 @@
 
                 <div v-else-if="tabIndex === 5" class="card-body">
                     <div class="d-flex justify-content-center my-3">
-                        <img src="/img/pixelfed-icon-color.png" width="60" alt="Pixelfed logo" />
+                        <img src="/img/pixelfed-icon-color.png" width="60" :alt="$t('admin.invite.logoAlt')" />
                     </div>
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <p class="lead mb-1 text-muted">You've been invited to join</p>
+                        <p class="lead mb-1 text-muted">{{ $t('admin.invite.invitedToJoin') }}</p>
                         <p class="h3 mb-2">{{ instance.uri }}</p>
                     </div>
                     <div class="mt-5">
                         <div class="form-group">
-                            <label for="username">Display Name</label>
+                            <label for="username">{{ $t('admin.invite.displayName') }}</label>
                             <input
                                 type="text"
                                 class="form-control form-control-lg"
-                                placeholder="Add an optional display name"
+                                :placeholder="$t('admin.invite.displayNamePlaceholder')"
                                 minlength="8"
                                 v-model="form.display_name" />
 
@@ -214,7 +215,7 @@
                                 <b-spinner small />
                             </template>
                             <template v-else>
-                                Continue
+                                {{ $t('common.continue') }}
                             </template>
                         </button>
                     </div>
@@ -222,37 +223,37 @@
 
                 <div v-else-if="tabIndex === 6" class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-center my-3">
-                        <img src="/img/pixelfed-icon-color.png" width="60" alt="Pixelfed logo" />
+                        <img src="/img/pixelfed-icon-color.png" width="60" :alt="$t('admin.invite.logoAlt')" />
                     </div>
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <p class="lead mb-1 text-muted">You've been invited to join</p>
+                        <p class="lead mb-1 text-muted">{{ $t('admin.invite.invitedToJoin') }}</p>
                         <p class="h3 mb-2">{{ instance.uri }}</p>
                     </div>
                     <div class="mt-5 d-flex align-items-center justify-content-center flex-column flex-grow-1">
                         <b-spinner variant="muted" />
-                        <p class="text-muted">Registering...</p>
+                        <p class="text-muted">{{ $t('admin.invite.registering') }}</p>
                     </div>
                 </div>
 
                 <div v-else-if="tabIndex === 'invalid-code'" class="card-body d-flex align-items-center justify-content-center">
                     <div>
-                        <h1 class="text-center">Invalid Invite Code</h1>
+                        <h1 class="text-center">{{ $t('admin.invite.invalidCode') }}</h1>
                         <hr>
-                        <p class="text-muted mb-1">The invite code you were provided is not valid, this can happen when:</p>
+                        <p class="text-muted mb-1">{{ $t('admin.invite.invalidCodeIntro') }}</p>
                         <ul class="text-muted">
-                            <li>Invite code has typos</li>
-                            <li>Invite code was already used</li>
-                            <li>Invite code has reached max uses</li>
-                            <li>Invite code has expired</li>
-                            <li>You have been rate limited</li>
+                            <li>{{ $t('admin.invite.reasonTypos') }}</li>
+                            <li>{{ $t('admin.invite.reasonUsed') }}</li>
+                            <li>{{ $t('admin.invite.reasonMaxUses') }}</li>
+                            <li>{{ $t('admin.invite.reasonExpired') }}</li>
+                            <li>{{ $t('admin.invite.reasonRateLimited') }}</li>
                         </ul>
                         <hr>
-                        <a href="/" class="btn btn-primary btn-block rounded-pill font-weight-bold">Go back home</a>
+                        <a href="/" class="btn btn-primary btn-block rounded-pill font-weight-bold">{{ $t('admin.invite.goBackHome') }}</a>
                     </div>
                 </div>
 
                 <div v-else class="card-body">
-                    <p>An error occured.</p>
+                    <p>{{ $t('admin.invite.errorOccurred') }}</p>
                 </div>
             </div>
         </div>

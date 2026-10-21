@@ -7,7 +7,7 @@
 		<div class="header-body">
 			<div class="row align-items-center py-4">
 				<div class="col-lg-6 col-7">
-					<p class="display-1 text-white d-inline-block mb-0">Add Custom Emoji</p>
+					<p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.customEmoji.add.title') }}</p>
 				</div>
 			</div>
 		</div>
@@ -26,25 +26,25 @@
 
 			<div class="card">
 				<div class="card-header font-weight-bold">
-					New Custom Emoji
+					{{ __('admin_panel.customEmoji.add.newCustomEmoji') }}
 				</div>
 
 				<div class="card-body">
 					<form method="post" enctype="multipart/form-data">
 						@csrf
 						<div class="form-group">
-							<label for="shortcode" class="font-weight-light">Shortcode</label>
+							<label for="shortcode" class="font-weight-light">{{ __('admin_panel.customEmoji.add.shortcode') }}</label>
 							<input class="form-control" id="shortcode" name="shortcode" placeholder=":pixelfed:" required>
-							<p class="form-text small font-weight-bold">Must start and end with :</p>
+							<p class="form-text small font-weight-bold">{{ __('admin_panel.customEmoji.add.shortcodeHelp') }}</p>
 						</div>
 
 						<div class="form-group">
-							<label for="media" class="font-weight-light">Emoji Image</label>
+							<label for="media" class="font-weight-light">{{ __('admin_panel.customEmoji.add.emojiImage') }}</label>
 							<input type="file" class="form-control-file" id="media" name="emoji" required>
-							<p class="form-text font-weight-bold"><span class="small">Must be a <kbd>png</kbd> or <kbd>jpg</kbd> under</span> <span class="badge badge-info filesize" data-filesize="{{config('federation.custom_emoji.max_size')}}"></span></p>
+							<p class="form-text font-weight-bold"><span class="small">{!! __('admin_panel.customEmoji.add.imageHelp') !!}</span> <span class="badge badge-info filesize" data-filesize="{{config('federation.custom_emoji.max_size')}}"></span></p>
 						</div>
 						<hr>
-						<button class="btn btn-primary btn-block">Add Emoji</button>
+						<button class="btn btn-primary btn-block">{{ __('admin_panel.customEmoji.add.addEmoji') }}</button>
 					</form>
 				</div>
 			</div>

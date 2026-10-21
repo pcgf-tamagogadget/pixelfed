@@ -11,49 +11,49 @@
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('i/admin/dashboard')?'active':''}} " href="/i/admin/dashboard">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Dashboard</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.dashboard') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*autospam*')?'active':''}}" href="{{route('admin.autospam')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Autospam</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.autospam') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*messages*')?'active':''}}" href="{{route('admin.messages')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Messages</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.messages') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*reports*')?'active':''}}" href="{{route('admin.reports')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Moderation</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.moderation') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*statuses*')?'active':''}}" href="{{route('admin.statuses')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Statuses</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.statuses') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*users*')?'active':''}}" href="{{route('admin.users')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Users</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.users') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*admin/settings')?'active':''}}" href="{{route('admin.settings')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Settings</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.settings') }}</span>
 						</a>
 					</li>
 
@@ -61,7 +61,7 @@
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*admin/curated-onboarding*')?'active':''}}" href="{{route('admin.curated-onboarding')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Curated Onboarding</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.curatedOnboarding') }}</span>
 						</a>
 					</li>
 					@endif
@@ -73,35 +73,35 @@
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*custom-emoji*')?'active':''}}" href="{{route('admin.custom-emoji')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Custom Emoji</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.customEmoji') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*hashtags*')?'active':''}}" href="{{route('admin.hashtags')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Hashtags</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.hashtags') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*instances*')?'active':''}}" href="{{route('admin.instances')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Instances</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.instances') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*media*')?'active':''}}" href="{{route('admin.media')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Media</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.media') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*profiles*')?'active':''}}" href="/i/admin/profiles">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Profiles</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.profiles') }}</span>
 						</a>
 					</li>
 
@@ -115,7 +115,7 @@
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*stories*')?'active':''}}" href="{{route('admin.stories')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Stories</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.stories') }}</span>
 						</a>
 					</li>
 				</ul>
@@ -127,21 +127,21 @@
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*apps*')?'active':''}}" href="{{route('admin.apps')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Apps</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.apps') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*diagnostics*')?'active':''}}" href="{{route('admin.diagnostics')}}">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Diagnostics</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.diagnostics') }}</span>
 						</a>
 					</li>
 
                     <li class="nav-item">
                         <a class="nav-link {{request()->is('*directory*')?'active':''}}" href="{{route('admin.directory')}}">
                             <i class="ni ni-bold-right text-primary"></i>
-                            <span class="nav-link-text">Directory</span>
+                            <span class="nav-link-text">{{ __('admin_panel.nav.directory') }}</span>
                         </a>
                     </li>
 
@@ -165,28 +165,28 @@
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*site-news*')?'active':''}}" href="/i/admin/site-news">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Newsroom</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.newsroom') }}</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*settings/pages*')?'active':''}}" href="/i/admin/settings/pages">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">Pages</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.pages') }}</span>
 						</a>
 					</li>
 
                     <li class="nav-item">
                         <a class="nav-link {{request()->is('*stats')?'active':''}}" href="/i/admin/stats">
                             <i class="ni ni-bold-right text-primary"></i>
-                            <span class="nav-link-text">Stats</span>
+                            <span class="nav-link-text">{{ __('admin_panel.nav.stats') }}</span>
                         </a>
                     </li>
 
 					<li class="nav-item">
 						<a class="nav-link {{request()->is('*settings/system')?'active':''}}" href="/i/admin/settings/system">
 							<i class="ni ni-bold-right text-primary"></i>
-							<span class="nav-link-text">System</span>
+							<span class="nav-link-text">{{ __('admin_panel.nav.system') }}</span>
 						</a>
 					</li>
 				</ul>

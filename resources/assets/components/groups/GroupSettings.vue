@@ -1,7 +1,7 @@
 <template>
 	<div class="group-settings-component">
 		<div v-if="!initalLoad">
-			<p class="text-center mt-5 pt-5 font-weight-bold">Loading...</p>
+			<p class="text-center mt-5 pt-5 font-weight-bold">{{ $t('common.loading') }}</p>
 		</div>
 
 		<div v-else>
@@ -9,16 +9,16 @@
 				<div class="container">
 					<div class="col-12 group-settings-component-header">
 						<div>
-							<h1 class="font-weight-bold mb-4">Group Settings</h1>
+							<h1 class="font-weight-bold mb-4">{{ $t('groups.groupSettings.title') }}</h1>
 							<p class="text-muted mb-0">
 								<span v-once>
 									<i class="fas fa-globe mr-1"></i>
-									{{ group.membership == 'all' ? 'Public Group' : 'Private Group'}}
+									{{ group.membership == 'all' ? $t('groups.groupSettings.publicGroup') : $t('groups.groupSettings.privateGroup') }}
 								</span>
 								<span class="mx-2">
 									·
 								</span>
-								<span>{{ group.member_count == 1 ? group.member_count + ' Member' : group.member_count + ' Members' }}</span>
+								<span>{{ group.member_count == 1 ? $t('groups.groupSettings.memberCount', { count: group.member_count }) : $t('groups.groupSettings.membersCount', { count: group.member_count }) }}</span>
 								<span class="mx-2">
 									·
 								</span>
@@ -30,10 +30,10 @@
 								v-if="isAdmin"
 								class="mr-2 btn btn-outline-secondary rounded-pill cta-btn font-weight-bold"
 								:href="group.url">
-								<i class="fas fa-chevron-left mr-1"></i> Back to Group
+								<i class="fas fa-chevron-left mr-1"></i> {{ $t('groups.groupSettings.backToGroup') }}
 							</a>
 							<button class="btn btn-primary font-weight-bold rounded-pill px-4" :disabled="savingChanges" @click="submit">
-								Save Changes
+								{{ $t('groups.groupSettings.saveChanges') }}
 							</button>
 						</div>
 					</div>
@@ -45,7 +45,7 @@
 									class="nav-link"
 									href="#"
 									@click.prevent="toggleTab('home')">
-									General
+									{{ $t('groups.groupSettings.tabGeneral') }}
 								</a>
 							</li>
 							<li class="nav-item">
@@ -54,7 +54,7 @@
 									class="nav-link"
 									href="#"
 									@click.prevent="toggleTab('customize')">
-									Customize
+									{{ $t('groups.groupSettings.tabCustomize') }}
 								</a>
 							</li>
 							<!-- <li class="nav-item">
@@ -72,7 +72,7 @@
 									class="nav-link"
 									href="#"
 									@click.prevent="toggleTab('blocked')">
-									Domain/User Blocks
+									{{ $t('groups.groupSettings.tabBlocks') }}
 								</a>
 							</li>
 							<li class="nav-item">
@@ -81,7 +81,7 @@
 									class="nav-link"
 									href="#"
 									@click.prevent="toggleTab('interactions')">
-									Interactions
+									{{ $t('groups.groupSettings.tabInteractions') }}
 								</a>
 							</li>
 							<!-- <li class="nav-item">
@@ -96,7 +96,7 @@
 									class="nav-link"
 									href="#"
 									@click.prevent="toggleTab('limits')">
-									Limits
+									{{ $t('groups.groupSettings.tabLimits') }}
 								</a>
 							</li>
 							<!-- <li class="nav-item">
@@ -114,7 +114,7 @@
 									class="nav-link"
 									href="#"
 									@click.prevent="toggleTab('advanced')">
-									Advanced
+									{{ $t('groups.groupSettings.tabAdvanced') }}
 								</a>
 							</li>
 						</ul>
@@ -128,30 +128,30 @@
 					<div class="col-12 col-md-6 offset-md-3">
 						<div class="">
 							<div class="form-group">
-								<label class="font-weight-bold">Name</label>
+								<label class="font-weight-bold">{{ $t('groups.groupSettings.name') }}</label>
 								<input class="form-control" :value="group.name" disabled>
-								<p class="form-text small text-muted">You cannot change a groups name at this time.</p>
+								<p class="form-text small text-muted">{{ $t('groups.groupSettings.nameHelp') }}</p>
 							</div>
 							<hr>
 
 							<div class="form-group">
-								<label class="font-weight-bold">Category</label>
+								<label class="font-weight-bold">{{ $t('groups.groupSettings.category') }}</label>
 								<select class="custom-select" v-model="category">
-									<option value="" selected="" disabled="">Select a category</option>
+									<option value="" selected="" disabled="">{{ $t('groups.groupSettings.selectCategory') }}</option>
 									<option v-for="c in categories" :value="c">{{ c }}</option>
 								</select>
-								<p class="form-text small text-muted">Choose the most relevant category to improve discovery and visibility</p>
+								<p class="form-text small text-muted">{{ $t('groups.groupSettings.categoryHelp') }}</p>
 							</div>
 							<hr>
 
 							<div class="form-group">
-								<label class="font-weight-bold">Description</label>
+								<label class="font-weight-bold">{{ $t('groups.groupSettings.description') }}</label>
 								<textarea class="form-control" rows="4" v-model="group.description" style="resize: none;">
 								</textarea>
 								<span class="form-text small text-muted font-weight-bold text-right">
 									{{group.description ? group.description.length : 0}}/500
 								</span>
-								<p class="form-text small text-muted">A plain text description of your group. Be as descriptive as possible to give potential members a better idea of what to expect.</p>
+								<p class="form-text small text-muted">{{ $t('groups.groupSettings.descriptionHelp') }}</p>
 							</div>
 							<!-- <hr>
 							<div class="form-group">
@@ -216,57 +216,57 @@
 					<div class="col-12 col-md-6 offset-md-3">
 						<div class="">
 							<div class="form-group">
-								<label class="font-weight-bold">Avatar Photo</label>
+								<label class="font-weight-bold">{{ $t('groups.groupSettings.avatarPhoto') }}</label>
 								<div v-if="group.metadata && group.metadata.hasOwnProperty('avatar')" class="d-flex justify-content-between align-items-center">
 									<img :src="group.metadata.avatar.url" width="100" height="100" class="rounded-circle border" style="object-fit: cover;">
 									<p class="mb-0 mt-2 text-lighter">
 										<a href="" class="text-muted font-weight-bold">
-											Preview
+											{{ $t('groups.groupSettings.preview') }}
 										</a>
 										<span class="mx-1">·</span>
 										<a href="" class="text-muted font-weight-bold">
-											Update
+											{{ $t('groups.groupSettings.update') }}
 										</a>
 										<span class="mx-1">·</span>
 										<a href="#" class="text-danger font-weight-bold" @click.prevent="handleDeleteAvatar()">
-											Delete
+											{{ $t('common.delete') }}
 										</a>
 									</p>
 								</div>
 								<div v-else>
 									<div class="custom-file">
 										<input type="file" class="custom-file-input" ref="avatarInput">
-										<label class="custom-file-label" for="avatarInput">Choose file</label>
+										<label class="custom-file-label" for="avatarInput">{{ $t('groups.groupSettings.chooseFile') }}</label>
 									</div>
-									<p class="form-text small text-muted">Must be jpeg or png format, up to 2MB</p>
+									<p class="form-text small text-muted">{{ $t('groups.groupSettings.avatarHelp') }}</p>
 								</div>
 							</div>
 							<hr>
 							<div class="form-group">
-								<label class="font-weight-bold">Header Photo</label>
+								<label class="font-weight-bold">{{ $t('groups.groupSettings.headerPhoto') }}</label>
 
 								<div v-if="group.metadata && group.metadata.hasOwnProperty('header')" class="d-flex justify-content-between align-items-center">
 									<img :src="group.metadata.header.url" width="200" height="100" class="rounded border" style="object-fit: cover;">
 									<p class="mb-0 mt-2 text-lighter">
 										<a href="" class="text-muted font-weight-bold">
-											Preview
+											{{ $t('groups.groupSettings.preview') }}
 										</a>
 										<span class="mx-1">·</span>
 										<a href="" class="text-muted font-weight-bold">
-											Update
+											{{ $t('groups.groupSettings.update') }}
 										</a>
 										<span class="mx-1">·</span>
 										<a href="#" class="text-danger font-weight-bold" @click.prevent="handleDeleteHeader()">
-											Delete
+											{{ $t('common.delete') }}
 										</a>
 									</p>
 								</div>
 								<div v-else>
 									<div class="custom-file">
 										<input type="file" class="custom-file-input" ref="headerInput">
-										<label class="custom-file-label" for="headerInput">Choose file</label>
+										<label class="custom-file-label" for="headerInput">{{ $t('groups.groupSettings.chooseFile') }}</label>
 									</div>
-									<p class="form-text small text-muted">Must be jpeg or png format, up to 10MB</p>
+									<p class="form-text small text-muted">{{ $t('groups.groupSettings.headerHelp') }}</p>
 								</div>
 							</div>
 						</div>
@@ -275,8 +275,8 @@
 
 				<div v-if="tab == 'interactions'" class="row">
 					<div class="col-12 col-md-3">
-						<p class="lead">The <strong>Interaction Log</strong> displays all member activities relating to this group.</p>
-						<p class="lead">You may see logs from blocked, deleted and remote accounts.</p>
+						<i18n path="groups.groupSettings.interactionLogIntro" tag="p" class="lead"><template v-slot:log><strong>{{ $t('groups.groupSettings.interactionLog') }}</strong></template></i18n>
+						<p class="lead">{{ $t('groups.groupSettings.interactionLogRemote') }}</p>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="list-group">
@@ -286,53 +286,31 @@
 									<div class="media-body">
 										<span class="font-weight-bold">{{log.profile.username}}</span>
 
-										<span v-if="log.type == 'group:comment:created'">
-											commented on a <a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">post</a>
-										</span>
+										<i18n v-if="log.type == 'group:comment:created'" path="groups.groupSettings.logCommented" tag="span"><template v-slot:post><a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logPost') }}</a></template></i18n>
 
 										<span v-else-if="log.type == 'group:joined'">
-											joined the group
+											{{ $t('groups.groupSettings.logJoined') }}
 										</span>
 
-										<span v-else-if="log.type == 'group:like'">
-											liked a <a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">post</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:like'" path="groups.groupSettings.logLiked" tag="span"><template v-slot:post><a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logPost') }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:settings:updated'">
-											updated the <a href="" class="font-weight-bold">group settings</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:settings:updated'" path="groups.groupSettings.logSettingsUpdated" tag="span"><template v-slot:settings><a href="" class="font-weight-bold">{{ $t('groups.groupSettings.logGroupSettings') }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:status:created'">
-											created a <a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">post</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:status:created'" path="groups.groupSettings.logCreatedPost" tag="span"><template v-slot:post><a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logPost') }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:status:deleted'">
-											deleted a <a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">post</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:status:deleted'" path="groups.groupSettings.logDeletedPost" tag="span"><template v-slot:post><a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logPost') }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:unlike'">
-											unliked a <a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">post</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:unlike'" path="groups.groupSettings.logUnliked" tag="span"><template v-slot:post><a :href="sidToUrl(log.metadata.status_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logPost') }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:admin:block:instance'">
-											blocked <span class="font-weight-bold text-primary">{{ log.metadata.domain }}</span>
-										</span>
+										<i18n v-else-if="log.type == 'group:admin:block:instance'" path="groups.groupSettings.logBlocked" tag="span"><template v-slot:target><span class="font-weight-bold text-primary">{{ log.metadata.domain }}</span></template></i18n>
 
-										<span v-else-if="log.type == 'group:admin:block:user'">
-											blocked <a class="font-weight-bold text-primary" :href="'/' + log.metadata.username">{{ log.metadata.username }}</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:admin:block:user'" path="groups.groupSettings.logBlocked" tag="span"><template v-slot:target><a class="font-weight-bold text-primary" :href="'/' + log.metadata.username">{{ log.metadata.username }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:report:create'">
-											created a <a :href="reportUrl(log.metadata.report_id)" class="font-weight-bold">report</a> about <a :href="'/' + log.metadata.username" class="font-weight-bold">{{ log.metadata.username}}</a>'s <a :href="log.metadata.url" class="font-weight-bold">post</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:report:create'" path="groups.groupSettings.logReportCreated" tag="span"><template v-slot:report><a :href="reportUrl(log.metadata.report_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logReport') }}</a></template><template v-slot:username><a :href="'/' + log.metadata.username" class="font-weight-bold">{{ log.metadata.username }}</a></template><template v-slot:post><a :href="log.metadata.url" class="font-weight-bold">{{ $t('groups.groupSettings.logPost') }}</a></template></i18n>
 
-										<span v-else-if="log.type == 'group:moderation:action'">
-											handled a <a :href="reportUrl(log.metadata.report_id)" class="font-weight-bold">mod report</a> regarding <a :href="log.metadata.status_url" class="font-weight-bold">this post</a>
-										</span>
+										<i18n v-else-if="log.type == 'group:moderation:action'" path="groups.groupSettings.logModAction" tag="span"><template v-slot:report><a :href="reportUrl(log.metadata.report_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logModReport') }}</a></template><template v-slot:post><a :href="log.metadata.status_url" class="font-weight-bold">{{ $t('groups.groupSettings.logThisPost') }}</a></template></i18n>
 
-										<span v-else-if="log.type =='group:member-limits:updated'">
-											updated <a :href="memberInteractionUrl(log.metadata.profile_id)" class="font-weight-bold">interaction limits</a> for <a :href="'/' + log.metadata.username" class="font-weight-bold">{{ log.metadata.username }}</a>
-										</span>
+										<i18n v-else-if="log.type =='group:member-limits:updated'" path="groups.groupSettings.logLimitsUpdated" tag="span"><template v-slot:limits><a :href="memberInteractionUrl(log.metadata.profile_id)" class="font-weight-bold">{{ $t('groups.groupSettings.logInteractionLimits') }}</a></template><template v-slot:username><a :href="'/' + log.metadata.username" class="font-weight-bold">{{ log.metadata.username }}</a></template></i18n>
 
 										<span v-else>{{log.type}}</span>
 
@@ -341,76 +319,76 @@
 								</div>
 							</div>
 							<div v-if="interactionLogShowMore" class="list-group-item">
-								<button class="btn btn-light font-weight-bold btn-block" @click="loadMoreInteractions">Load more</button>
+								<button class="btn btn-light font-weight-bold btn-block" @click="loadMoreInteractions">{{ $t('groups.groupSettings.loadMore') }}</button>
 							</div>
 						</div>
 					</div>
 					<div class="col-12 col-md-3">
-						<p class="font-weight-bold small">SEARCH</p>
+						<p class="font-weight-bold small">{{ $t('groups.groupSettings.searchHeading') }}</p>
 						<div class="form-group">
-							<input class="form-control rounded-pill" placeholder="Search username, type or url"/>
+							<input class="form-control rounded-pill" :placeholder="$t('groups.groupSettings.searchPlaceholder')"/>
 						</div>
 						<hr>
 
-						<p class="font-weight-bold small">ACTIVITIES</p>
+						<p class="font-weight-bold small">{{ $t('groups.groupSettings.activitiesHeading') }}</p>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" checked id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Joined Group
+								{{ $t('groups.groupSettings.filterJoined') }}
 							</label>
 						</div>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" checked id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Left Group
+								{{ $t('groups.groupSettings.filterLeft') }}
 							</label>
 						</div>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" checked id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Posts
+								{{ $t('groups.groupSettings.filterPosts') }}
 							</label>
 						</div>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" checked id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Comments
+								{{ $t('groups.groupSettings.filterComments') }}
 							</label>
 						</div>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" checked id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Likes
+								{{ $t('groups.groupSettings.filterLikes') }}
 							</label>
 						</div>
 
 						<hr>
 
-						<p class="font-weight-bold small">FILTERS</p>
+						<p class="font-weight-bold small">{{ $t('groups.groupSettings.filtersHeading') }}</p>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" value="" id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Local members only
+								{{ $t('groups.groupSettings.filterLocalOnly') }}
 							</label>
 						</div>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" value="" id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Remote members only
+								{{ $t('groups.groupSettings.filterRemoteOnly') }}
 							</label>
 						</div>
 
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" value="" id="filter1">
 							<label class="form-check-label font-weight-bold" for="filter1">
-								Blocked members only
+								{{ $t('groups.groupSettings.filterBlockedOnly') }}
 							</label>
 						</div>
 					</div>
@@ -418,15 +396,15 @@
 
 				<div v-if="tab == 'blocked'" class="row">
 					<div class="col-12 col-md-3">
-						<p class="h5">Blocked Instances &amp; Users</p>
-						<p>Fine-grained control over who can join and interact with your group</p>
-						<p>Blocking an instance will revoke membership from users on that instance and prevent other users on that instance from joining</p>
-						<p>Blocking a user will revoke membership and remove all interactions from that user</p>
-						<p>Moderating an instance will require all new membership requests from that instance to be approved by a group admin before the specific user can join</p>
+						<p class="h5">{{ $t('groups.groupSettings.blockedTitle') }}</p>
+						<p>{{ $t('groups.groupSettings.blockedIntro') }}</p>
+						<p>{{ $t('groups.groupSettings.blockInstanceHelp') }}</p>
+						<p>{{ $t('groups.groupSettings.blockUserHelp') }}</p>
+						<p>{{ $t('groups.groupSettings.moderateInstanceHelp') }}</p>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="card mb-3">
-							<div class="card-header text-muted font-weight-bold small">Blocked Instances</div>
+							<div class="card-header text-muted font-weight-bold small">{{ $t('groups.groupSettings.blockedInstances') }}</div>
 							<div class="list-group list-group-flush">
 								<div v-for="instance in blockedInstances" class="list-group-item d-flex justify-content-between align-items-center">
 									<div>
@@ -437,13 +415,13 @@
 									</button>
 								</div>
 								<div v-if="blockedInstances.length == 3" class="list-group-item">
-									<p class="mb-0 small font-weight-bold text-lighter text-center">View All</p>
+									<p class="mb-0 small font-weight-bold text-lighter text-center">{{ $t('groups.groupSettings.viewAll') }}</p>
 								</div>
 							</div>
 						</div>
 
 						<div class="card mb-3">
-							<div class="card-header text-muted font-weight-bold small">Blocked Users</div>
+							<div class="card-header text-muted font-weight-bold small">{{ $t('groups.groupSettings.blockedUsers') }}</div>
 							<div class="list-group list-group-flush">
 								<div v-for="instance in blockedUsers" class="list-group-item d-flex justify-content-between align-items-center">
 									<div>
@@ -454,13 +432,13 @@
 									</button>
 								</div>
 								<div v-if="blockedUsers.length == 3" class="list-group-item">
-									<p class="mb-0 small font-weight-bold text-lighter text-center">View All</p>
+									<p class="mb-0 small font-weight-bold text-lighter text-center">{{ $t('groups.groupSettings.viewAll') }}</p>
 								</div>
 							</div>
 						</div>
 
 						<div class="card mb-3">
-							<div class="card-header text-muted font-weight-bold small">Moderated Join Requests</div>
+							<div class="card-header text-muted font-weight-bold small">{{ $t('groups.groupSettings.moderatedJoinRequests') }}</div>
 							<div class="list-group list-group-flush">
 								<div v-for="instance in moderatedInstances" class="list-group-item d-flex justify-content-between align-items-center">
 									<div>
@@ -474,12 +452,12 @@
 						</div>
 					</div>
 					<div class="col-12 col-md-3">
-						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="blockAction('instance')">Block Instance</button>
-						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="blockAction('user')">Block User</button>
-						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="blockAction('moderate')">Moderate Join Requests</button>
+						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="blockAction('instance')">{{ $t('groups.groupSettings.blockInstance') }}</button>
+						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="blockAction('user')">{{ $t('groups.groupSettings.blockUser') }}</button>
+						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="blockAction('moderate')">{{ $t('groups.groupSettings.moderateJoinRequests') }}</button>
 						<hr>
-						<button class="btn btn-light border btn-block font-weight-bold">Import</button>
-						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="exportBlocks()">Export</button>
+						<button class="btn btn-light border btn-block font-weight-bold">{{ $t('groups.groupSettings.import') }}</button>
+						<button class="btn btn-light border btn-block font-weight-bold" @click.prevent="exportBlocks()">{{ $t('groups.groupSettings.export') }}</button>
 					</div>
 				</div>
 
@@ -488,11 +466,11 @@
 
 						<div class="mt-3">
 							<div class="form-group">
-								<label class="font-weight-bold">Membership</label>
+								<label class="font-weight-bold">{{ $t('groups.groupSettings.membership') }}</label>
 								<select class="form-control rounded-pill" v-model="group.membership">
-									<option value="all">Public</option>
-									<option value="private">Private</option>
-									<option value="local">Local</option>
+									<option value="all">{{ $t('groups.groupSettings.membershipPublic') }}</option>
+									<option value="private">{{ $t('groups.groupSettings.membershipPrivate') }}</option>
+									<option value="local">{{ $t('groups.groupSettings.membershipLocal') }}</option>
 								</select>
 
 								<p class="help-text mt-1">
@@ -532,7 +510,7 @@
 								<div class="mb-1">
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" v-model="advanced.activitypub">
-										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">Enable ActivityPub</label>
+										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">{{ $t('groups.groupSettings.enableActivityPub') }}</label>
 									</div>
 								</div>
 
@@ -541,8 +519,8 @@
 										<div class="media align-items-center">
 											<i class="far fa-exclamation-circle fa-2x mr-3"></i>
 											<div class="media-body">
-												<p class="font-weight-bold mb-0">Federation Warning</p>
-												<p class="small mb-0" style="font-weight:600;">Groups that choose to disable federation later will lose remote content and members and cannot re-enable federation for 24 hours. You can change this later</p>
+												<p class="font-weight-bold mb-0">{{ $t('groups.groupSettings.federationWarning') }}</p>
+												<p class="small mb-0" style="font-weight:600;">{{ $t('groups.groupSettings.federationWarningHelp') }}</p>
 											</div>
 										</div>
 									</div>
@@ -557,7 +535,7 @@
 								<div class="mb-1">
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" v-model="advanced.is_nsfw">
-										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">Allow adult content (18+)</label>
+										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">{{ $t('groups.groupSettings.allowAdultContent') }}</label>
 									</div>
 								</div>
 
@@ -566,8 +544,8 @@
 										<div class="media align-items-center">
 											<i class="far fa-exclamation-circle fa-2x mr-3"></i>
 											<div class="media-body">
-												<p class="font-weight-bold mb-0">Adult Content Warning</p>
-												<p class="small mb-0" style="font-weight:600;">Groups that allow adult content should enable this or risk suspension or deletion by instance admins. Illegal content is prohibited. You can change this later</p>
+												<p class="font-weight-bold mb-0">{{ $t('groups.groupSettings.adultContentWarning') }}</p>
+												<p class="small mb-0" style="font-weight:600;">{{ $t('groups.groupSettings.adultContentWarningHelp') }}</p>
 											</div>
 										</div>
 									</div>
@@ -582,12 +560,12 @@
 								<div class="mb-1">
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" v-model="advanced.discoverable">
-										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">Make group discoverable</label>
+										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">{{ $t('groups.groupSettings.makeDiscoverable') }}</label>
 									</div>
 
 									<p class="help-text small text-muted">
 										<span>
-											Being discoverable means that your group appears in search results, on the discover page and can be used in group recommendations
+											{{ $t('groups.groupSettings.discoverableHelp') }}
 										</span>
 									</p>
 								</div>
@@ -601,12 +579,12 @@
 								<div class="mb-1">
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox">
-										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">Enable spam detection</label>
+										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">{{ $t('groups.groupSettings.enableSpamDetection') }}</label>
 									</div>
 
 									<p class="help-text small text-muted">
 										<span>
-											Detect and temporarily remove content classified as spam from new members until it can be reviewed by a group admin. <strong>We do not recommend enabling this unless you have or expect periodic spam as it may produce false-positives and reduce member experience &amp; retention.</strong>
+											{{ $t('groups.groupSettings.spamDetectionHelp') }} <strong>{{ $t('groups.groupSettings.spamDetectionWarning') }}</strong>
 										</span>
 									</p>
 								</div>
@@ -620,13 +598,11 @@
 								<div class="mb-1">
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox">
-										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">Enable admin direct messages</label>
+										<label class="form-check-label font-weight-bold text-dark text-capitalize ml-1">{{ $t('groups.groupSettings.enableAdminDm') }}</label>
 									</div>
 
 									<p class="help-text small text-muted">
-										<span>
-											Allow {{ group.membership == 'local' ? 'local users' : group.membership == 'private' ? 'members' : 'anyone'}} to <a href="#">direct message</a> group admins. The direct message inbox is separate from your own account.
-										</span>
+										<i18n path="groups.groupSettings.adminDmHelp" tag="span"><template v-slot:audience>{{ group.membership == 'local' ? $t('groups.groupSettings.audienceLocal') : group.membership == 'private' ? $t('groups.groupSettings.audienceMembers') : $t('groups.groupSettings.audienceAnyone') }}</template><template v-slot:dm><a href="#">{{ $t('groups.groupSettings.directMessage') }}</a></template></i18n>
 									</p>
 								</div>
 							</div>
@@ -634,25 +610,25 @@
 						</div>
 
 
-						<h4 class="font-weight-bold pt-3">Danger Zone</h4>
+						<h4 class="font-weight-bold pt-3">{{ $t('groups.groupSettings.dangerZone') }}</h4>
 						<div class="mb-4 border rounded border-danger">
 							<ul class="list-group mb-0 pb-0">
 								<li class="list-group-item border-left-0 border-right-0 py-3 d-flex justify-content-between disabled">
 									<div>
-										<p class="font-weight-bold mb-1">Temporarily Disable Group</p>
-										<p class="mb-0 small">Not available</p>
+										<p class="font-weight-bold mb-1">{{ $t('groups.groupSettings.disableGroup') }}</p>
+										<p class="mb-0 small">{{ $t('groups.groupSettings.notAvailable') }}</p>
 									</div>
 									<div>
-										<a class="btn btn-outline-danger font-weight-bold py-1" href="#">Disable</a>
+										<a class="btn btn-outline-danger font-weight-bold py-1" href="#">{{ $t('groups.groupSettings.disable') }}</a>
 									</div>
 								</li>
 								<li class="list-group-item border-left-0 border-right-0 py-3 d-flex justify-content-between">
 									<div>
-										<p class="font-weight-bold mb-1">Delete Group</p>
-										<p class="mb-0 small">Once you delete your group, there is no going back.</p>
+										<p class="font-weight-bold mb-1">{{ $t('groups.groupSettings.deleteGroup') }}</p>
+										<p class="mb-0 small">{{ $t('groups.groupSettings.deleteGroupHelp') }}</p>
 									</div>
 									<div>
-										<button class="btn btn-outline-danger font-weight-bold py-1" @click="deleteGroup">Delete Group</button>
+										<button class="btn btn-outline-danger font-weight-bold py-1" @click="deleteGroup">{{ $t('groups.groupSettings.deleteGroup') }}</button>
 									</div>
 								</li>
 							</ul>
@@ -720,13 +696,18 @@
 				],
 				importBlocksData: {},
 				importBlocksUploaded: false,
-				membershipDescription: {
-					all: 'Anyone can join your group',
-					local: 'Only local users can join your group',
-					private: 'Only users you approve can join your group'
-				},
 				advanced: {}
 			};
+		},
+
+		computed: {
+			membershipDescription() {
+				return {
+					all: this.$t('groups.groupSettings.membershipAll'),
+					local: this.$t('groups.groupSettings.membershipLocalHelp'),
+					private: this.$t('groups.groupSettings.membershipPrivateHelp')
+				};
+			}
 		},
 
 		beforeMount() {
@@ -800,11 +781,11 @@
 				.then(res => {
 					this.savingChanges = false;
 					this.group = res.data;
-					swal('Updated!', 'Successfully updated group settings.', 'success');
+					swal(this.$t('groups.groupSettings.updatedTitle'), this.$t('groups.groupSettings.updatedMsg'), 'success');
 				}).catch(err => {
 					this.savingChanges = false;
 					console.log(err.response);
-					swal('Oops!', 'An error occured while attempting to save changes. Please try again later.', 'error');
+					swal(this.$t('common.oops'), this.$t('groups.groupSettings.saveError'), 'error');
 				});
 			},
 
@@ -895,7 +876,7 @@
 				let type = action == 'user' ? 'user' : 'instance domain';
 
 				swal({
-					text: `Which ${type}?`,
+					text: type == 'user' ? this.$t('groups.groupSettings.whichUser') : this.$t('groups.groupSettings.whichInstance'),
 					content: {
 						element: 'input',
 						attributes: {
@@ -903,14 +884,14 @@
       					}
 					},
 					button: {
-						text: "Next",
+						text: this.$t('common.next'),
 						closeModal: false,
 					},
 				})
 				.then(name => {
 					if (!name) throw null;
 					if(action !== 'user' && name.startsWith('http')) {
-						swal('Oops!', 'Please enter the instance domain (eg: pixelfed.social)', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.groupSettings.enterInstanceDomain'), 'error');
 						return null;
 					}
 					return name;
@@ -933,16 +914,16 @@
 					});
 				}).then(name => {
 					if(!name) {
-						this.$bvToast.toast(`Invalid ${action}, please try again`, {
-							title: 'Error',
+						this.$bvToast.toast(action == 'user' ? this.$t('groups.groupSettings.invalidUser') : this.$t('groups.groupSettings.invalidInstance'), {
+							title: this.$t('common.error'),
 							variant: 'danger',
 							autoHideDelay: 5000
 						});
 						return;
 					}
 					swal({
-						title: "Are you sure?",
-						text: action === 'moderate' ? `Manually approve all membership requests from ${name}` : `Limiting ${name} will purge and reject all interactions with this group`,
+						title: this.$t('groups.groupSettings.areYouSure'),
+						text: action === 'moderate' ? this.$t('groups.groupSettings.confirmModerate', { name: name }) : this.$t('groups.groupSettings.confirmLimit', { name: name }),
 						icon: "warning",
 						buttons: true,
 						dangerMode: true,
@@ -984,7 +965,7 @@
 			},
 
             handleDeleteAvatar() {
-                if(!window.confirm('Are you sure you want to delete your group avatar image?')) {
+                if(!window.confirm(this.$t('groups.groupSettings.confirmDeleteAvatar'))) {
                     return;
                 }
                 this.savingChanges = true;
@@ -996,7 +977,7 @@
             },
 
 			handleDeleteHeader() {
-				if(!window.confirm('Are you sure you want to delete your group header image?')) {
+				if(!window.confirm(this.$t('groups.groupSettings.confirmDeleteHeader'))) {
 					return;
 				}
 				this.savingChanges = true;
@@ -1008,20 +989,20 @@
 			},
 
 			undoBlock(type, val) {
-				let action = type == 'moderate' ? `unblock ${val}?` : `allow anyone to join without approval from ${val}?`;
+				let text = type == 'moderate' ? this.$t('groups.groupSettings.confirmUnblock', { item: val }) : this.$t('groups.groupSettings.confirmAllowJoin', { item: val });
 				swal({
-					'title': 'Confirm',
-					'text': `Are you sure you want to ${action}`,
+					'title': this.$t('groups.groupSettings.confirm'),
+					'text': text,
 					'buttons': {
 						cancel: {
-							text: "Cancel",
+							text: this.$t('common.cancel'),
 							value: null,
 							visible: true,
 							className: "",
 							closeModal: true,
 						},
 						confirm: {
-							text: "Proceed",
+							text: this.$t('common.proceed'),
 							value: true,
 							visible: true,
 							className: "",

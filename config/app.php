@@ -92,6 +92,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Browser Locale Negotiation
+    |--------------------------------------------------------------------------
+    |
+    | When a visitor has not chosen a language (and is not signed in with a
+    | saved one), pick the closest available locale from the browser's
+    | Accept-Language header. Set to false to always use app.locale.
+    |
+    */
+
+    'locale_negotiation' => (bool) env('APP_LOCALE_NEGOTIATION', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

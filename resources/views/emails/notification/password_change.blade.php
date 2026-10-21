@@ -1,16 +1,16 @@
 @component('mail::message')
-# Account Password Changed
+# {{ __('emails.passwordChange.title') }}
 
-Hello &commat;{{$user->username}},
+{!! __('emails.common.helloUserComma', ['username' => '&commat;'.e($user->username)]) !!}
 
 @component('mail::panel')
-<p>The password for your account has been changed.</p>
+<p>{{ __('emails.passwordChange.body') }}</p>
 @endcomponent
 
-<small>If you did not make this change and believe your Pixelfed account has been compromised, please reset your password immediately or contact the instance admin if you're locked out of your account.</small>
+<small>{{ __('emails.passwordChange.notYou') }}</small>
 
 <br>
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 {{ config('pixelfed.domain.app') }}
 @endcomponent

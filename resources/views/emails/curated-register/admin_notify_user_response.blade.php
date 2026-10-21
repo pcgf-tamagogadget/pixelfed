@@ -1,21 +1,21 @@
 @component('mail::message')
-# New Curated Onboarding Response ({{ '#' . $activity->id}})
+# {{ __('emails.curated.adminNotifyResponse.title') }} ({{ '#' . $activity->id}})
 
-Hello,
+{{ __('emails.common.hello') }}
 
-You have a new response from a curated onboarding application from **{{$activity->application->email}}**.
+{!! __('emails.curated.adminNotifyResponse.intro', ['email' => '**'.e($activity->application->email).'**']) !!}
 
 <x-mail::panel>
 <p style="white-space: pre-wrap;">{!! nl2br(e($activity->message)) !!}</p>
 </x-mail::panel>
 
 <x-mail::button :url="$activity->adminReviewUrl()" color="success">
-<strong>Review Onboarding Response</strong>
+<strong>{{ __('emails.curated.adminNotifyResponse.button') }}</strong>
 </x-mail::button>
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 <a href="{{ config('app.url') }}">{{ config('pixelfed.domain.app') }}</a>
 <br>
 <hr>
-<p style="font-size:10pt;">This is an automated message, please be aware that replies to this email cannot be monitored or responded to.</p>
+<p style="font-size:10pt;">{{ __('emails.common.automated') }}</p>
 @endcomponent

@@ -27,7 +27,7 @@
 
 @if($visible)
     @if($label)
-        <label class="{{ $labelClass }}">Captcha</label>
+        <label class="{{ $labelClass }}">{{ __('pages.components.captcha') }}</label>
     @endif
     <div class="{{ $wrapperClass }}">
         @captcha($captchaAttrs)

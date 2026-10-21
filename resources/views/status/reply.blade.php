@@ -15,7 +15,7 @@
                 ($gp->scope == 'private' && !$authed) ||
                 ($gp->scope == 'private' && ($gp->profile_id != $pid && \App\Services\FollowerService::follows($pid, $gp->profile_id) == false))
             )
-        		<p class="text-center mb-0 py-5 font-weight-bold">This status cannot be viewed at this time.</p>
+        		<p class="text-center mb-0 py-5 font-weight-bold">{{ __('pages.status.cannotView') }}</p>
         	@else
           <div class="d-flex p-0 m-0 align-items-center">
             @if($gp->media()->count())
@@ -53,7 +53,7 @@
                 ($parent->scope == 'private' && !$authed) ||
                 ($parent->scope == 'private' && ($parent->profile_id != $pid && \App\Services\FollowerService::follows($pid, $parent->profile_id) == false))
             )
-        		<p class="text-center mb-0 py-5 font-weight-bold">This status cannot be viewed at this time.</p>
+        		<p class="text-center mb-0 py-5 font-weight-bold">{{ __('pages.status.cannotView') }}</p>
         	@else
           <div class="d-flex p-0 m-0 align-items-center">
             @if($parent->media()->count())
@@ -88,7 +88,7 @@
           @if($status->is_nsfw)
           <details class="cw">
             <summary class="px-3 px-md-5">
-              <p class="py-5 mb-0 text-center">This comment may contain sensitive content. <span class="float-right font-weight-bold text-primary">Show</span></p>
+              <p class="py-5 mb-0 text-center">{{ __('pages.status.sensitiveComment') }} <span class="float-right font-weight-bold text-primary">{{ __('pages.status.show') }}</span></p>
             </summary>
             <div class="media py-5">
               <img class="mr-3 rounded-circle img-thumbnail" src="{{$status->profile->avatarUrl()}}" width="60px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
@@ -118,7 +118,7 @@
                   @csrf
                   <input type="hidden" name="item" value="{{$status->id}}">
                   <input type="hidden" name="type" value="status">
-                  <button class="btn btn-outline-danger small font-weight-bold btn-sm py-1">Delete</button>
+                  <button class="btn btn-outline-danger small font-weight-bold btn-sm py-1">{{ __('pages.status.delete') }}</button>
                 </form>
                 @endif
               </div>
@@ -205,9 +205,7 @@
     $('.reactions').hide();
     $('.more-comments').hide();
     $('.card-footer').hide();
-    new Vue({ 
-      el: '#content'
-    });
+    new Vue({ el: '#content', i18n: App.i18n() });
   });
 </script>
 @endpush

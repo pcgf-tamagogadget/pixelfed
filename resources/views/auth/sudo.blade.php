@@ -14,8 +14,8 @@
 	                <a href="/">
 	                	<img src="/img/pixelfed-icon-white.svg" height="60px">
 	            	</a>
-	                <h1 class="pt-4 pb-1">Sudo Mode</h1>
-	                <p class="font-weight-light lead pb-2">Confirm password to continue</p>
+	                <h1 class="pt-4 pb-1">{{ __('auth.sudoPage.title') }}</h1>
+	                <p class="font-weight-light lead pb-2">{{ __('auth.sudoPage.subtitle') }}</p>
 	            </div>
 	            <div class="card bg-glass">
 	                <div class="card-body">
@@ -23,14 +23,14 @@
 	                        @csrf
 
 	                        <div class="form-group">
-	                        	<label class="font-weight-bold small text-muted">Confirm Password</label>
+	                        	<label class="font-weight-bold small text-muted">{{ __('auth.confirm-password') }}</label>
 	                            <input
 	                            	id="password"
 	                            	type="password"
 	                            	class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
 	                            	name="password"
 	                            	autocomplete="current-password"
-	                            	placeholder="{{__('Password')}}"
+	                            	placeholder="{{ __('auth.password') }}"
 	                            	required>
 
 	                            @if ($errors->has('password'))
@@ -47,7 +47,7 @@
 	                                	id="sbtn"
 	                                	class="btn btn-success rounded-pill btn-block font-weight-bold"
 	                                	onclick="event.preventDefault();handleSubmit()">
-	                                    {{ __('Confirm Password') }}
+	                                    {{ __('auth.confirm-password') }}
 	                                </button>
 
 	                            </div>
@@ -58,12 +58,12 @@
 
 	            <div class="d-flex justify-content-between my-3">
 	            	<p class="mb-0 small">
-	            		<span class="text-muted">Logged in as:</span> {{request()->user()->username}}
+	            		<span class="text-muted">{{ __('auth.shared.loggedInAs') }}</span> {{request()->user()->username}}
 	            	</p>
 
 	            	<form action="/logout" method="post">
 	            		@csrf
-	            		<button type="submit" class="btn btn-link p-0 btn-sm text-white font-weight-bold">Logout</button>
+	            		<button type="submit" class="btn btn-link p-0 btn-sm text-white font-weight-bold">{{ __('auth.shared.logout') }}</button>
 	            	</form>
 	            </div>
 	        </div>
@@ -87,7 +87,7 @@
 		let btn = document.getElementById('sbtn');
 		btn.classList.add('disabled');
 		btn.setAttribute('disabled', 'disabled');
-		btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>';
+		btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">' + @json(__('auth.shared.loading')) + '</span></div>';
 		document.getElementById('sudoForm').submit()
 	}
 </script>

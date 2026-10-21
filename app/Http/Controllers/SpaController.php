@@ -79,7 +79,7 @@ class SpaController extends Controller
             'l' => 'required|alpha_dash|max:12',
         ]);
 
-        $lang = $request->input('l');
+        $lang = Localization::normalizeLocale($request->input('l'));
         $user = $request->user();
 
         abort_if(! in_array($lang, Localization::languages()), 400);

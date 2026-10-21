@@ -4,7 +4,7 @@
 			<div class="col-2 shadow" style="height: 100vh;background:#fff;top:51px;overflow: hidden;z-index: 1;position: sticky;">
 				<div class="p-1">
 					<div class="d-flex justify-content-between align-items-center py-3">
-						<p class="h2 font-weight-bold mb-0">Groups</p>
+						<p class="h2 font-weight-bold mb-0">{{ $t('groups.groupsHome.groups') }}</p>
 						<a class="btn btn-light px-2 rounded-circle" href="/settings/home">
 							<i class="fas fa-cog fa-lg"></i>
 						</a>
@@ -13,8 +13,8 @@
 					<div class="mb-3">
 						<autocomplete
 							:search="autocompleteSearch"
-							placeholder="Search groups by name"
-							aria-label="Search groups by name"
+							:placeholder="$t('groups.groupsHome.searchPlaceholder')"
+							:aria-label="$t('groups.groupsHome.searchPlaceholder')"
 							:get-result-value="getSearchResultValue"
 							:debounceTime="700"
 							@submit="onSearchSubmit"
@@ -34,17 +34,17 @@
 										<div class="media-body text-truncate mr-3">
 											<p class="result-name mb-n1 font-weight-bold">
 												{{ truncateName(result.name) }}
-												<span v-if="result.verified" class="fa-stack ml-n2" title="Verified Group" data-toggle="tooltip">
+												<span v-if="result.verified" class="fa-stack ml-n2" :title="$t('groups.groupsHome.verifiedGroup')" data-toggle="tooltip">
 													<i class="fas fa-circle fa-stack-1x fa-lg" style="color: #22a7f0cc;font-size:18px"></i>
 													<i class="fas fa-check fa-stack-1x text-white" style="font-size:10px"></i>
 												</span>
 											</p>
 											<p class="mb-0 text-muted" style="font-size: 10px;">
-												<span v-if="!result.local" title="Remote Group">
+												<span v-if="!result.local" :title="$t('groups.groupsHome.remoteGroup')">
 													<i class="far fa-globe"></i>
 												</span>
 												<span v-if="!result.local">·</span>
-												<span class="font-weight-bold">{{ result.member_count }} members</span>
+												<span class="font-weight-bold">{{ $t('groups.groupsHome.membersCount', { count: result.member_count }) }}</span>
 											</p>
 										</div>
 									</div>
@@ -61,7 +61,7 @@
 							<i class="fas fa-list"></i>
 						</div>
 						<div class="group-nav-btn-name">
-							Your Feed
+							{{ $t('groups.groupsHome.yourFeed') }}
 						</div>
 					</button>
 
@@ -73,7 +73,7 @@
 							<i class="fas fa-compass"></i>
 						</div>
 						<div class="group-nav-btn-name">
-							Discover
+							{{ $t('groups.groupsHome.discover') }}
 						</div>
 					</button>
 
@@ -85,7 +85,7 @@
 							<i class="fas fa-list"></i>
 						</div>
 						<div class="group-nav-btn-name">
-							My Groups
+							{{ $t('groups.groupsHome.myGroups') }}
 						</div>
 					</button>
 
@@ -97,7 +97,7 @@
 							<i class="far fa-bell"></i>
 						</div>
 						<div class="group-nav-btn-name">
-							Your Notifications
+							{{ $t('groups.groupsHome.yourNotifications') }}
 						</div>
 					</button>
 
@@ -121,7 +121,7 @@
 							<i class="fas fa-search-plus"></i>
 						</div>
 						<div class="group-nav-btn-name">
-							Find a remote group
+							{{ $t('groups.groupsHome.findRemoteGroup') }}
 						</div>
 					</button>
 
@@ -130,7 +130,7 @@
 						class="btn btn-primary btn-block rounded-pill font-weight-bold mt-3"
 						@click="switchTab('creategroup')"
 						:disabled="tab == 'creategroup'">
-						<i class="fas fa-plus mr-2"></i> Create New Group
+						<i class="fas fa-plus mr-2"></i> {{ $t('groups.groupsHome.createNewGroup') }}
 					</button>
 
 					<hr>
@@ -147,12 +147,12 @@
 									</span>
 								</div>
 								<div class="text-muted font-weight-light d-flex justify-content-between">
-									<span>{{group.member_count}} Members</span>
+									<span>{{ $t('groups.groupsHome.membersCountCap', { count: group.member_count }) }}</span>
 									<span style="font-size: 12px;padding: 2px 5px;color: rgba(75, 119, 190, 1);background:rgba(137, 196, 244, 0.2);border:1px solid rgba(137, 196, 244, 0.3);font-weight:400;text-transform: capitalize;" class="rounded">{{ group.self.role }}</span>
 								</div>
 								<hr>
 								<p class="mb-0">
-									<a class="btn btn-light btn-block border rounded-lg font-weight-bold" :href="group.url">View Group</a>
+									<a class="btn btn-light btn-block border rounded-lg font-weight-bold" :href="group.url">{{ $t('groups.groupsHome.viewGroup') }}</a>
 								</p>
 							</div>
 						</div>
@@ -172,13 +172,13 @@
 					<div v-if="tab == 'gsearch'">
 						<div class="col-12 px-5">
 							<div class="my-4">
-		                        <p class="h1 font-weight-bold mb-1">Group Search</p>
-		                        <p class="lead text-muted mb-0">Search and explore groups.</p>
+		                        <p class="h1 font-weight-bold mb-1">{{ $t('groups.groupsHome.groupSearch') }}</p>
+		                        <p class="lead text-muted mb-0">{{ $t('groups.groupsHome.searchAndExplore') }}</p>
 		                    </div>
 		                    <div class="media align-items-center text-lighter">
 		                    	<i class="far fa-chevron-left fa-lg mr-3"></i>
 		                    	<div class="media-body">
-		                    		<p class="lead mb-0">Use the search bar on the side menu</p>
+		                    		<p class="lead mb-0">{{ $t('groups.groupsHome.useSearchBar') }}</p>
 		                    	</div>
 		                    </div>
 						</div>
@@ -315,7 +315,7 @@
 
 				if(input.startsWith('#')) {
 					this.$bvToast.toast(input, {
-						title: 'Hashtag detected',
+						title: this.$t('groups.groupsHome.hashtagDetected'),
 						variant: 'info',
 						autoHideDelay: 5000
 					});
@@ -333,7 +333,7 @@
 
 					if(err.response.status === 422) {
 						this.$bvToast.toast(err.response.data.error.message, {
-							title: 'Cannot display search results',
+							title: this.$t('groups.groupsHome.cannotDisplayResults'),
 							variant: 'danger',
 							autoHideDelay: 5000
 						});

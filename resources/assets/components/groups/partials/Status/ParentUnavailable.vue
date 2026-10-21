@@ -7,8 +7,8 @@
                         <i class="fas fa-lock fa-2x"></i>
                     </div>
                     <div class="media-body" style="max-width: 320px">
-                        <p class="lead font-weight-bold mb-1">This content isn't available right now</p>
-                        <p class="mb-0" style="font-size: 12px;letter-spacing:-0.3px;">When this happens, it's usually because the owner only shared it with a small group of people, changed who can see it, or it's been deleted.</p>
+                        <p class="lead font-weight-bold mb-1">{{ $t('groups.parentUnavailable.title') }}</p>
+                        <p class="mb-0" style="font-size: 12px;letter-spacing:-0.3px;">{{ $t('groups.parentUnavailable.message') }}</p>
                     </div>
                 </div>
             </div>

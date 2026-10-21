@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config_cache('app.name') }} - Authorization</title>
+    <title>{{ config_cache('app.name') }} - {{ __('auth.oauth.pageTitle') }}</title>
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <style>
         .passport-authorize .container {
@@ -40,14 +40,14 @@
                 <div class="text-center mb-5">
                     <img src="/img/pixelfed-icon-grey.svg">
                 </div>
-                <p class="text-center h3 font-weight-light mb-3">Authorize {{ $client->name }}</p>
+                <p class="text-center h3 font-weight-light mb-3">{{ __('auth.oauth.authorizeApp', ['app' => $client->name]) }}</p>
                 <div class="card card-default shadow-none border">
                     <div class="card-body">
                         <div class="media">
                           <img src="/img/icon/alert-circle.svg" class="mr-3" width="32" height="32">
                           <div class="media-body">
                             <p class="my-0"><span class="font-weight-bold">{{ $client->name }}</span></p>
-                            <p class="mb-0 text-muted small">wants access to your <strong>{{request()->user()->username}}</strong> account</p>
+                            <p class="mb-0 text-muted small">{!! __('auth.oauth.wantsAccessShort', ['username' => '<strong>'.e(request()->user()->username).'</strong>']) !!}</p>
                           </div>
                         </div>
                         <hr>
@@ -71,7 +71,7 @@
 
                                 <input type="hidden" name="state" value="{{ $request->state }}">
                                 <input type="hidden" name="client_id" value="{{ $client->id }}">
-                                <button type="submit" class="btn btn-success font-weight-bold btn-approve">Authorize</button>
+                                <button type="submit" class="btn btn-success font-weight-bold btn-approve">{{ __('auth.oauth.authorize') }}</button>
                             </form>
 
                             <form method="post" action="{{ route('passport.authorizations.deny') }}">
@@ -80,11 +80,11 @@
 
                                 <input type="hidden" name="state" value="{{ $request->state }}">
                                 <input type="hidden" name="client_id" value="{{ $client->id }}">
-                                <button class="btn btn-outline-danger font-weight-bold">Cancel</button>
+                                <button class="btn btn-outline-danger font-weight-bold">{{ __('auth.oauth.cancel') }}</button>
                             </form>
                         </div>
                         <hr>
-                        <p class="mb-0 text-center small text-muted">Click <a href="{{ route('logout') }}" class="font-weight-bold" onclick="event.preventDefault();document.getElementById('logout_auth').submit();">here</a> to log out of this account.</p>
+                        <p class="mb-0 text-center small text-muted">{!! __('auth.oauth.logoutHint', ['link' => '<a href="'.e(route('logout')).'" class="font-weight-bold" onclick="event.preventDefault();document.getElementById(\'logout_auth\').submit();">'.e(__('auth.oauth.here')).'</a>']) !!}</p>
                         <form id="logout_auth" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                         </form>

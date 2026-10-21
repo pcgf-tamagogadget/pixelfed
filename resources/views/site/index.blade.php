@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,10 +17,10 @@
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="{{request()->url()}}" />
 	<meta property="og:image" content="{{ config_cache('app.banner_image') ?? url('storage/headers/default.jpg')}}" />
-	<meta property="og:description" content="{{ config_cache('app.short_description') ?? 'Decentralized photo sharing social media powered by Pixelfed' }}" />
-	<meta name="description" content="{{ config_cache('app.short_description') ?? 'Decentralized photo sharing social media powered by Pixelfed' }}" />
+	<meta property="og:description" content="{{ config_cache('app.short_description') ?? __('site.landing.defaultDescription') }}" />
+	<meta name="description" content="{{ config_cache('app.short_description') ?? __('site.landing.defaultDescription') }}" />
 	<meta name="twitter:title" content="{{ config_cache('app.name', 'pixelfed') }}" />
-    <meta name="twitter:description" content="{{ config_cache('app.short_description') ?? 'Decentralized photo sharing social media powered by Pixelfed' }}" />
+    <meta name="twitter:description" content="{{ config_cache('app.short_description') ?? __('site.landing.defaultDescription') }}" />
     <meta name="twitter:image" content="{{ config_cache('app.banner_image') ?? url('storage/headers/default.jpg')}}" />
     <meta name="twitter:card" content="summary_large_image" />
 

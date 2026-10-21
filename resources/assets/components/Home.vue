@@ -17,17 +17,17 @@
                                         <i class="d-none d-sm-block far fa-exclamation-triangle fa-5x text-white"></i>
 
                                         <div>
-                                            <h1 class="h3 font-weight-bold text-light mb-0">New Update Available</h1>
-                                            <p class="mb-0 text-white" style="font-size:18px;">Update your Pixelfed server as soon as possible!</p>
-                                            <p class="mb-n1 text-white small" style="opacity:.7">Once you update, this message will disappear.</p>
+                                            <h1 class="h3 font-weight-bold text-light mb-0">{{ $t('spa.home.newUpdateAvailable') }}</h1>
+                                            <p class="mb-0 text-white" style="font-size:18px;">{{ $t('spa.home.updateAsap') }}</p>
+                                            <p class="mb-n1 text-white small" style="opacity:.7">{{ $t('spa.home.onceYouUpdate') }}</p>
                                             <p class="mb-0 text-white small d-flex" style="opacity:.5;gap:1rem;">
-                                                <span>Current version: <strong>{{ updateInfo?.current ?? 'Unknown' }}</strong></span>
-                                                <span>Latest version: <strong>{{ updateInfo?.latest?.version ?? 'Unknown' }}</strong></span>
+                                                <span>{{ $t('spa.home.currentVersion') }} <strong>{{ updateInfo?.current ?? $t('spa.home.unknown') }}</strong></span>
+                                                <span>{{ $t('spa.home.latestVersion') }} <strong>{{ updateInfo?.latest?.version ?? $t('spa.home.unknown') }}</strong></span>
                                             </p>
                                         </div>
                                     </div>
 
-                                    <a v-if="updateInfo.latest.url" class="btn btn-light font-weight-bold" :href="updateInfo.latest.url" target="_blank">View Update</a>
+                                    <a v-if="updateInfo.latest.url" class="btn btn-light font-weight-bold" :href="updateInfo.latest.url" target="_blank">{{ $t('spa.home.viewUpdate') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -40,10 +40,10 @@
                                         <i class="d-none d-sm-block far fa-exclamation-triangle fa-5x text-white"></i>
 
                                         <div>
-                                            <h1 class="h3 font-weight-bold text-light mb-1">Software Update Check Failed</h1>
-                                            <p class="mb-1 text-white" style="font-size:18px;line-height: 1.2;">We attempted to check if there is a new version available, however we encountered an error. <a href="https://github.com/pixelfed/pixelfed/releases" class="text-white font-weight-bold" style="text-decoration: underline;" target="_blank">Click here</a> to view the latest releases.</p>
-                                            <p class="mb-0 text-white small">You can set <code class="text-white">INSTANCE_SOFTWARE_UPDATE_DISABLE_FAILED_WARNING=true</code> to remove this warning.</p>
-                                            <p class="mb-0 text-white small" style="opacity:.7">Current version: {{ updateInfo?.current ?? 'Unknown' }}</p>
+                                            <h1 class="h3 font-weight-bold text-light mb-1">{{ $t('spa.home.updateCheckFailed') }}</h1>
+                                            <i18n path="spa.home.updateCheckFailedMessage" tag="p" class="mb-1 text-white" style="font-size:18px;line-height: 1.2;"><template v-slot:link><a href="https://github.com/pixelfed/pixelfed/releases" class="text-white font-weight-bold" style="text-decoration: underline;" target="_blank">{{ $t('spa.home.clickHere') }}</a></template></i18n>
+                                            <i18n path="spa.home.disableWarningHint" tag="p" class="mb-0 text-white small"><template v-slot:setting><code class="text-white">INSTANCE_SOFTWARE_UPDATE_DISABLE_FAILED_WARNING=true</code></template></i18n>
+                                            <p class="mb-0 text-white small" style="opacity:.7">{{ $t('spa.home.currentVersion') }} {{ updateInfo?.current ?? $t('spa.home.unknown') }}</p>
                                         </div>
                                     </div>
                                 </div>

@@ -66,4 +66,95 @@ return [
     'view' => 'view',
     'the_source_code_and_run_their_own_instance' => 'the source code and run their own instance!',
     'open_source_in_pixelfed' => 'Open source in Pixelfed',
+
+    // site pages (hardcoded strings moved to translation keys)
+    'newsroom' => [
+        'title' => 'Newsroom',
+        'backToPixelfed' => 'Back to Pixelfed',
+        'archivePlaceholder' => 'Archive here',
+    ],
+    'bannedInstances' => [
+        'title' => 'Banned Instances',
+    ],
+    'features' => [
+        'title' => 'Features',
+    ],
+    'libraries' => [
+        'title' => 'Libraries',
+    ],
+    'platform' => [
+        'title' => 'Platform/API Terms Of Use',
+        'description' => 'Platform/API Terms of Use',
+    ],
+    'closedRegistration' => [
+        'title' => 'Registration is closed',
+        'body' => 'We have closed registrations on this instance.',
+        'findInstances' => 'You can find a list of active pixelfed instances on <a href="https://the-federation.info/pixelfed" rel="external nofollow noopener">https://the-federation.info/pixelfed</a> or <a href="https://fediverse.network/pixelfed" rel="external nofollow noopener">https://fediverse.network/pixelfed</a>',
+    ],
+    'legalNotice' => [
+        'title' => 'Legal Notice',
+    ],
+    'redirect' => [
+        'redirectingTo' => 'Redirecting to <span class="font-weight-bold">:url</span>',
+    ],
+    'languagePage' => [
+        'description' => 'Change Site Language',
+    ],
+    'aboutPage' => [
+        'pageTitle' => 'About :name',
+        'home' => 'Home',
+        'rules' => 'Rules',
+        'reviewTerms' => 'For more information, please review our <a href="/site/terms">Terms of Use</a>',
+    ],
+    'landing' => [
+        'defaultDescription' => 'Decentralized photo sharing social media powered by Pixelfed',
+    ],
+    'contactResponse' => [
+        'backToPixelfed' => 'Back to Pixelfed',
+        'title' => 'Contact Form Response',
+        'ticketId' => 'Ticket ID #:id',
+        'youSent' => 'You sent the following inquiry:',
+        'sentOn' => 'You sent this inquiry on :date at :time',
+        'adminResponded' => 'The admin(s) responded to your inquiry:',
+        'respondedOn' => 'The response was created on :date at :time',
+        'respondHint' => 'If you would like to respond, use the <a href="/site/contact">contact form</a>.',
+    ],
+    'developer' => [
+        'title' => 'Developer API',
+        'intro' => 'Developers can use Pixelfed APIs to build rich experiences and extend Pixelfed in new ways.',
+        'mastodonCompatible' => 'Mastodon/Pleroma Compatible',
+        'oauthSupport' => 'OAuth App support',
+        'dashboard' => 'Developer Dashboard',
+        'tools' => 'Developer Tools',
+        'comingSoon' => 'Coming Soon',
+        'other' => 'OTHER',
+        'authentication' => 'Authentication',
+        'clients' => 'Clients',
+        'rateLimiting' => 'Rate Limiting',
+        'activitypubEndpoints' => 'ActivityPub Endpoints',
+    ],
+    'intentFollow' => [
+        'title' => 'Follow <span class="text-dark">:username</span> on Pixelfed',
+        'followers' => ':count followers',
+        'unfollow' => 'Unfollow',
+        'follow' => 'Follow',
+        'viewProfile' => 'View Profile',
+        'loggedInAs' => 'Logged in as: <span class="font-weight-bold text-muted">:username</span>',
+        'logout' => 'Logout',
+    ],
+    'aboutCustom' => [
+        'about' => 'About',
+        'posts' => 'Posts',
+        'users' => 'Users',
+        'instanceAdmin' => 'Instance Admin',
+        'adFree' => 'Ad Free',
+        'adFreeDesc' => 'No Ads or Trackers',
+        'chronological' => 'Chronological',
+        'chronologicalDesc' => 'Timelines in order',
+        'federated' => 'Federated',
+        'federatedDesc' => 'A network of millions',
+        'discoverDesc' => 'Discover popular posts',
+        'photoFiltersDesc' => 'Add an optional filter',
+        'comingSoon' => 'Coming Soon!',
+    ],
 ];

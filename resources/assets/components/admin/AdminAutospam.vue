@@ -5,15 +5,15 @@
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-xl-4 col-lg-6 col-md-4">
-                        <p class="display-1 text-white d-inline-block mb-0">Autospam</p>
-                        <p class="text-lighter">The automated spam detection system</p>
+                        <p class="display-1 text-white d-inline-block mb-0">{{ $t('admin.autospam.title') }}</p>
+                        <p class="text-lighter">{{ $t('admin.autospam.subtitle') }}</p>
                     </div>
 					<div class="col-xl-4 col-lg-3 col-md-4">
 						<div class="card card-stats mb-lg-0">
 							<div class="card-body">
 								<div class="row">
 									<div class="col">
-										<h5 class="card-title text-uppercase text-muted mb-0">Active Autospam</h5>
+										<h5 class="card-title text-uppercase text-muted mb-0">{{ $t('admin.autospam.activeAutospam') }}</h5>
 										<span class="h2 font-weight-bold mb-0">{{ formatCount(config.open) }}</span>
 									</div>
 									<div class="col-auto">
@@ -30,7 +30,7 @@
 							<div class="card-body">
 								<div class="row">
 									<div class="col">
-										<h5 class="card-title text-uppercase text-muted mb-0">Closed Autospam</h5>
+										<h5 class="card-title text-uppercase text-muted mb-0">{{ $t('admin.autospam.closedAutospam') }}</h5>
 										<span class="h2 font-weight-bold text-muted mb-0">{{ formatCount(config.closed) }}</span>
 									</div>
 									<div class="col-auto">
@@ -57,22 +57,22 @@
                 <div class="col-12">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 0}]" @click.prevent="toggleTab(0)">Dashboard</button>
+                            <button :class="['nav-link', { active: tabIndex == 0}]" @click.prevent="toggleTab(0)">{{ $t('admin.autospam.tabDashboard') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 'about'}]" @click.prevent="toggleTab('about')">About / How to Use Autospam</button>
+                            <button :class="['nav-link', { active: tabIndex == 'about'}]" @click.prevent="toggleTab('about')">{{ $t('admin.autospam.tabAbout') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 'train'}]" @click.prevent="toggleTab('train')">Train Autospam</button>
+                            <button :class="['nav-link', { active: tabIndex == 'train'}]" @click.prevent="toggleTab('train')">{{ $t('admin.autospam.tabTrain') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 'closed_reports'}]" @click.prevent="toggleTab('closed_reports')">Closed Reports</button>
+                            <button :class="['nav-link', { active: tabIndex == 'closed_reports'}]" @click.prevent="toggleTab('closed_reports')">{{ $t('admin.autospam.tabClosedReports') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 'manage_tokens'}]" @click.prevent="toggleTab('manage_tokens')">Manage Tokens</button>
+                            <button :class="['nav-link', { active: tabIndex == 'manage_tokens'}]" @click.prevent="toggleTab('manage_tokens')">{{ $t('admin.autospam.tabManageTokens') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 'import_export'}]" @click.prevent="toggleTab('import_export')">Import/Export</button>
+                            <button :class="['nav-link', { active: tabIndex == 'import_export'}]" @click.prevent="toggleTab('import_export')">{{ $t('admin.autospam.tabImportExport') }}</button>
                         </li>
                     </ul>
                 </div>
@@ -85,14 +85,17 @@
             		<div v-else-if="config.autospam_enabled" class="card bg-dark" style="min-height: 209px;">
             			<div class="card-body text-center">
             				<p><i class="far fa-check-circle fa-5x text-success"></i></p>
-            				<p class="lead text-light mb-0">Autospam Service Operational</p>
+            				<p class="lead text-light mb-0">{{ $t('admin.autospam.serviceOperational') }}</p>
             			</div>
             		</div>
             		<div v-else class="card bg-dark" style="min-height: 209px;">
             			<div class="card-body text-center">
             				<p><i class="far fa-exclamation-circle fa-5x text-danger"></i></p>
-            				<p class="lead text-danger font-weight-bold mb-0">Autospam Service Inactive</p>
-            				<p class="small text-light mb-0">To activate, <a href="/i/admin/settings">click here</a> and enable <span class="font-weight-bold">Spam detection</span></p>
+            				<p class="lead text-danger font-weight-bold mb-0">{{ $t('admin.autospam.serviceInactive') }}</p>
+            				<i18n path="admin.autospam.toActivate" tag="p" class="small text-light mb-0">
+            					<template v-slot:link><a href="/i/admin/settings">{{ $t('common.clickHere') }}</a></template>
+            					<template v-slot:setting><span class="font-weight-bold">{{ $t('admin.autospam.spamDetection') }}</span></template>
+            				</i18n>
             			</div>
             		</div>
 
@@ -101,15 +104,15 @@
             		<div v-else-if="config.nlp_enabled" class="card bg-dark" style="min-height: 209px;">
             			<div class="card-body text-center">
             				<p><i class="far fa-check-circle fa-5x text-success"></i></p>
-            				<p class="lead text-light">Advanced (NLP) Detection Active</p>
-            				<a class="btn btn-outline-danger btn-block font-weight-bold" :class="{ disabled: config.autospam_enabled != true}" href="#" :disabled="config.autospam_enabled != true" @click.prevent="disableAdvanced">Disable Advanced Detection</a>
+            				<p class="lead text-light">{{ $t('admin.autospam.advancedActive') }}</p>
+            				<a class="btn btn-outline-danger btn-block font-weight-bold" :class="{ disabled: config.autospam_enabled != true}" href="#" :disabled="config.autospam_enabled != true" @click.prevent="disableAdvanced">{{ $t('admin.autospam.disableAdvanced') }}</a>
             			</div>
             		</div>
             		<div v-else class="card bg-dark" style="min-height: 209px;">
             			<div class="card-body text-center">
             				<p><i class="far fa-exclamation-circle fa-5x text-danger"></i></p>
-            				<p class="lead text-danger font-weight-bold">Advanced (NLP) Detection Inactive</p>
-            				<a class="btn btn-primary btn-block font-weight-bold" :class="{ disabled: config.autospam_enabled != true}" href="#" :disabled="config.autospam_enabled != true" @click.prevent="enableAdvanced">Enable Advanced Detection</a>
+            				<p class="lead text-danger font-weight-bold">{{ $t('admin.autospam.advancedInactive') }}</p>
+            				<a class="btn btn-primary btn-block font-weight-bold" :class="{ disabled: config.autospam_enabled != true}" href="#" :disabled="config.autospam_enabled != true" @click.prevent="enableAdvanced">{{ $t('admin.autospam.enableAdvanced') }}</a>
             			</div>
             		</div>
             	</div>
@@ -118,8 +121,8 @@
             			<div class="card-header bg-transparent">
             				<div class="row align-items-center">
             					<div class="col">
-            						<h6 class="text-light text-uppercase ls-1 mb-1">Stats</h6>
-            						<h5 class="h3 text-white mb-0">Autospam Detections</h5>
+            						<h6 class="text-light text-uppercase ls-1 mb-1">{{ $t('admin.autospam.stats') }}</h6>
+            						<h5 class="h3 text-white mb-0">{{ $t('admin.autospam.detections') }}</h5>
             					</div>
             				</div>
             			</div>
@@ -136,35 +139,37 @@
             	<div class="row">
             		<div class="col-12">
             			<div class="card card-body">
-	            			<h1>About Autospam</h1>
+	            			<h1>{{ $t('admin.autospam.about.title') }}</h1>
 
-	            			<p class="mb-0">To detect and mitigate spam, we built Autospam, an internal tool that uses NLP and other behavioural metrics to classify potential spam posts.</p>
+	            			<p class="mb-0">{{ $t('admin.autospam.about.intro') }}</p>
 
 	            			<hr />
 
-	            			<h2>Standard Detection</h2>
+	            			<h2>{{ $t('admin.autospam.about.standardTitle') }}</h2>
 
-	            			<p>Standard or "Classic" detection works by evaluating several "signals" from the post and it's associated account.</p>
+	            			<p>{{ $t('admin.autospam.about.standardBody') }}</p>
 
-	            			<p>Some of the following "signals" may trigger a positive detection from public posts:</p>
+	            			<p>{{ $t('admin.autospam.about.signalsIntro') }}</p>
 
 	            			<ul>
-	            				<li>Account is less than 6 months old</li>
-	            				<li>Account has less than 100 followers</li>
-	            				<li>Post contains one or more of: <span class="badge badge-primary">https://</span> <span class="badge badge-primary">http://</span> <span class="badge badge-primary">hxxps://</span> <span class="badge badge-primary">hxxp://</span> <span class="badge badge-primary">www.</span> <span class="badge badge-primary">.com</span> <span class="badge badge-primary">.net</span> <span class="badge badge-primary">.org</span> </li>
+	            				<li>{{ $t('admin.autospam.about.signalAge') }}</li>
+	            				<li>{{ $t('admin.autospam.about.signalFollowers') }}</li>
+	            				<li>{{ $t('admin.autospam.about.signalLinks') }} <span class="badge badge-primary">https://</span> <span class="badge badge-primary">http://</span> <span class="badge badge-primary">hxxps://</span> <span class="badge badge-primary">hxxp://</span> <span class="badge badge-primary">www.</span> <span class="badge badge-primary">.com</span> <span class="badge badge-primary">.net</span> <span class="badge badge-primary">.org</span> </li>
 	            			</ul>
 
-	            			<p>If you've marked atleast one positive detection from an account as <span class="font-weight-bold">Not spam</span>, any future posts they create will skip detection.</p>
+	            			<i18n path="admin.autospam.about.notSpamSkip" tag="p">
+	            				<template v-slot:notSpam><span class="font-weight-bold">{{ $t('admin.autospam.about.notSpam') }}</span></template>
+	            			</i18n>
 
 	            			<hr />
 
-	            			<h2>Advanced Detection</h2>
+	            			<h2>{{ $t('admin.autospam.about.advancedTitle') }}</h2>
 
-	            			<p>Advanced Detection works by using a statistical method that combines prior knowledge and observed data to estimate an average value. It assigns weights to both the prior knowledge and the observed data, allowing for a more informed and reliable estimation that adapts to new information.</p>
+	            			<p>{{ $t('admin.autospam.about.advancedBody1') }}</p>
 
-	            			<p>When you train Spam or Not Spam data, the caption is broken up into words (tokens) and are counted (weights) and then stored in the appropriate category (Spam or Not Spam).</p>
+	            			<p>{{ $t('admin.autospam.about.advancedBody2') }}</p>
 
-	            			<p>The training data is then used to classify spam on future posts (captions) by calculating each token and associated weights and comparing it to known categories (Spam or Not Spam).</p>
+	            			<p>{{ $t('admin.autospam.about.advancedBody3') }}</p>
 
             			</div>
             		</div>
@@ -176,11 +181,11 @@
 					<div class="col-12">
 	            		<div class="card card-body">
 	            			<p class="mb-0">
-	            				In order for Autospam to be effective, you need to train it by classifying data as spam or not-spam.
+	            				{{ $t('admin.autospam.train.intro') }}
 	            			</p>
 
 	            			<p class="mb-0 small">
-	            				We recommend atleast 200 classifications for both spam and not-spam, it is important to train Autospam on both so you get more accurate results.
+	            				{{ $t('admin.autospam.train.recommend') }}
 	            			</p>
 	            		</div>
 	            	</div>
@@ -188,21 +193,21 @@
             	<div class="row">
             		<div class="col-12 col-md-6">
             			<div class="card bg-dark">
-            				<div class="card-header bg-gradient-primary text-white font-weight-bold">Train Spam Posts</div>
+            				<div class="card-header bg-gradient-primary text-white font-weight-bold">{{ $t('admin.autospam.train.spamPosts') }}</div>
             				<div class="card-body">
             					<div class="d-flex flex-column align-items-center justify-content-center py-4" style="gap:1rem;">
 	            					<p class="mb-0">
 	            						<i class="far fa-sensor-alert fa-5x text-danger"></i>
 	            					</p>
 
-	            					<p class="lead text-lighter">Use existing posts marked as spam to train Autospam</p>
+	            					<p class="lead text-lighter">{{ $t('admin.autospam.train.spamPostsHelp') }}</p>
 
 	            					<button
 	            						class="btn btn-primary btn-lg font-weight-bold btn-block"
 	            						:class="{ disabled: config.files.spam.exists}"
 	            						:disabled="config.files.spam.exists"
 	            						@click.prevent="autospamTrainSpam">
-	            						{{ config.files.spam.exists ? 'Already trained' : 'Train Spam' }}
+	            						{{ config.files.spam.exists ? $t('admin.autospam.train.alreadyTrained') : $t('admin.autospam.train.trainSpam') }}
 	            					</button>
             					</div>
             				</div>
@@ -211,21 +216,21 @@
 
 					<div class="col-12 col-md-6">
             			<div class="card bg-dark">
-            				<div class="card-header bg-gradient-primary text-white font-weight-bold">Train Non-Spam Posts</div>
+            				<div class="card-header bg-gradient-primary text-white font-weight-bold">{{ $t('admin.autospam.train.nonSpamPosts') }}</div>
             				<div class="card-body">
             					<div class="d-flex flex-column align-items-center justify-content-center py-4" style="gap:1rem;">
 	            					<p class="mb-0">
 	            						<i class="far fa-check-circle fa-5x text-success"></i>
 	            					</p>
 
-	            					<p class="lead text-lighter">Use posts from trusted users to train non-spam posts</p>
+	            					<p class="lead text-lighter">{{ $t('admin.autospam.train.nonSpamPostsHelp') }}</p>
 
 	            					<button
 	            						class="btn btn-primary btn-lg font-weight-bold btn-block"
 	            						:class="{ disabled: config.files.ham.exists}"
 	            						:disabled="config.files.ham.exists"
 	            						@click.prevent="autospamTrainNonSpam">
-	            						{{ config.files.ham.exists ? 'Already trained' : 'Train Non-Spam' }}
+	            						{{ config.files.ham.exists ? $t('admin.autospam.train.alreadyTrained') : $t('admin.autospam.train.trainNonSpam') }}
 	            					</button>
             					</div>
             				</div>
@@ -241,10 +246,10 @@
 							<thead class="thead-dark">
 							    <tr>
 							        <th scope="col">ID</th>
-							        <th scope="col">Type</th>
-			                        <th scope="col">Reported Account</th>
-							        <th scope="col">Created</th>
-			                        <th scope="col">View Report</th>
+							        <th scope="col">{{ $t('admin.autospam.type') }}</th>
+			                        <th scope="col">{{ $t('admin.autospam.reportedAccount') }}</th>
+							        <th scope="col">{{ $t('admin.autospam.created') }}</th>
+			                        <th scope="col">{{ $t('admin.autospam.viewReport') }}</th>
 							    </tr>
 							</thead>
 							<tbody>
@@ -253,7 +258,7 @@
 		                            	{{ report.id}}
 		                            </td>
 		                            <td class="align-middle">
-		                            	<p class="text-capitalize font-weight-bold mb-0">Autospam Post</p>
+		                            	<p class="text-capitalize font-weight-bold mb-0">{{ $t('admin.autospam.autospamPost') }}</p>
 		                            </td>
 									<td class="align-middle">
 		                            	<a v-if="report.status && report.status.account" :href="`/i/web/profile/${report.status.account.id}`" target="_blank" class="text-white">
@@ -268,16 +273,16 @@
 			                            		<div class="d-flex flex-column">
 			                            			<p class="font-weight-bold mb-0" style="font-size: 14px;">@{{report.status.account.username}}</p>
 			                            			<div class="d-flex small text-muted mb-0" style="gap: 0.5rem;">
-			                            				<span>{{report.status.account.followers_count}} Followers</span>
+			                            				<span>{{ $t('admin.autospam.followersCount', { count: report.status.account.followers_count }) }}</span>
 			                            				<span>·</span>
-			                            				<span>Joined {{ timeAgo(report.status.account.created_at) }}</span>
+			                            				<span>{{ $t('admin.autospam.joined', { time: timeAgo(report.status.account.created_at) }) }}</span>
 			                            			</div>
 			                            		</div>
 			                            	</div>
 			                            </a>
 		                            </td>
 		                            <td class="font-weight-bold align-middle">{{ timeAgo(report.created_at) }}</td>
-			                        <td class="align-middle"><a href="#" class="btn btn-primary btn-sm" @click.prevent="viewSpamReport(report)">View</a></td>
+			                        <td class="align-middle"><a href="#" class="btn btn-primary btn-sm" @click.prevent="viewSpamReport(report)">{{ $t('admin.autospam.view') }}</a></td>
 		                        </tr>
 		                    </tbody>
 		                </table>
@@ -288,13 +293,13 @@
 		                    class="btn btn-primary rounded-pill"
 		                    :disabled="!closedReports.links.prev"
 		                    @click="autospamPaginate('prev')">
-		                    Prev
+		                    {{ $t('admin.autospam.prev') }}
 		                </button>
 		                <button
 		                    class="btn btn-primary rounded-pill"
 		                    :disabled="!closedReports.links.next"
 		                    @click="autospamPaginate('next')">
-		                    Next
+		                    {{ $t('common.next') }}
 		                </button>
 		            </div>
 				</template>
@@ -311,14 +316,14 @@
 	            	<div class="col-12 col-md-9">
 	            		<div class="card card-body mb-0">
 	            			<p class="mb-0">
-	            				Tokens are used to split paragraphs and sentences into smaller units that can be more easily assigned meaning.
+	            				{{ $t('admin.autospam.tokens.intro') }}
 	            			</p>
 	            		</div>
 	            	</div>
 	            	<div class="col-12 col-md-3">
             			<a class="btn btn-primary btn-lg btn-block" href="#" @click.prevent="showCreateTokenModal = true">
             				<i class="far fa-plus fa-lg mr-1"></i>
-            				Create New Token
+            				{{ $t('admin.autospam.tokens.createNew') }}
             			</a>
 	            	</div>
             	</div>
@@ -330,11 +335,11 @@
 								<thead class="thead-dark">
 								    <tr>
 								        <th scope="col">ID</th>
-								        <th scope="col">Token</th>
-								        <th scope="col">Category</th>
-								        <th scope="col">Weight</th>
-								        <th scope="col">Created</th>
-								        <th scope="col">Edit</th>
+								        <th scope="col">{{ $t('admin.autospam.tokens.token') }}</th>
+								        <th scope="col">{{ $t('admin.autospam.tokens.category') }}</th>
+								        <th scope="col">{{ $t('admin.autospam.tokens.weight') }}</th>
+								        <th scope="col">{{ $t('admin.autospam.created') }}</th>
+								        <th scope="col">{{ $t('admin.autospam.tokens.edit') }}</th>
 								    </tr>
 								</thead>
 								<tbody>
@@ -353,7 +358,7 @@
 			                            </td>
 			                            <td class="font-weight-bold align-middle">{{ timeAgo(token.created_at) }}</td>
 			                            <td class="font-weight-bold align-middle">
-			                            	<a class="btn btn-primary btn-sm font-weight-bold" href="#" @click.prevent="openEditTokenModal(token)">Edit</a>
+			                            	<a class="btn btn-primary btn-sm font-weight-bold" href="#" @click.prevent="openEditTokenModal(token)">{{ $t('admin.autospam.tokens.edit') }}</a>
 			                            </td>
 			                        </tr>
 			                    </tbody>
@@ -365,13 +370,13 @@
 			                    class="btn btn-primary rounded-pill"
 			                    :disabled="!customTokens.prev_page_url"
 			                    @click="autospamTokenPaginate('prev')">
-			                    Prev
+			                    {{ $t('admin.autospam.prev') }}
 			                </button>
 			                <button
 			                    class="btn btn-primary rounded-pill"
 			                    :disabled="!customTokens.next_page_url"
 			                    @click="autospamTokenPaginate('next')">
-			                    Next
+			                    {{ $t('common.next') }}
 			                </button>
 			            </div>
 			        </template>
@@ -382,7 +387,7 @@
 			        			<p class="pt-5">
 			        				<i class="far fa-inbox fa-4x text-light"></i>
 			        			</p>
-			        			<p class="lead mb-5">No custom tokens found!</p>
+			        			<p class="lead mb-5">{{ $t('admin.autospam.tokens.empty') }}</p>
 			        		</div>
 			        	</div>
 			        </div>
@@ -400,11 +405,11 @@
 					<div class="col-12">
 	            		<div class="card card-body">
 	            			<p class="mb-0">
-	            				You can import and export Spam training data
+	            				{{ $t('admin.autospam.importExport.intro') }}
 	            			</p>
 
 	            			<p class="mb-0 small">
-	            				We recommend exercising caution when importing training data from untrusted parties!
+	            				{{ $t('admin.autospam.importExport.caution') }}
 	            			</p>
 	            		</div>
 	            	</div>
@@ -412,32 +417,32 @@
             	<div class="row">
             		<div class="col-12 col-md-6">
             			<div class="card bg-dark">
-            				<div class="card-header font-weight-bold">Import Training Data</div>
+            				<div class="card-header font-weight-bold">{{ $t('admin.autospam.importExport.importTitle') }}</div>
             				<div class="card-body">
             					<div class="d-flex flex-column align-items-center justify-content-center py-4" style="gap:1rem;">
 	            					<p class="mb-0">
 	            						<i class="far fa-plus-circle fa-5x text-light"></i>
 	            					</p>
 
-	            					<p class="lead text-lighter">Make sure the file you are importing is a valid training data export!</p>
+	            					<p class="lead text-lighter">{{ $t('admin.autospam.importExport.importHelp') }}</p>
 
-	            					<button class="btn btn-primary btn-lg font-weight-bold btn-block" @click.prevent="handleImport">Upload Import</button>
+	            					<button class="btn btn-primary btn-lg font-weight-bold btn-block" @click.prevent="handleImport">{{ $t('admin.autospam.importExport.uploadImport') }}</button>
             					</div>
             				</div>
             			</div>
             		</div>
 					<div class="col-12 col-md-6">
             			<div class="card bg-dark">
-            				<div class="card-header font-weight-bold">Export Training Data</div>
+            				<div class="card-header font-weight-bold">{{ $t('admin.autospam.importExport.exportTitle') }}</div>
             				<div class="card-body">
             					<div class="d-flex flex-column align-items-center justify-content-center py-4" style="gap:1rem;">
 	            					<p class="mb-0">
 	            						<i class="far fa-download fa-5x text-light"></i>
 	            					</p>
 
-	            					<p class="lead text-lighter">Only share training data with people you trust. It can be used by spammers to bypass detection!</p>
+	            					<p class="lead text-lighter">{{ $t('admin.autospam.importExport.exportHelp') }}</p>
 
-	            					<button class="btn btn-primary btn-lg font-weight-bold btn-block" @click.prevent="downloadExport">Download Export</button>
+	            					<button class="btn btn-primary btn-lg font-weight-bold btn-block" @click.prevent="downloadExport">{{ $t('admin.autospam.importExport.downloadExport') }}</button>
             					</div>
             				</div>
             			</div>
@@ -447,7 +452,7 @@
         </div>
 	</div>
 
-    <b-modal v-model="showSpamReportModal" title="Autospam Post" :ok-only="true" ok-title="Close" ok-variant="outline-primary">
+    <b-modal v-model="showSpamReportModal" :title="$t('admin.autospam.autospamPost')" :ok-only="true" :ok-title="$t('common.close')" ok-variant="outline-primary">
     	<div v-if="viewingSpamReportLoading" class="d-flex align-items-center justify-content-center">
     		<b-spinner />
     	</div>
@@ -455,7 +460,7 @@
     	<template v-else>
 	    	<div class="list-group list-group-horizontal mt-3">
 		    	<div v-if="viewingSpamReport && viewingSpamReport.status && viewingSpamReport.status.account" class="list-group-item d-flex align-items-center justify-content-between flex-column flex-grow-1" style="gap:0.4rem;">
-	                <div class="text-muted small font-weight-bold mt-n1">Reported Account</div>
+	                <div class="text-muted small font-weight-bold mt-n1">{{ $t('admin.autospam.reportedAccount') }}</div>
 
 					<a v-if="viewingSpamReport.status.account && viewingSpamReport.status.account.id" :href="`/i/web/profile/${viewingSpamReport.status.account.id}`" target="_blank" class="text-primary">
 		            	<div class="d-flex align-items-center" style="gap:0.61rem;">
@@ -469,9 +474,9 @@
 		            		<div class="d-flex flex-column">
 		            			<p class="font-weight-bold mb-0 text-break" style="font-size: 12px;max-width: 140px;line-height: 16px;" :class="[ viewingSpamReport.status.account.is_admin ? 'text-danger': '']">@{{viewingSpamReport.status.account.acct}}</p>
 		            			<div class="d-flex text-muted mb-0" style="font-size: 10px;gap: 0.5rem;">
-		            				<span>{{viewingSpamReport.status.account.followers_count}} Followers</span>
+		            				<span>{{ $t('admin.autospam.followersCount', { count: viewingSpamReport.status.account.followers_count }) }}</span>
 		            				<span>·</span>
-		            				<span>Joined {{ timeAgo(viewingSpamReport.status.account.created_at) }}</span>
+		            				<span>{{ $t('admin.autospam.joined', { time: timeAgo(viewingSpamReport.status.account.created_at) }) }}</span>
 		            			</div>
 		            		</div>
 		            	</div>
@@ -482,8 +487,8 @@
 			<div v-if="viewingSpamReport && viewingSpamReport.status" class="list-group mt-3">
 				<div v-if="viewingSpamReport && viewingSpamReport.status && viewingSpamReport.status.media_attachments.length" class="list-group-item d-flex flex-column flex-grow-1" style="gap:0.4rem;">
 					<div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-						<div>Reported Post</div>
-						<a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">View</a>
+						<div>{{ $t('admin.autospam.reportedPost') }}</div>
+						<a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">{{ $t('admin.autospam.view') }}</a>
 					</div>
 
 					<img
@@ -511,8 +516,8 @@
 					class="list-group-item d-flex flex-column flex-grow-1"
 					style="gap:0.4rem;">
 					<div class="d-flex justify-content-between mt-n1 text-muted small font-weight-bold">
-						<div>Reported Post Caption</div>
-						<a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">View</a>
+						<div>{{ $t('admin.autospam.reportedPostCaption') }}</div>
+						<a class="font-weight-bold" :href="viewingSpamReport.status.url" target="_blank">{{ $t('admin.autospam.view') }}</a>
 					</div>
 					<p class="mb-0 read-more" style="font-size:12px;overflow-y: hidden">{{ viewingSpamReport.status.content_text }}</p>
 				</div>
@@ -520,14 +525,14 @@
 	    </template>
     </b-modal>
 
-    <b-modal v-model="showNonSpamModal" title="Train Non-Spam" :ok-only="true" ok-title="Close" ok-variant="outline-primary">
-    	<p class="small font-weight-bold">Select trusted accounts to train non-spam posts against!</p>
+    <b-modal v-model="showNonSpamModal" :title="$t('admin.autospam.train.trainNonSpam')" :ok-only="true" :ok-title="$t('common.close')" ok-variant="outline-primary">
+    	<p class="small font-weight-bold">{{ $t('admin.autospam.train.selectTrusted') }}</p>
         <autocomplete
         	v-if="!nonSpamAccounts || nonSpamAccounts.length < 10"
             :search="composeSearch"
             :disabled="searchLoading"
-            placeholder="Search by username"
-            aria-label="Search by username"
+            :placeholder="$t('admin.autospam.train.searchByUsername')"
+            :aria-label="$t('admin.autospam.train.searchByUsername')"
             :get-result-value="getTagResultValue"
             @submit="onSearchResultClick"
             ref="autocomplete"
@@ -566,23 +571,23 @@
 		<div
 			v-if="nonSpamAccounts && nonSpamAccounts.length"
 			class="mt-3">
-			<a class="btn btn-primary btn-lg font-weight-bold btn-block" href="#" @click.prevent="autospamTrainNonSpamSubmit">Train non-spam posts on trusted accounts</a>
+			<a class="btn btn-primary btn-lg font-weight-bold btn-block" href="#" @click.prevent="autospamTrainNonSpamSubmit">{{ $t('admin.autospam.train.submitTrusted') }}</a>
 		</div>
     </b-modal>
 
     <b-modal
     	v-model="showCreateTokenModal"
-    	title="Create New Token"
-    	cancel-title="Close"
+    	:title="$t('admin.autospam.tokens.createNew')"
+    	:cancel-title="$t('common.close')"
     	cancel-variant="outline-primary"
-    	ok-title="Save"
+    	:ok-title="$t('admin.autospam.tokens.save')"
     	ok-variant="primary"
     	v-on:ok="handleSaveToken">
     	<div class="list-group mt-3">
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Token</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.token') }}</p>
     				</div>
     				<div class="col-8">
     					<input class="form-control" v-model="customTokenForm.token" />
@@ -592,7 +597,7 @@
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Weight</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.weight') }}</p>
     				</div>
     				<div class="col-8">
     					<input type="number" class="form-control" min="-128" max="128" step="1" v-model="customTokenForm.weight" />
@@ -602,12 +607,12 @@
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Category</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.category') }}</p>
     				</div>
     				<div class="col-8">
     					<select class="form-control" v-model="customTokenForm.category">
-    						<option value="spam">Is Spam</option>
-    						<option value="ham">Is NOT Spam</option>
+    						<option value="spam">{{ $t('admin.autospam.tokens.isSpam') }}</option>
+    						<option value="ham">{{ $t('admin.autospam.tokens.isNotSpam') }}</option>
     					</select>
     				</div>
     			</div>
@@ -615,7 +620,7 @@
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Note</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.note') }}</p>
     				</div>
     				<div class="col-8">
     					<textarea class="form-control" v-model="customTokenForm.note"></textarea>
@@ -625,7 +630,7 @@
 			<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Active</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.active') }}</p>
     				</div>
     				<div class="col-8 text-right">
 						<div class="custom-control custom-checkbox">
@@ -640,17 +645,17 @@
 
     <b-modal
     	v-model="showEditTokenModal"
-    	title="Edit Token"
-    	cancel-title="Close"
+    	:title="$t('admin.autospam.tokens.editToken')"
+    	:cancel-title="$t('common.close')"
     	cancel-variant="outline-primary"
-    	ok-title="Update"
+    	:ok-title="$t('admin.autospam.tokens.update')"
     	ok-variant="primary"
     	v-on:ok="handleUpdateToken">
     	<div class="list-group mt-3">
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Token</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.token') }}</p>
     				</div>
     				<div class="col-8">
     					<input class="form-control" :value="editCustomTokenForm.token" disabled/>
@@ -660,7 +665,7 @@
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Weight</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.weight') }}</p>
     				</div>
     				<div class="col-8">
     					<input type="number" class="form-control" min="-128" max="128" step="1" v-model="editCustomTokenForm.weight" />
@@ -670,12 +675,12 @@
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Category</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.category') }}</p>
     				</div>
     				<div class="col-8">
     					<select class="form-control" v-model="editCustomTokenForm.category">
-    						<option value="spam">Is Spam</option>
-    						<option value="ham">Is NOT Spam</option>
+    						<option value="spam">{{ $t('admin.autospam.tokens.isSpam') }}</option>
+    						<option value="ham">{{ $t('admin.autospam.tokens.isNotSpam') }}</option>
     					</select>
     				</div>
     			</div>
@@ -683,7 +688,7 @@
     		<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Note</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.note') }}</p>
     				</div>
     				<div class="col-8">
     					<textarea class="form-control" v-model="editCustomTokenForm.note"></textarea>
@@ -693,7 +698,7 @@
 			<div class="list-group-item">
     			<div class="row align-items-center">
     				<div class="col-4">
-    					<p class="mb-0 font-weight-bold small">Active</p>
+    					<p class="mb-0 font-weight-bold small">{{ $t('admin.autospam.tokens.active') }}</p>
     				</div>
     				<div class="col-8 text-right">
 						<div class="custom-control custom-checkbox">
@@ -863,16 +868,16 @@
                 event.currentTarget.blur();
             	axios.post('/i/admin/api/autospam/train')
             	.then(res => {
-            		swal('Training Autospam!', 'A background job has been dispatched to train Autospam!', 'success');
+            		swal(this.$t('admin.autospam.trainingStarted'), this.$t('admin.autospam.trainingStartedBody'), 'success');
             		setTimeout(() => {
 	            		window.location.reload();
 	            	}, 10000);
             	})
             	.catch(error => {
             		if(error.response.status === 422) {
-            			swal('Error', error.response.data.error, 'error');
+            			swal(this.$t('common.error'), error.response.data.error, 'error');
             		} else {
-            			swal('Error', 'Oops, an error occured, please try again later', 'error');
+            			swal(this.$t('common.error'), this.$t('admin.autospam.errorTryLaterOops'), 'error');
             		}
             	})
             },
@@ -918,7 +923,7 @@
             		accounts: this.nonSpamAccounts
             	})
             	.then(res => {
-            		swal('Training Autospam!', 'A background job has been dispatched to train Autospam!', 'success');
+            		swal(this.$t('admin.autospam.trainingStarted'), this.$t('admin.autospam.trainingStartedBody'), 'success');
 
 	            	setTimeout(() => {
 	            		window.location.reload();
@@ -926,9 +931,9 @@
             	})
             	.catch(error => {
             		if(error.response.status === 422) {
-            			swal('Error', error.response.data.error, 'error');
+            			swal(this.$t('common.error'), error.response.data.error, 'error');
             		} else {
-            			swal('Error', 'Oops, an error occured, please try again later', 'error');
+            			swal(this.$t('common.error'), this.$t('admin.autospam.errorTryLaterOops'), 'error');
             		}
             	})
             },
@@ -949,7 +954,7 @@
             		console.log(res.data);
             	})
             	.catch(err => {
-            		swal('Oops! An Error Occured', err.response.data.message, 'error');
+            		swal(this.$t('admin.autospam.errorOccurredTitle'), err.response.data.message, 'error');
             	})
             	.finally(() => {
             		this.customTokenForm = {
@@ -1009,7 +1014,7 @@
 					  error.response.data.type.toLowerCase().indexOf('json') != -1
 					) {
 					    errorString = JSON.parse(await error.response.data.text());
-						swal('Export Error', errorString.error, 'error');
+						swal(this.$t('admin.autospam.exportError'), errorString.error, 'error');
 					};
 				});
             },
@@ -1025,18 +1030,18 @@
                 	this.config.files.ham.size < 1000 ||
                 	this.config.files.combined.size < 1000
                 ) {
-                	swal('Training Required', 'Before you can enable Advanced Detection, you need to train the models.\n\n Click on the "Train Autospam" tab and train both categories before proceeding', 'error');
+                	swal(this.$t('admin.autospam.trainingRequired'), this.$t('admin.autospam.trainingRequiredBody'), 'error');
                 	return;
                 }
 				swal({
-				  title: "Confirm",
-				  text: "Are you sure you want to enable Advanced Detection?",
+				  title: this.$t('admin.autospam.confirm'),
+				  text: this.$t('admin.autospam.confirmEnable'),
 				  icon: "warning",
 				  dangerMode: true,
 				  buttons: {
-				    cancel: "Cancel",
+				    cancel: this.$t('common.cancel'),
 				    confirm: {
-				      text: "Enable",
+				      text: this.$t('admin.autospam.enable'),
 				      value: "enable",
 				    }
 				  },
@@ -1045,7 +1050,7 @@
 				  if (res === 'enable') {
 				  	axios.post('/i/admin/api/autospam/config/enable')
 				  	.then(res => {
-						swal("Success! Advanced Detection is now enabled!\n\n This page will reload in a few seconds!", {
+						swal(this.$t('admin.autospam.enabledSuccess'), {
 						  icon: "success",
 						});
 
@@ -1054,7 +1059,7 @@
 						}, 5000);
 				  	})
 				  	.catch(err => {
-				  		swal('Oops!', 'An error occured, please try again later', 'error');
+				  		swal(this.$t('common.oops'), this.$t('admin.autospam.errorTryLater'), 'error');
 				  	})
 				  } else {
 				  }
@@ -1065,14 +1070,14 @@
                 event.currentTarget.blur();
 
                	swal({
-				  title: "Confirm",
-				  text: "Are you sure you want to disable Advanced Detection?",
+				  title: this.$t('admin.autospam.confirm'),
+				  text: this.$t('admin.autospam.confirmDisable'),
 				  icon: "warning",
 				  dangerMode: true,
 				  buttons: {
-				    cancel: "Cancel",
+				    cancel: this.$t('common.cancel'),
 				    confirm: {
-				      text: "Disable",
+				      text: this.$t('admin.autospam.disable'),
 				      value: "disable",
 				    }
 				  },
@@ -1081,7 +1086,7 @@
 				  if (res === 'disable') {
 				  	axios.post('/i/admin/api/autospam/config/disable')
 				  	.then(res => {
-						swal("Success! Advanced Detection is now disabled!\n\n This page will reload in a few seconds!", {
+						swal(this.$t('admin.autospam.disabledSuccess'), {
 						  icon: "success",
 						});
 
@@ -1090,7 +1095,7 @@
 						}, 5000);
 				  	})
 				  	.catch(err => {
-				  		swal('Oops!', 'An error occured, please try again later', 'error');
+				  		swal(this.$t('common.oops'), this.$t('admin.autospam.errorTryLater'), 'error');
 				  	})
 				  }
 				})
@@ -1099,7 +1104,7 @@
             handleImport() {
                 event.currentTarget.blur();
 
-                swal('Error', 'You do not have enough data to support importing.', 'error');
+                swal(this.$t('common.error'), this.$t('admin.autospam.notEnoughData'), 'error');
             }
         }
     }

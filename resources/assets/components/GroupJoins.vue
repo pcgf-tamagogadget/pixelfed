@@ -8,7 +8,7 @@
 
                 <template v-else>
                     <div class="px-5 pt-4 pb-2">
-                        <h2 class="fw-bold">My Groups</h2>
+                        <h2 class="fw-bold">{{ $t('groups.groupJoins.title') }}</h2>
                         <self-groups :profile="profile" />
                     </div>
                 </template>

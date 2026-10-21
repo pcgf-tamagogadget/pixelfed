@@ -7,7 +7,7 @@
 			body-class="p-0"
 			title-class="w-100 text-center pl-4 font-weight-bold"
 			title-tag="p"
-			title="Upload Avatar"
+			:title="$t('spa.updateAvatar.title')"
 		>
 		<input type="file" class="d-none" ref="avatarUpdateRef" @change="handleAvatarUpdate()" accept="image/jpg,image/png">
 		<div class="d-flex align-items-center justify-content-center">
@@ -20,20 +20,20 @@
 				<p class="text-center primary">
 					<i class="fal fa-cloud-upload fa-3x"></i>
 				</p>
-				<p class="text-center lead">Drag photo here or click here</p>
-				<p class="text-center small text-muted mb-0">Must be a <strong>png</strong> or <strong>jpg</strong> image up to 2MB</p>
+				<p class="text-center lead">{{ $t('spa.updateAvatar.dropHere') }}</p>
+				<i18n path="spa.updateAvatar.requirements" tag="p" class="text-center small text-muted mb-0"><template v-slot:png><strong>png</strong></template><template v-slot:jpg><strong>jpg</strong></template></i18n>
 			</div>
 
 			<div v-else-if="avatarUpdateIndex === 1" class="w-100 p-5">
 
 				<div class="d-md-flex justify-content-between align-items-center">
 					<div class="text-center mb-4">
-						<p class="small font-weight-bold" style="opacity:0.7;">Current</p>
+						<p class="small font-weight-bold" style="opacity:0.7;">{{ $t('spa.updateAvatar.current') }}</p>
 						<img :src="user.avatar" class="shadow" style="width: 150px;height: 150px;object-fit: cover;border-radius: 18px;opacity: 0.7;">
 					</div>
 
 					<div class="text-center mb-4">
-						<p class="font-weight-bold">New</p>
+						<p class="font-weight-bold">{{ $t('spa.updateAvatar.new') }}</p>
 						<img :src="avatarUpdatePreview" class="shadow" style="width: 220px;height: 220px;object-fit: cover;border-radius: 18px;">
 					</div>
 				</div>
@@ -41,8 +41,8 @@
 				<hr>
 
 				<div class="d-flex justify-content-between">
-					<button class="btn btn-light font-weight-bold btn-block mr-3" @click="avatarUpdateClear()">Clear</button>
-					<button class="btn btn-primary primary font-weight-bold btn-block mt-0" @click="confirmUpload()">Upload</button>
+					<button class="btn btn-light font-weight-bold btn-block mr-3" @click="avatarUpdateClear()">{{ $t('spa.updateAvatar.clear') }}</button>
+					<button class="btn btn-primary primary font-weight-bold btn-block mt-0" @click="confirmUpload()">{{ $t('spa.updateAvatar.upload') }}</button>
 				</div>
 			</div>
 		</div>
@@ -122,7 +122,7 @@
 			},
 
 			confirmUpload() {
-				if(!window.confirm('Are you sure you want to change your avatar photo?')) {
+				if(!window.confirm(this.$t('spa.updateAvatar.confirm'))) {
 					return;
 				}
 
@@ -138,7 +138,7 @@
 				.catch(err => {
 					if(err.response.data && err.response.data.errors) {
 						if(err.response.data.errors.avatar && err.response.data.errors.avatar.length) {
-							swal('Oops!', err.response.data.errors.avatar[0], 'error');
+							swal(this.$t('common.oops'), err.response.data.errors.avatar[0], 'error');
 						}
 					}
 				})

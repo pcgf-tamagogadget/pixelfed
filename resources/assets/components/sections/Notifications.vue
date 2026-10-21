@@ -73,7 +73,7 @@
                                             {{ $t("notifications.youRecent")}} <a :href="getPostUrl(n.status)" @click.prevent="goToPost(n.status)" class="font-weight-bold">{{ $t("notifications.post")}}</a> {{ $t("notifications.hasUnlisted")}}.
 										</p>
 										<p class="mt-n1 mb-0">
-											<span class="small text-muted"><a href="#" class="font-weight-bold" @click.prevent="showAutospamInfo(n.status)">Click here</a> for more info.</span>
+											<i18n path="spa.notificationsSection.moreInfo" tag="span" class="small text-muted"><template v-slot:link><a href="#" class="font-weight-bold" @click.prevent="showAutospamInfo(n.status)">{{ $t('spa.notificationsSection.clickHere') }}</a></template></i18n>
 										</p>
 									</div>
 									<div v-else-if="n.type == 'comment'">
@@ -119,7 +119,7 @@
 									</div>
 									<div v-else-if="n.type == 'modlog'">
 										<p class="my-0">
-											<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.acct">{{truncate(n.account.username)}}</a> {{ $t("notifications.updatedA")}} <a class="font-weight-bold" v-bind:href="n.modlog.url">modlog</a>.
+											<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.acct">{{truncate(n.account.username)}}</a> {{ $t("notifications.updatedA")}} <a class="font-weight-bold" v-bind:href="n.modlog.url">{{ $t("notifications.modlog") }}</a>.
 										</p>
 									</div>
 									<div v-else-if="n.type == 'tagged'">
@@ -129,25 +129,25 @@
 									</div>
 									<div v-else-if="n.type == 'direct'">
 										<p class="my-0">
-											<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.acct">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> {{ $t("notifications.sentA")}} <router-link class="font-weight-bold" :to="'/i/web/direct/thread/'+n.account.id">dm</router-link>.
+											<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.acct">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> {{ $t("notifications.sentA")}} <router-link class="font-weight-bold" :to="'/i/web/direct/thread/'+n.account.id">{{ $t("notifications.dm") }}</router-link>.
 										</p>
 									</div>
 
 									<div v-else-if="n.type == 'group.join.approved'">
 										<p class="my-0">
-											{{ $t("notifications.yourApplication")}} <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> {{ $t("notifications.wasApproved")}}
+											{{ $t("notifications.yourApplication")}} <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> {{ $t("notifications.applicationApproved")}}
 										</p>
 									</div>
 
 									<div v-else-if="n.type == 'group.join.rejected'">
 										<p class="my-0">
-											{{ $t("notifications.yourApplication")}} <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> {{ $t("notifications.wasRejected")}}
+											{{ $t("notifications.yourApplication")}} <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> {{ $t("notifications.applicationRejected")}}
 										</p>
 									</div>
 
 									<div v-else-if="n.type == 'group:invite'">
 										<p class="my-0">
-											<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.acct">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> invited you to join <a :href="n.group.url + '/invite/claim'" class="font-weight-bold text-dark word-break" :title="n.group.name">{{n.group.name}}</a>.
+											<i18n path="spa.notificationsSection.invitedYouToJoin" tag="span"><template v-slot:username><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.acct">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template><template v-slot:group><a :href="n.group.url + '/invite/claim'" class="font-weight-bold text-dark word-break" :title="n.group.name">{{n.group.name}}</a></template></i18n>
 										</p>
 									</div>
 
@@ -415,11 +415,11 @@
 				let el = document.createElement('p');
 				el.classList.add('text-left');
 				el.classList.add('mb-0');
-				el.innerHTML = '<p class="">We use automated systems to help detect potential abuse and spam. Your recent <a href="/i/web/post/' + status.id + '" class="font-weight-bold">post</a> was flagged for review. <br /> <p class=""><span class="font-weight-bold">Don\'t worry! Your post will be reviewed by a human</span>, and they will restore your post if they determine it appropriate.</p><p style="font-size:12px">Once a human approves your post, any posts you create after will not be marked as unlisted. If you delete this post and share more posts before a human can approve any of them, you will need to wait for at least one unlisted post to be reviewed by a human.';
+				el.innerHTML = '<p class="">' + this.$t('spa.notificationsSection.autospam.intro', { post: '<a href="/i/web/post/' + status.id + '" class="font-weight-bold">' + this.$t('spa.notificationsSection.autospam.post') + '</a>' }) + ' <br /> <p class=""><span class="font-weight-bold">' + this.$t('spa.notificationsSection.autospam.dontWorry') + '</span>' + this.$t('spa.notificationsSection.autospam.restore') + '</p><p style="font-size:12px">' + this.$t('spa.notificationsSection.autospam.details');
 				let wrapper = document.createElement('div');
 				wrapper.appendChild(el);
 				swal({
-					title: 'Why was my post unlisted?',
+					title: this.$t('spa.notificationsSection.autospam.title'),
 					content: wrapper,
 					icon: 'warning'
 				})

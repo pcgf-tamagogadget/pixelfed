@@ -6,8 +6,8 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <p class="display-1 text-white d-inline-block mb-0">New Shadow Filters</p>
-                    <p class="text-white mb-0">Creating a new admin shadow filter</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.asf.create.title') }}</p>
+                    <p class="text-white mb-0">{{ __('admin_panel.asf.create.subtitle') }}</p>
                 </div>
             </div>
         </div>
@@ -30,31 +30,31 @@
                         <form method="post">
                             @csrf
                             <div class="form-group">
-                                <label class="font-weight-bold">Username</label>
-                                <input class="form-control" name="username" placeholder="Enter username here" />
+                                <label class="font-weight-bold">{{ __('admin_panel.common.username') }}</label>
+                                <input class="form-control" name="username" placeholder="{{ __('admin_panel.asf.create.usernamePlaceholder') }}" />
                             </div>
 
-                            <p class="mb-0 font-weight-bold small">Filters</p>
+                            <p class="mb-0 font-weight-bold small">{{ __('admin_panel.asf.create.filters') }}</p>
                             <div class="list-group mb-3">
                                 <div class="list-group-item">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="hide_from_public_feeds" name="hide_from_public_feeds">
-                                        <label class="custom-control-label" for="hide_from_public_feeds">Hide public posts from public feed</label>
+                                        <label class="custom-control-label" for="hide_from_public_feeds">{{ __('admin_panel.asf.create.hidePublicPosts') }}</label>
                                     </div>
                                 </div>
                                 {{-- <div class="list-group-item"></div> --}}
                             </div>
 
                             <div class="form-group">
-                                <label class="font-weight-bold">Note</label>
-                                <textarea class="form-control" name="note" placeholder="Add an optional note, only visible to admins"></textarea>
+                                <label class="font-weight-bold">{{ __('admin_panel.asf.create.note') }}</label>
+                                <textarea class="form-control" name="note" placeholder="{{ __('admin_panel.asf.create.notePlaceholder') }}"></textarea>
                             </div>
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="active" name="active" checked>
-                                <label class="custom-control-label font-weight-bold" for="active">Mark as Active</label>
+                                <label class="custom-control-label font-weight-bold" for="active">{{ __('admin_panel.asf.create.markAsActive') }}</label>
                             </div>
                             <hr>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">{{ __('admin_panel.common.save') }}</button>
                         </form>
                     </div>
                 </div>

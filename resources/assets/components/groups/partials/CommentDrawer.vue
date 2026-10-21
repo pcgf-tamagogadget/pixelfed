@@ -7,9 +7,9 @@
 				<div
 					class="spinner-border text-lighter"
 					role="status">
-					<span class="sr-only">Loading...</span>
+					<span class="sr-only">{{ $t('common.loading') }}</span>
 				</div>
-				<p class="text-muted">Loading Comments ...</p>
+				<p class="text-muted">{{ $t('groups.commentDrawer.loadingComments') }}</p>
 			</div>
 		</div>
 		<div v-else class="border-top">
@@ -53,7 +53,7 @@
 						href="#comment-1"
 						class="comment-border-link"
 						@click.prevent="replyToChild(status)">
-						<span class="sr-only">Jump to comment-{{ index }}</span>
+						<span class="sr-only">{{ $t('groups.commentDrawer.jumpToComment', { index: index }) }}</span>
 					</a>
 
 					<a :href="status.account.url">
@@ -92,10 +92,10 @@
 								class="font-weight-bold"
 								:class="[ status.favourited ? 'text-primary' : 'text-muted' ]"
 								@click.prevent="likeComment(status, index, $event)">
-									{{ status.favourited ? 'Liked' : 'Like' }}
+									{{ status.favourited ? $t('common.liked') : $t('common.like') }}
 								</a>
 							<span class="mx-1">·</span>
-							<a href="#" class="text-muted font-weight-bold" @click.prevent="replyToChild(status, index)">Reply</a>
+							<a href="#" class="text-muted font-weight-bold" @click.prevent="replyToChild(status, index)">{{ $t('groups.commentDrawer.reply') }}</a>
 							<span v-if="profile" class="mx-1">·</span>
 							<a
 								class="font-weight-bold text-muted"
@@ -109,7 +109,7 @@
 									class="font-weight-bold text-lighter"
 									href="#"
 									@click.prevent="deleteComment(index)">
-										Delete
+										{{ $t('common.delete') }}
 									</a>
 							</span>
 						</p>
@@ -151,7 +151,7 @@
 							@click.prevent="loadMoreChildComments(status, index)">
 							<div class="comment-border-arrow"></div>
 							<i class="far fa-long-arrow-right mr-1"></i>
-							{{ loadingChildComments ? 'Loading' : 'Load' }} more comments
+							{{ loadingChildComments ? $t('groups.commentDrawer.loadingMoreComments') : $t('groups.commentDrawer.loadMoreComments') }}
 						</a>
 
 						<a
@@ -167,14 +167,14 @@
 							:disabled="loadingChildComments"
 							@click.prevent="replyToChild(status, index)">
 							<i class="far fa-long-arrow-right mr-1"></i>
-							{{ loadingChildComments ? 'Loading' : 'Load' }} more comments
+							{{ loadingChildComments ? $t('groups.commentDrawer.loadingMoreComments') : $t('groups.commentDrawer.loadMoreComments') }}
 						</a>
 
 						<div v-if="replyChildId == status.id" class="mt-3 mb-3 d-flex align-items-top reply-form child-reply-form">
 							<div class="comment-border-arrow"></div>
 							<img class="rounded-circle mr-2 border" :src="avatar" width="38" height="38" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'">
 							<div v-if="isUploading" class="w-100">
-								<p class="font-weight-light mb-1">Uploading image ...</p>
+								<p class="font-weight-light mb-1">{{ $t('groups.commentDrawer.uploadingImage') }}</p>
 								<div class="progress rounded-pill" style="height:10px">
 									<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100" :style="{ width: uploadProgress + '%'}"></div>
 								</div>
@@ -182,7 +182,7 @@
 							<div v-else class="reply-form-input">
 								<input
 									class="form-control bg-light border-lighter rounded-pill"
-									placeholder="Write a comment...."
+									:placeholder="$t('groups.commentDrawer.writeComment')"
 									v-model="childReplyContent"
 									:disabled="postingChildComment"
 									v-on:keyup.enter="storeChildComment(index)">
@@ -211,13 +211,13 @@
 				:disabled="isLoadingMore">
 
 				<span v-if="!isLoadingMore">
-					Load more comments ...
+					{{ $t('groups.commentDrawer.loadMoreCommentsEllipsis') }}
 				</span>
 				<div
 					v-else
 					class="spinner-border spinner-border-sm text-muted"
 					role="status">
-					<span class="sr-only">Loading...</span>
+					<span class="sr-only">{{ $t('common.loading') }}</span>
 				</div>
 			</button>
 
@@ -225,7 +225,7 @@
 				<div class="d-flex align-items-top reply-form cdrawer-reply-form">
 					<img class="rounded-circle mr-2 border" :src="avatar" width="38" height="38" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'">
 					<div v-if="isUploading" class="w-100">
-						<p class="font-weight-light small text-muted mb-1">Uploading image ...</p>
+						<p class="font-weight-light small text-muted mb-1">{{ $t('groups.commentDrawer.uploadingImage') }}</p>
 						<div class="progress rounded-pill" style="height:10px">
 							<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100" :style="{ width: uploadProgress + '%'}"></div>
 						</div>
@@ -234,7 +234,7 @@
                         <div class="reply-form-input">
                             <textarea
                                 class="form-control bg-light border-lighter"
-                                placeholder="Write a comment...."
+                                :placeholder="$t('groups.commentDrawer.writeComment')"
                                 :rows="replyContent && replyContent.length > 40 ? 4 : 1"
                                 v-model="replyContent"></textarea>
 
@@ -260,7 +260,7 @@
 					</div>
                     <button
                         class="btn btn-link btn-sm font-weight-bold align-self-center ml-3 mb-3"
-                        @click="storeComment">Post</button>
+                        @click="storeComment">{{ $t('groups.commentDrawer.post') }}</button>
 				</div>
 			</div>
 		</div>
@@ -445,11 +445,11 @@
 					if(err.response.status == 422) {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.commentDrawer.processingError'), 'error');
 					}
 				})
 			},
@@ -474,7 +474,7 @@
 			},
 
 			deleteComment(index) {
-				if(window.confirm('Are you sure you want to delete this post?') == false) {
+				if(window.confirm(this.$t('groups.commentDrawer.deleteConfirm')) == false) {
 					return;
 				}
 
@@ -485,7 +485,7 @@
 					this.feed.splice(index, 1);
 				}).catch(err => {
 					console.log(err.response);
-					swal('Error', 'Something went wrong. Please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('common.errorMsg'), 'error');
 				});
 			},
 
@@ -517,11 +517,11 @@
 					if(err.response.status == 422) {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.commentDrawer.processingError'), 'error');
 					}
 				});
 			},
@@ -644,11 +644,11 @@
 					if(err.response.status == 422) {
 						// this.isUploading = false;
 						// this.uploadProgress = 0;
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						// this.isUploading = false;
 						// this.uploadProgress = 0;
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.commentDrawer.processingError'), 'error');
 					}
 				});
 			},

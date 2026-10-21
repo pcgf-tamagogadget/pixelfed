@@ -6,13 +6,13 @@
                     <i class="far fa-eye-slash fa-2x"></i>
                 </p>
                 <p class="h4 font-weight-bold text-center">
-                    Sensitive Content
+                    {{ $t('common.sensitiveContent') }}
                 </p>
                 <p class="text-center py-2 content-label-text">
-                    {{ status.spoiler_text ? status.spoiler_text : 'This post may contain sensitive content.'}}
+                    {{ status.spoiler_text ? status.spoiler_text : $t('compose.presenter.sensitivePost') }}
                 </p>
                 <p class="mb-0">
-                    <button @click="status.sensitive = false" class="btn btn-outline-light btn-block btn-sm font-weight-bold">See Post</button>
+                    <button @click="status.sensitive = false" class="btn btn-outline-light btn-block btn-sm font-weight-bold">{{ $t('compose.presenter.seePost') }}</button>
                 </p>
             </div>
         </div>
@@ -152,16 +152,16 @@
                     }
                     defaultOptions.i18n = {
                         qualityLabel: {
-                            0: 'Auto',
+                            0: self.$t('compose.presenter.auto'),
                         },
                     }
 
                     hls.on(Hls.Events.LEVEL_SWITCHED, function(event, data) {
                         var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
                         if (hls.autoLevelEnabled) {
-                            span.innerHTML = `Auto (${hls.levels[data.level].height}p)`
+                            span.innerHTML = `${self.$t('compose.presenter.auto')} (${hls.levels[data.level].height}p)`
                         } else {
-                            span.innerHTML = `Auto`
+                            span.innerHTML = self.$t('compose.presenter.auto')
                         }
                     })
 

@@ -10,8 +10,8 @@
 				<div class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">My Hashtags</h1>
-					<p class="font-default lead">Posts from hashtags you follow</p>
+					<h1 class="font-default">{{ $t('spa.discoverHashtags.title') }}</h1>
+					<p class="font-default lead">{{ $t('spa.discoverHashtags.subtitle') }}</p>
 
 					<hr>
 
@@ -34,7 +34,7 @@
 						@bookmark="handleBookmark(index)"
 						/>
 
-					<p v-if="!isLoading && tagsLoaded && feed.length == 0" class="lead">No hashtags found :(</p>
+					<p v-if="!isLoading && tagsLoaded && feed.length == 0" class="lead">{{ $t('spa.discoverHashtags.noHashtags') }}</p>
 				</div>
 
 				<div class="col-md-2 col-lg-3">
@@ -115,11 +115,11 @@ export default {
 			tagsLoaded: false,
 			breadcrumbItems: [
 				{
-					text: 'Discover',
+					text: this.$t('navmenu.discover'),
 					href: '/i/web/discover'
 				},
 				{
-					text: 'My Hashtags',
+					text: this.$t('spa.discoverHashtags.title'),
 					active: true
 				}
 			],
@@ -197,13 +197,13 @@ export default {
 				let el = document.createElement('p');
 				el.classList.add('text-left');
 				el.classList.add('mb-0');
-				el.innerHTML = '<span class="lead">We limit certain interactions to keep our community healthy and it appears that you have reached that limit. <span class="font-weight-bold">Please try again later.</span></span>';
+				el.innerHTML = '<span class="lead">' + this.$t('spa.discoverHashtags.rateLimitText') + ' <span class="font-weight-bold">' + this.$t('spa.discoverHashtags.tryAgainLater') + '</span></span>';
 				let wrapper = document.createElement('div');
 				wrapper.appendChild(el);
 
 				if(err.response.status === 429) {
 					swal({
-						title: 'Too many requests',
+						title: this.$t('spa.discoverHashtags.tooManyRequests'),
 						content: wrapper,
 						icon: 'warning',
 						buttons: {
@@ -354,8 +354,8 @@ export default {
 				this.feed[index].bookmarked = !p.bookmarked;
 			})
 			.catch(err => {
-				this.$bvToast.toast('Cannot bookmark post at this time.', {
-					title: 'Bookmark Error',
+				this.$bvToast.toast(this.$t('spa.discoverHashtags.bookmarkErrorText'), {
+					title: this.$t('spa.discoverHashtags.bookmarkError'),
 					variant: 'danger',
 					autoHideDelay: 5000
 				});

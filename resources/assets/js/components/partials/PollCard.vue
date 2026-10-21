@@ -3,7 +3,7 @@
 	<div class="card shadow-none rounded-0" :class="{ border: showBorder, 'border-top-0': !showBorderTop}">
 		<div class="card-body">
 			<div class="media">
-				<img class="rounded-circle box-shadow mr-2" :src="status.account.avatar" width="32px" height="32px" alt="avatar">
+				<img class="rounded-circle box-shadow mr-2" :src="status.account.avatar" width="32px" height="32px" :alt="$t('classic.pollCard.avatar')">
 				<div class="media-body">
 					<div class="pl-2 d-flex align-items-top">
 						<a class="username font-weight-bold text-dark text-decoration-none text-break" href="#">
@@ -19,23 +19,23 @@
 							·
 						</span>
 						<span class="d-none d-md-block px-1 text-primary font-weight-bold">
-							<i class="fas fa-poll-h"></i> Poll <sup class="text-lighter">BETA</sup>
+							<i class="fas fa-poll-h"></i> {{ $t('classic.pollCard.poll') }} <sup class="text-lighter">{{ $t('classic.pollCard.beta') }}</sup>
 						</span>
 						<span class="d-none d-md-block px-1 text-lighter">
 							·
 						</span>
 						<span class="d-none d-md-block px-1 text-lighter font-weight-bold">
 							<span v-if="status.poll.expired">
-								Closed
+								{{ $t('classic.pollCard.closed') }}
 							</span>
 							<span v-else>
-								Closes in {{ shortTimestampAhead(status.poll.expires_at) }}
+								{{ $t('classic.pollCard.closesIn', { time: shortTimestampAhead(status.poll.expires_at) }) }}
 							</span>
 						</span>
 						<span class="text-right" style="flex-grow:1;">
 							<button class="btn btn-link text-dark py-0" type="button" @click="ctxMenu()">
 								<span class="fas fa-ellipsis-h text-lighter"></span>
-								<span class="sr-only">Post Menu</span>
+								<span class="sr-only">{{ $t('classic.pollCard.postMenu') }}</span>
 							</button>
 						</span>
 					</div>
@@ -63,7 +63,7 @@
 									</p>
 
 									<p v-if="selectedIndex != null" class="text-right">
-										<button class="btn btn-primary btn-sm font-weight-bold px-3" @click="submitVote()">Vote</button>
+										<button class="btn btn-primary btn-sm font-weight-bold px-3" @click="submitVote()">{{ $t('classic.pollCard.vote') }}</button>
 									</p>
 								</div>
 								<div v-else-if="tab === 'voted'">
@@ -76,7 +76,7 @@
 										</button>
 										<div class="font-weight-bold">
 											<span class="text-muted">{{ calculatePercentage(option) }}%</span>
-											<span class="small text-lighter">({{option.votes_count}} {{option.votes_count == 1 ? 'vote' : 'votes'}})</span>
+											<span class="small text-lighter">({{option.votes_count}} {{option.votes_count == 1 ? $t('classic.pollCard.voteSingular') : $t('classic.pollCard.votePlural')}})</span>
 										</div>
 									</div>
 								</div>
@@ -89,7 +89,7 @@
 										</button>
 										<div class="font-weight-bold">
 											<span class="text-muted">{{ calculatePercentage(option) }}%</span>
-											<span class="small text-lighter">({{option.votes_count}} {{option.votes_count == 1 ? 'vote' : 'votes'}})</span>
+											<span class="small text-lighter">({{option.votes_count}} {{option.votes_count == 1 ? $t('classic.pollCard.voteSingular') : $t('classic.pollCard.votePlural')}})</span>
 										</div>
 									</div>
 								</div>
@@ -97,11 +97,11 @@
 
 							<div>
 								<p class="mb-0 small text-lighter font-weight-bold d-flex justify-content-between">
-									<span>{{ status.poll.votes_count }} votes</span>
-									<a v-if="tab != 'results' && authenticated && !activeRefreshTimeout && status.poll.expired != true && status.poll.voted" class="text-lighter" @click.prevent="refreshResults()" href="#">Refresh Results</a>
+									<span>{{ $t('classic.pollCard.votesCount', { count: status.poll.votes_count }) }}</span>
+									<a v-if="tab != 'results' && authenticated && !activeRefreshTimeout && status.poll.expired != true && status.poll.voted" class="text-lighter" @click.prevent="refreshResults()" href="#">{{ $t('classic.pollCard.refreshResults') }}</a>
 									<span v-if="tab != 'results' && authenticated && refreshingResults" class="text-lighter">
 										<div class="spinner-border spinner-border-sm" role="status">
-											<span class="sr-only">Loading...</span>
+											<span class="sr-only">{{ $t('common.loading') }}</span>
 										</div>
 									</span>
 								</p>
@@ -109,10 +109,10 @@
 							<div>
 								<span class="d-block d-md-none small text-lighter font-weight-bold">
 									<span v-if="status.poll.expired">
-										Closed
+										{{ $t('classic.pollCard.closed') }}
 									</span>
 									<span v-else>
-										Closes in {{ shortTimestampAhead(status.poll.expires_at) }}
+										{{ $t('classic.pollCard.closesIn', { time: shortTimestampAhead(status.poll.expires_at) }) }}
 									</span>
 								</span>
 							</div>
@@ -298,7 +298,7 @@
 						this.refreshingResults = false;
 					}
 				}).catch(err => {
-					swal('Oops!', 'An error occured while fetching the latest poll results. Please try again later.', 'error');
+					swal(this.$t('common.oops'), this.$t('classic.pollCard.fetchError'), 'error');
 					this.setActiveRefreshTimeout();
 					this.refreshingResults = false;
 				});

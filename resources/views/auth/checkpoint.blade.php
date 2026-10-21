@@ -14,12 +14,12 @@
 	            	<a href="/">
 	                	<img src="/img/pixelfed-icon-white.svg" height="60px">
 	            	</a>
-	                <h1 class="pt-4 pb-1">2FA Checkpoint</h1>
+	                <h1 class="pt-4 pb-1">{{ __('auth.checkpointPage.title') }}</h1>
 		            <p class="font-weight-light lead">
-		            	Enter the 2FA code from your device.
+		            	{{ __('auth.checkpointPage.enterCode') }}
 		            </p>
 		            <p class="text-muted small pb-3">
-		                If you lose access to your 2FA device, contact the admins.
+		                {{ __('auth.shared.lostDevice') }}
 		            </p>
 	            </div>
 	            <div class="card bg-glass">
@@ -30,13 +30,13 @@
 	                        <div class="form-group row">
 
 	                            <div class="col-md-12">
-	                            	<label class="font-weight-bold small text-muted">2FA Code</label>
+	                            	<label class="font-weight-bold small text-muted">{{ __('auth.checkpointPage.codeLabel') }}</label>
 	                                <input
 	                                	id="code"
 	                                	type="text"
 	                                	class="form-control{{ $errors->has('code') ? ' is-invalid' : '' }}"
 	                                	name="code"
-	                                	placeholder="{{__('Two-Factor Authentication Code')}}"
+	                                	placeholder="{{ __('auth.shared.twoFactorCode') }}"
 	                                	required
 	                                	autocomplete="one-time-code"
 	                                	autofocus=""
@@ -59,7 +59,7 @@
 	                                	class="btn btn-success btn-block rounded-pill font-weight-bold"
 	                                	onclick="event.preventDefault();handleSubmit()"
 	                                	>
-	                                    {{ __('Verify') }}
+	                                    {{ __('auth.shared.verify') }}
 	                                </button>
 
 	                            </div>
@@ -69,12 +69,12 @@
 	            </div>
 	           	<div class="d-flex justify-content-between my-3">
 	            	<p class="mb-0 small">
-	            		<span class="text-muted">Logged in as:</span> {{request()->user()->username}}
+	            		<span class="text-muted">{{ __('auth.shared.loggedInAs') }}</span> {{request()->user()->username}}
 	            	</p>
 
 	                <form action="/logout" method="post">
 	            		@csrf
-	            		<button type="submit" class="btn btn-link p-0 btn-sm text-white font-weight-bold">Logout</button>
+	            		<button type="submit" class="btn btn-link p-0 btn-sm text-white font-weight-bold">{{ __('auth.shared.logout') }}</button>
 	            	</form>
 	            </div>
 	        </div>
@@ -98,7 +98,7 @@
 		let btn = document.getElementById('sbtn');
 		btn.classList.add('disabled');
 		btn.setAttribute('disabled', 'disabled');
-		btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>';
+		btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">' + @json(__('auth.shared.loading')) + '</span></div>';
 		document.getElementById('2faForm').submit()
 	}
 </script>

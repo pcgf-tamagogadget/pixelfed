@@ -1,21 +1,21 @@
-@extends('site.help.partial.template', ['breadcrumb'=>'Labs Deprecation'])
+@extends('site.help.partial.template', ['breadcrumb'=>__('helpcenter.labsDeprecation.title')])
 
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Labs Deprecation</h3>
+    <h3 class="font-weight-bold">{{ __('helpcenter.labsDeprecation.title') }}</h3>
   </div>
   <hr>
-  <p class="lead">We are deprecating Labs in a future version. No new experiments will be released. We will give 6 months notice before removing Labs.</p>
+  <p class="lead">{{ __('helpcenter.labsDeprecation.intro') }}</p>
   <hr>
-  <h4 class="font-weight-bold">When will labs be deprecated?</h4>
-  <p>June 14 2021</p>
+  <h4 class="font-weight-bold">{{ __('helpcenter.labsDeprecation.q1') }}</h4>
+  <p>{{ __('helpcenter.labsDeprecation.a1') }}</p>
   <hr>
-  <h4 class="font-weight-bold">What features will be deprecated?</h4>
-  <p>All experiments except Dark Mode</p>
+  <h4 class="font-weight-bold">{{ __('helpcenter.labsDeprecation.q2') }}</h4>
+  <p>{{ __('helpcenter.labsDeprecation.a2') }}</p>
   <hr>
-  <h4 class="font-weight-bold">Why is Labs being deprecated?</h4>
-  <p>Labs was started in early 2019 to test experimental designs and features. Now the project is more mature, we are outgrowing some of these experiments.</p>
+  <h4 class="font-weight-bold">{{ __('helpcenter.labsDeprecation.q3') }}</h4>
+  <p>{{ __('helpcenter.labsDeprecation.a3') }}</p>
   <hr>
-  <p class="small">Last Updated: Dec 14 2020</p>
+  <p class="small">{{ __('helpcenter.labsDeprecation.lastUpdated') }}</p>
 @endsection

@@ -1,16 +1,16 @@
 <template>
 <div class="container d-flex justify-content-center">
   <div class="error-page py-5 my-5" style="max-width: 450px;">
-    <h3 class="font-weight-bold">404 &nbsp; Page Not Found</h3>
-    <p class="lead">The page you are trying to view is not available</p>
+    <h3 class="font-weight-bold">404 &nbsp; {{ $t('spa.notFound.title') }}</h3>
+    <p class="lead">{{ $t('spa.notFound.lead') }}</p>
 
     <div class="text-muted">
-		<p class="mb-1">This can happen for a few reasons:</p>
+		<p class="mb-1">{{ $t('spa.notFound.reasons') }}</p>
 		<ul>
-			<li>The url is invalid or has a typo</li>
-			<li>The page has been flagged for review by our automated abuse detection systems</li>
-			<li>The content may have been deleted</li>
-			<li>You do not have permission to view this content</li>
+			<li>{{ $t('spa.notFound.reasonInvalidUrl') }}</li>
+			<li>{{ $t('spa.notFound.reasonFlagged') }}</li>
+			<li>{{ $t('spa.notFound.reasonDeleted') }}</li>
+			<li>{{ $t('spa.notFound.reasonNoPermission') }}</li>
 		</ul>
     </div>
   </div>

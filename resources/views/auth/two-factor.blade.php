@@ -6,10 +6,10 @@
 		<div class="col-lg-5">
 			<div class="text-center">
 				<img src="{{ config('app.logo') }}" height="60px">
-				<p class="font-weight-light h3 py-4">Verify Two Factor Code</p>
+				<p class="font-weight-light h3 py-4">{{ __('auth.twoFactorPage.title') }}</p>
 			</div>
 			<div class="alert alert-info small">
-				If you lose access to your 2FA device, contact the admins.
+				{{ __('auth.shared.lostDevice') }}
 			</div>
 			<div class="card">
 				<div class="card-body">
@@ -19,7 +19,7 @@
 						<div class="form-group row">
 
 							<div class="col-md-12">
-								<input id="code" type="text" class="form-control{{ $errors->has('code') ? ' is-invalid' : '' }}" name="code" placeholder="{{__('Two-Factor Authentication Code')}}" required autocomplete="off" autofocus="" inputmode="numeric" minlength="6">
+								<input id="code" type="text" class="form-control{{ $errors->has('code') ? ' is-invalid' : '' }}" name="code" placeholder="{{ __('auth.shared.twoFactorCode') }}" required autocomplete="off" autofocus="" inputmode="numeric" minlength="6">
 
 								@if ($errors->has('code'))
 									<span class="invalid-feedback">
@@ -32,7 +32,7 @@
 						<div class="form-group row mb-0">
 							<div class="col-md-12">
 								<button type="submit" class="btn btn-success btn-block  font-weight-bold">
-									{{ __('Verify') }}
+									{{ __('auth.shared.verify') }}
 								</button>
 
 							</div>

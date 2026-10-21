@@ -5,7 +5,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-7">
             <div class="logo">
-                <img src="{{ config('app.logo') }}" width="40" height="40" alt="Pixelfed Logo">
+                <img src="{{ config('app.logo') }}" width="40" height="40" alt="{{ __('auth.curated.logoAlt') }}">
                 <p class="font-weight-bold mb-0">Pixelfed</p>
             </div>
 
@@ -20,8 +20,8 @@
                 <div class="mb-5"></div>
             @endif
 
-            <h1 class="text-center">Resend Confirmation</h1>
-            <p class="lead text-center">Please confirm your email address so we verify your registration application to re-send your email verification email.</p>
+            <h1 class="text-center">{{ __('auth.curated.resendConfirmation') }}</h1>
+            <p class="lead text-center">{{ __('auth.curated.resendLead') }}</p>
 
             <form method="post">
                 @csrf
@@ -30,23 +30,23 @@
                         type="email"
                         class="form-control form-control-lg bg-dark border-dark text-white"
                         name="email"
-                        placeholder="Your email address"
+                        placeholder="{{ __('auth.curated.yourEmail') }}"
                         required />
                 </div>
                 <x-captcha surface="curated_register" />
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-primary font-weight-bold rounded-pill px-5">Verify</button>
+                    <button class="btn btn-primary font-weight-bold rounded-pill px-5">{{ __('auth.curated.verify') }}</button>
                 </div>
             </form>
 
         </div>
         <div class="col-12 col-md-7 mt-5">
             <div class="small-links">
-                <a href="/">Home</a>
+                <a href="/">{{ __('auth.curated.home') }}</a>
                 <span>·</span>
-                <a href="/login">Login</a>
+                <a href="/login">{{ __('auth.login') }}</a>
                 <span>·</span>
-                <a href="{{route('help.curated-onboarding')}}" target="_blank">Help</a>
+                <a href="{{route('help.curated-onboarding')}}" target="_blank">{{ __('auth.curated.help') }}</a>
             </div>
         </div>
     </div>

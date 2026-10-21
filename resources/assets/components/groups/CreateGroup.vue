@@ -4,18 +4,18 @@
 			<div class="col-12 col-md-8 border-left">
 
                 <div class="bg-dark p-5 mx-n3">
-                    <p class="h1 font-weight-bold text-light mb-2">Create Group</p>
-                    <p class="text-lighter mb-0">Create a new federated Group that is compatible with other Pixelfed and Lemmy servers</p>
+                    <p class="h1 font-weight-bold text-light mb-2">{{ $t('groups.createGroup.title') }}</p>
+                    <p class="text-lighter mb-0">{{ $t('groups.createGroup.subtitle') }}</p>
                 </div>
 				<div class="px-2 mb-5">
 					<div class="mt-4">
                         <text-input
-                            label="Group Name"
+                            :label="$t('groups.createGroup.groupName')"
                             :value="name"
                             :hasLimit="true"
                             :maxLimit="limit.name.max"
-                            placeholder="Add your group name"
-                            helpText="Alphanumeric characters only, you can change this later."
+                            :placeholder="$t('groups.createGroup.groupNamePlaceholder')"
+                            :helpText="$t('groups.createGroup.groupNameHelp')"
                             :largeInput="true"
                             @update="handleUpdate('name', $event)"
                         />
@@ -23,51 +23,51 @@
                         <hr>
 
                         <select-input
-                            label="Group Type"
+                            :label="$t('groups.createGroup.groupType')"
                             :value="membership"
                             :categories="membershipCategories"
-                            placeholder="Select a type"
-                            helpText="Select the membership type, you can change this later."
+                            :placeholder="$t('groups.createGroup.groupTypePlaceholder')"
+                            :helpText="$t('groups.createGroup.groupTypeHelp')"
                             @update="handleUpdate('membership', $event)"
                         />
 
                         <hr>
 
                         <select-input
-                            label="Group Category"
+                            :label="$t('groups.createGroup.groupCategory')"
                             :value="category"
                             :categories="categories"
-                            placeholder="Select a category"
-                            helpText="Choose the most relevant category to improve discovery and visibility"
+                            :placeholder="$t('groups.createGroup.groupCategoryPlaceholder')"
+                            :helpText="$t('groups.createGroup.groupCategoryHelp')"
                             @update="handleUpdate('category', $event)"
                         />
 
 						<hr>
 
                         <text-area-input
-                            label="Group Description"
+                            :label="$t('groups.createGroup.groupDescription')"
                             :value="description"
                             :hasLimit="true"
                             :maxLimit="limit.description.max"
-                            placeholder="Describe your groups purpose in a few words"
-                            helpText="Describe your groups purpose in a few words, you can change this later."
+                            :placeholder="$t('groups.createGroup.groupDescriptionPlaceholder')"
+                            :helpText="$t('groups.createGroup.groupDescriptionHelp')"
                             @update="handleUpdate('description', $event)"
                         />
 
                         <hr>
 
                         <checkbox-input
-                            label="Adult Content"
-                            inputText="Allow Adult Content"
+                            :label="$t('groups.createGroup.adultContent')"
+                            :inputText="$t('groups.createGroup.allowAdultContent')"
                             :value="configuration.adult"
-                            helpText="Groups that allow adult content should enable this or risk suspension or deletion by instance admins. Illegal content is prohibited. You can change this later."
+                            :helpText="$t('groups.createGroup.adultContentHelp')"
                         />
 
                         <hr>
 
                         <checkbox-input
                             label=""
-                            inputText="I agree to the the Community Guidelines and Terms of Use and will administrate this group according to the rules set by this server. I understand that failure to abide by these terms may lead to the suspension of this group, and my account."
+                            :inputText="$t('groups.createGroup.agreeGuidelines')"
                             :value="hasConfirmed"
                             :strongText="false"
                             @update="handleUpdate('hasConfirmed', $event)"
@@ -88,7 +88,7 @@
                             class="btn btn-primary btn-block font-weight-bold rounded-pill mt-4"
                             @click="createGroup"
                             :disabled="!hasConfirmed">
-                            Create Group
+                            {{ $t('groups.createGroup.createGroup') }}
                         </button>
 					</div>
 				</div>
@@ -208,7 +208,7 @@
 				hasConfirmed: false,
 				permissionChecked: false,
                 membershipCategories: [
-                    { key: 'Public', value: 'public' },
+                    { key: this.$t('groups.createGroup.public'), value: 'public' },
                     // { key: 'Private', value: 'private' },
                     // { key: 'Local', value: 'local' },
                 ],
@@ -225,7 +225,7 @@
 				axios.post('/api/v0/groups/permission/create')
 				.then(res => {
 					if(res.data.permission == false) {
-						swal('Limit reached', 'You cannot create any more groups', 'error');
+						swal(this.$t('groups.createGroup.limitReached'), this.$t('groups.createGroup.limitReachedMsg'), 'error');
 						this.hide = true;
 					} else {
 						this.hide = false;

@@ -7,12 +7,12 @@
 						<h3 class="font-weight-bold mb-1">#{{ name }}</h3>
 						<p class="mb-0 lead text-muted">
 							<span>
-								Posts in <a :href="group.url" class="text-muted font-weight-bold">{{ group.name }}</a>
+								<i18n path="groups.groupTopicFeed.postsIn" tag="span"><template v-slot:group><a :href="group.url" class="text-muted font-weight-bold">{{ group.name }}</a></template></i18n>
 							</span>
 							<span>·</span>
 							<span><i class="fas fa-globe"></i></span>
 							<span>·</span>
-							<span>{{ group.membership != 'all' ? 'Private' : 'Public'}} Group</span>
+							<span>{{ group.membership != 'all' ? $t('groups.groupTopicFeed.privateGroup') : $t('groups.groupTopicFeed.publicGroup') }}</span>
 						</p>
 					</div>
 					<!-- <div>
@@ -47,18 +47,18 @@
 						<i class="fal fa-exclamation-circle fa-4x"></i>
 					</p>
 
-					<p class="font-weight-bold text-muted">Cannot load any posts containg the <span class="font-weight-normal">#{{ name }}</span> hashtag</p>
+					<i18n path="groups.groupTopicFeed.cannotLoad" tag="p" class="font-weight-bold text-muted"><template v-slot:hashtag><span class="font-weight-normal">#{{ name }}</span></template></i18n>
 
 					<p class="text-left">
-						This can happen for a few reasons:
+						{{ $t('groups.groupTopicFeed.reasons') }}
 					</p>
 
 					<ul class="text-left">
-						<li>There is a typo in the url</li>
-						<li>No posts exist that contain this hashtag</li>
-						<li>This hashtag has been banned by group admins</li>
-						<li>The hashtag is new or used infrequently</li>
-						<li>A technical issue has occured</li>
+						<li>{{ $t('groups.groupTopicFeed.reasonTypo') }}</li>
+						<li>{{ $t('groups.groupTopicFeed.reasonNoPosts') }}</li>
+						<li>{{ $t('groups.groupTopicFeed.reasonBanned') }}</li>
+						<li>{{ $t('groups.groupTopicFeed.reasonNew') }}</li>
+						<li>{{ $t('groups.groupTopicFeed.reasonTechnical') }}</li>
 					</ul>
 				</div>
 			</div>

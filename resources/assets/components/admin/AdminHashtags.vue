@@ -5,48 +5,48 @@
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
-                        <p class="display-1 text-white d-inline-block mb-0">Hashtags</p>
+                        <p class="display-1 text-white d-inline-block mb-0">{{ $t('admin.hashtags.title') }}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-2 col-md-6">
                         <div class="mb-3">
-                            <h5 class="text-light text-uppercase mb-0">Unique Hashtags</h5>
+                            <h5 class="text-light text-uppercase mb-0">{{ $t('admin.hashtags.uniqueHashtags') }}</h5>
                             <span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.total_unique) }}</span>
                         </div>
                     </div>
 
                     <div class="col-xl-2 col-md-6">
                         <div class="mb-3">
-                            <h5 class="text-light text-uppercase mb-0">Total Hashtags</h5>
+                            <h5 class="text-light text-uppercase mb-0">{{ $t('admin.hashtags.totalHashtags') }}</h5>
                             <span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.total_posts) }}</span>
                         </div>
                     </div>
 
                     <div class="col-xl-2 col-md-6">
                         <div class="mb-3">
-                            <h5 class="text-light text-uppercase mb-0">New (past 14 days)</h5>
+                            <h5 class="text-light text-uppercase mb-0">{{ $t('admin.hashtags.newPast14Days') }}</h5>
                             <span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.added_14_days) }}</span>
                         </div>
                     </div>
 
                     <div class="col-xl-2 col-md-6">
                         <div class="mb-3">
-                            <h5 class="text-light text-uppercase mb-0">Banned Hashtags</h5>
+                            <h5 class="text-light text-uppercase mb-0">{{ $t('admin.hashtags.bannedHashtags') }}</h5>
                             <span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.total_banned) }}</span>
                         </div>
                     </div>
 
                     <div class="col-xl-2 col-md-6">
                         <div class="mb-3">
-                            <h5 class="text-light text-uppercase mb-0">NSFW Hashtags</h5>
+                            <h5 class="text-light text-uppercase mb-0">{{ $t('admin.hashtags.nsfwHashtags') }}</h5>
                             <span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.total_nsfw) }}</span>
                         </div>
                     </div>
                     <div class="col-xl-2 col-md-6">
                         <div class="mb-3">
-                            <h5 class="text-light text-uppercase mb-0">Clear Trending Cache</h5>
-                            <button class="btn btn-outline-white btn-block btn-sm py-0 mt-1" @click="clearTrendingCache">Clear Cache</button>
+                            <h5 class="text-light text-uppercase mb-0">{{ $t('admin.hashtags.clearTrendingCache') }}</h5>
+                            <button class="btn btn-outline-white btn-block btn-sm py-0 mt-1" @click="clearTrendingCache">{{ $t('admin.hashtags.clearCache') }}</button>
                         </div>
                     </div>
                 </div>
@@ -64,13 +64,13 @@
                 <div class="col-12 col-md-8">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 0}]" @click="toggleTab(0)">All</button>
+                            <button :class="['nav-link', { active: tabIndex == 0}]" @click="toggleTab(0)">{{ $t('admin.hashtags.tabAll') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 1}]" @click="toggleTab(1)">Trending</button>
+                            <button :class="['nav-link', { active: tabIndex == 1}]" @click="toggleTab(1)">{{ $t('admin.hashtags.tabTrending') }}</button>
                         </li>
                         <li class="nav-item">
-                            <button :class="['nav-link', { active: tabIndex == 2}]" @click="toggleTab(2)">Banned</button>
+                            <button :class="['nav-link', { active: tabIndex == 2}]" @click="toggleTab(2)">{{ $t('admin.hashtags.tabBanned') }}</button>
                         </li>
                         <li class="nav-item">
                             <button :class="['nav-link', { active: tabIndex == 3}]" @click="toggleTab(3)">NSFW</button>
@@ -81,8 +81,8 @@
                     <autocomplete
                         :search="composeSearch"
                         :disabled="searchLoading"
-                        placeholder="Search hashtags"
-                        aria-label="Search hashtags"
+                        :placeholder="$t('admin.hashtags.searchHashtags')"
+                        :aria-label="$t('admin.hashtags.searchHashtags')"
                         :get-result-value="getTagResultValue"
                         @submit="onSearchResultClick"
                         ref="autocomplete"
@@ -96,7 +96,7 @@
                                     #{{ result.name }}
                                 </div>
                                 <div class="small text-muted">
-                                    {{ prettyCount(result.cached_count) }} posts
+                                    {{ $t('admin.hashtags.postsCount', { count: prettyCount(result.cached_count) }) }}
                                 </div>
                             </li>
                         </template>
@@ -109,13 +109,13 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="cursor-pointer" v-html="buildColumn('ID', 'id')" @click="toggleCol('id')"></th>
-                            <th scope="col" class="cursor-pointer" v-html="buildColumn('Hashtag', 'name')" @click="toggleCol('name')"></th>
-                            <th scope="col" class="cursor-pointer" v-html="buildColumn('Count', 'cached_count')" @click="toggleCol('cached_count')"></th>
-                            <th scope="col" class="cursor-pointer" v-html="buildColumn('Can Search', 'can_search')" @click="toggleCol('can_search')"></th>
-                            <th scope="col" class="cursor-pointer" v-html="buildColumn('Can Trend', 'can_trend')" @click="toggleCol('can_trend')"></th>
+                            <th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.hashtags.hashtag'), 'name')" @click="toggleCol('name')"></th>
+                            <th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.hashtags.count'), 'cached_count')" @click="toggleCol('cached_count')"></th>
+                            <th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.hashtags.canSearch'), 'can_search')" @click="toggleCol('can_search')"></th>
+                            <th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.hashtags.canTrend'), 'can_trend')" @click="toggleCol('can_trend')"></th>
                             <th scope="col" class="cursor-pointer" v-html="buildColumn('NSFW', 'is_nsfw')" @click="toggleCol('is_nsfw')"></th>
-                            <th scope="col" class="cursor-pointer" v-html="buildColumn('Banned', 'is_banned')" @click="toggleCol('is_banned')"></th>
-                            <th scope="col">Created</th>
+                            <th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.hashtags.banned'), 'is_banned')" @click="toggleCol('is_banned')"></th>
+                            <th scope="col">{{ $t('admin.hashtags.created') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,13 +146,13 @@
                     class="btn btn-primary rounded-pill"
                     :disabled="!pagination.prev"
                     @click="paginate('prev')">
-                    Prev
+                    {{ $t('admin.hashtags.prev') }}
                 </button>
                 <button
                     class="btn btn-primary rounded-pill"
                     :disabled="!pagination.next"
                     @click="paginate('next')">
-                    Next
+                    {{ $t('common.next') }}
                 </button>
             </div>
 
@@ -161,8 +161,8 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Hashtag</th>
-                            <th scope="col">Trending Count</th>
+                            <th scope="col">{{ $t('admin.hashtags.hashtag') }}</th>
+                            <th scope="col">{{ $t('admin.hashtags.trendingCount') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -185,30 +185,30 @@
         </div>
     </div>
 
-    <b-modal v-model="showEditModal" title="Edit Hashtag" :ok-only="true" :lazy="true" :static="true">
+    <b-modal v-model="showEditModal" :title="$t('admin.hashtags.editHashtag')" :ok-only="true" :lazy="true" :static="true">
         <div v-if="editingHashtag && editingHashtag.name" class="list-group">
             <div class="list-group-item d-flex align-items-center justify-content-between">
-                <div class="text-muted small">Name</div>
+                <div class="text-muted small">{{ $t('admin.hashtags.name') }}</div>
                 <div class="font-weight-bold">{{ editingHashtag.name }}</div>
             </div>
             <div class="list-group-item d-flex align-items-center justify-content-between">
-                <div class="text-muted small">Total Uses</div>
+                <div class="text-muted small">{{ $t('admin.hashtags.totalUses') }}</div>
                 <div class="font-weight-bold">{{ editingHashtag.cached_count.toLocaleString('en-CA', { compactDisplay: "short"}) }}</div>
             </div>
             <div class="list-group-item d-flex align-items-center justify-content-between">
-                <div class="text-muted small">Can Trend</div>
+                <div class="text-muted small">{{ $t('admin.hashtags.canTrend') }}</div>
                 <div class="mr-n2 mb-1">
                     <b-form-checkbox v-model="editingHashtag.can_trend" switch size="lg"></b-form-checkbox>
                 </div>
             </div>
             <div class="list-group-item d-flex align-items-center justify-content-between">
-                <div class="text-muted small">Can Search</div>
+                <div class="text-muted small">{{ $t('admin.hashtags.canSearch') }}</div>
                 <div class="mr-n2 mb-1">
                     <b-form-checkbox v-model="editingHashtag.can_search" switch size="lg"></b-form-checkbox>
                 </div>
             </div>
             <div class="list-group-item d-flex align-items-center justify-content-between">
-                <div class="text-muted small">Banned</div>
+                <div class="text-muted small">{{ $t('admin.hashtags.banned') }}</div>
                 <div class="mr-n2 mb-1">
                     <b-form-checkbox v-model="editingHashtag.is_banned" switch size="lg"></b-form-checkbox>
                 </div>
@@ -222,7 +222,7 @@
         </div>
         <transition name="fade">
             <div v-if="editingHashtag && editingHashtag.name && editSaved">
-                <p class="text-primary small font-weight-bold text-center mt-1 mb-0">Hashtag changes successfully saved!</p>
+                <p class="text-primary small font-weight-bold text-center mt-1 mb-0">{{ $t('admin.hashtags.changesSaved') }}</p>
             </div>
         </transition>
     </b-modal>
@@ -399,7 +399,7 @@
                 this.editSaved = false;
 
                 if(hashtag.is_banned && (hashtag.can_trend || hashtag.can_search)) {
-                    swal('Banned Hashtag Limits', 'Banned hashtags cannot trend or be searchable, to allow those you need to unban the hashtag', 'error');
+                    swal(this.$t('admin.hashtags.bannedLimitsTitle'), this.$t('admin.hashtags.bannedLimitsBody'), 'error');
                 }
 
                 axios.post('/i/admin/api/hashtags/update', hashtag)
@@ -420,7 +420,7 @@
                     }, 5000);
                 })
                 .catch(err => {
-                    swal('Oops!', 'An error occured, please try again.', 'error');
+                    swal(this.$t('common.oops'), this.$t('admin.hashtags.errorTryAgain'), 'error');
                     console.log(err);
                 })
             },
@@ -449,12 +449,12 @@
 
             clearTrendingCache() {
                 event.currentTarget.blur();
-                if(!window.confirm('Are you sure you want to clear the trending hashtags cache?')){
+                if(!window.confirm(this.$t('admin.hashtags.confirmClearCache'))){
                     return;
                 }
                 axios.post('/i/admin/api/hashtags/clear-trending-cache')
                 .then(res => {
-                    swal('Cache Cleared!', 'Successfully cleared the trending hashtag cache!', 'success');
+                    swal(this.$t('admin.hashtags.cacheCleared'), this.$t('admin.hashtags.cacheClearedBody'), 'success');
                 });
             }
         }

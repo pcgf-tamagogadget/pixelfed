@@ -5,7 +5,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-7">
             <div class="logo">
-                <img src="{{ config('app.logo') }}" width="40" height="40" alt="Pixelfed Logo">
+                <img src="{{ config('app.logo') }}" width="40" height="40" alt="{{ __('auth.curated.logoAlt') }}">
                 <p class="font-weight-bold mb-0">Pixelfed</p>
             </div>
 
@@ -21,8 +21,8 @@
             @endif
 
             @if($emailConfirmed)
-            <h1 class="text-center font-weight-bold mt-4">Information Requested</h1>
-            <p class="lead text-center"><span class="font-weight-light">Our admin team requests the following information from you:</span></p>
+            <h1 class="text-center font-weight-bold mt-4">{{ __('auth.curated.infoRequested') }}</h1>
+            <p class="lead text-center"><span class="font-weight-light">{{ __('auth.curated.adminRequests') }}</span></p>
             <div class="border border-primary p-4 rounded my-3" style="border-style: dashed !important;">
                 <p class="mb-0 lead">testing</p>
             </div>
@@ -33,23 +33,23 @@
                 <input type="hidden" name="action" value="message">
 
                 <div class="form-group">
-                    <label for="message">Your Response</label>
+                    <label for="message">{{ __('auth.curated.yourResponse') }}</label>
                     <textarea
                         class="form-control bg-dark border-dark text-white"
                         rows="4"
                         id="reason"
                         name="response"
-                        placeholder="Enter your response here, up to 1000 chars..."
+                        placeholder="{{ __('auth.curated.responsePlaceholder') }}"
                         maxlength="1000"></textarea>
                     <div class="help-text small text-muted d-flex justify-content-end mt-1 font-weight-bold">
                         <span id="charCount" class="text-white">0</span>/<span>1000</span>
                     </div>
                 </div>
 
-                <button class="btn btn-primary font-weight-bold rounded-pill px-5">Submit</button>
+                <button class="btn btn-primary font-weight-bold rounded-pill px-5">{{ __('auth.curated.submit') }}</button>
             </form>
             <hr class="border-dark">
-            <p class="text-muted small text-center">For additional information, please see our <a href="{{ route('help.curated-onboarding') }}" style="font-weight: 600;">Curated Onboarding</a> Help Center page.</p>
+            <p class="text-muted small text-center">{!! __('auth.curated.helpCenterHint', ['link' => '<a href="'.e(route('help.curated-onboarding')).'" style="font-weight: 600;">'.e(__('auth.curated.curatedOnboarding')).'</a>']) !!}</p>
             @else
                 @include('auth.curated-register.partials.message-email-confirm', ['step' => 4])
             @endif

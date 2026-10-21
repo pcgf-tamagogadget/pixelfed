@@ -15,7 +15,7 @@
 								{{ post.spoiler_text ? post.spoiler_text : $t('common.sensitiveContentWarning') }}
 							</p>
 							<p class="mb-0">
-								<button class="btn btn-outline-light btn-block btn-sm font-weight-bold" @click="toggleContentWarning()">See Post</button>
+								<button class="btn btn-outline-light btn-block btn-sm font-weight-bold" @click="toggleContentWarning()">{{ $t('spa.mediaContainer.seePost') }}</button>
 							</p>
 						</div>
 

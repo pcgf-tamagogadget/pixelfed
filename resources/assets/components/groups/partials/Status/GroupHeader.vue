@@ -8,7 +8,7 @@
                 width="52"
                 height="52"
                 onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'"
-                alt="avatar"
+                :alt="$t('groups.groupHeader.avatar')"
                 style="object-fit:cover;"
             />
             <span
@@ -22,7 +22,7 @@
                 width="36"
                 height="36"
                 onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'"
-                alt="avatar"
+                :alt="$t('groups.groupHeader.avatar')"
                 style="position: absolute; bottom:-4px; right:-4px;"
             />
         </div>
@@ -33,7 +33,7 @@
             width="42"
             height="42"
             onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'"
-            alt="avatar"
+            :alt="$t('groups.groupHeader.avatar')"
         />
         <div class="media-body">
             <div class="pl-2 d-flex align-items-top">
@@ -53,7 +53,7 @@
                             class="group-name-link username"
                             v-html="statusCardUsernameFormat(status)"
                         >
-                            Loading...
+                            {{ $t('common.loading') }}
                         </router-link>
 
                         <span v-if="showGroupChevron">
@@ -80,7 +80,7 @@
                                 class="group-name-link-small username"
                                 v-html="statusCardUsernameFormat(status)"
                             >
-                                Loading...
+                                {{ $t('common.loading') }}
                             </router-link>
                             <span class="text-lighter" style="padding-left:2px;padding-right:2px;">·</span>
                             <router-link
@@ -110,12 +110,12 @@
                         <span class="fas fa-ellipsis-h text-lighter"></span>
                       </button>
                       <div class="dropdown-menu  dropdown-menu-right">
-                        <a class="dropdown-item" :href="statusUrl()">View Post</a>
-                        <a class="dropdown-item" :href="profileUrl()">View Profile</a>
+                        <a class="dropdown-item" :href="statusUrl()">{{ $t('groups.groupHeader.viewPost') }}</a>
+                        <a class="dropdown-item" :href="profileUrl()">{{ $t('groups.groupHeader.viewProfile') }}</a>
                         <!-- <a class="dropdown-item" href="#">Copy Link</a> -->
-                        <a class="dropdown-item" href="#" @click.prevent="sendReport()">Report</a>
+                        <a class="dropdown-item" href="#" @click.prevent="sendReport()">{{ $t('groups.groupHeader.report') }}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#" @click.prevent="onDelete()">Delete</a>
+                        <a class="dropdown-item text-danger" href="#" @click.prevent="onDelete()">{{ $t('common.delete') }}</a>
                       </div>
                     </div>
                     <!-- <button class="btn btn-link text-dark py-0" type="button" @click="ctxMenu()">
@@ -153,15 +153,15 @@
         data() {
             return {
                 reportTypes: [
-                    { key: "spam", title: "It's spam" },
-                    { key: "sensitive", title: "Nudity or sexual activity" },
-                    { key: "abusive", title: "Bullying or harassment" },
-                    { key: "underage", title: "I think this account is underage" },
-                    { key: "violence", title: "Violence or dangerous organizations" },
-                    { key: "copyright", title: "Copyright infringement" },
-                    { key: "impersonation", title: "Impersonation" },
-                    { key: "scam", title: "Scam or fraud" },
-                    { key: "terrorism", title: "Terrorism or terrorism-related content" }
+                    { key: "spam", title: this.$t('groups.groupHeader.reportSpam') },
+                    { key: "sensitive", title: this.$t('groups.groupHeader.reportSensitive') },
+                    { key: "abusive", title: this.$t('groups.groupHeader.reportAbusive') },
+                    { key: "underage", title: this.$t('groups.groupHeader.reportUnderage') },
+                    { key: "violence", title: this.$t('groups.groupHeader.reportViolence') },
+                    { key: "copyright", title: this.$t('groups.groupHeader.reportCopyright') },
+                    { key: "impersonation", title: this.$t('groups.groupHeader.reportImpersonation') },
+                    { key: "scam", title: this.$t('groups.groupHeader.reportScam') },
+                    { key: "terrorism", title: this.$t('groups.groupHeader.reportTerrorism') }
                 ]
             }
         },
@@ -206,7 +206,7 @@
                     break;
 
                     case 'from':
-                    return usr + '<span class="text-lighter font-weight-bold"> <span class="font-weight-normal">from</span> ' + dom + '</span>';
+                    return usr + '<span class="text-lighter font-weight-bold"> <span class="font-weight-normal">' + this.$t('groups.groupHeader.from') + '</span> ' + dom + '</span>';
                     break;
 
                     case 'custom':
@@ -238,7 +238,7 @@
                 wrapper.appendChild(el);
 
                 swal({
-                    title: "Report Content",
+                    title: this.$t('groups.groupHeader.reportContent'),
                     icon: "warning",
                     content: wrapper,
                     buttons: false
@@ -252,8 +252,8 @@
             showConfirmation(option) {
                 console.log(option)
               swal({
-                title: "Confirmation",
-                text: `You selected ${option.title}. Do you want to proceed?`,
+                title: this.$t('groups.groupHeader.confirmation'),
+                text: this.$t('groups.groupHeader.reportConfirmText', { option: option.title }),
                 icon: "info",
                 buttons: true
               }).then((confirm) => {
@@ -262,17 +262,17 @@
                         'type': option.key,
                         'id': this.status.id,
                     }).then(res => {
-                        swal("Confirmed!", "Your report has been submitted.", "success");
+                        swal(this.$t('groups.groupHeader.confirmed'), this.$t('groups.groupHeader.reportSubmitted'), "success");
                     })
                 } else {
-                  swal("Cancelled", "Your report was not submitted.", "error");
+                  swal(this.$t('groups.groupHeader.cancelled'), this.$t('groups.groupHeader.reportNotSubmitted'), "error");
                 }
               });
             },
             onDelete() {
               swal({
-                title: "Delete Post Confirmation",
-                text: 'Are you sure you want to delete this post?',
+                title: this.$t('groups.groupHeader.deletePostConfirmation'),
+                text: this.$t('groups.groupHeader.deletePostConfirmText'),
                 icon: "warning",
                 dangerMode: true,
                 buttons: true

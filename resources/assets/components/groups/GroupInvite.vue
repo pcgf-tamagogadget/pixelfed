@@ -17,12 +17,12 @@
 							</div>
 
 							<div v-else-if="tab === 'login'" key="login">
-								<p class="text-center mb-0">Please <a href="/login">login</a> to continue</p>
+								<i18n path="groups.groupInvite.loginToContinue" tag="p" class="text-center mb-0"><template v-slot:login><a href="/login">{{ $t('groups.groupInvite.login') }}</a></template></i18n>
 							</div>
 
 							<div v-else-if="tab === 'form'" key="form">
 								<div class="d-flex justify-content-center align-items-center flex-column">
-									<p class="text-center h4 font-weight-bold"><a href="#">@dansup</a> invited you to join</p>
+									<i18n path="groups.groupInvite.invitedYou" tag="p" class="text-center h4 font-weight-bold"><template v-slot:user><a href="#">@dansup</a></template></i18n>
 
 									<div class="card my-3 shadow-none border" style="width: 300px;">
 										<img v-if="group.metadata && group.metadata.hasOwnProperty('header')" :src="group.metadata.header.url" class="card-img-top" style="width: 100%; height: 100px;object-fit: cover;">
@@ -34,7 +34,7 @@
 
 										<div class="card-body">
 											<p class="h5 font-weight-bold mb-1 text-dark">
-												{{ group.name || 'Untitled Group' }}
+												{{ group.name || $t('groups.groupInvite.untitledGroup') }}
 											</p>
 
 											<transition name="fade">
@@ -46,11 +46,11 @@
 											<p class="mb-1">
 												<span class="text-muted mr-2">
 													<i class="far fa-users fa-sm text-lighter mr-1"></i>
-													<span class="small font-weight-bold">{{ prettyCount(group.member_count) }} Members</span>
+													<span class="small font-weight-bold">{{ $t('groups.groupInvite.memberCount', { count: prettyCount(group.member_count) }) }}</span>
 												</span>
 
 												<span v-if="!group.local" class="remote-label ml-2">
-													<i class="fal fa-globe"></i> Remote
+													<i class="fal fa-globe"></i> {{ $t('groups.groupInvite.remote') }}
 												</span>
 											</p>
 
@@ -58,11 +58,11 @@
 												<div v-if="showMore">
 													<p class="text-muted small mb-1">
 														<i class="far fa-tag fa-sm text-lighter mr-2"></i>
-														<span class="font-weight-bold">Category: {{ group.category.name }}</span>
+														<span class="font-weight-bold">{{ $t('groups.groupInvite.category', { name: group.category.name }) }}</span>
 													</p>
 													<p class="text-muted small mb-1">
 														<i class="far fa-clock fa-sm text-lighter mr-2"></i>
-														<span class="font-weight-bold">Created {{ timeago(group.created_at) }} ago</span>
+														<span class="font-weight-bold">{{ $t('groups.groupInvite.createdAgo', { time: timeago(group.created_at) }) }}</span>
 													</p>
 												</div>
 											</transition>
@@ -72,33 +72,33 @@
 								</div>
 								<div class="d-flex justify-content-between">
 									<button class="btn btn-light border-lighter font-weight-bold btn-sm" @click="showMoreInfo">
-										{{ showMore ? 'Less' :'More' }} info
+										{{ showMore ? $t('groups.groupInvite.lessInfo') : $t('groups.groupInvite.moreInfo') }}
 									</button>
 									<div>
-										<button class="btn btn-light font-weight-bold btn-sm" @click="declineInvite">Decline</button>
-										<button class="btn btn-primary font-weight-bold btn-sm" @click="acceptInvite">Accept</button>
+										<button class="btn btn-light font-weight-bold btn-sm" @click="declineInvite">{{ $t('groups.groupInvite.decline') }}</button>
+										<button class="btn btn-primary font-weight-bold btn-sm" @click="acceptInvite">{{ $t('groups.groupInvite.accept') }}</button>
 									</div>
 								</div>
 								<!-- <p class="text-center h4 font-weight-bold">by <a href="#" class="font-weight-bold">@dansup</a></p> -->
 							</div>
 
 							<div v-else-if="tab === 'existingmember'" key="existingmember">
-								<p class="text-center mb-0">You already are a member of this group</p>
+								<p class="text-center mb-0">{{ $t('groups.groupInvite.alreadyMember') }}</p>
 								<p class="text-center mb-0">
-									<a :href="group.url" class="font-weight-bold">View Group</a>
+									<a :href="group.url" class="font-weight-bold">{{ $t('groups.groupInvite.viewGroup') }}</a>
 								</p>
 							</div>
 
 							<div v-else-if="tab === 'notinvited'" key="notinvited">
-								<p class="text-center mb-0">We cannot find an active invitation for your account.</p>
+								<p class="text-center mb-0">{{ $t('groups.groupInvite.noInvitation') }}</p>
 							</div>
 
 							<div v-else-if="tab === 'error'" key="error">
-								<p class="text-center mb-0">An unknown error occured. Please try again later.</p>
+								<p class="text-center mb-0">{{ $t('groups.groupInvite.unknownError') }}</p>
 							</div>
 
 							<div v-else key="unknown">
-								<p class="text-center mb-0">An unknown error occured. Please try again later.</p>
+								<p class="text-center mb-0">{{ $t('groups.groupInvite.unknownError') }}</p>
 							</div>
 
 						</transition-group>
@@ -119,7 +119,7 @@
 
 		data() {
 			return {
-				loadingStatus: 'Determining invite eligibility',
+				loadingStatus: this.$t('groups.groupInvite.determiningEligibility'),
 				tab: 'initial',
 				profile: {},
 				group: {},
@@ -148,7 +148,7 @@
 				axios.get(`/api/v0/groups/${this.id}`)
 				.then(res => {
 					this.group = res.data;
-					this.loadingStatus = 'Checking group invitations';
+					this.loadingStatus = this.$t('groups.groupInvite.checkingInvitations');
 					this.checkForInvitation();
 				}).catch(err => {
 					this.tab = 'error';

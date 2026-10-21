@@ -55,7 +55,7 @@ return [
     // site/fediverse
     'is_a_portmanteau_of_federation_and_universe_etc' => 'とは、"federation"（連合体）と"universe"（宇宙）を組み合わせて作られたかばん語です。短文を投稿するSNSや写真を共有するSNS、動画を扱うSNSなど、さまざまな種類のメディアに特化したSNSサーバーが互いに連携して形成する、一つの巨大なコミュニケーション・ネットワークを指す通称です。',
     'supported_fediverse_projects' => 'このサーバーが対応しているFediverseプロジェクト',
-    'some_of_the_better_known_fediverse_projects_include' => 'よく知られたプロジェクトも含まれています',
+    'some_of_the_better_known_fediverse_projects_include' => 'よく知られたFediverseプロジェクトには次のようなものがあります：',
     'a_federated_microblogging_alternative' => '短文投稿に特化した分散型のマイクロブログSNS',
 
     // site/opensource
@@ -66,4 +66,95 @@ return [
     'view' => 'ソースコード',
     'the_source_code_and_run_their_own_instance' => 'の確認ができ、自分自身のサーバーで運用することも可能です！',
     'open_source_in_pixelfed' => 'オープンソースとしてのPixelfed',
+
+    // site pages (hardcoded strings moved to translation keys)
+    'newsroom' => [
+        'title' => 'ニュースルーム',
+        'backToPixelfed' => 'Pixelfedに戻る',
+        'archivePlaceholder' => 'アーカイブはこちら',
+    ],
+    'bannedInstances' => [
+        'title' => '禁止されたインスタンス',
+    ],
+    'features' => [
+        'title' => '機能',
+    ],
+    'libraries' => [
+        'title' => 'ライブラリ',
+    ],
+    'platform' => [
+        'title' => 'プラットフォーム/API利用規約',
+        'description' => 'プラットフォーム/API利用規約',
+    ],
+    'closedRegistration' => [
+        'title' => '新規登録は受け付けていません',
+        'body' => 'このインスタンスでは新規登録の受け付けを終了しました。',
+        'findInstances' => '稼働中のPixelfedインスタンスの一覧は <a href="https://the-federation.info/pixelfed" rel="external nofollow noopener">https://the-federation.info/pixelfed</a> または <a href="https://fediverse.network/pixelfed" rel="external nofollow noopener">https://fediverse.network/pixelfed</a> で確認できます。',
+    ],
+    'legalNotice' => [
+        'title' => '法的表示',
+    ],
+    'redirect' => [
+        'redirectingTo' => '<span class="font-weight-bold">:url</span> にリダイレクトしています',
+    ],
+    'languagePage' => [
+        'description' => 'サイトの言語を変更',
+    ],
+    'aboutPage' => [
+        'pageTitle' => ':nameについて',
+        'home' => 'ホーム',
+        'rules' => 'ルール',
+        'reviewTerms' => '詳しくは<a href="/site/terms">利用規約</a>をご確認ください。',
+    ],
+    'landing' => [
+        'defaultDescription' => 'Pixelfedで運営されている分散型の写真共有ソーシャルメディア',
+    ],
+    'contactResponse' => [
+        'backToPixelfed' => 'Pixelfedに戻る',
+        'title' => '問い合わせフォームへの回答',
+        'ticketId' => 'チケットID #:id',
+        'youSent' => '送信した問い合わせ内容：',
+        'sentOn' => 'この問い合わせは :date :time に送信されました',
+        'adminResponded' => '管理者からの回答：',
+        'respondedOn' => 'この回答は :date :time に作成されました',
+        'respondHint' => '返信する場合は<a href="/site/contact">問い合わせフォーム</a>をご利用ください。',
+    ],
+    'developer' => [
+        'title' => '開発者API',
+        'intro' => '開発者はPixelfedのAPIを使って、豊かな体験を構築したり、Pixelfedを新しい形で拡張したりできます。',
+        'mastodonCompatible' => 'Mastodon/Pleroma互換',
+        'oauthSupport' => 'OAuthアプリ対応',
+        'dashboard' => '開発者ダッシュボード',
+        'tools' => '開発者ツール',
+        'comingSoon' => '近日公開',
+        'other' => 'その他',
+        'authentication' => '認証',
+        'clients' => 'クライアント',
+        'rateLimiting' => 'レート制限',
+        'activitypubEndpoints' => 'ActivityPubエンドポイント',
+    ],
+    'intentFollow' => [
+        'title' => 'Pixelfedで<span class="text-dark">:username</span>をフォロー',
+        'followers' => 'フォロワー :count人',
+        'unfollow' => 'フォロー解除',
+        'follow' => 'フォロー',
+        'viewProfile' => 'プロフィールを表示',
+        'loggedInAs' => 'ログイン中: <span class="font-weight-bold text-muted">:username</span>',
+        'logout' => 'ログアウト',
+    ],
+    'aboutCustom' => [
+        'about' => 'このサーバーについて',
+        'posts' => '投稿',
+        'users' => 'ユーザー',
+        'instanceAdmin' => 'インスタンス管理者',
+        'adFree' => '広告なし',
+        'adFreeDesc' => '広告もトラッカーもありません',
+        'chronological' => '時系列',
+        'chronologicalDesc' => 'タイムラインは投稿順に表示されます',
+        'federated' => '連合',
+        'federatedDesc' => '数百万人規模のネットワーク',
+        'discoverDesc' => '人気の投稿を見つけられます',
+        'photoFiltersDesc' => 'お好みでフィルターを追加できます',
+        'comingSoon' => '近日公開！',
+    ],
 ];

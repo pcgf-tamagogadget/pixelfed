@@ -65,7 +65,7 @@
 				}
 
 				if(!this.buttonLink || this.buttonLink == undefined) {
-					swal('Oops', 'This is embarassing, we cannot redirect you to the proper page at the moment', 'warning');
+					swal(this.$t('spa.discoverGridCard.oops'), this.$t('spa.discoverGridCard.redirectError'), 'warning');
 					return;
 				}
 

@@ -65,8 +65,8 @@
 					this.loading = false;
 				}).catch(err => {
 					this.loading = false;
-					this.$bvToast.toast('Cannot load stories. Please try again later.', {
-						title: 'Error',
+					this.$bvToast.toast(this.$t('compose.storyTimeline.cannotLoad'), {
+						title: this.$t('common.error'),
 						variant: 'danger',
 						autoHideDelay: 5000
 					});

@@ -14,7 +14,7 @@
 				</a>
 
 				<div v-if="user.id == profile.id">
-					<a class="btn btn-outline-primary px-3 py-1 font-weight-bold rounded-pill" href="/settings/home">Edit Profile</a>
+					<a class="btn btn-outline-primary px-3 py-1 font-weight-bold rounded-pill" href="/settings/home">{{ $t('profile.editProfile') }}</a>
 				</div>
 
 				<div v-if="user.id != profile.id && relationship">
@@ -24,7 +24,7 @@
 						:disabled="isLoading"
 						@click="performUnfollow()">
 							<span v-if="isLoading"><b-spinner small /></span>
-							<span v-else>Following</span>
+							<span v-else>{{ $t('profile.following') }}</span>
 						</button>
 					<div v-else>
 						<button
@@ -33,9 +33,9 @@
 							:disabled="isLoading"
 							@click="performFollow()">
 							<span v-if="isLoading"><b-spinner small /></span>
-							<span v-else>Follow</span>
+							<span v-else>{{ $t('profile.follow') }}</span>
 						</button>
-						<button v-else class="btn btn-primary primary px-3 py-1 font-weight-bold rounded-pill" disabled>Follow Requested</button>
+						<button v-else class="btn btn-primary primary px-3 py-1 font-weight-bold rounded-pill" disabled>{{ $t('profile.followRequested') }}</button>
 					</div>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 				</a>
 
 				<p v-if="user.id != profile.id && relationship && relationship.followed_by" class="username-follows-you">
-					<span>Follows You</span>
+					<span>{{ $t('profile.followYou') }}</span>
 				</p>
 			</div>
 
@@ -72,10 +72,10 @@
 
 			<p class="stats">
 				<span class="stats-following">
-					<span class="following-count">{{ formatCount(profile.following_count) }}</span> Following
+					<span class="following-count">{{ formatCount(profile.following_count) }}</span> {{ $t('profile.following') }}
 				</span>
 				<span class="stats-followers">
-					<span class="followers-count">{{ formatCount(profile.followers_count) }}</span> Followers
+					<span class="followers-count">{{ formatCount(profile.followers_count) }}</span> {{ $t('profile.followers') }}
 				</span>
 			</p>
 		</div>

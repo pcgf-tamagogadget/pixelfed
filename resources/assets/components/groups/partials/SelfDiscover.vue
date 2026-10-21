@@ -3,8 +3,8 @@
 		<div class="px-5">
             <div class="jumbotron my-4 text-light bg-mantle">
             	<div class="container">
-            		<h1 class="display-4">Discover</h1>
-                	<p class="lead mb-0">Explore group communities and topics</p>
+            		<h1 class="display-4">{{ $t('groups.selfDiscover.discover') }}</h1>
+                	<p class="lead mb-0">{{ $t('groups.selfDiscover.exploreCommunities') }}</p>
             		<!-- <p class="lead">
             			<button class="btn btn-outline-light">Browse Categories</button>
             		</p> -->
@@ -15,7 +15,7 @@
 		<div v-if="tab === 'home'" class="px-5">
             <div class="row mb-4 pt-5">
 				<div class="col-12 col-md-4">
-					<h4 class="font-weight-bold">Popular</h4>
+					<h4 class="font-weight-bold">{{ $t('groups.selfDiscover.popular') }}</h4>
 					<div class="list-group list-group-scroll">
 						<a v-for="(group, index) in popularGroups"
 							class="list-group-item p-1"
@@ -27,24 +27,24 @@
 
 				<div class="col-12 col-md-4">
 					<div class="card card-body shadow-none bg-mantle text-light" style="margin-top: 33px;">
-						<h3 class="mb-4 font-weight-lighter">Discover communities and topics based on your interests</h3>
+						<h3 class="mb-4 font-weight-lighter">{{ $t('groups.selfDiscover.discoverByInterests') }}</h3>
 						<p class="mb-0">
-							<button class="btn btn-outline-light font-weight-light btn-block" @click="toggleTab('categories')">Browse Categories</button>
+							<button class="btn btn-outline-light font-weight-light btn-block" @click="toggleTab('categories')">{{ $t('groups.selfDiscover.browseCategories') }}</button>
 						</p>
 					</div>
 
 					<div class="card card-body shadow-none bg-light text-dark border" style="margin-top: 20px;">
-						<p class="lead mb-4 text-muted font-weight-lighter mb-1">Browse Public Groups</p>
+						<p class="lead mb-4 text-muted font-weight-lighter mb-1">{{ $t('groups.selfDiscover.browsePublicGroups') }}</p>
 						<!-- <p class="lead mb-4 text-muted font-weight-lighter">Tips for growing your group membership</p> -->
 						<!-- <h5 class="mb-4 text-muted font-weight-lighter">Create and easily organize events</h5> -->
 						<p class="mb-0">
-							<button class="btn btn-light border font-weight-light btn-block">Group Directory</button>
+							<button class="btn btn-light border font-weight-light btn-block">{{ $t('groups.selfDiscover.groupDirectory') }}</button>
 						</p>
 					</div>
 				</div>
 
 				<div class="col-12 col-md-4">
-					<h4 class="font-weight-bold">New</h4>
+					<h4 class="font-weight-bold">{{ $t('groups.selfDiscover.new') }}</h4>
 					<div class="list-group list-group-scroll">
 						<a v-for="(group, index) in newGroups"
 							class="list-group-item p-1"
@@ -57,17 +57,17 @@
 
 			<div class="jumbotron mb-4 text-light bg-black" style="margin-top: 5rem;">
             	<div class="container">
-            		<h1 class="display-4">Across the Fediverse</h1>
+            		<h1 class="display-4">{{ $t('groups.selfDiscover.acrossFediverse') }}</h1>
                 	<p class="mb-0">
                 		<button
                 			class="btn btn-outline-light"
                 			@click="toggleTab('fediverseGroups')"
                 			>
-                			Explore fediverse groups <i class="fal fa-chevron-right ml-2"></i>
+                			{{ $t('groups.selfDiscover.exploreFediverseGroups') }} <i class="fal fa-chevron-right ml-2"></i>
                 		</button>
                 	</p>
                 	<hr class="my-4">
-                	<p class="lead">We're in the early stages of Group federation, and working with other projects to support cross-platform compatibility. <a href="#">Learn more about group federation <i class="fal fa-chevron-right ml-2 fa-sm"></i></a></p>
+                	<p class="lead">{{ $t('groups.selfDiscover.federationEarlyStages') }} <a href="#">{{ $t('groups.selfDiscover.learnMoreFederation') }} <i class="fal fa-chevron-right ml-2 fa-sm"></i></a></p>
             	</div>
             </div>
 
@@ -77,7 +77,7 @@
             			<p class="text-center text-lighter">
             				<i class="fal fa-lightbulb fa-4x"></i>
             			</p>
-            			<p class="text-center lead mb-0">What's New</p>
+            			<p class="text-center lead mb-0">{{ $t('groups.selfDiscover.whatsNew') }}</p>
             		</div>
             	</div>
 
@@ -86,7 +86,7 @@
             			<p class="text-center text-lighter">
             				<i class="fal fa-clipboard-list-check fa-4x"></i>
             			</p>
-            			<p class="text-center lead mb-0">User Guide</p>
+            			<p class="text-center lead mb-0">{{ $t('groups.selfDiscover.userGuide') }}</p>
             		</div>
             	</div>
 
@@ -95,13 +95,13 @@
             			<p class="text-center text-lighter">
             				<i class="fal fa-question-circle fa-4x"></i>
             			</p>
-            			<p class="text-center lead mb-0">Groups Help</p>
+            			<p class="text-center lead mb-0">{{ $t('groups.selfDiscover.groupsHelp') }}</p>
             		</div>
             	</div>
             </div>
 
             <p class="text-lighter" style="font-size:9px">
-            	<span class="font-weight-bold mr-1">Groups v0.0.1</span>
+            	<span class="font-weight-bold mr-1">{{ $t('groups.selfDiscover.groupsVersion', { version: '0.0.1' }) }}</span>
             </p>
 
 			<!-- <div class="my-4 pt-5">
@@ -229,8 +229,8 @@
 			<div class="row my-4 justify-content-center">
 				<div class="col-12 col-md-6">
 					<div class="title mb-4">
-						<span>Categories</span>
-						<button class="btn btn-light font-weight-bold" @click="toggleTab('home')">Go Back</button>
+						<span>{{ $t('groups.selfDiscover.categories') }}</span>
+						<button class="btn btn-light font-weight-bold" @click="toggleTab('home')">{{ $t('groups.selfDiscover.goBack') }}</button>
 					</div>
 
 					<div class="list-group">
@@ -256,10 +256,10 @@
 				<div class="col-12 col-md-6">
 					<div class="title mb-4">
 						<div>
-							<div class="mb-n2 small text-uppercase text-lighter">Categories</div>
+							<div class="mb-n2 small text-uppercase text-lighter">{{ $t('groups.selfDiscover.categories') }}</div>
 							<span>{{ categories[activeCategoryIndex] }}</span>
 						</div>
-						<button class="btn btn-light font-weight-bold" @click="toggleTab('categories')">Go Back</button>
+						<button class="btn btn-light font-weight-bold" @click="toggleTab('categories')">{{ $t('groups.selfDiscover.goBack') }}</button>
 					</div>
 
 					<div v-if="categoryGroupsLoaded">
@@ -277,14 +277,14 @@
 								<button
 									class="btn btn-light font-weight-bold btn-block"
 									@click="fetchCategoryGroups">
-									Load more
+									{{ $t('groups.selfDiscover.loadMore') }}
 								</button>
 							</div>
 						</div>
 
 						<div v-if="categoryGroups.length === 0" class="mt-3">
 							<div class="bg-white border text-center p-3">
-								<p class="font-weight-light mb-0">No groups found in this category</p>
+								<p class="font-weight-light mb-0">{{ $t('groups.selfDiscover.noGroupsInCategory') }}</p>
 							</div>
 						</div>
 					</div>
@@ -301,12 +301,12 @@
 			<div class="row my-4 justify-content-center">
 				<div class="col-12 col-md-6">
 					<div class="title mb-4">
-						<span>Fediverse Groups</span>
-						<button class="btn btn-light font-weight-bold" @click="toggleTab('home')">Go Back</button>
+						<span>{{ $t('groups.selfDiscover.fediverseGroups') }}</span>
+						<button class="btn btn-light font-weight-bold" @click="toggleTab('home')">{{ $t('groups.selfDiscover.goBack') }}</button>
 					</div>
 					<div class="mt-3">
 						<div class="bg-white border text-center p-3">
-							<p class="font-weight-light mb-0">No fediverse groups found</p>
+							<p class="font-weight-light mb-0">{{ $t('groups.selfDiscover.noFediverseGroups') }}</p>
 						</div>
 					</div>
 				</div>

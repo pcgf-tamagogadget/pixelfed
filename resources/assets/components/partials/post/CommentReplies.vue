@@ -33,7 +33,7 @@
 										<p class="mb-0">
 											{{ $t('common.sensitiveContentWarning') }}
 										</p>
-										<a href="#" class="small font-weight-bold primary" @click.prevent="post.sensitive = false">Show</a>
+										<a href="#" class="small font-weight-bold primary" @click.prevent="post.sensitive = false">{{ $t('spa.commentReplies.show') }}</a>
 									</span>
 
 									<!-- <span v-else v-html="post.content"></span> -->
@@ -65,7 +65,7 @@
 
 										<div class="sensitive-warning">
 											<p class="mb-0"><i class="far fa-eye-slash fa-lg"></i></p>
-											<p class="mb-0 small">Click to view</p>
+											<p class="mb-0 small">{{ $t('spa.commentReplies.clickToView') }}</p>
 										</div>
 									</div>
 
@@ -97,7 +97,7 @@
 									class="btn btn-link font-weight-bold btn-sm p-0"
 									:class="[ post.favourited ? 'primary' : 'text-muted' ]"
 									@click="likeComment(idx)">
-									{{ post.favourited ? 'Liked' : 'Like' }}
+									{{ post.favourited ? $t('common.liked') : $t('common.like') }}
 								</button>
 								<!-- <span class="mx-1">·</span>
 								<a class="font-weight-bold text-muted" :href="post.url" @click.prevent="toggleCommentReply(idx)">
@@ -113,7 +113,7 @@
 										class="font-weight-bold text-muted"
 										href="#"
 										@click.prevent="deleteComment(idx)">
-										Delete
+										{{ $t('common.delete') }}
 									</a>
 								</span>
 
@@ -123,7 +123,7 @@
 										class="font-weight-bold text-muted"
 										href="#"
 										@click.prevent="reportComment(idx)">
-										Report
+										{{ $t('menu.report') }}
 									</a>
 								</span>
 							</p>

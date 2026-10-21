@@ -21,7 +21,7 @@
 
 				<div class="media-body">
 					<p class="font-weight-bold mb-0 text-dark" style="font-size: 16px;">
-						{{ truncate(group.name || 'Untitled Group', titleLength) }}
+						{{ truncate(group.name || $t('groups.groupListCard.untitledGroup'), titleLength) }}
 					</p>
 
 					<p class="text-muted mb-1" style="font-size: 12px;">
@@ -35,7 +35,7 @@
 						</span>
 
 						<span v-if="!group.local" class="remote-label ml-3">
-							<i class="fal fa-globe"></i> Remote
+							<i class="fal fa-globe"></i> {{ $t('groups.groupListCard.remote') }}
 						</span>
 
 						<span v-if="group.hasOwnProperty('admin') && group.admin.hasOwnProperty('username')" class="ml-3">

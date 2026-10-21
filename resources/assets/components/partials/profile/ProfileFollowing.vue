@@ -7,7 +7,7 @@
                         <button
                             class="btn btn-outline-dark rounded-pill font-weight-bold"
                             @click="goBack()">
-                            Back
+                            {{ $t('spa.profileFollowing.back') }}
                         </button>
                     </div>
                     <div class="d-flex align-items-center justify-content-center flex-column w-100 overflow-hidden">
@@ -15,7 +15,7 @@
                         <p class="lead font-weight-bold mt-n1 mb-0">{{ $t('profile.following') }}</p>
                     </div>
                     <div>
-                        <a class="btn btn-dark rounded-pill font-weight-bold spacer-btn" href="#">Back</a>
+                        <a class="btn btn-dark rounded-pill font-weight-bold spacer-btn" href="#">{{ $t('spa.profileFollowing.back') }}</a>
                     </div>
                 </div>
 
@@ -60,13 +60,13 @@
                     <div v-if="!canLoadMore && !feed.length">
                         <div class="list-group-item text-center">
                             <div v-if="isWarmingCache" class="px-4">
-                                <p class="mb-0 lead font-weight-bold">Loading Following...</p>
+                                <p class="mb-0 lead font-weight-bold">{{ $t('spa.profileFollowing.loading') }}</p>
                                 <div class="py-3">
                                     <b-spinner variant="primary" style="width: 1.5rem; height: 1.5rem;" />
                                 </div>
-                                <p class="small text-muted mb-0">Please wait while we collect following accounts, this shouldn't take long!</p>
+                                <p class="small text-muted mb-0">{{ $t('spa.profileFollowing.pleaseWait') }}</p>
                             </div>
-                            <p v-else class="mb-0 font-weight-bold">No following anyone yet!</p>
+                            <p v-else class="mb-0 font-weight-bold">{{ $t('spa.profileFollowing.empty') }}</p>
                         </div>
                     </div>
 				</div>
@@ -217,7 +217,7 @@
             setCacheWarmTimeout() {
                 if(this.cacheWarmInterations >= 5) {
                     this.isWarmingCache = false;
-                    swal('Oops', 'Its taking longer than expected to collect following accounts. Please try again later', 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.profileFollowing.timeout'), 'error');
                     return;
                 }
                 this.cacheWarmTimeout = setTimeout(() => {

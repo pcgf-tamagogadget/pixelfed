@@ -10,21 +10,21 @@
 
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h3 class="text-center">Resend Verification</h3>
-                    <p class="lead text-center mb-4">Enter your email so we can send another verification code via email</p>
+                    <h3 class="text-center">{{ __('auth.iarPage.resendTitle') }}</h3>
+                    <p class="lead text-center mb-4">{{ __('auth.iarPage.resendSubtitle') }}</p>
 
                     <form method="POST" action="/i/app-email-resend">
                         @csrf
                         <input type="hidden" name="redirect_uri" value="{{ old('redirect_uri', $redirectUri) }}">
 
                         <div class="form-group">
-                            <label for="email">Email address</label>
+                            <label for="email">{{ __('auth.iarPage.emailLabel') }}</label>
                             <input type="email"
                                 class="form-control @error('email') is-invalid @enderror"
                                 id="email"
                                 name="email"
                                 required
-                                placeholder="Enter your email address here"
+                                placeholder="{{ __('auth.iarPage.emailPlaceholder') }}"
                                 autocomplete="email"
                                 @if(request()->filled('email'))
                             value="{{rawurldecode(request()->input('email'))}}"
@@ -38,13 +38,13 @@
                         <x-captcha surface="register" wrapperClass="form-group text-center" />
 
                         <button type="submit" class="btn btn-primary btn-block">
-                            Send Verification Code
+                            {{ __('auth.iarPage.sendCode') }}
                         </button>
                     </form>
 
                     @if ($errors->any())
                     <div class="mt-4">
-                        <p class="text-center">Click <a href="/i/app-email-verify">here</a> to send a new request.</p>
+                        <p class="text-center">{!! __('auth.iarPage.newRequestHint', ['url' => '/i/app-email-verify']) !!}</p>
                     </div>
                     @endif
                 </div>

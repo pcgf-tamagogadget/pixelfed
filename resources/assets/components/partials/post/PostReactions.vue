@@ -2,22 +2,28 @@
 	<div class="px-3 my-3" style="z-index:3;">
 		<div v-if="(status.favourites_count || status.reblogs_count) && ((status.hasOwnProperty('liked_by') && status.liked_by.url) || (status.hasOwnProperty('reblogs_count') && status.reblogs_count))" class="mb-0 d-flex justify-content-between">
 			<p v-if="!hideCounts && status.favourites_count" class="mb-2 reaction-liked-by">
-				Liked by
-				<span v-if="status.favourites_count == 1 && status.favourited == true" class="font-weight-bold">me</span>
-				<span v-else>
-					<router-link :to="'/i/web/profile/' + status.liked_by.id" class="primary font-weight-bold">{{ status.liked_by.username}}</router-link>
-					<span v-if="status.liked_by.others || status.favourites_count > 1">
-						and <a href="#" class="primary font-weight-bold" @click.prevent="showLikes()">{{ count(status.favourites_count - 1) }} others</a>
-					</span>
-				</span>
+				<i18n path="spa.postReactions.likedBy" tag="span">
+					<template v-slot:name>
+						<span v-if="status.favourites_count == 1 && status.favourited == true" class="font-weight-bold">{{ $t('spa.postReactions.me') }}</span>
+						<span v-else>
+							<router-link :to="'/i/web/profile/' + status.liked_by.id" class="primary font-weight-bold">{{ status.liked_by.username}}</router-link>
+							<span v-if="status.liked_by.others || status.favourites_count > 1">
+								{{ $t('spa.postReactions.and') }} <a href="#" class="primary font-weight-bold" @click.prevent="showLikes()">{{ $t('spa.postReactions.othersCount', { count: count(status.favourites_count - 1) }) }}</a>
+							</span>
+						</span>
+					</template>
+				</i18n>
 			</p>
 
 			<p v-if="!hideCounts && status.reblogs_count" class="mb-2 reaction-liked-by">
-				Shared by
-				<span v-if="status.reblogs_count == 1 && status.reblogged == true" class="font-weight-bold">me</span>
-				<a v-else class="primary font-weight-bold" href="#" @click.prevent="showShares()">
-					{{ count(status.reblogs_count) }} {{ status.reblogs_count > 1 ? 'others' : 'other' }}
-				</a>
+				<i18n path="spa.postReactions.sharedBy" tag="span">
+					<template v-slot:name>
+						<span v-if="status.reblogs_count == 1 && status.reblogged == true" class="font-weight-bold">{{ $t('spa.postReactions.me') }}</span>
+						<a v-else class="primary font-weight-bold" href="#" @click.prevent="showShares()">
+							{{ status.reblogs_count > 1 ? $t('spa.postReactions.othersCount', { count: count(status.reblogs_count) }) : $t('spa.postReactions.otherCount', { count: count(status.reblogs_count) }) }}
+						</a>
+					</template>
+				</i18n>
 			</p>
 		</div>
 
@@ -85,7 +91,7 @@
 					</span>
 				</button>
 
-				<button v-if="admin" type="button" class="ml-3 btn btn-light font-weight-bold rounded-pill" v-b-tooltip.hover title="Moderation Tools" @click="openModTools()">
+				<button v-if="admin" type="button" class="ml-3 btn btn-light font-weight-bold rounded-pill" v-b-tooltip.hover :title="$t('menu.moderationTools')" @click="openModTools()">
 					<i class="far fa-user-crown"></i>
 				</button>
 			</div>
@@ -200,7 +206,7 @@
 					.then(() => console.log('Share was successful.'))
 					.catch((error) => console.log('Sharing failed', error));
 				} else {
-					swal('Not supported', 'Your current device does not support native sharing.', 'error');
+					swal(this.$t('spa.postReactions.notSupported'), this.$t('spa.postReactions.nativeShareUnsupported'), 'error');
 				}
 			},
 

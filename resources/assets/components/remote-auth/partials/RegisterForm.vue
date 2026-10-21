@@ -1,18 +1,18 @@
 <template>
     <div class="card-body">
-        <p class="lead text-center font-weight-bold">Sign-in with Mastodon</p>
+        <p class="lead text-center font-weight-bold">{{ $t('spa.remoteAuthStart.title') }}</p>
         <hr>
 
         <template v-if="step === 1">
             <div class="wrapper-mh">
                 <div class="flex-grow-1">
-                    <p class="text-dark">Hello {{ initialData['_webfinger'] }},</p>
-                    <p class="lead font-weight-bold">Welcome to Pixelfed!</p>
+                    <p class="text-dark">{{ $t('spa.remoteAuthRegisterForm.hello', { name: initialData['_webfinger'] }) }}</p>
+                    <p class="lead font-weight-bold">{{ $t('spa.remoteAuthRegisterForm.welcome') }}</p>
 
-                    <p>You are moments away from joining our vibrant photo and video focused community with members from around the world.</p>
+                    <p>{{ $t('spa.remoteAuthRegisterForm.intro') }}</p>
                 </div>
 
-                <p class="text-xs text-lighter">Your Mastodon account <strong>avatar</strong>, <strong>bio</strong>, <strong>display name</strong>, <strong>followed accounts</strong> and <strong>username</strong> will be imported to speed up the sign-up process. We will never post on your behalf, we only access your public profile data (avatar, bio, display name, followed accounts and username).</p>
+                <p class="text-xs text-lighter" v-html="$t('spa.remoteAuthRegisterForm.importNotice')"></p>
             </div>
         </template>
 
@@ -21,15 +21,15 @@
                 <div class="pt-3">
                     <div class="form-group has-float-label">
                         <input class="form-control form-control-lg" id="f_username" aria-describedby="f_username_help" v-model="username"  autofocus/>
-                        <label for="f_username">Username</label>
-                        <p v-if="validUsername && !usernameError" id="f_username_help" class="text-xs text-success font-weight-bold mt-1 mb-0">Available</p>
-                        <p v-else-if="!validUsername && !usernameError" id="f_username_help" class="text-xs text-danger font-weight-bold mt-1 mb-0">Username taken</p>
+                        <label for="f_username">{{ $t('spa.remoteAuthRegisterForm.username') }}</label>
+                        <p v-if="validUsername && !usernameError" id="f_username_help" class="text-xs text-success font-weight-bold mt-1 mb-0">{{ $t('spa.remoteAuthRegisterForm.available') }}</p>
+                        <p v-else-if="!validUsername && !usernameError" id="f_username_help" class="text-xs text-danger font-weight-bold mt-1 mb-0">{{ $t('spa.remoteAuthRegisterForm.usernameTaken') }}</p>
                         <p v-else-if="usernameError" id="f_username_help" class="text-xs text-danger font-weight-bold mt-1 mb-0">{{ usernameError }}</p>
                     </div>
                 </div>
 
                 <div class="pt-3">
-                    <p class="text-sm font-weight-bold mb-1">Avatar</p>
+                    <p class="text-sm font-weight-bold mb-1">{{ $t('spa.remoteAuthRegisterForm.avatar') }}</p>
 
                     <div class="border rounded-lg p-3 d-flex align-items-center justify-content-between gap-1">
                         <img v-if="form.importAvatar" :src="initialData.avatar" width="40" height="40" class="rounded-circle" />
@@ -37,7 +37,7 @@
 
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="customCheck1" v-model="form.importAvatar">
-                            <label class="custom-control-label text-xs font-weight-bold" style="line-height: 24px;" for="customCheck1">Import my Mastodon avatar</label>
+                            <label class="custom-control-label text-xs font-weight-bold" style="line-height: 24px;" for="customCheck1">{{ $t('spa.remoteAuthRegisterForm.importAvatar') }}</label>
                         </div>
                     </div>
                 </div>
@@ -49,16 +49,16 @@
                 <div class="pt-3">
                     <div class="form-group has-float-label">
                         <input class="form-control form-control-lg" id="f_name" aria-describedby="f_name_help" v-model="form.display_name" />
-                        <label for="f_name">Display Name</label>
-                        <div id="f_name_help" class="text-xs text-muted mt-1">Your display name, shown on your profile. You can change this later.</div>
+                        <label for="f_name">{{ $t('spa.remoteAuthRegisterForm.displayName') }}</label>
+                        <div id="f_name_help" class="text-xs text-muted mt-1">{{ $t('spa.remoteAuthRegisterForm.displayNameHelp') }}</div>
                     </div>
                 </div>
                 <div class="pt-3">
                     <div class="form-group has-float-label">
                         <textarea class="form-control" id="f_bio" aria-describedby="f_bio_help" rows="5" v-model="form.bio"></textarea>
-                        <label for="f_bio">Bio</label>
+                        <label for="f_bio">{{ $t('spa.remoteAuthRegisterForm.bio') }}</label>
                         <div id="f_bio_help" class="text-xs text-muted mt-1 d-flex justify-content-between align-items-center">
-                            <div>Describe yourself, you can change this later.</div>
+                            <div>{{ $t('spa.remoteAuthRegisterForm.bioHelp') }}</div>
                             <div>{{ form.bio ? form.bio.length : 0 }}/500</div>
                         </div>
                     </div>
@@ -71,12 +71,12 @@
                 <div class="pt-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div>
-                            <p class="font-weight-bold mb-0">Import accounts you follow</p>
-                            <p class="text-muted text-xs mb-0">You can skip this step and follow accounts later</p>
+                            <p class="font-weight-bold mb-0">{{ $t('spa.remoteAuthRegisterForm.importFollowing') }}</p>
+                            <p class="text-muted text-xs mb-0">{{ $t('spa.remoteAuthRegisterForm.importFollowingHelp') }}</p>
                         </div>
                         <div style="min-width: 100px;text-align:right;">
-                            <p v-if="following && selectedFollowing && following.length == selectedFollowing.length" class="mb-0"><a class="font-weight-bold text-xs text-danger" href="#" @click.prevent="handleFollowerUnselectAll()">Unselect All</a></p>
-                            <p v-else class="mb-0"><a class="font-weight-bold text-xs" href="#" @click.prevent="handleFollowerSelectAll()">Select All</a></p>
+                            <p v-if="following && selectedFollowing && following.length == selectedFollowing.length" class="mb-0"><a class="font-weight-bold text-xs text-danger" href="#" @click.prevent="handleFollowerUnselectAll()">{{ $t('spa.remoteAuthRegisterForm.unselectAll') }}</a></p>
+                            <p v-else class="mb-0"><a class="font-weight-bold text-xs" href="#" @click.prevent="handleFollowerSelectAll()">{{ $t('spa.remoteAuthRegisterForm.selectAll') }}</a></p>
                         </div>
                     </div>
                     <div v-if="!followingFetched" class="d-flex align-items-center justify-content-center limit-h">
@@ -117,33 +117,33 @@
             <div class="wrapper-mh">
                 <div class="pt-3">
                     <div class="pb-3">
-                        <p class="font-weight-bold mb-0">We need a bit more info</p>
-                        <p class="text-xs text-muted">Enter your email so you recover access to your account in the future</p>
+                        <p class="font-weight-bold mb-0">{{ $t('spa.remoteAuthRegisterForm.moreInfo') }}</p>
+                        <p class="text-xs text-muted">{{ $t('spa.remoteAuthRegisterForm.moreInfoHelp') }}</p>
                     </div>
 
                     <div class="form-group has-float-label">
                         <input class="form-control" id="f_email" aria-describedby="f_email_help" v-model="email" autofocus="autofocus" />
-                        <label for="f_email">Email address</label>
-                        <p v-if="email && validEmail && !emailError" id="f_email_help" class="text-xs text-success font-weight-bold mt-1 mb-0">Available</p>
-                        <p v-else-if="email && !validEmail && !emailError" id="f_email_help" class="text-xs text-danger font-weight-bold mt-1 mb-0">Email already in use</p>
+                        <label for="f_email">{{ $t('spa.remoteAuthRegisterForm.emailAddress') }}</label>
+                        <p v-if="email && validEmail && !emailError" id="f_email_help" class="text-xs text-success font-weight-bold mt-1 mb-0">{{ $t('spa.remoteAuthRegisterForm.available') }}</p>
+                        <p v-else-if="email && !validEmail && !emailError" id="f_email_help" class="text-xs text-danger font-weight-bold mt-1 mb-0">{{ $t('spa.remoteAuthRegisterForm.emailInUse') }}</p>
                         <p v-else-if="email && emailError" id="f_email_help" class="text-xs text-danger font-weight-bold mt-1 mb-0">{{ emailError }}</p>
-                        <p v-else id="f_email_help" class="text-xs text-muted mt-1 mb-0">We'll never share your email with anyone else.</p>
+                        <p v-else id="f_email_help" class="text-xs text-muted mt-1 mb-0">{{ $t('spa.remoteAuthRegisterForm.emailPrivacy') }}</p>
                     </div>
                 </div>
 
                 <div v-if="email && email.length && validEmail" class="pt-3">
                     <div class="form-group has-float-label">
                         <input type="password" class="form-control" id="f_password" aria-describedby="f_password_help" autocomplete="new-password" v-model="password" autofocus="autofocus" />
-                        <label for="f_password">Password</label>
-                        <div id="f_password_help" class="text-xs text-muted">Use a memorable password that you don't use on other sites.</div>
+                        <label for="f_password">{{ $t('spa.remoteAuthRegisterForm.password') }}</label>
+                        <div id="f_password_help" class="text-xs text-muted">{{ $t('spa.remoteAuthRegisterForm.passwordHelp') }}</div>
                     </div>
                 </div>
 
                 <div v-if="password && password.length >= 8" class="pt-3">
                     <div class="form-group has-float-label">
                         <input type="password" class="form-control" id="f_passwordConfirm" aria-describedby="f_passwordConfirm_help" autocomplete="new-password" v-model="passwordConfirm" autofocus="autofocus" />
-                        <label for="f_passwordConfirm">Confirm Password</label>
-                        <div id="f_passwordConfirm_help" class="text-xs text-muted">Re-enter your password.</div>
+                        <label for="f_passwordConfirm">{{ $t('spa.remoteAuthRegisterForm.confirmPassword') }}</label>
+                        <div id="f_passwordConfirm_help" class="text-xs text-muted">{{ $t('spa.remoteAuthRegisterForm.confirmPasswordHelp') }}</div>
                     </div>
                 </div>
             </div>
@@ -152,8 +152,8 @@
         <template v-else-if="step === 6">
             <div class="wrapper-mh">
                 <div class="my-5">
-                    <p class="lead text-center font-weight-bold mb-0">You're almost ready!</p>
-                    <p class="text-center text-lighter text-xs">Confirm your email and other info</p>
+                    <p class="lead text-center font-weight-bold mb-0">{{ $t('spa.remoteAuthRegisterForm.almostReady') }}</p>
+                    <p class="text-center text-lighter text-xs">{{ $t('spa.remoteAuthRegisterForm.almostReadyHelp') }}</p>
                 </div>
 
                 <div class="card shadow-none border" style="border-radius: 1rem;">
@@ -172,12 +172,12 @@
 
                 <div class="list-group mt-3" style="border-radius: 1rem;">
                     <div class="list-group-item d-flex align-items-center justify-content-between">
-                        <div class="text-xs">Email</div>
+                        <div class="text-xs">{{ $t('spa.remoteAuthRegisterForm.email') }}</div>
                         <div class="font-weight-bold">{{ email }}</div>
                     </div>
 
                     <div class="list-group-item d-flex align-items-center justify-content-between">
-                        <div class="text-xs">Following Imports</div>
+                        <div class="text-xs">{{ $t('spa.remoteAuthRegisterForm.followingImports') }}</div>
                         <div class="font-weight-bold">{{ selectedFollowing ? selectedFollowing.length : 0 }}</div>
                     </div>
                 </div>
@@ -197,27 +197,27 @@
         <hr>
         <template v-if="step === 7">
             <div class="d-flex align-items-center justify-content-center gap-1 mb-2">
-                <button class="btn btn-outline-primary font-weight-bold btn-block my-0" @click="handleBack()">Back</button>
-                <button class="btn btn-primary font-weight-bold btn-block my-0" @click="handleJoin()" disabled>Continue</button>
+                <button class="btn btn-outline-primary font-weight-bold btn-block my-0" @click="handleBack()">{{ $t('spa.remoteAuthRegisterForm.back') }}</button>
+                <button class="btn btn-primary font-weight-bold btn-block my-0" @click="handleJoin()" disabled>{{ $t('common.continue') }}</button>
             </div>
         </template>
         <template v-else>
             <div class="d-flex align-items-center justify-content-center gap-1 mb-2">
-                <button v-if="step > 1" class="btn btn-outline-primary font-weight-bold btn-block my-0" :disabled="isSubmitting" @click="handleBack()">Back</button>
+                <button v-if="step > 1" class="btn btn-outline-primary font-weight-bold btn-block my-0" :disabled="isSubmitting" @click="handleBack()">{{ $t('spa.remoteAuthRegisterForm.back') }}</button>
                 <button
                     v-if="step === 6"
                     class="btn btn-primary font-weight-bold btn-block my-0"
                     :disabled="isSubmitting"
                     @click="handleJoin()">
                     <b-spinner v-if="isSubmitting" small />
-                    <span v-else>Continue</span>
+                    <span v-else>{{ $t('common.continue') }}</span>
                 </button>
-                <button v-else class="btn btn-primary font-weight-bold btn-block my-0" :disabled="canProceed()" @click="handleProceed()">Next</button>
+                <button v-else class="btn btn-primary font-weight-bold btn-block my-0" :disabled="canProceed()" @click="handleProceed()">{{ $t('common.next') }}</button>
             </div>
             <template v-if="isSubmitting ? false : step <= 6">
                 <hr>
                 <p class="text-center mb-0">
-                    <a class="font-weight-bold" href="/login">Go back to login</a>
+                    <a class="font-weight-bold" href="/login">{{ $t('spa.remoteAuthStart.backToLogin') }}</a>
                 </p>
             </template>
         </template>
@@ -261,7 +261,7 @@
                 },
                 isSubmitting: false,
                 submitProgress: 0,
-                submitMessage: 'Please wait...',
+                submitMessage: this.$t('spa.remoteAuthGettingStarted.pleaseWait'),
                 isImportingFollowing: false,
                 accountToId: [],
                 followingIds: [],
@@ -340,7 +340,7 @@
                         return;
                     }
                     if(res.data && res.data.hasOwnProperty('banned') && res.data.banned) {
-                        this.emailError = 'This email provider is not supported, please use a different email address.';
+                        this.emailError = this.$t('spa.remoteAuthRegisterForm.emailUnsupported');
                         this.validEmail = false;
                         return;
                     }
@@ -492,11 +492,11 @@
                         this.accessToken = res.data.token;
                         setTimeout(() => {
                             this.submitProgress = 20;
-                            this.submitMessage = 'Claiming your username...';
+                            this.submitMessage = this.$t('spa.remoteAuthRegisterForm.claimingUsername');
                             this.storeBio();
                         }, 2000);
                     } else {
-                        swal('Something went wrong', 'An unexpected error occured, please try again later');
+                        swal(this.$t('spa.remoteAuthRegisterForm.somethingWrong'), this.$t('spa.remoteAuthGettingStarted.unexpectedError'));
                     }
                 })
             },
@@ -507,7 +507,7 @@
                 })
                 .then(res => {
                     this.submitProgress = 30;
-                    this.submitMessage = 'Importing your bio...';
+                    this.submitMessage = this.$t('spa.remoteAuthRegisterForm.importingBio');
                 })
                 .finally(() => {
                     this.storeFollowing();
@@ -516,7 +516,7 @@
 
             storeFollowing() {
                 this.submitProgress = 40;
-                this.submitMessage = 'Importing following accounts...';
+                this.submitMessage = this.$t('spa.remoteAuthRegisterForm.importingFollowing');
 
                 if(!this.selectedFollowing || !this.selectedFollowing.length) {
                     setTimeout(() => {
@@ -572,10 +572,10 @@
 
             storeAvatar() {
                 this.submitProgress = 70;
-                this.submitMessage = 'Importing your avatar...';
+                this.submitMessage = this.$t('spa.remoteAuthRegisterForm.importingAvatar');
                 if(this.form.importAvatar == false) {
                     this.submitProgress = 90;
-                    this.submitMessage = 'Preparing your account...';
+                    this.submitMessage = this.$t('spa.remoteAuthRegisterForm.preparingAccount');
                     this.finishUp();
                     return;
                 }
@@ -584,19 +584,19 @@
                 })
                 .then(res => {
                     this.submitProgress = 90;
-                    this.submitMessage = 'Preparing your account...';
+                    this.submitMessage = this.$t('spa.remoteAuthRegisterForm.preparingAccount');
                     this.finishUp();
                 })
             },
 
             finishUp() {
                 this.submitProgress = 92;
-                this.submitMessage = 'Finishing up...';
+                this.submitMessage = this.$t('spa.remoteAuthRegisterForm.finishingUp');
                 axios.post('/auth/raw/mastodon/s/finish-up')
                 .then(() => {
                     this.$emit('setCanReload');
                     this.submitProgress = 95;
-                    this.submitMessage = 'Logging you in...';
+                    this.submitMessage = this.$t('spa.remoteAuthRegisterForm.loggingIn');
                     setTimeout(() => {
                         this.submitProgress = 100;
                         window.location.reload();

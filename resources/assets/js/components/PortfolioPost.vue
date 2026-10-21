@@ -19,8 +19,8 @@
                     <div class="col-12 mb-4">
                         <p v-if="settings.show_captions && post.content_text">{{ post.content_text }}</p>
                         <div class="d-md-flex justify-content-between align-items-center">
-                            <p class="small">by <a :href="profileUrl()" class="font-weight-bold link-color">&commat;{{profile.username}}</a></p>
-                            <p v-if="settings.show_license && post.media_attachments[0].license" class="small">Licensed under {{ post.media_attachments[0].license.title }}</p>
+                            <i18n path="compose.portfolioPost.by" tag="p" class="small"><template v-slot:username><a :href="profileUrl()" class="font-weight-bold link-color">&commat;{{profile.username}}</a></template></i18n>
+                            <p v-if="settings.show_license && post.media_attachments[0].license" class="small">{{ $t('compose.portfolioPost.licensedUnder', { license: post.media_attachments[0].license.title }) }}</p>
                             <p v-if="settings.show_location && post.place" class="small text-muted">{{ post.place.name }}, {{ post.place.country }}</p>
                             <p v-if="settings.show_timestamp" class="small">
                                 <a v-if="settings.show_link" :href="post.url" class="font-weight-bold link-color" style="z-index: 2">

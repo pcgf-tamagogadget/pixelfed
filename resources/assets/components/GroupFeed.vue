@@ -157,7 +157,7 @@
 
                 if(input.startsWith('#')) {
                     this.$bvToast.toast(input, {
-                        title: 'Hashtag detected',
+                        title: this.$t('groups.groupFeedPage.hashtagDetected'),
                         variant: 'info',
                         autoHideDelay: 5000
                     });
@@ -175,7 +175,7 @@
 
                     if(err.response.status === 422) {
                         this.$bvToast.toast(err.response.data.error.message, {
-                            title: 'Cannot display search results',
+                            title: this.$t('groups.groupFeedPage.cannotDisplaySearchResults'),
                             variant: 'danger',
                             autoHideDelay: 5000
                         });

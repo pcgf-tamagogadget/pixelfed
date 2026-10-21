@@ -6,12 +6,12 @@
     </a>
     <div class="text-right" style="flex-grow:1;">
       <div class="dropdown">
-        <button class="btn btn-link text-dark no-caret dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Post options">
+        <button class="btn btn-link text-dark no-caret dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{ __('pages.status.template.postOptions') }}">
         <span class="fas fa-ellipsis-v fa-lg text-muted"></span>
         </button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item font-weight-bold" href="{{$item->url()}}">Go to post</a>
-          <a class="dropdown-item font-weight-bold" href="{{route('report.form')}}?type=post&id={{$item->id}}">Report</a>
+          <a class="dropdown-item font-weight-bold" href="{{$item->url()}}">{{ __('pages.status.template.goToPost') }}</a>
+          <a class="dropdown-item font-weight-bold" href="{{route('report.form')}}?type=post&id={{$item->id}}">{{ __('pages.status.template.report') }}</a>
           {{-- <a class="dropdown-item font-weight-bold" href="#" onclick="pixelfed.embed.onclick(this)">Embed</a> --}}
         @if(Auth::check())
           @if(Auth::user()->profile->id !== $item->profile->id)
@@ -20,23 +20,23 @@
             @csrf
             <input type="hidden" name="type" value="user">
             <input type="hidden" name="item" value="{{$item->profile_id}}">
-            <button type="submit" class="dropdown-item btn btn-link font-weight-bold">Mute this user</button>
+            <button type="submit" class="dropdown-item btn btn-link font-weight-bold">{{ __('pages.status.template.muteUser') }}</button>
           </form>
           <form method="post" action="/i/block">
             @csrf
             <input type="hidden" name="type" value="user">
             <input type="hidden" name="item" value="{{$item->profile_id}}">
-            <button type="submit" class="dropdown-item btn btn-link font-weight-bold">Block this user</button>
+            <button type="submit" class="dropdown-item btn btn-link font-weight-bold">{{ __('pages.status.template.blockUser') }}</button>
           </form>
           @endif
           @if(Auth::user()->profile->id === $item->profile->id || Auth::user()->is_admin == true)
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item font-weight-bold" href="{{$item->editUrl()}}">Edit</a>
+          <a class="dropdown-item font-weight-bold" href="{{$item->editUrl()}}">{{ __('pages.status.template.edit') }}</a>
           <form method="post" action="/i/delete">
             @csrf
             <input type="hidden" name="type" value="post">
             <input type="hidden" name="item" value="{{$item->id}}">
-            <button type="submit" class="dropdown-item btn btn-link text-danger font-weight-bold">Delete</button>
+            <button type="submit" class="dropdown-item btn btn-link text-danger font-weight-bold">{{ __('pages.status.delete') }}</button>
           </form>
           @endif
         @endif
@@ -65,15 +65,15 @@
       <form class="d-inline-flex like-form pr-3" method="post" action="/i/like" style="display: inline;" data-id="{{$item->id}}" data-action="like" data-count="{{$item->likes_count}}">
         @csrf
         <input type="hidden" name="item" value="{{$item->id}}">
-        <button class="btn btn-link text-dark p-0" type="submit" title="Like!">
+        <button class="btn btn-link text-dark p-0" type="submit" title="{{ __('pages.status.template.like') }}">
           <h3 class="far fa-heart status-heart m-0"></h3>
         </button>
       </form>
-      <h3 class="far fa-comment pr-3 status-comment-focus" title="Comment"></h3>
+      <h3 class="far fa-comment pr-3 status-comment-focus" title="{{ __('pages.status.template.comment') }}"></h3>
       <form class="d-inline-flex share-form pr-3" method="post" action="/i/share" style="display: inline;" data-id="{{$item->id}}" data-action="share" data-count="{{$item->shares_count}}">
         @csrf
         <input type="hidden" name="item" value="{{$item->id}}">
-        <button class="btn btn-link text-dark p-0" type="submit" title="Share">
+        <button class="btn btn-link text-dark p-0" type="submit" title="{{ __('pages.status.template.share') }}">
           <h3 class="far fa-share-square m-0"></h3>
         </button>
       </form>
@@ -81,14 +81,14 @@
         <form class="d-inline-flex bookmark-form" method="post" action="/i/bookmark" style="display: inline;" data-id="{{$item->id}}" data-action="bookmark">
           @csrf
           <input type="hidden" name="item" value="{{$item->id}}">
-          <button class="btn btn-link text-dark p-0 border-0" type="submit" title="Save">
+          <button class="btn btn-link text-dark p-0 border-0" type="submit" title="{{ __('pages.status.template.save') }}">
             <h3 class="far fa-bookmark m-0"></h3>
           </button>
         </form>
       </span>
     </div>
     <div class="likes font-weight-bold">
-      <span class="like-count">{{$item->likes_count}}</span> likes
+      {!! __('pages.status.template.likes', ['count' => '<span class="like-count">'.e($item->likes_count).'</span>']) !!}
     </div>
     <div class="caption">
       <p class="mb-1 read-more" style="overflow: hidden;">
@@ -108,7 +108,7 @@
     <form class="comment-form" method="post" action="/i/comment" data-id="{{$item->id}}" data-truncate="true">
       @csrf
       <input type="hidden" name="item" value="{{$item->id}}">
-      <input class="form-control status-reply-input" name="comment" placeholder="Add a comment…" autocomplete="off">
+      <input class="form-control status-reply-input" name="comment" placeholder="{{ __('pages.status.template.addComment') }}" autocomplete="off">
     </form>
   </div>
 </div>

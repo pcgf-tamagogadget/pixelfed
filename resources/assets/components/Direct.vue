@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="col-md-5 offset-md-1 mb-5 order-2 order-md-1">
-                    <h1 class="font-weight-bold mb-4">Direct Messages</h1>
+                    <h1 class="font-weight-bold mb-4">{{ $t('navmenu.directMessages') }}</h1>
                     <div v-if="threadsLoaded">
                         <div v-for="(thread, idx) in threads" class="card shadow-sm mb-1" style="border-radius:15px;">
                             <div class="card-body p-3">
@@ -18,7 +18,7 @@
                                         <!-- <p class="lead mb-n2">{{ thread.accounts[0].display_name }}</p> -->
                                         <div class="d-flex justify-content-between align-items-start mb-1">
                                             <p class="dm-display-name font-weight-bold mb-0">&commat;{{ thread.accounts[0].acct }}</p>
-                                            <p class="font-weight-bold small text-muted mb-0">{{ timeago(thread.last_status.created_at) }} ago</p>
+                                            <p class="font-weight-bold small text-muted mb-0">{{ $t('spa.direct.timeAgo', { time: timeago(thread.last_status.created_at) }) }}</p>
                                         </div>
 
                                         <p class="dm-thread-summary text-muted mr-4" v-html="threadSummary(thread.last_status)"></p>
@@ -34,7 +34,7 @@
                         <div v-if="!threads || !threads.length" class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <img src="/img/illustrations/dk-nature-man-monochrome.svg" class="img-fluid" style="opacity: 0.6;">
-                                <p class="lead text-muted font-weight-bold">Your inbox is empty</p>
+                                <p class="lead text-muted font-weight-bold">{{ $t('spa.direct.emptyInbox') }}</p>
                             </div>
                         </div>
 
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="col-md-3 d-md-block order-1 order-md-2 mb-4">
-                    <button class="btn btn-dark shadow-sm font-weight-bold btn-block" @click="openCompose"><i class="far fa-envelope mr-1"></i> Compose</button>
+                    <button class="btn btn-dark shadow-sm font-weight-bold btn-block" @click="openCompose"><i class="far fa-envelope mr-1"></i> {{ $t('spa.direct.compose') }}</button>
                     <hr>
                     <div class="d-flex d-md-block">
                         <button
@@ -60,7 +60,7 @@
                             :class="[ index === tabIndex ? 'btn-primary' : 'btn-light' ]"
                             @click="toggleTab(index)"
                             >
-                                {{ $t('directMessages.' + tab) }}
+                                {{ $t(`directMessages.${tab}`) }}
                         </button>
                     </div>
                 </div>
@@ -82,25 +82,25 @@
         >
             <div class="card shadow-none mt-4">
                 <div class="card-body d-flex align-items-center justify-content-between flex-column" style="min-height: 50vh;">
-                    <h3 class="font-weight-bold">New Direct Message</h3>
+                    <h3 class="font-weight-bold">{{ $t('spa.direct.newMessage') }}</h3>
                     <div>
-                        <p class="mb-0 font-weight-bold">Select Recipient</p>
+                        <p class="mb-0 font-weight-bold">{{ $t('spa.direct.selectRecipient') }}</p>
                         <autocomplete
                             :search="composeSearch"
                             :disabled="composeLoading"
                             placeholder="@dansup"
-                            aria-label="Search usernames"
+                            :aria-label="$t('spa.direct.searchUsernames')"
                             :get-result-value="getTagResultValue"
                             @submit="onTagSubmitLocation"
                             :debounce-time="500"
                             ref="autocomplete"
                         >
                         </autocomplete>
-                        <p class="small text-muted">Search by username, or webfinger (@dansup@pixelfed.social)</p>
+                        <p class="small text-muted">{{ $t('spa.direct.searchHelp', { example: '@dansup@pixelfed.social' }) }}</p>
                         <div style="width:300px;"></div>
                     </div>
                     <div>
-                        <button class="btn btn-outline-dark rounded-pill font-weight-bold px-5 py-1" @click="closeCompose">Cancel</button>
+                        <button class="btn btn-outline-dark rounded-pill font-weight-bold px-5 py-1" @click="closeCompose">{{ $t('common.cancel') }}</button>
                     </div>
                 </div>
             </div>
@@ -235,14 +235,14 @@
                 if(status.pf_type == 'photo') {
                     let sender = this.profile.id == status.account.id;
                     let icon = '<div class="' + (sender ? 'text-muted' : 'text-primary') + ' border px-2 py-1 mt-1 rounded" style="font-size:11px;width: fit-content"><i class="far fa-image mr-1"></i> <span>';
-                    icon += sender ? 'Sent a photo' : 'Received a photo';
+                    icon += sender ? this.$t('spa.direct.sentPhoto') : this.$t('spa.direct.receivedPhoto');
                     return icon + '</span></div>';
                 }
 
                 if(status.pf_type == 'video') {
                     let sender = this.profile.id == status.account.id;
                     let icon = '<div class="' + (sender ? 'text-muted' : 'text-primary') + ' border px-2 py-1 mt-1 rounded" style="font-size:11px;width: fit-content"><i class="far fa-video mr-1"></i> <span>';
-                    icon += sender ? 'Sent a video' : 'Received a video';
+                    icon += sender ? this.$t('spa.direct.sentVideo') : this.$t('spa.direct.receivedVideo');
                     return icon + '</span></div>';
                 }
 

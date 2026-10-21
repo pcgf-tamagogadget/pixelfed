@@ -53,7 +53,7 @@
                 		class="btn btn-primary btn-block font-weight-bold mt-3"
                 		@click.prevent="loadMore"
                 		:disabled="loadingMore">
-                		Load more
+                		{{ $t('groups.selfGroups.loadMore') }}
                 	</button>
                 </p>
             </div>

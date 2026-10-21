@@ -4,7 +4,7 @@
         <template #modal-header="{ close }">
             <div class="d-flex flex-grow-1 justify-content-between align-items-center">
                 <span style="width:40px;"></span>
-                <h5 class="font-weight-bold mb-0">Edit Post</h5>
+                <h5 class="font-weight-bold mb-0">{{ $t('spa.postEditModal.title') }}</h5>
                 <b-button size="sm" variant="link" @click="close()">
                     <i class="far fa-times text-dark fa-lg"></i>
                 </b-button>
@@ -15,7 +15,7 @@
             <b-card-body style="min-height:300px" class="d-flex align-items-center justify-content-center">
                 <div class="d-flex justify-content-center align-items-center flex-column" style="gap: 0.4rem;">
                     <b-spinner variant="primary" />
-                    <p class="small mb-0 font-weight-lighter">Loading Post...</p>
+                    <p class="small mb-0 font-weight-lighter">{{ $t('spa.postEditModal.loadingPost') }}</p>
                 </div>
             </b-card-body>
         </b-card>
@@ -23,22 +23,22 @@
         <b-card v-else-if="!isLoading && isOpen && status && status.id" no-body flush class="shadow-none p-0">
             <b-card-header header-tag="nav">
                 <b-nav tabs fill card-header>
-                    <b-nav-item :active="tabIndex === 0" @click="toggleTab(0)">Caption</b-nav-item>
-                    <b-nav-item :active="tabIndex === 1" @click="toggleTab(1)">Media</b-nav-item>
+                    <b-nav-item :active="tabIndex === 0" @click="toggleTab(0)">{{ $t('spa.postEditModal.caption') }}</b-nav-item>
+                    <b-nav-item :active="tabIndex === 1" @click="toggleTab(1)">{{ $t('spa.postEditModal.media') }}</b-nav-item>
                     <!-- <b-nav-item :active="tabIndex === 2" @click="toggleTab(2)">Audience</b-nav-item> -->
-                    <b-nav-item :active="tabIndex === 4" @click="toggleTab(3)">Other</b-nav-item>
+                    <b-nav-item :active="tabIndex === 4" @click="toggleTab(3)">{{ $t('common.other') }}</b-nav-item>
                 </b-nav>
             </b-card-header>
             <b-card-body style="min-height:300px">
                 <template v-if="tabIndex === 0">
-                    <p class="font-weight-bold small">Caption</p>
+                    <p class="font-weight-bold small">{{ $t('spa.postEditModal.caption') }}</p>
                     <div class="media mb-0">
                         <div class="media-body">
                             <div class="form-group">
-                                <label class="font-weight-bold text-muted small d-none">Caption</label>
+                                <label class="font-weight-bold text-muted small d-none">{{ $t('spa.postEditModal.caption') }}</label>
                                 <vue-tribute :options="tributeSettings">
                                     <textarea class="form-control border-0 rounded-0 no-focus" rows="4"
-                                        placeholder="Write a caption..." v-model="fields.caption"
+                                        :placeholder="$t('spa.postEditModal.captionPlaceholder')" v-model="fields.caption"
                                         :maxlength="config.uploader.max_caption_length"
                                         v-on:keyup="composeTextLength = fields.caption.length"></textarea>
                                 </vue-tribute>
@@ -50,17 +50,17 @@
 
                     <hr />
 
-                    <p class="font-weight-bold small">Sensitive/NSFW</p>
+                    <p class="font-weight-bold small">{{ $t('spa.postEditModal.sensitiveNsfw') }}</p>
                     <div class="border py-2 px-3 bg-light rounded">
                         <b-form-checkbox v-model="fields.sensitive" name="check-button" switch style="font-weight:300">
-                            <span class="ml-1 small">Contains spoilers, sensitive or nsfw content</span>
+                            <span class="ml-1 small">{{ $t('spa.postEditModal.sensitiveLabel') }}</span>
                         </b-form-checkbox>
                     </div>
                     <transition name="slide-fade">
                         <div v-if="fields.sensitive" class="form-group mt-3">
-                            <label class="font-weight-bold small">Content Warning</label>
+                            <label class="font-weight-bold small">{{ $t('spa.postEditModal.contentWarning') }}</label>
                             <textarea class="form-control" rows="2"
-                                placeholder="Add an optional spoiler/content warning..." :maxlength="140"
+                                :placeholder="$t('spa.postEditModal.contentWarningPlaceholder')" :maxlength="140"
                                 v-model="fields.spoiler_text"></textarea>
                             <p class="help-text small text-right text-muted mb-0">{{ fields.spoiler_text ?
                                 fields.spoiler_text.length : 0}}/140</p>
@@ -84,8 +84,7 @@
                                 <button class="btn btn-sm font-weight-bold rounded-pill px-4" style="font-size: 13px"
                                     :class="[media.description && media.description.length ? 'btn-success' : 'btn-outline-muted']"
                                     @click.prevent="handleAddAltText(idx)">
-                                    {{ media.description && media.description.length ? 'Edit Alt Text' : 'Add Alt Text'
-                                    }}
+                                    {{ media.description && media.description.length ? $t('spa.postEditModal.editAltText') : $t('spa.postEditModal.addAltText') }}
                                 </button>
 
                                 <div v-if="fields.media && fields.media.length > 1" class="btn-group">
@@ -110,13 +109,13 @@
                             <transition name="slide-fade">
                                 <template v-if="altTextEditIndex === idx">
                                     <div class="form-group mt-1">
-                                        <label class="font-weight-bold small">Alt Text</label>
+                                        <label class="font-weight-bold small">{{ $t('spa.postEditModal.altText') }}</label>
                                         <b-form-textarea v-model="media.description"
-                                            placeholder="Describe your image for the visually impaired..." rows="3"
+                                            :placeholder="$t('spa.postEditModal.altTextPlaceholder')" rows="3"
                                             max-rows="6" @input="handleAltTextUpdate(idx)"></b-form-textarea>
                                         <div class="d-flex justify-content-between">
                                             <a class="font-weight-bold small text-muted" href="#"
-                                                @click.prevent="altTextEditIndex = undefined">Close</a>
+                                                @click.prevent="altTextEditIndex = undefined">{{ $t('common.close') }}</a>
                                             <p class="help-text small mb-0">
                                                 {{ fields.media[idx].description ? fields.media[idx].description.length
                                                 : 0 }}/{{ config.uploader.max_altext_length }}
@@ -160,9 +159,9 @@
 				</template> -->
 
                 <template v-else-if="tabIndex === 3">
-                    <p class="font-weight-bold small">Location</p>
-                    <autocomplete :search="locationSearch" placeholder="Search locations ..."
-                        aria-label="Search locations ..." :get-result-value="getResultValue" @submit="onSubmitLocation">
+                    <p class="font-weight-bold small">{{ $t('spa.postEditModal.location') }}</p>
+                    <autocomplete :search="locationSearch" :placeholder="$t('spa.postEditModal.searchLocations')"
+                        :aria-label="$t('spa.postEditModal.searchLocations')" :get-result-value="getResultValue" @submit="onSubmitLocation">
                     </autocomplete>
 
                     <div v-if="fields.location && fields.location.hasOwnProperty('id')"
@@ -180,7 +179,7 @@
 
         <template #modal-footer="{ ok, cancel, hide }">
             <b-button class="rounded-pill px-3 font-weight-bold" variant="outline-muted" @click="cancel()">
-                Cancel
+                {{ $t('common.cancel') }}
             </b-button>
 
             <b-button class="rounded-pill font-weight-bold" variant="primary" style="min-width: 195px"
@@ -189,7 +188,7 @@
                     <b-spinner small />
                 </template>
                 <template v-else>
-                    Save Updates
+                    {{ $t('spa.postEditModal.saveUpdates') }}
                 </template>
             </b-button>
         </template>
@@ -430,12 +429,12 @@ export default {
 
         removeMedia(idx) {
             swal({
-                title: 'Confirm',
-                text: 'Are you sure you want to remove this media from your post?',
+                title: this.$t('spa.postEditModal.confirm'),
+                text: this.$t('spa.postEditModal.removeMediaConfirm'),
                 buttons: {
-                    cancel: "Cancel",
+                    cancel: this.$t('common.cancel'),
                     confirm: {
-                        text: "Confirm Removal",
+                        text: this.$t('spa.postEditModal.confirmRemoval'),
                         value: "remove",
                         className: "swal-button--danger"
                     }
@@ -467,18 +466,18 @@ export default {
                     this.isOpen = false;
                     this.$emit('update', res.data);
                     swal({
-                        title: 'Post Updated',
-                        text: 'You have successfully updated this post!',
+                        title: this.$t('spa.postEditModal.postUpdated'),
+                        text: this.$t('spa.postEditModal.postUpdatedText'),
                         icon: 'success',
                         buttons: {
                             close: {
-                                text: "Close",
+                                text: this.$t('common.close'),
                                 value: "close",
                                 close: true,
                                 className: "swal-button--cancel"
                             },
                             view: {
-                                text: "View Post",
+                                text: this.$t('menu.viewPost'),
                                 value: "view",
                                 className: "btn-primary"
                             }
@@ -497,9 +496,9 @@ export default {
                 .catch(err => {
                     this.isSubmitting = false;
                     if (err.response.data.hasOwnProperty('error')) {
-                        swal('Error', err.response.data.error, 'error');
+                        swal(this.$t('common.error'), err.response.data.error, 'error');
                     } else {
-                        swal('Error', 'An error occured, please try again later', 'error');
+                        swal(this.$t('common.error'), this.$t('spa.postEditModal.errorOccurred'), 'error');
                     }
                     console.log(err);
                 })

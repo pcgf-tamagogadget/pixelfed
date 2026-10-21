@@ -4,14 +4,14 @@
 		<div class="card notification-card shadow-none border">
 			<div v-if="loading" class="card-body loader text-center" style="height: 240px;">
 				<div class="spinner-border" role="status">
-					<span class="sr-only">Loading...</span>
+					<span class="sr-only">{{ $t('common.loading') }}</span>
 				</div>
 			</div>
 			<div v-if="!loading && notifications.length > 0" class="card-body px-0 py-0 contents" style="height: 240px; overflow-y: scroll;">
 				<div v-if="profile.locked" class="media align-items-center mt-n2 px-3 py-2 border-bottom border-lighter bg-light cursor-pointer" @click="redirect('/account/follow-requests')">
 					<div class="media-body font-weight-light pt-2 small d-flex align-items-center justify-content-between">
 						<p class="mb-0 text-lighter"><i class="fas fa-cog text-light"></i></p>
-						<p class="text-center pt-1 mb-1 text-dark font-weight-bold"><strong>{{ followRequests && followRequests.hasOwnProperty('count') ? followRequests.count : 0 }}</strong> Follow Requests</p>
+						<p class="text-center pt-1 mb-1 text-dark font-weight-bold"><strong>{{ followRequests && followRequests.hasOwnProperty('count') ? followRequests.count : 0 }}</strong> {{ $t('notifications.followRequest') }}</p>
 						<p class="mb-0 text-lighter"><i class="fas fa-chevron-right"></i></p>
 					</div>
 				</div>
@@ -20,108 +20,150 @@
 					<div class="media-body font-weight-light small">
 						<div v-if="n.type == 'favourite'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> liked your
+								<i18n path="classic.notificationCard.liked" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link>
 								<span v-if="n.status && n.status.hasOwnProperty('media_attachments')">
-									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)" :id="'fvn-' + n.id">post</a>.
+									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)" :id="'fvn-' + n.id">{{ $t('classic.notificationCard.wordPost') }}</a>
 									<b-popover :target="'fvn-' + n.id" title="" triggers="hover" placement="top" boundary="window">
 										<img :src="notificationPreview(n)" width="100px" height="100px" style="object-fit: cover;">
 									</b-popover>
 								</span>
 								<span v-else>
-									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">post</a>.
+									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">{{ $t('classic.notificationCard.wordPost') }}</a>
 								</span>
+									</template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'comment'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your
+								<i18n path="classic.notificationCard.commented" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link>
 								<span v-if="n.status && n.status.hasOwnProperty('media_attachments')">
-									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)" :id="'fvn-' + n.id">post</a>.
+									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)" :id="'fvn-' + n.id">{{ $t('classic.notificationCard.wordPost') }}</a>
 									<b-popover :target="'fvn-' + n.id" title="" triggers="hover" placement="top" boundary="window">
 										<img :src="notificationPreview(n)" width="100px" height="100px" style="object-fit: cover;">
 									</b-popover>
 								</span>
 								<span v-else>
-									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">post</a>.
+									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">{{ $t('classic.notificationCard.wordPost') }}</a>
 								</span>
+									</template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'group:comment'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your <a class="font-weight-bold" v-bind:href="n.group_post_url">group post</a>.
+								<i18n path="classic.notificationCard.commentedGroupPost" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="n.group_post_url">{{ $t('classic.notificationCard.wordGroupPost') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'story:react'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> reacted to your <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">story</a>.
+								<i18n path="classic.notificationCard.reactedStory" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.notificationCard.wordStory') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'story:comment'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">story</a>.
+								<i18n path="classic.notificationCard.commentedStory" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.notificationCard.wordStory') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'mention'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> <a class="font-weight-bold" v-bind:href="mentionUrl(n.status)">mentioned</a> you.
+								<i18n path="classic.notificationCard.mentioned" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="mentionUrl(n.status)">{{ $t('classic.notificationCard.wordMentioned') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'follow'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> followed you.
+								<i18n path="classic.notificationCard.followed" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'share'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> shared your
+								<i18n path="classic.notificationCard.shared" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link>
 								<span v-if="n.status && n.status.hasOwnProperty('media_attachments')">
-									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)" :id="'fvn-' + n.id">post</a>.
+									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)" :id="'fvn-' + n.id">{{ $t('classic.notificationCard.wordPost') }}</a>
 									<b-popover :target="'fvn-' + n.id" title="" triggers="hover" placement="top" boundary="window">
 										<img :src="notificationPreview(n)" width="100px" height="100px" style="object-fit: cover;">
 									</b-popover>
 								</span>
 								<span v-else>
-									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">post</a>.
+									<a class="font-weight-bold" v-bind:href="getPostUrl(n.status)">{{ $t('classic.notificationCard.wordPost') }}</a>
 								</span>
+									</template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'modlog'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{truncate(n.account.username)}}</a> updated a <a class="font-weight-bold" v-bind:href="n.modlog.url">modlog</a>.
+								<i18n path="classic.notificationCard.updatedModlog" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="n.modlog.url">{{ $t('classic.notificationCard.wordModlog') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'tagged'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> tagged you in a <a class="font-weight-bold" v-bind:href="n.tagged.post_url">post</a>.
+								<i18n path="classic.notificationCard.tagged" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="n.tagged.post_url">{{ $t('classic.notificationCard.wordPost') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 						<div v-else-if="n.type == 'direct'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> sent a <a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">dm</a>.
+								<i18n path="classic.notificationCard.sentDm" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:link><a class="font-weight-bold" v-bind:href="'/account/direct/t/'+n.account.id">{{ $t('classic.notificationCard.wordDm') }}</a></template>
+								</i18n>
 							</p>
 						</div>
 
 						<div v-else-if="n.type == 'group.join.approved'">
 							<p class="my-0">
-								Your application to join the <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> group was approved!
+								<i18n path="classic.notificationCard.groupApproved" tag="span">
+									<template v-slot:group><a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a></template>
+								</i18n>
 							</p>
 						</div>
 
 						<div v-else-if="n.type == 'group.join.rejected'">
 							<p class="my-0">
-								Your application to join <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> was rejected.
+								<i18n path="classic.notificationCard.groupRejected" tag="span">
+									<template v-slot:group><a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a></template>
+								</i18n>
 							</p>
 						</div>
 
 						<div v-else-if="n.type == 'group:invite'">
 							<p class="my-0">
-								<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> invited you to join <a :href="n.group.url + '/invite/claim'" class="font-weight-bold text-dark word-break" :title="n.group.name">{{n.group.name}}</a>.
+								<i18n path="classic.notificationCard.groupInvite" tag="span">
+									<template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template>
+									<template v-slot:group><a :href="n.group.url + '/invite/claim'" class="font-weight-bold text-dark word-break" :title="n.group.name">{{n.group.name}}</a></template>
+								</i18n>
 							</p>
 						</div>
 
 						<div v-else>
 							<p class="my-0">
-								We cannot display this notification at this time.
+								{{ $t('notifications.cannotDisplay') }}
 							</p>
 						</div>
 					</div>
@@ -135,14 +177,14 @@
 				</div>
 				<div v-if="notifications.length == 0" class="text-lighter text-center py-3">
 					<p class="mb-0"><i class="fas fa-inbox fa-3x"></i></p>
-					<p class="mb-0 small font-weight-bold">0 Notifications!</p>
+					<p class="mb-0 small font-weight-bold">{{ $t('classic.notificationCard.zeroNotifications') }}</p>
 				</div>
 			</div>
 			<div v-if="!loading && !notifications.length" class="card-body px-0 py-0" style="height: 240px;">
 				<div class="text-lighter text-center py-3">
 					<p class="mb-0"><i class="fas fa-inbox fa-3x"></i></p>
-					<p class="mb-0 small font-weight-bold">No notifications yet</p>
-					<p v-if="showRefresh && !attemptedRefresh" class="mt-2 small font-weight-bold text-primary cursor-pointer" @click="refreshNotifications"><i class="fas fa-redo"></i> Refresh</p>
+					<p class="mb-0 small font-weight-bold">{{ $t('classic.notificationCard.noneYet') }}</p>
+					<p v-if="showRefresh && !attemptedRefresh" class="mt-2 small font-weight-bold text-primary cursor-pointer" @click="refreshNotifications"><i class="fas fa-redo"></i> {{ $t('classic.notificationCard.refresh') }}</p>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
         <div class="col-12 col-md-5">
             <div class="card shadow-none border" style="border-radius: 20px;">
                 <div v-if="!loaded" class="card-body d-flex justify-content-center flex-column" style="min-height: 662px;">
-                    <p class="lead text-center font-weight-bold mb-0">Sign-in with Mastodon</p>
+                    <p class="lead text-center font-weight-bold mb-0">{{ $t('spa.remoteAuthStart.title') }}</p>
                     <div class="w-100">
                         <hr>
                     </div>
@@ -14,9 +14,9 @@
                 </div>
 
                 <div v-else class="card-body" style="min-height: 662px;">
-                    <p class="lead text-center font-weight-bold">Sign-in with Mastodon</p>
+                    <p class="lead text-center font-weight-bold">{{ $t('spa.remoteAuthStart.title') }}</p>
                     <hr>
-                    <p class="small text-center mb-3">Select your Mastodon server:</p>
+                    <p class="small text-center mb-3">{{ $t('spa.remoteAuthStart.selectServer') }}</p>
                     <button
                         v-for="domain in domains"
                         type="button"
@@ -26,12 +26,12 @@
                     </button>
                     <hr v-if="!config.default_only && !config.custom_only">
                     <p v-if="!config.default_only && !config.custom_only" class="text-center">
-                        <button type="button" class="other-server-btn" @click="handleOther()">Sign-in with a different server</button>
+                        <button type="button" class="other-server-btn" @click="handleOther()">{{ $t('spa.remoteAuthStart.differentServer') }}</button>
                     </p>
                     <div class="w-100">
                         <hr>
                         <p class="text-center mb-0">
-                            <a class="font-weight-bold" href="/login">Go back to login</a>
+                            <a class="font-weight-bold" href="/login">{{ $t('spa.remoteAuthStart.backToLogin') }}</a>
                         </p>
                     </div>
                 </div>
@@ -81,12 +81,12 @@
                     }
 
                     if(res.data.hasOwnProperty('action') && res.data.action === 'incompatible_domain') {
-                        swal('Oops!', 'This server is not compatible, please choose another or try again later!', 'error');
+                        swal(this.$t('common.oops'), this.$t('spa.remoteAuthStart.incompatible'), 'error');
                         return;
                     }
 
                     if(res.data.hasOwnProperty('action') && res.data.action === 'blocked_domain') {
-                        swal('Server Blocked', 'This server is blocked by admins and cannot be used, please try another server!', 'error');
+                        swal(this.$t('spa.remoteAuthStart.serverBlocked'), this.$t('spa.remoteAuthStart.serverBlockedText'), 'error');
                         return;
                     }
 
@@ -98,21 +98,21 @@
 
             handleOther() {
                 swal({
-                  text: 'Enter your mastodon domain (without https://)',
+                  text: this.$t('spa.remoteAuthStart.enterDomain'),
                   content: "input",
                   button: {
-                    text: "Next",
+                    text: this.$t('common.next'),
                     closeModal: false,
                   },
                 })
                 .then(domain => {
                   if (!domain || domain.length < 2 || domain.indexOf('.') == -1) {
-                    swal('Oops!', "Please enter a valid domain!", 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.remoteAuthStart.invalidDomain'), 'error');
                     return;
                   };
 
                   if(domain.startsWith('http')) {
-                    swal('Oops!', "The domain you enter should not start with http(s://)\nUse the domain format, like mastodon.social", 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.remoteAuthStart.noHttp'), 'error');
                     return;
                   }
 

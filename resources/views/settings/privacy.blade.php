@@ -238,7 +238,7 @@
         <h3 class="font-weight-bold">
             {{ __('settings.privacy.privacy_settings') }}
         </h3>
-        <p>Control who can interact with you and how your profile appears across Pixelfed.</p>
+        <p>{{ __('settings.privacy.control_who_can_interact_with_you_etc') }}</p>
     </div>
 
     <div class="privacy-links">
@@ -263,7 +263,7 @@
         <a
             class="btn"
             href="{{ route('settings.privacy.featured-collections') }}">
-            Featured Collections
+            {{ __('settings.privacy.featured_collections') }}
         </a>
     </div>
 
@@ -277,8 +277,8 @@
         {{-- Account privacy --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Account privacy</h5>
-                <p>Control who can follow your account and see your posts.</p>
+                <h5>{{ __('settings.privacy.account_privacy') }}</h5>
+                <p>{{ __('settings.privacy.control_who_can_follow_your_account_etc') }}</p>
             </div>
 
             <div class="privacy-option">
@@ -293,14 +293,11 @@
                     <label
                         class="custom-control-label"
                         for="is_private">
-                        Manually Review Follow Requests
+                        {{ __('settings.privacy.manually_review_follow_requests') }}
                     </label>
 
                     <p class="privacy-description">
-                        When you get a follow request, Pixelfed will not automatically
-                        approve it. You can manually confirm or deny each request.
-                        Your existing followers won't be affected unless you choose
-                        otherwise.
+                        {{ __('settings.privacy.when_you_get_a_follow_request_etc') }}
                     </p>
                 </div>
             </div>
@@ -309,8 +306,8 @@
         {{-- Discoverability --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Discoverability</h5>
-                <p>Choose where your profile and posts can be discovered.</p>
+                <h5>{{ __('settings.privacy.discoverability') }}</h5>
+                <p>{{ __('settings.privacy.choose_where_your_profile_and_posts_can_be_discovered') }}</p>
             </div>
 
             <div class="privacy-option {{ $settings->is_private ? 'privacy-option-disabled' : '' }}">
@@ -401,8 +398,8 @@
         {{-- Messages --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Messages</h5>
-                <p>Control who is allowed to contact you.</p>
+                <h5>{{ __('settings.privacy.messages') }}</h5>
+                <p>{{ __('settings.privacy.control_who_is_allowed_to_contact_you') }}</p>
             </div>
 
             <div class="privacy-option">
@@ -430,8 +427,8 @@
         {{-- Profile --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Profile</h5>
-                <p>Choose what information is displayed publicly on your profile.</p>
+                <h5>{{ __('settings.privacy.profile') }}</h5>
+                <p>{{ __('settings.privacy.choose_what_information_is_displayed_publicly_etc') }}</p>
             </div>
 
             <div class="privacy-option">
@@ -480,8 +477,8 @@
         {{-- Sharing --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Sharing</h5>
-                <p>Manage how your profile and posts can be shared outside Pixelfed.</p>
+                <h5>{{ __('settings.privacy.sharing') }}</h5>
+                <p>{{ __('settings.privacy.manage_how_your_profile_and_posts_can_be_shared_etc') }}</p>
             </div>
 
             <div class="privacy-option">
@@ -543,19 +540,17 @@
         {{-- Featured collections --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Featured Collections</h5>
-                <p>Control whether other people can recommend your account in collections.</p>
+                <h5>{{ __('settings.privacy.featured_collections') }}</h5>
+                <p>{{ __('settings.privacy.control_whether_other_people_can_recommend_etc') }}</p>
             </div>
 
             <div class="privacy-select">
                 <label for="can_feature">
-                    Who can feature you
+                    {{ __('settings.privacy.who_can_feature_you') }}
                 </label>
 
                 <p class="privacy-description mb-0">
-                    People on other servers can add you to featured collections,
-                    sometimes called starter packs, that help new users find accounts
-                    to follow.
+                    {{ __('settings.privacy.people_on_other_servers_can_add_you_etc') }}
                 </p>
 
                 <select
@@ -566,29 +561,24 @@
                     <option
                         value="everyone"
                         {{ ($settings->can_feature ?? 'everyone') === 'everyone' ? 'selected' : '' }}>
-                        Everyone
+                        {{ __('settings.privacy.everyone') }}
                     </option>
 
                     <option
                         value="followers"
                         {{ ($settings->can_feature ?? 'everyone') === 'followers' ? 'selected' : '' }}>
-                        People who follow you
+                        {{ __('settings.privacy.people_who_follow_you') }}
                     </option>
 
                     <option
                         value="nobody"
                         {{ ($settings->can_feature ?? 'everyone') === 'nobody' ? 'selected' : '' }}>
-                        Nobody
+                        {{ __('settings.privacy.nobody') }}
                     </option>
                 </select>
 
                 <p class="privacy-description mt-2 mb-0">
-                    You can remove yourself from a collection at any time from
-                    <a
-                        href="{{ route('settings.privacy.featured-collections') }}"
-                        class="font-weight-bold">
-                        Featured Collections
-                    </a>.
+                    {!! __('settings.privacy.you_can_remove_yourself_from_a_collection_etc', ['url' => e(route('settings.privacy.featured-collections'))]) !!}
                 </p>
             </div>
         </div>
@@ -596,19 +586,17 @@
         {{-- Quote posts --}}
         <div class="privacy-section">
             <div class="privacy-section-header">
-                <h5>Quote Posts</h5>
-                <p>Control whether people on other servers can quote your posts.</p>
+                <h5>{{ __('settings.privacy.quote_posts') }}</h5>
+                <p>{{ __('settings.privacy.control_whether_people_on_other_servers_can_quote_etc') }}</p>
             </div>
 
             <div class="privacy-select">
                 <label for="can_quote">
-                    Who can quote your posts
+                    {{ __('settings.privacy.who_can_quote_your_posts') }}
                 </label>
 
                 <p class="privacy-description mb-0">
-                    This is the default for your public and unlisted posts. Apps can
-                    set a different choice on individual posts. Followers-only posts
-                    can never be quoted by anyone else.
+                    {{ __('settings.privacy.this_is_the_default_for_your_public_and_unlisted_posts_etc') }}
                 </p>
 
                 <select
@@ -619,29 +607,24 @@
                     <option
                         value="everyone"
                         {{ ($settings->can_quote ?? 'everyone') === 'everyone' ? 'selected' : '' }}>
-                        Everyone
+                        {{ __('settings.privacy.everyone') }}
                     </option>
 
                     <option
                         value="followers"
                         {{ ($settings->can_quote ?? 'everyone') === 'followers' ? 'selected' : '' }}>
-                        People who follow you
+                        {{ __('settings.privacy.people_who_follow_you') }}
                     </option>
 
                     <option
                         value="nobody"
                         {{ ($settings->can_quote ?? 'everyone') === 'nobody' ? 'selected' : '' }}>
-                        Nobody
+                        {{ __('settings.privacy.nobody') }}
                     </option>
                 </select>
 
                 <p class="privacy-description mt-2 mb-0">
-                    You can review quotes of your posts and revoke any of them from
-                    <a
-                        href="{{ route('settings.privacy.quotes') }}"
-                        class="font-weight-bold">
-                        Quotes of your posts
-                    </a>.
+                    {!! __('settings.privacy.you_can_review_quotes_of_your_posts_etc', ['url' => e(route('settings.privacy.quotes'))]) !!}
                 </p>
             </div>
         </div>
@@ -682,7 +665,7 @@
                     type="button"
                     class="close"
                     data-dismiss="modal"
-                    aria-label="Close">
+                    aria-label="{{ __('settings.privacy.close') }}">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -743,7 +726,7 @@
 
                             <select
                                 name="pfDuration"
-                                aria-label="Follower duration">
+                                aria-label="{{ __('settings.privacy.follower_duration') }}">
                                 <option value="60">
                                     1 {{ __('settings.privacy.hour') }}
                                 </option>
@@ -839,7 +822,7 @@
 
             button
                 .prop('disabled', true)
-                .text('{{ __('settings.save') }}...');
+                .text(@json(__('settings.save') . '...'));
 
             axios.post("{{ route('settings.privacy.account') }}", {
                 mode: mode,
@@ -865,11 +848,11 @@
 
                 button
                     .prop('disabled', false)
-                    .text('{{ __('settings.save') }}');
+                    .text(@json(__('settings.save')));
 
                 swal(
-                    '{{ __('settings.error') }}',
-                    '{{ __('settings.privacy.an_error_occured_please_try_again') }}',
+                    @json(__('settings.error')),
+                    @json(__('settings.privacy.an_error_occured_please_try_again')),
                     'error'
                 );
             });

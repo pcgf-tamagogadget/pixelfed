@@ -18,7 +18,7 @@
 
     <div class="form-group">
         <label for="email" class="font-weight-bold">{{__('settings.email.email_address')}}</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" value="{{Auth::user()->email}}">
+        <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('settings.email.email_address') }}" value="{{Auth::user()->email}}">
         <p class="help-text small text-muted font-weight-bold">
             @if(Auth::user()->email_verified_at)
             <span class="text-success">{{__('settings.email.verified')}}</span> {{Auth::user()->email_verified_at->diffForHumans()}}

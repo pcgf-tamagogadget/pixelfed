@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="text-muted small">{{ formatAction(filter.filter_action) }} on {{ formatContexts() }}</div>
+                    <div class="text-muted small">{{ $t('compose.filters.actionOn', { action: formatAction(filter.filter_action), contexts: formatContexts() }) }}</div>
                 </div>
             </div>
 
@@ -66,12 +66,12 @@
         methods: {
             formatContext(context) {
                 const contexts = {
-                    'home': 'Home feed',
-                    'notifications': 'Notifications',
-                    'public': 'Public feeds',
-                    'thread': 'Conversations',
-                    'tags': 'Hashtags',
-                    'groups': 'Groups'
+                    'home': this.$t('compose.filters.homeFeed'),
+                    'notifications': this.$t('compose.filters.notifications'),
+                    'public': this.$t('compose.filters.publicFeeds'),
+                    'thread': this.$t('compose.filters.conversations'),
+                    'tags': this.$t('compose.filters.hashtags'),
+                    'groups': this.$t('compose.filters.groups')
                 };
                 return contexts[context] || context;
             },
@@ -94,29 +94,29 @@
                     .filter(c => c !== 'home' && c !== 'public')
                     .map(c => this.formatContext(c));
 
-                    return ['Feeds', ...otherContexts].join(', ');
+                    return [this.$t('compose.filters.feeds'), ...otherContexts].join(', ');
                 } else {
                     return this.filter.context.map(c => this.formatContext(c)).join(', ');
                 }
             },
             formatAction(action) {
                 const actions = {
-                    'warn': 'Warning',
-                    'hide': 'Hidden',
-                    'block': 'Blocked'
+                    'warn': this.$t('compose.filters.warning'),
+                    'hide': this.$t('compose.filters.hidden'),
+                    'block': this.$t('compose.filters.blocked')
                 };
                 return actions[action] || action.charAt(0).toUpperCase() + action.slice(1);
             },
             renderActionDescription() {
                 console.log(this.filter)
                 if(this.filter.filter_action === 'warn') {
-                    return `<div><i class="fas fa-exclamation-triangle text-warning mr-1"></i> <span class="font-weight-light text-muted">Warn</span></div>`
+                    return `<div><i class="fas fa-exclamation-triangle text-warning mr-1"></i> <span class="font-weight-light text-muted">${this.$t('compose.filters.warn')}</span></div>`
                 }
                 else if(this.filter.filter_action === 'blur') {
-                    return `<div><i class="fas fa-tint mr-1 text-info"></i> <span class="font-weight-light text-muted">Blur</span></div>`
+                    return `<div><i class="fas fa-tint mr-1 text-info"></i> <span class="font-weight-light text-muted">${this.$t('compose.filters.blur')}</span></div>`
                 }
                 else if(this.filter.filter_action === 'hide') {
-                    return `<div><i class="fas fa-eye-slash mr-1 text-danger"></i> <span class="font-weight-light text-muted">Hide</span></div>`
+                    return `<div><i class="fas fa-eye-slash mr-1 text-danger"></i> <span class="font-weight-light text-muted">${this.$t('compose.filters.hide')}</span></div>`
                 }
             }
         }

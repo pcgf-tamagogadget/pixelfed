@@ -5,13 +5,13 @@
                 <div class="header-body">
                     <div class="row align-items-center py-4">
                         <div class="col-lg-6 col-7">
-                            <p class="display-1 text-white d-inline-block mb-0">Directory</p>
-                            <p class="h3 text-white font-weight-light">Manage your server listing on pixelfed.org</p>
+                            <p class="display-1 text-white d-inline-block mb-0">{{ $t('admin.directory.title') }}</p>
+                            <p class="h3 text-white font-weight-light">{{ $t('admin.directory.subtitle') }}</p>
                         </div>
 
                         <div class="col-lg-6 col-5">
                             <p class="text-right">
-                                <button class="btn btn-outline-white btn-lg px-5 py-2" @click="save">Save changes</button>
+                                <button class="btn btn-outline-white btn-lg px-5 py-2" @click="save">{{ $t('admin.directory.saveChanges') }}</button>
                             </p>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                             <div v-for="tab in tabs" class="nav-item">
                                 <a class="nav-link mb-sm-3" :class="{ active: tabIndex === tab.id }" href="#" @click.prevent="toggleTab(tab.id)">
                                     <i :class="tab.icon"></i>
-                                    <span class="ml-2">{{ tab.title }}</span>
+                                    <span class="ml-2">{{ $t(tab.title) }}</span>
                                 </a>
                             </div>
                         </div>
@@ -45,14 +45,14 @@
                                             <p>
                                                 <i class="far fa-exclamation-triangle fa-5x text-lighter"></i>
                                             </p>
-                                            <p class="display-3 mb-1">Awaiting Submission</p>
-                                            <p v-if="!state.is_eligible && !state.submission_exists" class="lead mt-0 text-muted">Your directory listing isn't completed yet</p>
+                                            <p class="display-3 mb-1">{{ $t('admin.directory.awaitingSubmission') }}</p>
+                                            <p v-if="!state.is_eligible && !state.submission_exists" class="lead mt-0 text-muted">{{ $t('admin.directory.listingNotCompleted') }}</p>
                                             <div v-else-if="state.is_eligible && !state.submission_exists" class="mb-4">
-                                                <p class="lead mt-0 text-muted">Your directory listing is ready for submission!</p>
+                                                <p class="lead mt-0 text-muted">{{ $t('admin.directory.listingReady') }}</p>
                                                 <button
                                                     class="btn btn-primary btn-lg font-weight-bold px-5 text-uppercase"
                                                     @click="handleSubmit">
-                                                    Submit my Server to pixelfed.org
+                                                    {{ $t('admin.directory.submitServer') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -60,32 +60,34 @@
 
                                     <div v-else-if="!isSubmitting && state.awaiting_approval && !state.is_active">
                                         <div class="card card-body shadow-none border d-flex align-items-center justify-content-center py-5">
-                                            <p class="display-3 mb-1">Awaiting Approval</p>
-                                            <p class="text-primary mb-1">Awaiting submission approval from pixelfed.org, please check back later!</p>
-                                            <p class="small text-muted mb-0">If you are still waiting for approval after 24 hours please contact the Pixelfed team.</p>
+                                            <p class="display-3 mb-1">{{ $t('admin.directory.awaitingApproval') }}</p>
+                                            <p class="text-primary mb-1">{{ $t('admin.directory.awaitingApprovalBody') }}</p>
+                                            <p class="small text-muted mb-0">{{ $t('admin.directory.contactIfWaiting') }}</p>
                                         </div>
                                     </div>
 
                                     <div v-else-if="!isSubmitting && state.awaiting_approval && state.is_active">
                                         <div class="card card-body shadow-none border d-flex align-items-center justify-content-center py-5">
-                                            <p class="display-3 mb-1">Awaiting Update Approval</p>
-                                            <p class="text-primary mb-1">Awaiting updated submission approval from pixelfed.org, please check back later!</p>
-                                            <p class="small text-muted mb-0">If you are still waiting for approval after 24 hours please contact the Pixelfed team.</p>
+                                            <p class="display-3 mb-1">{{ $t('admin.directory.awaitingUpdateApproval') }}</p>
+                                            <p class="text-primary mb-1">{{ $t('admin.directory.awaitingUpdateApprovalBody') }}</p>
+                                            <p class="small text-muted mb-0">{{ $t('admin.directory.contactIfWaiting') }}</p>
                                         </div>
                                     </div>
 
                                     <div v-else-if="!isSubmitting && !state.awaiting_approval && state.is_active">
                                         <div class="card card-body shadow-none border d-flex align-items-center justify-content-center py-5">
-                                            <h2 class="font-weight-bold">Active Listing</h2>
+                                            <h2 class="font-weight-bold">{{ $t('admin.directory.activeListing') }}</h2>
                                             <p class="my-3">
                                                 <i class="far fa-check-circle fa-4x text-success"></i>
                                             </p>
-                                            <p class="mt-2 mb-0">Your server directory listing on <a href="#" class="font-weight-bold">pixelfed.org</a> is active</p>
+                                            <i18n path="admin.directory.listingActive" tag="p" class="mt-2 mb-0">
+                                                <template v-slot:site><a href="#" class="font-weight-bold">pixelfed.org</a></template>
+                                            </i18n>
 
                                             <button
                                                 class="btn btn-primary btn-sm mt-3 font-weight-bold px-5 text-uppercase"
                                                 @click="handleSubmit">
-                                                Update my listing on pixelfed.org
+                                                {{ $t('admin.directory.updateListing') }}
                                             </button>
                                         </div>
                                     </div>
@@ -93,14 +95,14 @@
                                     <div v-else-if="isSubmitting">
                                         <div class="card card-body shadow-none border d-flex align-items-center justify-content-center py-5">
                                             <b-spinner variant="primary" />
-                                            <p class="lead my-0 text-primary">Sending submission...</p>
+                                            <p class="lead my-0 text-primary">{{ $t('admin.directory.sendingSubmission') }}</p>
                                         </div>
                                     </div>
 
                                     <div v-else>
                                         <div class="card card-body shadow-none border d-flex align-items-center justify-content-center py-5">
-                                            <p class="display-3 mb-1">Oops! An unexpected error occured</p>
-                                            <p class="text-primary mb-1">Ask the Pixelfed team for assistance.</p>
+                                            <p class="display-3 mb-1">{{ $t('admin.directory.unexpectedError') }}</p>
+                                            <p class="text-primary mb-1">{{ $t('admin.directory.askForAssistance') }}</p>
                                         </div>
                                     </div>
 
@@ -112,7 +114,7 @@
                                                         <template v-if="requirements.curated_onboarding === true">
                                                             <i class="far fa-exclamation-circle text-success"></i>
                                                             <span class="ml-2 font-weight-bold">
-                                                                Curated account registration
+                                                                {{ $t('admin.directory.req.curatedRegistration') }}
                                                             </span>
                                                         </template>
                                                         <template v-else>
@@ -120,7 +122,7 @@
                                                                 class="far"
                                                                 :class="[ requirements.open_registration ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                             <span class="ml-2 font-weight-bold">
-                                                                {{ requirements.open_registration ? 'Open' : 'Closed' }} account registration
+                                                                {{ requirements.open_registration ? $t('admin.directory.req.openRegistration') : $t('admin.directory.req.closedRegistration') }}
                                                             </span>
                                                         </template>
                                                     </div>
@@ -130,7 +132,7 @@
                                                             class="far"
                                                             :class="[ requirements.oauth_enabled ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ requirements.oauth_enabled ? 'Enabled' : 'Disabled' }} mobile apis/oauth
+                                                            {{ requirements.oauth_enabled ? $t('admin.directory.req.oauthEnabled') : $t('admin.directory.req.oauthDisabled') }}
                                                         </span>
                                                     </div>
 
@@ -139,7 +141,7 @@
                                                             class="far"
                                                             :class="[ requirements.activitypub_enabled ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ requirements.activitypub_enabled ? 'Enabled' : 'Disabled' }} activitypub federation
+                                                            {{ requirements.activitypub_enabled ? $t('admin.directory.req.activitypubEnabled') : $t('admin.directory.req.activitypubDisabled') }}
                                                         </span>
                                                     </div>
 
@@ -148,7 +150,7 @@
                                                             class="far"
                                                             :class="[ form.summary && form.summary.length && form.location && form.location.length ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ form.summary && form.summary.length && form.location && form.location.length ? 'Configured' : 'Missing' }} server details
+                                                            {{ form.summary && form.summary.length && form.location && form.location.length ? $t('admin.directory.req.serverDetailsConfigured') : $t('admin.directory.req.serverDetailsMissing') }}
                                                         </span>
                                                     </div>
 
@@ -157,7 +159,7 @@
                                                             class="far"
                                                             :class="[ requirements_validator && requirements_validator.length == 0 ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ requirements_validator && requirements_validator.length == 0 ? 'Valid' : 'Invalid' }} feature requirements
+                                                            {{ requirements_validator && requirements_validator.length == 0 ? $t('admin.directory.req.featuresValid') : $t('admin.directory.req.featuresInvalid') }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -173,7 +175,7 @@
                                                             class="far"
                                                             :class="[ form.contact_account ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ form.contact_account ? 'Configured' : 'Missing' }} admin account
+                                                            {{ form.contact_account ? $t('admin.directory.req.adminConfigured') : $t('admin.directory.req.adminMissing') }}
                                                         </span>
                                                     </div>
 
@@ -182,7 +184,7 @@
                                                             class="far"
                                                             :class="[ form.contact_email ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ form.contact_email ? 'Configured' : 'Missing' }} contact email
+                                                            {{ form.contact_email ? $t('admin.directory.req.emailConfigured') : $t('admin.directory.req.emailMissing') }}
                                                         </span>
                                                     </div>
                                                     <div class="list-group-item">
@@ -190,7 +192,7 @@
                                                             class="far"
                                                             :class="[ selectedPosts && selectedPosts.length ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ selectedPosts && selectedPosts.length ? 'Configured' : 'Missing' }} favourite posts
+                                                            {{ selectedPosts && selectedPosts.length ? $t('admin.directory.req.postsConfigured') : $t('admin.directory.req.postsMissing') }}
                                                         </span>
                                                     </div>
 
@@ -199,7 +201,7 @@
                                                             class="far"
                                                             :class="[ form.privacy_pledge ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ form.privacy_pledge ? 'Configured' : 'Missing' }} privacy pledge
+                                                            {{ form.privacy_pledge ? $t('admin.directory.req.pledgeConfigured') : $t('admin.directory.req.pledgeMissing') }}
                                                         </span>
                                                     </div>
 
@@ -208,7 +210,7 @@
                                                             class="far"
                                                             :class="[ communityGuidelines && communityGuidelines.length ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger']"></i>
                                                         <span class="ml-2 font-weight-bold">
-                                                            {{ communityGuidelines && communityGuidelines.length ? 'Configured' : 'Missing' }} community guidelines
+                                                            {{ communityGuidelines && communityGuidelines.length ? $t('admin.directory.req.guidelinesConfigured') : $t('admin.directory.req.guidelinesMissing') }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -222,20 +224,20 @@
                                 </div>
 
                                 <div v-else-if="tabIndex === 3" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">Server Details</h2>
-                                    <p class="small text-muted">Edit your server details to better describe it</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.serverDetails') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.serverDetails.subtitle') }}</p>
                                     <hr class="mt-0">
 
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="card shadow-none border card-body">
                                                 <div class="form-group mb-0">
-                                                    <label for="form-summary" class="font-weight-bold">Summary</label>
+                                                    <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.serverDetails.summary') }}</label>
                                                     <textarea
                                                         class="form-control form-control-muted"
                                                         id="form-summary"
                                                         rows="3"
-                                                        placeholder="A descriptive summary of your instance up to 140 characters long. HTML is not allowed."
+                                                        :placeholder="$t('admin.directory.serverDetails.summaryPlaceholder')"
                                                         v-model="form.summary"></textarea>
                                                     <p class="help-text small text-muted text-right">
                                                         {{ form.summary && form.summary.length ? form.summary.length : 0 }}/140
@@ -246,12 +248,12 @@
                                         <div class="col-12 col-md-6">
                                             <div class="card shadow-none border card-body">
                                                 <div class="form-group mb-0">
-                                                    <label for="form-summary" class="font-weight-bold">Location</label>
+                                                    <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.serverDetails.location') }}</label>
                                                     <select v-model="form.location" class="form-control form-control-muted">
-                                                        <option selected disabled value="0">Select the country your server is in</option>
+                                                        <option selected disabled value="0">{{ $t('admin.directory.serverDetails.selectCountry') }}</option>
                                                         <option v-for="c in initialData.countries" :value="c">{{ c }}</option>
                                                     </select>
-                                                    <p class="form-text small text-muted">Select the country your server is hosted in, even if you are in a different country</p>
+                                                    <p class="form-text small text-muted">{{ $t('admin.directory.serverDetails.selectCountryHelp') }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -259,8 +261,8 @@
 
                                     <div class="list-group mb-4">
                                         <div class="list-group-item">
-                                            <label class="font-weight-bold mb-0">Server Banner</label>
-                                            <p class="small">Add an optional banner image to your directory listing</p>
+                                            <label class="font-weight-bold mb-0">{{ $t('admin.directory.serverDetails.banner') }}</label>
+                                            <p class="small">{{ $t('admin.directory.serverDetails.bannerHelp') }}</p>
 
                                             <div class="row">
                                                 <div class="col-12 col-md-6">
@@ -269,7 +271,7 @@
                                                             <p class="text-center mb-2">
                                                                 <i class="far fa-exclamation-circle fa-2x"></i>
                                                             </p>
-                                                            <p class="text-center mb-0">No banner image</p>
+                                                            <p class="text-center mb-0">{{ $t('admin.directory.serverDetails.noBanner') }}</p>
                                                         </div>
                                                         <div v-else>
                                                             <a :href="form.banner_image" target="_blank">
@@ -287,13 +289,16 @@
                                                             id="banner_image"
                                                             @change="uploadBannerImage"
                                                             >
-                                                        <label class="custom-file-label" for="banner_image">Choose file</label>
-                                                        <p class="form-text text-muted small mb-0">Must be 1920 by 1080 pixels</p>
-                                                        <p class="form-text text-muted small mb-0">Must be a <kbd>JPEG</kbd> or <kbd>PNG</kbd> image no larger than 5MB.</p>
+                                                        <label class="custom-file-label" for="banner_image">{{ $t('admin.directory.serverDetails.chooseFile') }}</label>
+                                                        <p class="form-text text-muted small mb-0">{{ $t('admin.directory.serverDetails.bannerSize') }}</p>
+                                                        <i18n path="admin.directory.serverDetails.bannerFormat" tag="p" class="form-text text-muted small mb-0">
+                                                            <template v-slot:jpeg><kbd>JPEG</kbd></template>
+                                                            <template v-slot:png><kbd>PNG</kbd></template>
+                                                        </i18n>
                                                         <div v-if="form.banner_image && !form.banner_image.endsWith('default.jpg')">
                                                             <button
                                                                 class="btn btn-danger font-weight-bold btn-block mt-5"
-                                                                @click="deleteBannerImage">Delete banner image</button>
+                                                                @click="deleteBannerImage">{{ $t('admin.directory.serverDetails.deleteBanner') }}</button>
                                                         </div>
                                                     </div>
                                                     <div v-else class="text-center">
@@ -308,11 +313,13 @@
                                         <div class="col-12 col-md-6">
                                             <div class="card shadow-none border card-body">
                                                 <div class="form-group mb-0">
-                                                    <label for="form-summary" class="font-weight-bold">Primary Language</label>
+                                                    <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.serverDetails.primaryLanguage') }}</label>
                                                     <select v-model="form.primary_locale" class="form-control form-control-muted" disabled>
                                                         <option v-for="c in initialData.available_languages" :value="c.code">{{ c.name }}</option>
                                                     </select>
-                                                    <p class="form-text text-muted small mb-0">The primary language of your server, to edit this value you need to set the <kbd>APP_LOCALE</kbd> .env value</p>
+                                                    <i18n path="admin.directory.serverDetails.primaryLanguageHelp" tag="p" class="form-text text-muted small mb-0">
+                                                        <template v-slot:env><kbd>APP_LOCALE</kbd></template>
+                                                    </i18n>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,36 +327,36 @@
                                 </div>
 
                                 <div v-else-if="tabIndex === 4" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">Admin Contact</h2>
-                                    <p class="small text-muted">Set a designated admin account and public email address</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.adminContact') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.adminContact.subtitle') }}</p>
                                     <hr class="mt-0">
 
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div v-if="initialData.admins.length" class="form-group">
-                                                <label for="form-summary" class="font-weight-bold">Designated Admin</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.adminContact.designatedAdmin') }}</label>
                                                 <select v-model="form.contact_account" class="form-control form-control-muted">
-                                                    <option disabled="" value="0">Select a designated admin</option>
+                                                    <option disabled="" value="0">{{ $t('admin.directory.adminContact.selectAdmin') }}</option>
                                                     <option v-for="(acct, index) in initialData.admins" :key="'pfc-' + acct + index" :value="acct.pid">{{ acct.username }}</option>
                                                 </select>
                                             </div>
                                             <div v-else class="px-3 pb-2 pt-0 border border-danger rounded">
-                                                <p class="lead font-weight-bold text-danger">No admin(s) found</p>
+                                                <p class="lead font-weight-bold text-danger">{{ $t('admin.directory.adminContact.noAdmins') }}</p>
                                                 <ul class="text-danger">
-                                                    <li>Admins must be active</li>
-                                                    <li>Admins must have 2FA setup and enabled</li>
+                                                    <li>{{ $t('admin.directory.adminContact.mustBeActive') }}</li>
+                                                    <li>{{ $t('admin.directory.adminContact.mustHave2fa') }}</li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label for="form-summary" class="font-weight-bold">Public Email</label>
+                                                <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.adminContact.publicEmail') }}</label>
                                                 <input
                                                     class="form-control form-control-muted"
                                                     placeholder="info@example.org"
                                                     v-model="form.contact_email" />
                                                 <p class="help-text small text-muted">
-                                                    Must be a valid email address
+                                                    {{ $t('admin.directory.adminContact.validEmail') }}
                                                 </p>
                                             </div>
                                         </div>
@@ -357,20 +364,20 @@
                                 </div>
 
                                 <div v-else-if="tabIndex === 5" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">Favourite Posts</h2>
-                                    <p class="small text-muted">Show off a few favourite posts from your server</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.favouritePosts') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.posts.subtitle') }}</p>
                                     <hr class="mt-0 mb-1">
 
                                     <div v-show="selectedPosts && selectedPosts.length !== 12" class="nav-wrapper">
                                         <ul class="nav nav-pills nav-fill flex-column flex-md-row" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link mb-sm-3 mb-md-0 active" id="favposts-1-tab" data-toggle="tab" href="#favposts-1" role="tab" aria-controls="favposts-1" aria-selected="true">{{ this.selectedPosts.length ? this.selectedPosts.length : ''}} Selected Posts</a>
+                                                <a class="nav-link mb-sm-3 mb-md-0 active" id="favposts-1-tab" data-toggle="tab" href="#favposts-1" role="tab" aria-controls="favposts-1" aria-selected="true">{{ $t('admin.directory.posts.selectedPosts', { count: this.selectedPosts.length ? this.selectedPosts.length : '' }) }}</a>
                                             </li>
                                             <li v-if="selectedPosts && selectedPosts.length < 12" class="nav-item">
-                                                <a class="nav-link mb-sm-3 mb-md-0" id="favposts-2-tab" data-toggle="tab" href="#favposts-2" role="tab" aria-controls="favposts-2" aria-selected="false">Add by post id</a>
+                                                <a class="nav-link mb-sm-3 mb-md-0" id="favposts-2-tab" data-toggle="tab" href="#favposts-2" role="tab" aria-controls="favposts-2" aria-selected="false">{{ $t('admin.directory.posts.addById') }}</a>
                                             </li>
                                             <li v-if="selectedPosts && selectedPosts.length < 12" class="nav-item">
-                                                <a class="nav-link mb-sm-3 mb-md-0" id="favposts-3-tab" data-toggle="tab" href="#favposts-3" role="tab" aria-controls="favposts-3" aria-selected="false" @click="initPopularPosts">Add by popularity</a>
+                                                <a class="nav-link mb-sm-3 mb-md-0" id="favposts-3-tab" data-toggle="tab" href="#favposts-3" role="tab" aria-controls="favposts-3" aria-selected="false" @click="initPopularPosts">{{ $t('admin.directory.posts.addByPopularity') }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -394,15 +401,15 @@
                                                         <div class="media-body">
                                                             <p class="lead mt-0 mb-0 font-weight-bold">&commat;{{ post.account.username }}</p>
                                                             <p class="text-muted mb-0" style="font-size: 14px;">
-                                                                <span><span class="font-weight-bold">{{ formatCount(post.favourites_count) }}</span> Likes</span>
+                                                                <i18n path="admin.directory.posts.likesCount" tag="span"><template v-slot:count><span class="font-weight-bold">{{ formatCount(post.favourites_count) }}</span></template></i18n>
                                                                 <span class="mx-2">·</span>
-                                                                <span><span class="font-weight-bold">{{ formatCount(post.account.followers_count) }}</span> Followers</span>
+                                                                <i18n path="admin.directory.posts.followersCount" tag="span"><template v-slot:count><span class="font-weight-bold">{{ formatCount(post.account.followers_count) }}</span></template></i18n>
                                                                 <span class="mx-2">·</span>
-                                                                <span>Created <span class="font-weight-bold">{{ formatDateTime(post.created_at) }}</span></span>
+                                                                <i18n path="admin.directory.posts.createdAt" tag="span"><template v-slot:date><span class="font-weight-bold">{{ formatDateTime(post.created_at) }}</span></template></i18n>
                                                             </p>
                                                         </div>
 
-                                                        <a class="btn btn-outline-primary btn-sm rounded-pill" :href="post.url" target="_blank">View</a>
+                                                        <a class="btn btn-outline-primary btn-sm rounded-pill" :href="post.url" target="_blank">{{ $t('admin.directory.posts.view') }}</a>
                                                     </div>
                                                 </div>
 
@@ -412,9 +419,9 @@
                                             <div v-else>
                                                 <div class="card card-body bg-lighter text-center py-5">
                                                     <p class="text-light mb-1"><i class="far fa-info-circle fa-3x"></i></p>
-                                                    <p class="h2 mb-0">0 posts selected</p>
+                                                    <p class="h2 mb-0">{{ $t('admin.directory.posts.noneSelected') }}</p>
 
-                                                    <p class="small mb-0">You can select up to 12 favourite posts by id or popularity</p>
+                                                    <p class="small mb-0">{{ $t('admin.directory.posts.selectUpTo') }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -423,23 +430,23 @@
                                             <div class="row">
                                                 <div class="col-12 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="font-weight-bold">Find and add by post id</label>
+                                                        <label class="font-weight-bold">{{ $t('admin.directory.posts.findById') }}</label>
                                                         <div class="input-group mb-3">
                                                             <input
                                                                 type="number"
                                                                 class="form-control form-control-muted border"
-                                                                placeholder="Post id"
+                                                                :placeholder="$t('admin.directory.posts.postId')"
                                                                 min="1"
                                                                 max="99999999999999999999"
                                                                 v-model="favouritePostByIdInput"
                                                                 :disabled="favouritePostByIdFetching">
                                                             <div class="input-group-append">
                                                                 <button v-if="!favouritePostByIdFetching" class="btn btn-outline-primary" type="button" @click="handlePostByIdSearch">
-                                                                    Search
+                                                                    {{ $t('admin.directory.posts.search') }}
                                                                 </button>
                                                                 <button v-else class="btn btn-outline-primary" disabled>
                                                                     <div class="spinner-border spinner-border-sm" role="status">
-                                                                        <span class="sr-only">Loading...</span>
+                                                                        <span class="sr-only">{{ $t('common.loading') }}</span>
                                                                     </div>
                                                                 </button>
                                                             </div>
@@ -450,7 +457,7 @@
                                                     <div class="card card-body bg-primary">
                                                         <div class="d-flex align-items-center text-white">
                                                             <i class="far fa-info-circle mr-2"></i>
-                                                            <p class="small mb-0 font-weight-bold">A post id is the numerical id found in post urls</p>
+                                                            <p class="small mb-0 font-weight-bold">{{ $t('admin.directory.posts.postIdHelp') }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -474,22 +481,22 @@
                                                         <div class="media-body">
                                                             <p class="lead mt-0 mb-0 font-weight-bold">&commat;{{ post.account.username }}</p>
                                                             <p class="text-muted mb-0" style="font-size: 14px;">
-                                                                <span><span class="font-weight-bold">{{ formatCount(post.favourites_count) }}</span> Likes</span>
+                                                                <i18n path="admin.directory.posts.likesCount" tag="span"><template v-slot:count><span class="font-weight-bold">{{ formatCount(post.favourites_count) }}</span></template></i18n>
                                                                 <span class="mx-2">·</span>
-                                                                <span><span class="font-weight-bold">{{ formatCount(post.account.followers_count) }}</span> Followers</span>
+                                                                <i18n path="admin.directory.posts.followersCount" tag="span"><template v-slot:count><span class="font-weight-bold">{{ formatCount(post.account.followers_count) }}</span></template></i18n>
                                                                 <span class="mx-2">·</span>
-                                                                <span>Created <span class="font-weight-bold">{{ formatDateTime(post.created_at) }}</span></span>
+                                                                <i18n path="admin.directory.posts.createdAt" tag="span"><template v-slot:date><span class="font-weight-bold">{{ formatDateTime(post.created_at) }}</span></template></i18n>
                                                             </p>
                                                         </div>
 
-                                                        <a class="btn btn-outline-primary btn-sm rounded-pill" :href="post.url" target="_blank">View</a>
+                                                        <a class="btn btn-outline-primary btn-sm rounded-pill" :href="post.url" target="_blank">{{ $t('admin.directory.posts.view') }}</a>
                                                     </div>
                                                 </div>
                                                 <div class="mt-5 mb-3"></div>
                                             </div>
                                             <div v-else class="text-center py-5">
                                                 <div class="spinner-border text-primary" role="status">
-                                                    <span class="sr-only">Loading...</span>
+                                                    <span class="sr-only">{{ $t('common.loading') }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -497,33 +504,33 @@
                                 </div>
 
                                 <div v-else-if="tabIndex === 6" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">Privacy Pledge</h2>
-                                    <p class="small text-muted">Pledge to keep you and your data private and securely stored</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.privacyPledge') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.pledge.subtitle') }}</p>
                                     <hr class="mt-0">
 
-                                    <p>To qualify for the Privacy Pledge, you must abide by the following rules:</p>
+                                    <p>{{ $t('admin.directory.pledge.intro') }}</p>
                                     <ul class="font-weight-bold">
-                                        <li>No analytics or 3rd party trackers*</li>
-                                        <li>User data is not sold to any 3rd parties</li>
-                                        <li>Data is stored securely in accordance with industry standards</li>
-                                        <li>Admin accounts are protected with 2FA</li>
-                                        <li>Follow strict support procedures to keep your accounts safe</li>
-                                        <li>Give at least 6 months warning in the event we shut down</li>
+                                        <li>{{ $t('admin.directory.pledge.rule1') }}</li>
+                                        <li>{{ $t('admin.directory.pledge.rule2') }}</li>
+                                        <li>{{ $t('admin.directory.pledge.rule3') }}</li>
+                                        <li>{{ $t('admin.directory.pledge.rule4') }}</li>
+                                        <li>{{ $t('admin.directory.pledge.rule5') }}</li>
+                                        <li>{{ $t('admin.directory.pledge.rule6') }}</li>
                                     </ul>
-                                    <p class="small text-muted mb-0">You may use 3rd party services like captchas on specific pages, so long as they are clearly defined in your privacy policy</p>
+                                    <p class="small text-muted mb-0">{{ $t('admin.directory.pledge.footnote') }}</p>
                                     <hr>
 
                                     <p>
                                         <div class="custom-control custom-checkbox mr-2">
                                             <input type="checkbox" class="custom-control-input" id="privacy-pledge" v-model="form.privacy_pledge">
-                                            <label class="custom-control-label font-weight-bold" for="privacy-pledge">I agree to the uphold the Privacy Pledge</label>
+                                            <label class="custom-control-label font-weight-bold" for="privacy-pledge">{{ $t('admin.directory.pledge.agree') }}</label>
                                         </div>
                                     </p>
                                 </div>
 
                                 <div v-else-if="tabIndex === 7" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">Community Guidelines</h2>
-                                    <p class="small text-muted">A few ground rules to keep your community healthy and safe.</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.communityGuidelines') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.guidelines.subtitle') }}</p>
                                     <hr class="mt-0">
 
                                     <ol v-if="communityGuidelines && communityGuidelines.length" class="font-weight-bold">
@@ -533,18 +540,20 @@
                                     <div v-else class="card bg-primary text-white">
                                         <div class="card-body text-center py-5">
                                             <p class="mb-n3"><i class="far fa-exclamation-circle fa-3x"></i></p>
-                                            <p class="lead mb-0">No Community Guidelines have been set</p>
+                                            <p class="lead mb-0">{{ $t('admin.directory.guidelines.empty') }}</p>
                                         </div>
                                     </div>
 
                                     <hr>
 
-                                    <p class="mb-0">You can manage Community Guidelines on the <a href="/i/admin/settings">Settings page</a></p>
+                                    <i18n path="admin.directory.guidelines.manage" tag="p" class="mb-0">
+                                        <template v-slot:link><a href="/i/admin/settings">{{ $t('admin.directory.guidelines.settingsPage') }}</a></template>
+                                    </i18n>
                                 </div>
 
                                 <div v-else-if="tabIndex === 8" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">Feature Requirements</h2>
-                                    <p class="small text-muted">The minimum requirements for Directory inclusion.</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.featureRequirements') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.features.subtitle') }}</p>
                                     <hr class="mt-0">
 
                                     <div class="row">
@@ -562,8 +571,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Media Types</p>
-                                                        <p class="mb-0 small text-muted">Allowed MIME types. image/jpeg and image/png by default</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.mediaTypes') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.mediaTypesHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('media_types')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.media_types[0] }}</p>
                                                     </div>
                                                 </div>
@@ -580,8 +589,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Image Quality</p>
-                                                        <p class="mb-0 small text-muted">Image optimization is enabled, the image quality must be a value between 1-100.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.imageQuality') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.imageQualityHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('image_quality')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.image_quality[0] }}</p>
                                                     </div>
                                                 </div>
@@ -598,8 +607,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Max Photo Size</p>
-                                                        <p class="mb-0 small text-muted">Max photo upload size in kb. Must be between 15-100 MB.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.maxPhotoSize') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.maxPhotoSizeHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('max_photo_size')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.max_photo_size[0] }}</p>
                                                     </div>
                                                 </div>
@@ -616,8 +625,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Max Caption Length</p>
-                                                        <p class="mb-0 small text-muted">The max caption length limit. Must be between 500-10000.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.maxCaptionLength') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.maxCaptionLengthHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('max_caption_length')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.max_caption_length[0] }}</p>
                                                     </div>
                                                 </div>
@@ -638,8 +647,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Max Alt-text length</p>
-                                                        <p class="mb-0 small text-muted">The alt-text length limit. Must be between 1000-5000.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.maxAltTextLength') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.maxAltTextLengthHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('max_altext_length')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.max_altext_length[0] }}</p>
                                                     </div>
                                                 </div>
@@ -656,8 +665,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Max Account Size</p>
-                                                        <p class="mb-0 small text-muted">The account storage limit. Must be 1GB at minimum.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.maxAccountSize') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.maxAccountSizeHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('max_account_size')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.max_account_size[0] }}</p>
                                                     </div>
                                                 </div>
@@ -674,8 +683,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Max Album Length</p>
-                                                        <p class="mb-0 small text-muted">Max photos per album post. Must be between 4-20.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.maxAlbumLength') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.maxAlbumLengthHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('max_album_length')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.max_album_length[0] }}</p>
                                                     </div>
                                                 </div>
@@ -692,8 +701,8 @@
                                                         </i>
                                                     </div>
                                                     <div>
-                                                        <p class="font-weight-bold text-dark my-0">Account Deletion</p>
-                                                        <p class="mb-0 small text-muted">Allow users to delete their own account.</p>
+                                                        <p class="font-weight-bold text-dark my-0">{{ $t('admin.directory.features.accountDeletion') }}</p>
+                                                        <p class="mb-0 small text-muted">{{ $t('admin.directory.features.accountDeletionHelp') }}</p>
                                                         <p v-if="requirements_validator.hasOwnProperty('account_deletion')" class="mb-0 text-danger font-weight-bold">{{ requirements_validator.account_deletion[0] }}</p>
                                                     </div>
                                                 </div>
@@ -703,8 +712,8 @@
                                 </div>
 
                                 <div v-else-if="tabIndex === 9" class="tab-pane fade show active" role="tabpanel">
-                                    <h2 class="display-4 mb-0">User Testimonials</h2>
-                                    <p class="small text-muted">Add testimonials from your users.</p>
+                                    <h2 class="display-4 mb-0">{{ $t('admin.directory.tabs.testimonials') }}</h2>
+                                    <p class="small text-muted">{{ $t('admin.directory.testimonials.subtitle') }}</p>
                                     <hr class="mt-0">
 
                                     <div class="row">
@@ -722,7 +731,7 @@
                                                                     {{ testimonial.profile.username }}
                                                                 </p>
                                                                 <p class="small text-muted mt-n1 mb-0">
-                                                                    Member Since {{ formatDate(testimonial.profile.created_at) }}
+                                                                    {{ $t('admin.directory.testimonials.memberSince', { date: formatDate(testimonial.profile.created_at) }) }}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -731,7 +740,7 @@
                                                                 <a
                                                                     href="#"
                                                                     @click.prevent="editTestimonial(testimonial)">
-                                                                    Edit
+                                                                    {{ $t('admin.directory.testimonials.edit') }}
                                                                 </a>
                                                             </p>
                                                             <p class="mb-0 small">
@@ -739,13 +748,13 @@
                                                                     href="#"
                                                                     class="text-danger"
                                                                     @click.prevent="deleteTestimonial(testimonial)">
-                                                                    Delete
+                                                                    {{ $t('common.delete') }}
                                                                 </a>
                                                             </p>
                                                         </div>
                                                     </div>
                                                     <hr class="my-1">
-                                                    <p class="small font-weight-bold text-muted mb-0 text-center">Testimonial</p>
+                                                    <p class="small font-weight-bold text-muted mb-0 text-center">{{ $t('admin.directory.testimonials.testimonial') }}</p>
                                                     <div class="border rounded px-3">
                                                         <p v-html="testimonial.body" class="my-2 small" style="white-space: pre-wrap;"></p>
                                                     </div>
@@ -756,12 +765,12 @@
                                         <div class="col-12 col-md-6">
                                             <div v-if="isEditingTestimonial" class="card">
                                                 <div class="card-header font-weight-bold">
-                                                    Edit Testimonial
+                                                    {{ $t('admin.directory.testimonials.editTitle') }}
                                                 </div>
 
                                                 <div class="card-body">
                                                     <div class="form-group">
-                                                        <label for="form-summary" class="font-weight-bold">Username</label>
+                                                        <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.testimonials.username') }}</label>
                                                         <input
                                                             class="form-control form-control-muted"
                                                             placeholder="test"
@@ -770,14 +779,14 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="form-summary" class="font-weight-bold">Testimonial</label>
+                                                        <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.testimonials.testimonial') }}</label>
                                                         <textarea
                                                             class="form-control form-control-muted"
                                                             rows="5"
                                                             v-model="editingTestimonial.body"></textarea>
                                                         <div class="d-flex justify-content-between">
                                                             <p class="help-text small text-muted mb-0">
-                                                                Text only, up to 500 characters
+                                                                {{ $t('admin.directory.testimonials.textOnly') }}
                                                             </p>
                                                             <p class="help-text small text-muted mb-0">
                                                                 {{ editingTestimonial.body ? editingTestimonial.body.length : 0 }}/500
@@ -791,14 +800,14 @@
                                                         type="button"
                                                         class="btn btn-primary btn-block"
                                                         @click="saveEditTestimonial">
-                                                        Save
+                                                        {{ $t('admin.directory.testimonials.save') }}
                                                     </button>
 
                                                     <button
                                                         type="button"
                                                         class="btn btn-secondary btn-block"
                                                         @click="cancelEditTestimonial">
-                                                        Cancel
+                                                        {{ $t('common.cancel') }}
                                                     </button>
                                                 </div>
                                             </div>
@@ -806,30 +815,30 @@
                                             <div v-else class="card">
                                                 <template v-if="testimonials.length < 10">
                                                     <div class="card-header font-weight-bold">
-                                                        Add New Testimonial
+                                                        {{ $t('admin.directory.testimonials.addTitle') }}
                                                     </div>
 
                                                     <div class="card-body">
                                                         <div class="form-group">
-                                                            <label for="form-summary" class="font-weight-bold">Username</label>
+                                                            <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.testimonials.username') }}</label>
                                                             <input
                                                                 class="form-control form-control-muted"
                                                                 placeholder="test"
                                                                 v-model="testimonial.username" />
                                                             <p class="help-text small text-muted">
-                                                                Must be a valid user account
+                                                                {{ $t('admin.directory.testimonials.validUser') }}
                                                             </p>
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <label for="form-summary" class="font-weight-bold">Testimonial</label>
+                                                            <label for="form-summary" class="font-weight-bold">{{ $t('admin.directory.testimonials.testimonial') }}</label>
                                                             <textarea
                                                                 class="form-control form-control-muted"
                                                                 rows="5"
                                                                 v-model="testimonial.body"></textarea>
                                                             <div class="d-flex justify-content-between">
                                                                 <p class="help-text small text-muted mb-0">
-                                                                    Text only, up to 500 characters
+                                                                    {{ $t('admin.directory.testimonials.textOnly') }}
                                                                 </p>
                                                                 <p class="help-text small text-muted mb-0">
                                                                     {{ testimonial.body ? testimonial.body.length : 0 }}/500
@@ -842,12 +851,12 @@
                                                         <button
                                                             type="button"
                                                             class="btn btn-primary btn-block"
-                                                            @click="saveTestimonial">Save Testimonial</button>
+                                                            @click="saveTestimonial">{{ $t('admin.directory.testimonials.saveTestimonial') }}</button>
                                                     </div>
                                                 </template>
                                                 <template v-else>
                                                     <div class="card-body text-center">
-                                                        <p class="lead">You can't add any more testimonials</p>
+                                                        <p class="lead">{{ $t('admin.directory.testimonials.limitReached') }}</p>
                                                     </div>
                                                 </template>
                                             </div>
@@ -864,7 +873,7 @@
     <div v-else>
         <div class="container my-5 py-5 text-center">
             <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">{{ $t('common.loading') }}</span>
             </div>
         </div>
     </div>
@@ -878,15 +887,16 @@
                 initialData: {},
                 tabIndex: 1,
                 tabs: [
-                    { id: 1, title: "Overview", icon: "far fa-home" },
+                    // `title` holds a translation key, rendered with $t() in the template
+                    { id: 1, title: "admin.directory.tabs.overview", icon: "far fa-home" },
                     // { id: 2, title: "Status", icon: "far fa-asterisk" },
-                    { id: 3, title: "Server Details", icon: "far fa-info-circle" },
-                    { id: 4, title: "Admin Contact", icon: "far fa-user-crown" },
-                    { id: 5, title: "Favourite Posts", icon: "far fa-heart" },
-                    { id: 6, title: "Privacy Pledge", icon: "far fa-eye-slash" },
-                    { id: 7, title: "Community Guidelines", icon: "far fa-smile-beam" },
-                    { id: 8, title: "Feature Requirements", icon: "far fa-bolt" },
-                    { id: 9, title: "User Testimonials", icon: "far fa-comment-smile"}
+                    { id: 3, title: "admin.directory.tabs.serverDetails", icon: "far fa-info-circle" },
+                    { id: 4, title: "admin.directory.tabs.adminContact", icon: "far fa-user-crown" },
+                    { id: 5, title: "admin.directory.tabs.favouritePosts", icon: "far fa-heart" },
+                    { id: 6, title: "admin.directory.tabs.privacyPledge", icon: "far fa-eye-slash" },
+                    { id: 7, title: "admin.directory.tabs.communityGuidelines", icon: "far fa-smile-beam" },
+                    { id: 8, title: "admin.directory.tabs.featureRequirements", icon: "far fa-bolt" },
+                    { id: 9, title: "admin.directory.tabs.testimonials", icon: "far fa-comment-smile"}
                 ],
 
                 form: {
@@ -1051,12 +1061,12 @@
 
             formatDateTime(ts) {
                 let date = new Date(ts);
-                return new Intl.DateTimeFormat('en-US', {dateStyle: 'medium', timeStyle: 'short'}).format(date);
+                return new Intl.DateTimeFormat((document.documentElement.lang || 'en-US'), {dateStyle: 'medium', timeStyle: 'short'}).format(date);
             },
 
             formatDate(ts) {
                 let date = new Date(ts);
-                return new Intl.DateTimeFormat('en-US', {month: 'short', year: 'numeric'}).format(date);
+                return new Intl.DateTimeFormat((document.documentElement.lang || 'en-US'), {month: 'short', year: 'numeric'}).format(date);
             },
 
             formatTimestamp(ts) {
@@ -1073,7 +1083,7 @@
                     this.selectedPosts = this.selectedPosts.filter(i => i.id != id);
                 } else {
                     if(this.selectedPosts.length >= 12) {
-                        swal('Oops!', 'You can only select 12 popular posts', 'error');
+                        swal(this.$t('common.oops'), this.$t('admin.directory.posts.limitPopular'), 'error');
                         event.currentTarget.checked = false;
                         return;
                     }
@@ -1088,7 +1098,7 @@
             handlePostByIdSearch() {
                 event.currentTarget.blur();
                 if(this.selectedPosts.length >= 12) {
-                    swal('Oops', 'You can only select 12 posts', 'error');
+                    swal(this.$t('common.oops'), this.$t('admin.directory.posts.limit'), 'error');
                     return;
                 }
                 this.favouritePostByIdFetching = true;
@@ -1098,7 +1108,7 @@
                 })
                 .then(res => {
                     if(this.selectedPosts.map(p => p.id).includes(res.data.id)) {
-                        swal('Oops!', 'You already selected this post!', 'error');
+                        swal(this.$t('common.oops'), this.$t('admin.directory.posts.alreadySelected'), 'error');
                         return;
                     }
                     this.selectedPosts.push(res.data);
@@ -1110,7 +1120,7 @@
                     $('#favposts-1-tab').tab('show');
                 })
                 .catch(err => {
-                    swal('Invalid Post', 'The post id you added is not valid', 'error');
+                    swal(this.$t('admin.directory.posts.invalidPost'), this.$t('admin.directory.posts.invalidPostBody'), 'error');
                     this.favouritePostByIdFetching = false;
                 })
             },
@@ -1125,17 +1135,17 @@
                     'privacy_pledge': this.form.privacy_pledge
                 })
                 .then(res => {
-                    swal('Success!', 'Successfully saved directory settings', 'success');
+                    swal(this.$t('admin.directory.successTitle'), this.$t('admin.directory.saved'), 'success');
                 })
                 .catch(err => {
-                    swal('Oops!', err.response.data.message, 'error');
+                    swal(this.$t('common.oops'), err.response.data.message, 'error');
                 })
             },
 
             uploadBannerImage() {
                 this.isUploadingBanner = true;
 
-                if(!window.confirm('Are you sure you want to update your server banner image?')) {
+                if(!window.confirm(this.$t('admin.directory.confirmUpdateBanner'))) {
                     this.isUploadingBanner = false;
                     return;
                 }
@@ -1155,13 +1165,13 @@
                     this.isUploadingBanner = false;
                 })
                 .catch(err => {
-                    swal('Error', err.response.data.message, 'error');
+                    swal(this.$t('common.error'), err.response.data.message, 'error');
                     this.isUploadingBanner = false;
                 })
             },
 
             deleteBannerImage() {
-                if(!window.confirm('Are you sure you want to delete your server banner image?')) {
+                if(!window.confirm(this.$t('admin.directory.confirmDeleteBanner'))) {
                     return;
                 }
 
@@ -1175,7 +1185,7 @@
             },
 
             handleSubmit() {
-                if(!window.confirm('Are you sure you want to submit your server?')) {
+                if(!window.confirm(this.$t('admin.directory.confirmSubmit'))) {
                     return;
                 }
 
@@ -1190,12 +1200,12 @@
                     }, 3000);
                 })
                 .catch(err => {
-                    swal('Error', err.response.data.message, 'error');
+                    swal(this.$t('common.error'), err.response.data.message, 'error');
                 })
             },
 
             deleteTestimonial(testimonial) {
-                if(!window.confirm('Are you sure you want to delete the testimonial by ' + testimonial.profile.username + '?')) {
+                if(!window.confirm(this.$t('admin.directory.testimonials.confirmDelete', { username: testimonial.profile.username }))) {
                     return;
                 }
 
@@ -1231,7 +1241,7 @@
                 .catch(err => {
                     let msg = err.response.data.hasOwnProperty('error') ? err.response.data.error :
                     err.response.data.message;
-                    swal('Oops!', msg, 'error');
+                    swal(this.$t('common.oops'), msg, 'error');
                 })
             },
 

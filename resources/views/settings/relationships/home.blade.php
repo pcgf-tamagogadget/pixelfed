@@ -15,7 +15,7 @@
 </div>
 
 @if(empty($data))
-<p class="text-center lead pt-5 mt-5">You are not {{$mode == 'hashtags' ? 'following any hashtags.' : ($mode == 'following' ? 'following anyone.' : 'followed by anyone.')}}</p>
+<p class="text-center lead pt-5 mt-5">{{ $mode == 'hashtags' ? __('settings.relationships.you_are_not_following_any_hashtags') : ($mode == 'following' ? __('settings.relationships.you_are_not_following_anyone') : __('settings.relationships.you_are_not_followed_by_anyone')) }}</p>
 @else
 <div class="table-responsive">
 <table class="table table-bordered table-hover">
@@ -38,7 +38,7 @@
 				</a>
 			</td>
 			<td class="text-center">
-				<a class="btn btn-outline-danger btn-sm py-0 action-btn" href="#" data-id="{{$hashtag->hashtag->name}}" data-action="unfollowhashtag">Unfollow</a>
+				<a class="btn btn-outline-danger btn-sm py-0 action-btn" href="#" data-id="{{$hashtag->hashtag->name}}" data-action="unfollowhashtag">{{ __('settings.relationships.unfollow') }}</a>
 			</td>
 		</tr>
 		@endforeach
@@ -65,7 +65,7 @@
 			</td>
 			@if($mode == 'following')
 			<td class="text-center">
-				<a class="btn btn-outline-danger btn-sm py-0 action-btn" href="#" data-id="{{$follower->id}}" data-action="unfollow">Unfollow</a>
+				<a class="btn btn-outline-danger btn-sm py-0 action-btn" href="#" data-id="{{$follower->id}}" data-action="unfollow">{{ __('settings.relationships.unfollow') }}</a>
 			</td>
 			@else
 			<td class="text-center">
@@ -107,8 +107,8 @@
 					item: id
 				}).then(res => {
 					swal(
-						'{{__('settings.relationships.mute_successful')}}',
-						'{{__('settings.relationships.you_have_successfully_muted_that_user')}}',
+						@json(__('settings.relationships.mute_successful')),
+						@json(__('settings.relationships.you_have_successfully_muted_that_user')),
 						'success'
 						);
 				});
@@ -120,8 +120,8 @@
 					item: id
 				}).then(res => {
 					swal(
-						'{{__('settings.relationships.block_successful')}}',
-						'{{__('settings.relationships.you_have_successfully_blocked_that_user')}}',
+						@json(__('settings.relationships.block_successful')),
+						@json(__('settings.relationships.you_have_successfully_blocked_that_user')),
 						'success'
 						);
 				});
@@ -131,15 +131,15 @@
 				axios.post('/api/v1/accounts/' + id + '/unfollow')
 				.then(res => {
 					swal(
-						'{{__('settings.relationships.unfollow_successful')}}',
-						'{{__('settings.relationships.you_have_successfully_unfollowed_that_user')}}',
+						@json(__('settings.relationships.unfollow_successful')),
+						@json(__('settings.relationships.you_have_successfully_unfollowed_that_user')),
 						'success'
 						);
 				})
 				.catch(err => {
 					swal(
-						'{{__('settings.error')}}',
-						'{{__('settings.relationships.an_error_occured_when_attempting_to_unfollow_this_user')}}',
+						@json(__('settings.error')),
+						@json(__('settings.relationships.an_error_occured_when_attempting_to_unfollow_this_user')),
 						'error'
 						);
 				});
@@ -148,8 +148,8 @@
 				case 'unfollowhashtag':
 				axios.post('/api/v1/tags/' + id + '/unfollow').then(res => {
 					swal(
-						'{{__('settings.relationships.unfollow_successful')}}',
-						'{{__('settings.relationships.you_have_successfully_unfollowed_that_hashtag')}}',
+						@json(__('settings.relationships.unfollow_successful')),
+						@json(__('settings.relationships.you_have_successfully_unfollowed_that_hashtag')),
 						'success'
 						);
 				});
@@ -157,8 +157,8 @@
                 case 'removeFollow':
                 axios.post('/api/pixelfed/v1/accounts/' + id + '/remove_from_followers').then(res => {
                     swal(
-                        '{{__('settings.relationships.unfollow_successful')}}',
-                        '{{__('settings.relationships.you_have_successfully_unfollowed_that_user')}}',
+                        @json(__('settings.relationships.unfollow_successful')),
+                        @json(__('settings.relationships.you_have_successfully_unfollowed_that_user')),
                         'success'
                         );
                 });

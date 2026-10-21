@@ -8,28 +8,28 @@
         <div class="row">
           <div class="col-12 p-3 p-md-5">
 			  <div class="title">
-			    <h3 class="font-weight-bold">Edit Two-Factor Authentication</h3>
+			    <h3 class="font-weight-bold">{{ __('settings.two_factor.edit_two_factor_authentication') }}</h3>
 			  </div>
 
 			  <hr>
 
 			  <p class="lead pb-3">
-			  	To register a new device, you have to remove any active devices.
+			  	{{ __('settings.two_factor.to_register_a_new_device_you_have_to_remove_etc') }}
 			  </p>
 
 			  <div class="card">
 			  	<div class="card-header bg-light font-weight-bold">
-			  		Authenticator App
+			  		{{ __('settings.two_factor.authenticator_app') }}
 			  	</div>
 			  	<div class="card-body d-flex justify-content-between align-items-center">
 			  		<i class="fas fa-lock fa-3x text-success"></i>
 			  		<p class="font-weight-bold mb-0">
-			  			Added {{$user->{'2fa_setup_at'}->diffForHumans()}}
+			  			{{ __('settings.two_factor.added_time', ['time' => $user->{'2fa_setup_at'}->diffForHumans()]) }}
 			  		</p>
 			  	</div>
 			  	<div class="card-footer bg-white text-right">
-			  		<a class="btn btn-outline-secondary btn-sm px-4 font-weight-bold mr-3" href="{{route('settings.security.2fa.recovery')}}">View Recovery Codes</a>
-			  		<a class="btn btn-outline-danger btn-sm px-4 font-weight-bold remove-device" href="#">Remove</a>
+			  		<a class="btn btn-outline-secondary btn-sm px-4 font-weight-bold mr-3" href="{{route('settings.security.2fa.recovery')}}">{{ __('settings.two_factor.view_recovery_codes') }}</a>
+			  		<a class="btn btn-outline-danger btn-sm px-4 font-weight-bold remove-device" href="#">{{ __('settings.two_factor.remove') }}</a>
 			  	</div>
 			  </div>
         </div>
@@ -46,25 +46,25 @@ $(document).ready(function() {
 	$(document).on('click', '.remove-device', function(e) {
 		e.preventDefault();
 		swal({
-			title: 'Confirm Device Removal',
-			text: 'Are you sure you want to remove this two-factor authentication device from your account?',
+			title: @json(__('settings.two_factor.confirm_device_removal')),
+			text: @json(__('settings.two_factor.are_you_sure_you_want_to_remove_this_device_etc')),
 			icon: 'warning',
 			button: {
-				text: 'Confirm Removal',
+				text: @json(__('settings.two_factor.confirm_removal')),
 				className: 'btn-danger'
 			}
 		})
 		.then((value) => {
 			if(value == true) {
 				swal({
-					title: 'Confirm your 2FA code',
-					text: 'Enter a current 2FA code or a backup code to confirm removal:',
+					title: @json(__('settings.two_factor.confirm_your_2fa_code')),
+					text: @json(__('settings.two_factor.enter_a_current_2fa_code_or_a_backup_code_etc')),
 					content: 'input',
 					icon: 'warning',
 					buttons: {
 						cancel: true,
 						confirm: {
-							text: 'Confirm Removal',
+							text: @json(__('settings.two_factor.confirm_removal')),
 							className: 'btn-danger'
 						}
 					}
@@ -79,11 +79,11 @@ $(document).ready(function() {
 							window.location.href = '/settings/security';
 						})
 						.catch(function(err) {
-							let msg = 'Something went wrong. Please try again.';
+							let msg = @json(__('settings.two_factor.something_went_wrong_please_try_again'));
 							if(err.response && err.response.status === 403) {
-								msg = 'Invalid 2FA code. Please try again.';
+								msg = @json(__('settings.two_factor.invalid_2fa_code_please_try_again'));
 							}
-							swal('Oops!', msg, 'error');
+							swal(@json(__('settings.oops')), msg, 'error');
 						})
 					}
 				});

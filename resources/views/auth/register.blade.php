@@ -14,7 +14,7 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label class="small font-weight-bold text-lighter">{{ __('auth.name') }}</label>
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="{{ __('Name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="{{ __('auth.name') }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback">
@@ -39,7 +39,7 @@
 
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label class="small font-weight-bold text-lighter">Email</label>
+                                <label class="small font-weight-bold text-lighter">{{ __('auth.email') }}</label>
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="{{ __('auth.emailAddress') }}" required>
 
                                 @if ($errors->has('email'))

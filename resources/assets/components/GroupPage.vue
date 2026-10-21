@@ -1,7 +1,7 @@
 <template>
     <div class="group-feed-component">
         <div v-if="!initalLoad">
-            <p class="text-center mt-5 pt-5 font-weight-bold">Loading...</p>
+            <p class="text-center mt-5 pt-5 font-weight-bold">{{ $t('common.loading') }}</p>
         </div>
 
         <template v-else>
@@ -27,7 +27,7 @@
                                     <div class="media-body">
                                         <h3 class="d-flex align-items-start">
                                             <span>{{ group.name.slice(0,118) }}</span>
-                                            <sup v-if="group.verified" class="fa-stack ml-n2" title="Verified Group" data-toggle="tooltip">
+                                            <sup v-if="group.verified" class="fa-stack ml-n2" :title="$t('groups.groupPage.verifiedGroup')" data-toggle="tooltip">
                                                 <i class="fas fa-circle fa-stack-1x fa-lg" style="color: #22a7f0cc;font-size:18px"></i>
                                                 <i class="fas fa-check fa-stack-1x text-white" style="font-size:10px"></i>
                                             </sup>
@@ -35,17 +35,17 @@
                                         <p class="text-muted mb-0" style="font-weight: 300;">
                                             <span>
                                                 <i class="fas fa-globe mr-1"></i>
-                                                {{ group.membership == 'all' ? 'Public Group' : 'Private Group'}}
+                                                {{ group.membership == 'all' ? $t('groups.groupPage.publicGroup') : $t('groups.groupPage.privateGroup') }}
                                             </span>
                                             <span class="mx-2">
                                                 ·
                                             </span>
-                                            <span>{{ group.member_count == 1 ? group.member_count + ' Member' : group.member_count + ' Members' }}</span>
+                                            <span>{{ group.member_count == 1 ? $t('groups.groupPage.memberCount', { count: group.member_count }) : $t('groups.groupPage.membersCount', { count: group.member_count }) }}</span>
                                             <span class="mx-2">
                                                 ·
                                             </span>
-                                            <span v-if="group.local" class="rounded member-label">Local</span>
-                                            <span v-else class="rounded remote-label">Remote</span>
+                                            <span v-if="group.local" class="rounded member-label">{{ $t('groups.groupPage.local') }}</span>
+                                            <span v-else class="rounded remote-label">{{ $t('groups.groupPage.remote') }}</span>
                                             <span v-if="group.self && group.self.hasOwnProperty('role') && group.self.role">
                                                 <span class="mx-2">
                                                     ·
@@ -58,13 +58,13 @@
                                 <div>
                                     <button v-if="!isMember && !group.self.is_requested" class="btn btn-primary cta-btn font-weight-bold" @click="joinGroup" :disabled="requestingMembership">
                                         <span v-if="!requestingMembership">
-                                            {{ group.membership == 'all' ? 'Join' : 'Request Membership' }}
+                                            {{ group.membership == 'all' ? $t('groups.groupPage.join') : $t('groups.groupPage.requestMembership') }}
                                         </span>
                                         <div
                                             v-else
                                             class="spinner-border spinner-border-sm"
                                             role="status">
-                                            <span class="sr-only">Loading...</span>
+                                            <span class="sr-only">{{ $t('common.loading') }}</span>
                                         </div>
                                     </button>
 
@@ -72,7 +72,7 @@
                                         v-else-if="!isMember && group.self.is_requested"
                                         class="btn btn-light border cta-btn font-weight-bold"
                                         @click.prevent="cancelJoinRequest">
-                                        <i class="fas fa-user-clock mr-1"></i> Requested to Join
+                                        <i class="fas fa-user-clock mr-1"></i> {{ $t('groups.groupPage.requestedToJoin') }}
                                     </button>
 
                                     <button
@@ -80,7 +80,7 @@
                                         type="button"
                                         class="btn btn-light border cta-btn font-weight-bold"
                                         @click.prevent="leaveGroup">
-                                        <i class="fas sign-out-alt mr-1"></i> Leave Group
+                                        <i class="fas sign-out-alt mr-1"></i> {{ $t('groups.groupPage.leaveGroup') }}
                                     </button>
 
                                     <!-- <div v-if="isAdmin">
@@ -95,17 +95,17 @@
                             <div class="col-12 border-top group-feed-component-menu px-5">
                                 <ul class="nav font-weight-bold group-feed-component-menu-nav">
                                     <li class="nav-item">
-                                        <a :class="{active: tab == 'about'}" class="nav-link" href="#" @click.prevent="switchTab('about')">About</a>
+                                        <a :class="{active: tab == 'about'}" class="nav-link" href="#" @click.prevent="switchTab('about')">{{ $t('groups.groupPage.tabAbout') }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a :class="{active: tab == 'feed'}" class="nav-link" href="#" @click.prevent="switchTab('feed')">Feed</a>
+                                        <a :class="{active: tab == 'feed'}" class="nav-link" href="#" @click.prevent="switchTab('feed')">{{ $t('groups.groupPage.tabFeed') }}</a>
                                     </li>
                                     <li v-if="group.self.is_member" class="nav-item">
-                                        <a :class="{active: tab == 'topics'}" class="nav-link" href="#" @click.prevent="switchTab('topics')">Topics</a>
+                                        <a :class="{active: tab == 'topics'}" class="nav-link" href="#" @click.prevent="switchTab('topics')">{{ $t('groups.groupPage.tabTopics') }}</a>
                                     </li>
                                     <li v-if="group.self.is_member" class="nav-item">
                                         <a :class="{active: tab == 'members'}" class="nav-link" href="#" @click.prevent="switchTab('members')">
-                                            Members
+                                            {{ $t('groups.groupPage.tabMembers') }}
                                             <span v-if="group.self.is_member && isAdmin && atabs.request_count" class="badge badge-danger rounded-pill ml-2" style="height: 20px;padding:4px 8px;font-size: 11px;">{{atabs.request_count}}</span>
                                         </a>
                                     </li>
@@ -113,7 +113,7 @@
                                         <a :class="{active: tab == 'events'}" class="nav-link" href="#" @click.prevent="switchTab('events')">Events</a>
                                     </li> -->
                                     <li v-if="group.self.is_member" class="nav-item">
-                                        <a :class="{active: tab == 'media'}" class="nav-link" href="#" @click.prevent="switchTab('media')">Media</a>
+                                        <a :class="{active: tab == 'media'}" class="nav-link" href="#" @click.prevent="switchTab('media')">{{ $t('groups.groupPage.tabMedia') }}</a>
                                     </li>
                                     <!-- <li v-if="group.self.is_member" class="nav-item">
                                         <a class="nav-link" href="#">Popular</a>
@@ -141,7 +141,7 @@
                                     </li> -->
                                     <li v-if="group.self.is_member && isAdmin" class="nav-item">
                                         <a :class="{active: tab == 'moderation'}" class="nav-link d-flex align-items-top" href="#" @click.prevent="switchTab('moderation')">
-                                            <span class="mr-2">Moderation</span>
+                                            <span class="mr-2">{{ $t('groups.groupPage.tabModeration') }}</span>
                                             <span v-if="atabs.moderation_count" class="badge badge-danger rounded-pill" style="height: 20px;padding:4px 8px;font-size: 11px;">{{atabs.moderation_count}}</span>
                                         </a>
                                     </li>
@@ -159,19 +159,19 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="#" @click.prevent="copyLink">
-                                                Copy Group Link
+                                                {{ $t('groups.groupPage.copyGroupLink') }}
                                             </a>
 
                                             <a class="dropdown-item" href="#" @click.prevent="showInviteModal">
-                                                Invite friends
+                                                {{ $t('groups.groupPage.inviteFriends') }}
                                             </a>
 
                                             <a v-if="!isAdmin" class="dropdown-item" href="#" @click.prevent="reportGroup">
-                                                Report Group
+                                                {{ $t('groups.groupPage.reportGroup') }}
                                             </a>
 
                                             <a v-if="isAdmin" class="dropdown-item" :href="group.url + '/settings'">
-                                                Settings
+                                                {{ $t('groups.groupPage.settings') }}
                                             </a>
                                         </div>
                                     </div>
@@ -208,12 +208,12 @@
 
                                         <div v-if="feed.length == 0" class="mt-3">
                                             <div class="card card-body shadow-none border d-flex align-items-center justify-content-center" style="height: 200px;">
-                                                <p class="font-weight-bold mb-0">No posts yet!</p>
+                                                <p class="font-weight-bold mb-0">{{ $t('groups.groupPage.noPosts') }}</p>
                                             </div>
                                         </div>
 
                                         <div v-else class="group-timeline">
-                                            <p class="font-weight-bold mb-1">Recent Posts</p>
+                                            <p class="font-weight-bold mb-1">{{ $t('groups.groupPage.recentPosts') }}</p>
 
 
                                             <!-- <div class="status-card-component shadow-sm mb-3 rounded-lg">
@@ -620,7 +620,7 @@
                                                 size="sm"
                                                 centered
                                                 hide-footer
-                                                title="Likes"
+                                                :title="$t('groups.groupPage.likes')"
                                                 body-class="list-group-flush p-0">
                                                 <div class="list-group py-1" style="max-height:300px;overflow-y:auto;">
                                                     <div
@@ -629,7 +629,7 @@
                                                         v-for="(user, index) in likes" :key="'modal_likes_'+index">
                                                         <div class="media align-items-center">
                                                             <a :href="user.url">
-                                                                <img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="user.username + '’s avatar'" width="30px" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+                                                                <img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="$t('groups.groupPage.userAvatar', { username: user.username })" width="30px" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
                                                             </a>
                                                             <div class="media-body">
                                                                 <p class="mb-0" style="font-size: 14px">
@@ -664,7 +664,7 @@
 
                                     <div v-else>
                                         <div class="card card-body mt-3 shadow-none border d-flex align-items-center justify-content-center" style="height: 100px;">
-                                            <p class="lead mb-0">Join to participate in this group.</p>
+                                            <p class="lead mb-0">{{ $t('groups.groupPage.joinToParticipate') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -705,7 +705,7 @@
                                 v-on:decrement="decrementModCounter" />
 
                             <div v-else>
-                                <p class="lead text-center font-weight-bold mt-5 text-muted">No content found</p>
+                                <p class="lead text-center font-weight-bold mt-5 text-muted">{{ $t('groups.groupPage.noContent') }}</p>
                             </div>
 
                         </keep-alive>
@@ -941,13 +941,13 @@
                         this.tab = 'feed';
                         history.pushState('', null, this.group.url);
                         this.requestingMembership = false;
-                        swal('Oops!', body.data.error, 'error');
+                        swal(this.$t('common.oops'), body.data.error, 'error');
                     }
                 });
             },
 
             cancelJoinRequest() {
-                if(!window.confirm('Are you sure you want to cancel your request to join this group?')) {
+                if(!window.confirm(this.$t('groups.groupPage.confirmCancelRequest'))) {
                     return;
                 }
 
@@ -958,13 +958,13 @@
                     let body = err.response;
 
                     if(body.status == 422) {
-                        swal('Oops!', body.data.error, 'error');
+                        swal(this.$t('common.oops'), body.data.error, 'error');
                     }
                 });
             },
 
             leaveGroup() {
-                if(!window.confirm('Are you sure you want to leave this group? Any content you shared will remain accessible. You won\'t be able to rejoin for 24 hours.')) {
+                if(!window.confirm(this.$t('groups.groupPage.confirmLeave'))) {
                     return;
                 }
 
@@ -1054,15 +1054,15 @@
 
             copyLink() {
                 window.App.util.clipboard(this.group.url);
-                this.$bvToast.toast(`Succesfully copied group url to clipboard`, {
-                    title: 'Success',
+                this.$bvToast.toast(this.$t('groups.groupPage.linkCopied'), {
+                    title: this.$t('common.success'),
                     variant: 'success',
                     autoHideDelay: 5000
                 });
             },
 
             reportGroup() {
-                swal('Report Group', 'Are you sure you want to report this group?')
+                swal(this.$t('groups.groupPage.reportGroup'), this.$t('groups.groupPage.confirmReport'))
                 .then(res => {
                     if(res) {
                         location.href = `/i/report?id=${this.group.id}&type=group`;

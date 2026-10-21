@@ -6,8 +6,8 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-8 col-12">
-                    <p class="display-1 text-white d-inline-block mb-0">Curated Onboarding</p>
-                    <p class="text-white mb-0">The ideal solution for communities seeking a balance between open registration and invite-only membership</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.curatedRegister.shared.title') }}</p>
+                    <p class="text-white mb-0">{{ __('admin_panel.curatedRegister.shared.tagline') }}</p>
                 </div>
             </div>
         </div>
@@ -23,8 +23,8 @@
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="display-4">Create Template</h2>
-                        <p class="lead my-0">Create re-usable templates of messages and application requests.</p>
+                        <h2 class="display-4">{{ __('admin_panel.curatedRegister.templateCreate.title') }}</h2>
+                        <p class="lead my-0">{{ __('admin_panel.curatedRegister.templateCreate.lead') }}</p>
                     </div>
                 </div>
             </div>
@@ -44,48 +44,48 @@
                             @csrf
 
                             <div class="form-group">
-                                <label class="small font-weight-bold">Shortcut/Name</label>
+                                <label class="small font-weight-bold">{{ __('admin_panel.curatedRegister.templateForm.shortcutName') }}</label>
                                 <input
                                     class="form-control"
                                     name="name"
                                     value="{{old('name')}}"
-                                    placeholder="An optional name/shortcut for easy access" />
+                                    placeholder="{{ __('admin_panel.curatedRegister.templateForm.shortcutNamePlaceholder') }}" />
                             </div>
 
                             <div class="form-group">
-                                <label class="small font-weight-bold">Content</label>
+                                <label class="small font-weight-bold">{{ __('admin_panel.curatedRegister.templateForm.content') }}</label>
                                 <textarea
                                     class="form-control"
                                     name="content"
                                     value="{{old('content')}}"
                                     rows="8"
-                                    placeholder="Add your custom message template here..."></textarea>
+                                    placeholder="{{ __('admin_panel.curatedRegister.templateForm.contentPlaceholder') }}"></textarea>
                             </div>
 
                             <p class="font-weight-bold">
                                 <a class="font-weight-bold small" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
-                                    Add optional description
+                                    {{ __('admin_panel.curatedRegister.templateForm.addDescription') }}
                                 </a>
                             </p>
 
                             <div class="collapse" id="collapseDescription">
                                 <div class="form-group">
-                                    <label class="small font-weight-bold">Description</label>
+                                    <label class="small font-weight-bold">{{ __('admin_panel.curatedRegister.templateForm.description') }}</label>
                                     <textarea
                                         class="form-control"
                                         name="description"
                                         rows="4"
-                                        placeholder="Add an optional description that is only visible to admins..."></textarea>
+                                        placeholder="{{ __('admin_panel.curatedRegister.templateForm.descriptionPlaceholder') }}"></textarea>
                                 </div>
                             </div>
 
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="active" name="active" checked>
-                                <label class="custom-control-label font-weight-bold" for="active">Mark as Active</label>
+                                <label class="custom-control-label font-weight-bold" for="active">{{ __('admin_panel.curatedRegister.templateForm.markAsActive') }}</label>
                             </div>
 
                             <hr>
-                            <button class="btn btn-primary btn-block rounded-pill font-weight-bold">Create Template</button>
+                            <button class="btn btn-primary btn-block rounded-pill font-weight-bold">{{ __('admin_panel.curatedRegister.templateCreate.title') }}</button>
                         </form>
                     </div>
                 </div>

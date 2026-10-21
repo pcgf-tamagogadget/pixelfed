@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5">	
 	<div class="col-12">
-		<p class="font-weight-bold text-lighter text-uppercase">Countries</p>
+		<p class="font-weight-bold text-lighter text-uppercase">{{ __('pages.discover.places.countries') }}</p>
 		<div class="card border shadow-none">
 			<div class="card-body row pl-md-5 ml-md-5">
 				@foreach($places as $place)

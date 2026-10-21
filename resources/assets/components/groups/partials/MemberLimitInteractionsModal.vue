@@ -6,7 +6,7 @@
 			hide-footer
 			centered
 			rounded
-			title="Limit Interactions"
+			:title="$t('groups.memberLimitInteractionsModal.title')"
 			body-class="rounded">
 
 			<div class="media mb-3">
@@ -17,35 +17,35 @@
 				<div class="media-body">
 					<p class="lead font-weight-bold mb-0">
 						<a :href="profile.url" class="text-dark text-decoration-none">{{profile.username}}</a>
-						<span v-if="profile.role == 'founder'" class="member-label rounded ml-1">Admin</span>
+						<span v-if="profile.role == 'founder'" class="member-label rounded ml-1">{{ $t('groups.memberLimitInteractionsModal.admin') }}</span>
 					</p>
-					<p class="text-muted mb-0">Member since {{formatDate(profile.joined)}}</p>
+					<p class="text-muted mb-0">{{ $t('groups.memberLimitInteractionsModal.memberSince', { date: formatDate(profile.joined) }) }}</p>
 				</div>
 			</div>
 
 			<div class="w-100 bg-light mb-1 font-weight-bold d-flex justify-content-center align-items-center border rounded" style="min-height:240px;">
 				<div v-if="limitsLoaded" class="py-3">
-					<p class="lead mb-0">Interaction Permissions</p>
-					<p class="small text-muted">Last updated: {{ updated ? formatDate(updated) : 'Never' }}</p>
+					<p class="lead mb-0">{{ $t('groups.memberLimitInteractionsModal.interactionPermissions') }}</p>
+					<p class="small text-muted">{{ $t('groups.memberLimitInteractionsModal.lastUpdated', { date: updated ? formatDate(updated) : $t('groups.memberLimitInteractionsModal.never') }) }}</p>
 
 					<div class="form-check">
 						<input class="form-check-input" type="checkbox" v-model="limits.can_post" :disabled="savingChanges">
 						<label class="form-check-label">
-							Can create posts
+							{{ $t('groups.memberLimitInteractionsModal.canPost') }}
 						</label>
 					</div>
 
 					<div class="form-check">
 						<input class="form-check-input" type="checkbox" v-model="limits.can_comment" :disabled="savingChanges">
 						<label class="form-check-label">
-							Can create comments
+							{{ $t('groups.memberLimitInteractionsModal.canComment') }}
 						</label>
 					</div>
 
 					<div class="form-check">
 						<input class="form-check-input" type="checkbox" v-model="limits.can_like" :disabled="savingChanges">
 						<label class="form-check-label">
-							Can like posts and comments
+							{{ $t('groups.memberLimitInteractionsModal.canLike') }}
 						</label>
 					</div>
 
@@ -53,12 +53,12 @@
 
 					<button class="btn btn-primary font-weight-bold float-right" @click.prevent="saveChanges" :disabled="savingChanges" style="width:130px;">
 						<b-spinner v-if="savingChanges" variant="light" small />
-						<span v-else>Save changes</span>
+						<span v-else>{{ $t('groups.memberLimitInteractionsModal.saveChanges') }}</span>
 					</button>
 				</div>
 				<div v-else class="d-flex align-items-center flex-column">
 					 <b-spinner variant="muted"  />
-					 <p class="pt-3 small text-muted font-weight-bold">Loading interaction limits...</p>
+					 <p class="pt-3 small text-muted font-weight-bold">{{ $t('groups.memberLimitInteractionsModal.loading') }}</p>
 				</div>
 			</div>
 		</b-modal>
@@ -102,7 +102,7 @@
 					this.limitsLoaded = true;
 				}).catch(err => {
 					this.$refs.home.hide();
-					swal('Oops!', 'Cannot fetch interaction limits at this time, please try again later.', 'error');
+					swal(this.$t('common.oops'), this.$t('groups.memberLimitInteractionsModal.fetchError'), 'error');
 				})
 			},
 
@@ -130,8 +130,8 @@
 					this.savingChanges = false;
 					this.$refs.home.hide();
 
-					this.$bvToast.toast(`Updated interaction limits for ${this.profile.username}`, {
-						title: 'Success',
+					this.$bvToast.toast(this.$t('groups.memberLimitInteractionsModal.updated', { username: this.profile.username }), {
+						title: this.$t('common.success'),
 						variant: 'success',
 						autoHideDelay: 5000
 					});
@@ -140,7 +140,7 @@
 					this.$refs.home.hide();
 
 					if(err.response.status == 422 && err.response.data.error == 'limit_reached') {
-							swal('Limit Reached', 'You cannot add any more member limitations', 'info');
+							swal(this.$t('groups.memberLimitInteractionsModal.limitReached'), this.$t('groups.memberLimitInteractionsModal.limitReachedMessage'), 'info');
 							// swal({
 							// 	title: 'Limit Reached',
 							// 	text: 'You cannot add any more member limitations',
@@ -163,7 +163,7 @@
 							// 	}
 							// });
 					} else {
-						swal('Oops!', 'An error occured while processing this request, please try again later.', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.memberLimitInteractionsModal.saveError'), 'error');
 					}
 				});
 			}

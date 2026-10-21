@@ -1,2 +1,2 @@
-<h2><span>Processing your membership request</span></h2>
-<p class="lead">We will send you an email once your account is ready!</p>
+<h2><span>{{ __('auth.curated.step4.title') }}</span></h2>
+<p class="lead">{{ __('auth.curated.step4.lead') }}</p>

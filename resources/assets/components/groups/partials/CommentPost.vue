@@ -46,7 +46,7 @@
 						class="font-weight-bold"
 						:class="[ status.favourited ? 'text-primary' : 'text-muted' ]"
 						@click.prevent="likeComment(status, index, $event)">
-							{{ status.favourited ? 'Liked' : 'Like' }}
+							{{ status.favourited ? $t('common.liked') : $t('common.like') }}
 						</a>
 					<!-- <span class="mx-1">·</span> -->
 					<!-- <a href="#" class="text-muted font-weight-bold" @click.prevent="replyToChild(status, index)">Reply</a> -->
@@ -63,7 +63,7 @@
 							class="font-weight-bold text-lighter"
 							href="#"
 							@click.prevent="deleteComment(index)">
-								Delete
+								{{ $t('common.delete') }}
 							</a>
 					</span>
 				</p>
@@ -198,11 +198,11 @@
 					if(err.response.status == 422) {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.commentPost.requestError'), 'error');
 					}
 				})
 			},
@@ -227,7 +227,7 @@
 			},
 
 			deleteComment(index) {
-				if(window.confirm('Are you sure you want to delete this post?') == false) {
+				if(window.confirm(this.$t('groups.commentPost.confirmDelete')) == false) {
 					return;
 				}
 
@@ -238,7 +238,7 @@
 					this.feed.splice(index, 1);
 				}).catch(err => {
 					console.log(err.response);
-					swal('Error', 'Something went wrong. Please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('common.errorMsg'), 'error');
 				});
 			},
 
@@ -270,11 +270,11 @@
 					if(err.response.status == 422) {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.commentPost.requestError'), 'error');
 					}
 				});
 			},
@@ -384,11 +384,11 @@
 					if(err.response.status == 422) {
 						// this.isUploading = false;
 						// this.uploadProgress = 0;
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						// this.isUploading = false;
 						// this.uploadProgress = 0;
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.commentPost.requestError'), 'error');
 					}
 				});
 

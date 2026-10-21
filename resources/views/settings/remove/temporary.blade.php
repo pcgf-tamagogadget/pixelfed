@@ -3,25 +3,25 @@
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Temporarily Disable Your Account</h3>
+    <h3 class="font-weight-bold">{{ __('settings.remove.temporarily_disable_your_account') }}</h3>
   </div>
   <hr>
   <div class="mt-3">
-  	<p>Hi <span class="font-weight-bold">{{Auth::user()->username}}</span>,</p>
+  	<p>{!! __('settings.remove.hi_username', ['username' => e(Auth::user()->username)]) !!}</p>
 
-  	<p>You can disable your account instead of deleting it. This means your account will be hidden until you reactivate it by logging back in.</p>
+  	<p>{{ __('settings.remove.you_can_disable_your_account_instead_of_deleting_it_etc') }}</p>
 
-  	<p class="pb-1">You can only disable your account once a week.</p>
+  	<p class="pb-1">{{ __('settings.remove.you_can_only_disable_your_account_once_a_week') }}</p>
 
-  	<p class="font-weight-bold">Keeping Your Data Safe</p>
-  	<p class="pb-3">Nothing is more important to us than the safety and security of this community. People put their trust in us by sharing moments of their lives on Pixelfed. So we will never make any compromises when it comes to safeguarding your data.</p>
+  	<p class="font-weight-bold">{{ __('settings.remove.keeping_your_data_safe') }}</p>
+  	<p class="pb-3">{{ __('settings.remove.nothing_is_more_important_to_us_than_the_safety_etc') }}</p>
 
-  	<p class="pb-2">When you press the button below, your photos, comments and likes will be hidden until you reactivate your account by logging back in.</p>
+  	<p class="pb-2">{{ __('settings.remove.when_you_press_the_button_below_your_photos_will_be_hidden_etc') }}</p>
 
   	<p>
   		<form method="post">
         @csrf
-  		  <button type="submit" class="btn btn-primary font-weight-bold py-0">Temporarily Disable Account</button>
+  		  <button type="submit" class="btn btn-primary font-weight-bold py-0">{{ __('settings.security.temporarily_disable_account') }}</button>
   		</form>
   	</p>
   </div>

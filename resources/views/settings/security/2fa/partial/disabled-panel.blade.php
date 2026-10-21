@@ -5,13 +5,13 @@
 				<i class="fas fa-lock fa-2x"></i>
 			</p>
 			<p class="text-muted h4 font-weight-bold">
-				Two factor authentication is not enabled yet.
+				{{ __('settings.two_factor.not_enabled_yet') }}
 			</p>
 			<p class="text-muted">
-				Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to log in.
+				{{ __('settings.two_factor.description') }}
 			</p>
 			<p class="mb-0">
-				<a class="btn btn-success font-weight-bold" href="{{route('settings.security.2fa.setup')}}">Enable two-factor authentication</a>
+				<a class="btn btn-success font-weight-bold" href="{{route('settings.security.2fa.setup')}}">{{ __('settings.two_factor.enable_two_factor_authentication') }}</a>
 			</p>
 		</div>
 	</li>

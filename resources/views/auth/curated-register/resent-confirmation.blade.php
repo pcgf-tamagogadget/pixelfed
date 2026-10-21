@@ -5,7 +5,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-7">
             <div class="logo">
-                <img src="{{ config('app.logo') }}" width="40" height="40" alt="Pixelfed Logo">
+                <img src="{{ config('app.logo') }}" width="40" height="40" alt="{{ __('auth.curated.logoAlt') }}">
                 <p class="font-weight-bold mb-0">Pixelfed</p>
             </div>
 
@@ -13,19 +13,19 @@
 
             <div class="alert alert-muted bg-transparent border-muted p-4 text-center mt-5">
                 <p class="text-center text-success mb-4"><i class="far fa-envelope-open fa-4x"></i></p>
-                <p class="h2 font-weight-bold text-white">Please check your email inbox</p>
+                <p class="h2 font-weight-bold text-white">{{ __('auth.curated.checkInbox') }}</p>
                 <hr style="opacity: 0.2">
-                <p class="lead text-white">We sent a confirmation link to your email that you need to verify before we can process your registration application.</p>
-                <p class="text-muted mb-0">The verification link expires after 24 hours.</p>
+                <p class="lead text-white">{{ __('auth.curated.sentConfirmLink') }}</p>
+                <p class="text-muted mb-0">{{ __('auth.curated.linkExpires') }}</p>
             </div>
         </div>
         <div class="col-12 col-md-7 mt-5">
             <div class="small-links">
-                <a href="/">Home</a>
+                <a href="/">{{ __('auth.curated.home') }}</a>
                 <span>·</span>
-                <a href="/login">Login</a>
+                <a href="/login">{{ __('auth.login') }}</a>
                 <span>·</span>
-                <a href="{{route('help.curated-onboarding')}}" target="_blank">Help</a>
+                <a href="{{route('help.curated-onboarding')}}" target="_blank">{{ __('auth.curated.help') }}</a>
             </div>
         </div>
     </div>

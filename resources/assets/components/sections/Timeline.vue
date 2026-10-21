@@ -12,21 +12,21 @@
                 <div v-if="showReblogBanner && getScope() === 'home'" class="card bg-g-amin card-body shadow-sm mb-3" style="border-radius: 15px;">
                     <div class="d-flex justify-content-around align-items-center">
                         <div class="flex-grow-1 ft-std">
-                            <h2 class="font-weight-bold text-white mb-0">Introducing Reblogs in feeds</h2>
+                            <h2 class="font-weight-bold text-white mb-0">{{ $t('spa.timelineSection.reblogBanner.title') }}</h2>
                             <hr />
                             <p class="lead text-white mb-0">
-                                See reblogs from accounts you follow in your home feed!
+                                {{ $t('spa.timelineSection.reblogBanner.description') }}
                             </p>
                             <p class="text-white small mb-1" style="opacity:0.6">
-                                You can disable reblogs in feeds on the Timeline Settings page.
+                                {{ $t('spa.timelineSection.reblogBanner.disableHint') }}
                             </p>
                             <hr />
                             <div class="d-flex">
                                 <button class="btn btn-light rounded-pill font-weight-bold btn-block mr-2" @click.prevent="enableReblogs()">
-                                    <template v-if="!enablingReblogs">Show reblogs in home feed</template>
+                                    <template v-if="!enablingReblogs">{{ $t('spa.timelineSection.reblogBanner.show') }}</template>
                                     <b-spinner small v-else />
                                 </button>
-                                <button class="btn btn-outline-light rounded-pill font-weight-bold px-5" @click.prevent="hideReblogs()">Hide</button>
+                                <button class="btn btn-outline-light rounded-pill font-weight-bold px-5" @click.prevent="hideReblogs()">{{ $t('spa.timelineSection.reblogBanner.hide') }}</button>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                 <button
                     class="btn btn-primary rounded-pill font-weight-bold"
                     @click="tryToLoadMore">
-                    Load more
+                    {{ $t('spa.timelineSection.loadMore') }}
                 </button>
             </div>
 
@@ -70,7 +70,7 @@
             <div v-if="!isLoaded && feed.length && endFeedReached" style="margin-bottom: 50vh">
                 <div class="card card-body shadow-sm mb-3" style="border-radius: 15px;">
                     <p class="display-4 text-center">✨</p>
-                    <p class="lead mb-0 text-center">You have reached the end of this feed</p>
+                    <p class="lead mb-0 text-center">{{ $t('spa.timelineSection.endOfFeed') }}</p>
                 </div>
             </div>
 
@@ -196,11 +196,11 @@
         mounted() {
             if(window.App.config.features.hasOwnProperty('timelines')) {
                 if(this.scope == 'local' && !window.App.config.features.timelines.local) {
-                    swal('Error', 'Cannot load this timeline', 'error');
+                    swal(this.$t('common.error'), this.$t('spa.timelineSection.cannotLoadTimeline'), 'error');
                     return;
                 };
                 if(this.scope == 'network' && !window.App.config.features.timelines.network) {
-                    swal('Error', 'Cannot load this timeline', 'error');
+                    swal(this.$t('common.error'), this.$t('spa.timelineSection.cannotLoadTimeline'), 'error');
                     return;
                 };
             }
@@ -414,13 +414,13 @@
                     let el = document.createElement('p');
                     el.classList.add('text-left');
                     el.classList.add('mb-0');
-                    el.innerHTML = '<span class="lead">We limit certain interactions to keep our community healthy and it appears that you have reached that limit. <span class="font-weight-bold">Please try again later.</span></span>';
+                    el.innerHTML = '<span class="lead">' + this.$t('spa.timelineSection.rateLimit.message') + ' <span class="font-weight-bold">' + this.$t('spa.timelineSection.rateLimit.tryAgainLater') + '</span></span>';
                     let wrapper = document.createElement('div');
                     wrapper.appendChild(el);
 
                     if(err.response.status === 429) {
                         swal({
-                            title: 'Too many requests',
+                            title: this.$t('spa.timelineSection.rateLimit.title'),
                             content: wrapper,
                             icon: 'warning',
                             buttons: {
@@ -663,8 +663,8 @@
                 })
                 .catch(err => {
                     // this.feed[index].bookmarked = false;
-                    this.$bvToast.toast('Cannot bookmark post at this time.', {
-                        title: 'Bookmark Error',
+                    this.$bvToast.toast(this.$t('spa.timelineSection.bookmarkError.message'), {
+                        title: this.$t('spa.timelineSection.bookmarkError.title'),
                         variant: 'danger',
                         autoHideDelay: 5000
                     });
@@ -679,7 +679,7 @@
                         this.updateProfile({ following_count: this.profile.following_count + 1 });
                         this.feed[index].reblog.account.followers_count = this.feed[index].reblog.account.followers_count + 1;
                     }).catch(err => {
-                        swal('Oops!', 'An error occured when attempting to follow this account.', 'error');
+                        swal(this.$t('common.oops'), this.$t('spa.timelineSection.followError'), 'error');
                         this.feed[index].reblog.relationship.following = false;
                     });
                 } else {
@@ -689,7 +689,7 @@
                         this.updateProfile({ following_count: this.profile.following_count + 1 });
                         this.feed[index].account.followers_count = this.feed[index].account.followers_count + 1;
                     }).catch(err => {
-                        swal('Oops!', 'An error occured when attempting to follow this account.', 'error');
+                        swal(this.$t('common.oops'), this.$t('spa.timelineSection.followError'), 'error');
                         this.feed[index].relationship.following = false;
                     });
                 }
@@ -703,7 +703,7 @@
                         this.updateProfile({ following_count: this.profile.following_count - 1 });
                         this.feed[index].reblog.account.followers_count = this.feed[index].reblog.account.followers_count - 1;
                     }).catch(err => {
-                        swal('Oops!', 'An error occured when attempting to unfollow this account.', 'error');
+                        swal(this.$t('common.oops'), this.$t('spa.timelineSection.unfollowError'), 'error');
                         this.feed[index].reblog.relationship.following = true;
                     });
                 } else {
@@ -713,7 +713,7 @@
                         this.updateProfile({ following_count: this.profile.following_count - 1 });
                         this.feed[index].account.followers_count = this.feed[index].account.followers_count - 1;
                     }).catch(err => {
-                        swal('Oops!', 'An error occured when attempting to unfollow this account.', 'error');
+                        swal(this.$t('common.oops'), this.$t('spa.timelineSection.unfollowError'), 'error');
                         this.feed[index].relationship.following = true;
                     });
                 }

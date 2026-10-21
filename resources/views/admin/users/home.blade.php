@@ -5,14 +5,14 @@
     <div class="row align-items-center mb-4">
         <div class="col-md-6">
             <div class="display-1 font-weight-bold text-dark mb-0">
-                Users
+                {{ __('admin_panel.users.home.title') }}
             </div>
-            <p class="text-muted mb-0">Manage and moderate user accounts</p>
+            <p class="text-muted mb-0">{{ __('admin_panel.users.home.subtitle') }}</p>
         </div>
         <div class="col-md-6">
                 <div class="d-flex justify-content-md-end mb-4">
-                    <a href="{{ route('admin.users.invites.index') }}" class="btn btn-secondary" title="Invites">
-                        <span class="font-weight-bold">Invites</span>
+                    <a href="{{ route('admin.users.invites.index') }}" class="btn btn-secondary" title="{{ __('admin_panel.users.home.invites') }}">
+                        <span class="font-weight-bold">{{ __('admin_panel.users.home.invites') }}</span>
                     </a>
                 </div>
             <form method="get" class="d-flex justify-content-md-end">
@@ -27,10 +27,10 @@
                             <i class="fas fa-search text-muted"></i>
                         </span>
                     </div>
-                    <input class="form-control border-left-0 pl-2" name="q" placeholder="Search by username..." value="{{request()->input('q')}}">
+                    <input class="form-control border-left-0 pl-2" name="q" placeholder="{{ __('admin_panel.users.home.searchPlaceholder') }}" value="{{request()->input('q')}}">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">
-                            Search
+                            {{ __('admin_panel.common.search') }}
                         </button>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="col-md-8">
                     <div class="d-flex flex-wrap align-items-center" style="gap:2rem;">
                         <div class="mr-4 mb-2 mb-md-0 d-flex align-items-center">
-                                <label for="limitSelect" class="text-muted small mb-0 mr-2">Show:</label>
+                                <label for="limitSelect" class="text-muted small mb-0 mr-2">{{ __('admin_panel.users.home.show') }}</label>
                                 <select id="limitSelect" class="custom-select custom-select-sm" style="width: auto;" onchange="changeLimit(this.value)">
                                     <option value="10" {{$limit == 10 ? 'selected' : ''}}>10</option>
                                     <option value="25" {{$limit == 25 ? 'selected' : ''}}>25</option>
@@ -57,7 +57,7 @@
                             <input type="checkbox" class="custom-control-input" id="trashedToggle"
                                 {{$trashed ? 'checked' : ''}} onchange="toggleTrashed(this.checked)">
                             <label class="custom-control-label text-muted text-xs pt-1" for="trashedToggle">
-                                Show deleted accounts
+                                {{ __('admin_panel.users.home.showDeleted') }}
                             </label>
                         </div>
 
@@ -65,7 +65,7 @@
                             <input type="checkbox" class="custom-control-input" id="showEmailToggle"
                                    onchange="toggleEmail(this.checked)">
                             <label class="custom-control-label text-muted text-xs pt-1" for="showEmailToggle">
-                                Show Email
+                                {{ __('admin_panel.users.home.showEmail') }}
                             </label>
                         </div>
 
@@ -73,7 +73,7 @@
                             <input type="checkbox" class="custom-control-input" id="showIpToggle"
                                    onchange="toggleIp(this.checked)">
                             <label class="custom-control-label text-muted text-xs pt-1" for="showIpToggle">
-                                Show IP
+                                {{ __('admin_panel.users.home.showIp') }}
                             </label>
                         </div>
                     </div>
@@ -83,11 +83,11 @@
                     <div id="selectedActions" class="d-flex justify-content-md-end align-items-center" style="display: none !important;">
                         <div class="badge badge-primary mr-2 px-3 py-2">
                             <i class="fas fa-check-circle mr-1"></i>
-                            <span id="selectedCount">0</span> selected
+                            {!! __('admin_panel.users.home.selected', ['count' => '<span id="selectedCount">0</span>']) !!}
                         </div>
                         <button class="btn btn-danger btn-sm" onclick="deleteSelected()">
                             <i class="fas fa-trash mr-1"></i>
-                            Delete Selected
+                            {{ __('admin_panel.users.home.deleteSelected') }}
                         </button>
                     </div>
                 </div>
@@ -109,28 +109,28 @@
                         <th scope="col" class="border-top-0" width="80px">
                             <a href="{{request()->fullUrlWithQuery(['col' => 'id', 'dir' => $col == 'id' && $dir == 'asc' ? 'desc' : 'asc'])}}"
                                 class="text-decoration-none text-dark font-weight-bold sort-header">
-                                ID
+                                {{ __('admin_panel.common.id') }}
                                 <i class="fas fa-sort{{$col == 'id' ? '-' . ($dir == 'asc' ? 'up' : 'down') : ''}} ml-1 text-muted"></i>
                             </a>
                         </th>
                         <th scope="col" class="border-top-0">
                             <a href="{{request()->fullUrlWithQuery(['col' => 'username', 'dir' => $col == 'username' && $dir == 'asc' ? 'desc' : 'asc'])}}"
                                 class="text-decoration-none text-dark font-weight-bold sort-header">
-                                Username
+                                {{ __('admin_panel.common.username') }}
                                 <i class="fas fa-sort{{$col == 'username' ? '-' . ($dir == 'asc' ? 'up' : 'down') : ''}} ml-1 text-muted"></i>
                             </a>
                         </th>
                         <th scope="col" class="border-top-0 text-center" width="100px">
-                            <span class="font-weight-bold text-muted">Posts</span>
+                            <span class="font-weight-bold text-muted">{{ __('admin_panel.users.home.posts') }}</span>
                         </th>
                         <th scope="col" class="border-top-0 text-center" width="100px">
-                            <span class="font-weight-bold text-muted">Followers</span>
+                            <span class="font-weight-bold text-muted">{{ __('admin_panel.users.home.followers') }}</span>
                         </th>
                         <th scope="col" class="border-top-0 text-center" width="100px">
-                            <span class="font-weight-bold text-muted">Following</span>
+                            <span class="font-weight-bold text-muted">{{ __('admin_panel.users.home.following') }}</span>
                         </th>
                         <th scope="col" class="border-top-0 text-center" width="200px">
-                            <span class="font-weight-bold text-muted">Actions</span>
+                            <span class="font-weight-bold text-muted">{{ __('admin_panel.common.actions') }}</span>
                         </th>
                     </tr>
                 </thead>
@@ -154,7 +154,7 @@
                                     </div>
                                     <div>
                                         <div class="font-weight-bold text-danger">{{$user->username}}</div>
-                                        <small class="text-muted">Account deleted</small>
+                                        <small class="text-muted">{{ __('admin_panel.users.home.accountDeleted') }}</small>
                                     </div>
                                 </div>
                             </td>
@@ -164,7 +164,7 @@
                             <td class="text-center align-middle">
                                 <span class="badge badge-danger">
                                     <i class="fas fa-trash-alt mr-1"></i>
-                                    Deleted
+                                    {{ __('admin_panel.users.home.deleted') }}
                                 </span>
                             </td>
                         </tr>
@@ -203,7 +203,7 @@
                                                     {{$user->username}}
                                                     @if($user->is_admin)
                                                     <span class="badge badge-danger badge-xs ml-1">
-                                                        <i class="fas fa-crown mr-1"></i>Admin
+                                                        <i class="fas fa-crown mr-1"></i>{{ __('admin_panel.users.home.admin') }}
                                                     </span>
                                                     @endif
                                                 </div>
@@ -252,13 +252,13 @@
                             <td class="align-middle text-center">
                                 <div class="btn-group btn-group-sm action-buttons" role="group">
                                     <a href="/i/admin/users/modtools/{{$user->id}}" class="btn btn-outline-warning btn-sm"
-                                        title="Moderation Tools" data-toggle="tooltip">
+                                        title="{{ __('admin_panel.users.home.moderationTools') }}" data-toggle="tooltip">
                                         <i class="fas fa-tools"></i>
-                                        <span class="font-weight-bold">Moderate</span>
+                                        <span class="font-weight-bold">{{ __('admin_panel.users.home.moderate') }}</span>
                                     </a>
                                     @if($user->status !== 'deleted' && !$user->is_admin)
                                     <button class="btn btn-outline-danger btn-sm"
-                                        title="Delete Account" data-toggle="tooltip" onclick="deleteAccount({{$user->id}})">
+                                        title="{{ __('admin_panel.users.home.deleteAccount') }}" data-toggle="tooltip" onclick="deleteAccount({{$user->id}})">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                     @endif
@@ -271,12 +271,12 @@
                             <td colspan="7" class="text-center py-5">
                                 <div class="text-muted">
                                     <i class="fas fa-users fa-3x mb-3 d-block"></i>
-                                    <h5>No users found</h5>
+                                    <h5>{{ __('admin_panel.users.home.noUsers') }}</h5>
                                     <p class="mb-0">
                                         @if(request()->input('q'))
-                                            Try adjusting your search criteria
+                                            {{ __('admin_panel.users.home.adjustSearch') }}
                                         @else
-                                            No users match the current filters
+                                            {{ __('admin_panel.users.home.noUsersMatch') }}
                                         @endif
                                     </p>
                                 </div>
@@ -291,28 +291,28 @@
         <div class="card-footer bg-lighter border-top-0">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="text-muted small">
-                    Showing {{$users->count()}} results
+                    {{ __('admin_panel.users.home.showingResults', ['count' => $users->count()]) }}
                 </div>
-                <nav aria-label="User pagination">
+                <nav aria-label="{{ __('admin_panel.users.home.pagination') }}">
                     <ul class="pagination pagination-sm mb-0">
                         @if($pagination['prev'] !== null)
                         <li class="page-item">
                             <a class="page-link" href="?page={{$pagination['prev']}}{{$pagination['query']}}" rel="prev">
                                 <i class="fas fa-chevron-left"></i>
-                                <span class="sr-only">Previous</span>
+                                <span class="sr-only">{{ __('admin_panel.common.previous') }}</span>
                             </a>
                         </li>
                         @else
                         <li class="page-item disabled">
                             <span class="page-link">
                                 <i class="fas fa-chevron-left"></i>
-                                <span class="sr-only">Previous</span>
+                                <span class="sr-only">{{ __('admin_panel.common.previous') }}</span>
                             </span>
                         </li>
                         @endif
                         <li class="page-item">
                             <a class="page-link" href="?page={{$pagination['next']}}{{$pagination['query']}}" rel="next">
-                                <span class="sr-only">Next</span>
+                                <span class="sr-only">{{ __('admin_panel.common.next') }}</span>
                                 <i class="fas fa-chevron-right"></i>
                             </a>
                         </li>
@@ -551,18 +551,18 @@
         event.preventDefault();
 
         swal({
-            title: 'Delete Account',
-            text: "Are you sure you want to delete this account? This action cannot be undone.",
+            title: @json(__('admin_panel.users.home.deleteAccount')),
+            text: @json(__('admin_panel.users.home.deleteConfirm')),
             icon: 'warning',
             dangerMode: true,
             buttons: {
                 cancel: {
-                    text: "Cancel",
+                    text: @json(__('admin_panel.common.cancel')),
                     value: false,
                     visible: true,
                 },
                 delete: {
-                    text: "Delete",
+                    text: @json(__('admin_panel.common.delete')),
                     value: "delete",
                     className: "btn-danger"
                 }
@@ -571,8 +571,8 @@
         .then((willDelete) => {
             if (willDelete === 'delete') {
                 swal({
-                    title: 'Deleting...',
-                    text: 'Please wait while we delete the account.',
+                    title: @json(__('admin_panel.users.home.deleting')),
+                    text: @json(__('admin_panel.users.home.deletingWait')),
                     icon: 'info',
                     buttons: false,
                     closeOnClickOutside: false,
@@ -581,13 +581,13 @@
 
                 axios.post('/i/admin/users/delete/' + id)
                 .then(res => {
-                    swal('Success!', 'Account has been deleted successfully.', 'success')
+                    swal(@json(__('admin_panel.users.home.success')), @json(__('admin_panel.users.home.deleteSuccess')), 'success')
                     .then(() => {
                         window.location.reload();
                     });
                 })
                 .catch(err => {
-                    swal('Error!', 'Failed to delete account. Please try again.', 'error');
+                    swal(@json(__('admin_panel.users.home.error')), @json(__('admin_panel.users.home.deleteFailed')), 'error');
                 });
             }
         });
@@ -637,7 +637,7 @@
         const selectedData = userSelectionManager.getSelectedUserData();
 
         if (selectedData.length === 0) {
-            swal('No Selection', 'Please select at least one account to delete.', 'warning');
+            swal(@json(__('admin_panel.users.home.noSelection')), @json(__('admin_panel.users.home.noSelectionText')), 'warning');
             return;
         }
 
@@ -645,18 +645,18 @@
         const ids = selectedData.map(user => user.id);
 
         swal({
-            title: 'Bulk Delete Confirmation',
-            text: `Are you sure you want to delete ${ids.length} account(s)?\n\nUsernames:\n${usernames.join('\n')}`,
+            title: @json(__('admin_panel.users.home.bulkDeleteTitle')),
+            text: @json(__('admin_panel.users.home.bulkDeleteText')).replace(':count', ids.length).replace(':usernames', () => usernames.join('\n')),
             icon: 'warning',
             dangerMode: true,
             buttons: {
                 cancel: {
-                    text: "Cancel",
+                    text: @json(__('admin_panel.common.cancel')),
                     value: false,
                     visible: true,
                 },
                 delete: {
-                    text: `Delete ${ids.length} Account(s)`,
+                    text: @json(__('admin_panel.users.home.bulkDeleteButton')).replace(':count', ids.length),
                     value: "delete",
                     className: "btn-danger"
                 }
@@ -665,8 +665,8 @@
         .then(async (res) => {
             if(res === 'delete') {
                 swal({
-                    title: 'Processing Deletion',
-                    text: `Deleting ${ids.length} accounts... Please wait.`,
+                    title: @json(__('admin_panel.users.home.processingDeletion')),
+                    text: @json(__('admin_panel.users.home.bulkDeleting')).replace(':count', ids.length),
                     icon: 'info',
                     buttons: false,
                     closeOnClickOutside: false,
@@ -677,8 +677,8 @@
                     await Promise.all(ids.map(id => deleteAccountById(id)));
 
                     swal({
-                        title: 'Success!',
-                        text: `Successfully deleted ${ids.length} account(s).`,
+                        title: @json(__('admin_panel.users.home.success')),
+                        text: @json(__('admin_panel.users.home.bulkDeleteSuccess')).replace(':count', ids.length),
                         icon: 'success',
                         timer: 2000
                     });
@@ -687,7 +687,7 @@
                         window.location.reload();
                     }, 2000);
                 } catch (error) {
-                    swal('Error!', 'Some accounts could not be deleted. Please try again.', 'error');
+                    swal(@json(__('admin_panel.users.home.error')), @json(__('admin_panel.users.home.bulkDeleteFailed')), 'error');
                 }
             }
         });

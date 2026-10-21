@@ -1,8 +1,8 @@
 <template>
     <nav class="metro-nav navbar navbar-expand navbar-light navbar-laravel sticky-top shadow-none py-1">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="/i/web" title="Logo">
-                <img :src="config.logo" height="30px" class="px-2" loading="eager" alt="Pixelfed logo">
+            <a class="navbar-brand d-flex align-items-center" href="/i/web" :title="$t('spa.navbar.logo')">
+                <img :src="config.logo" height="30px" class="px-2" loading="eager" :alt="$t('spa.navbar.logoAlt')">
                 <span class="font-weight-bold mb-0 d-none d-sm-block" style="font-size:20px;">
                     {{ brandName }}
                 </span>
@@ -11,7 +11,7 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav ml-auto">
                     <autocomplete class="searchbox" :search="autocompleteSearch" :placeholder="$t('navmenu.search')"
-                        aria-label="Search" :get-result-value="getSearchResultValue" :debounceTime="700" submit-on-enter
+                        :aria-label="$t('navmenu.search')" :get-result-value="getSearchResultValue" :debounceTime="700" submit-on-enter
                         @submit="onSearchSubmit" ref="autocomplete">
 
                         <template #result="{ result, props }">
@@ -24,7 +24,7 @@
                                         <div class="sr-account-acct"
                                             :class="{ compact: result.acct && result.acct.length > 24 }">
                                             &commat;{{ result.acct }}
-                                            <b-button v-if="result.locked" v-b-tooltip.html title="Private Account"
+                                            <b-button v-if="result.locked" v-b-tooltip.html :title="$t('spa.navbar.privateAccount')"
                                                 variant="link" size="sm" class="p-0">
                                                 <i class="far fa-lock fa-sm text-lighter ml-1"></i>
                                             </b-button>
@@ -32,12 +32,12 @@
                                         <template v-if="result.is_admin">
                                             <div class="sr-account-stats">
                                                 <div class="sr-account-stats-followers text-danger font-weight-bold">
-                                                    Admin
+                                                    {{ $t('profile.admin') }}
                                                 </div>
                                                 <div>·</div>
                                                 <div class="sr-account-stats-followers font-weight-bold">
                                                     <span>{{ formatCount(result.followers_count) }}</span>
-                                                    <span>Followers</span>
+                                                    <span>{{ $t('profile.followers') }}</span>
                                                 </div>
                                             </div>
                                         </template>
@@ -47,13 +47,13 @@
                                                     <div v-if="result.followers_count"
                                                         class="sr-account-stats-followers font-weight-bold">
                                                         <span>{{ formatCount(result.followers_count) }}</span>
-                                                        <span>Followers</span>
+                                                        <span>{{ $t('profile.followers') }}</span>
                                                     </div>
                                                     <div v-if="result.followers_count && result.statuses_count">·</div>
                                                     <div v-if="result.statuses_count"
                                                         class="sr-account-stats-statuses font-weight-bold">
                                                         <span>{{ formatCount(result.statuses_count) }}</span>
-                                                        <span>Posts</span>
+                                                        <span>{{ $t('profile.posts') }}</span>
                                                     </div>
                                                     <div v-if="!result.followers_count && result.statuses_count">·</div>
                                                     <div class="sr-account-stats-statuses font-weight-bold">
@@ -67,25 +67,25 @@
                                                     <div v-if="result.followers_count"
                                                         class="sr-account-stats-followers font-weight-bold">
                                                         <span>{{ formatCount(result.followers_count) }}</span>
-                                                        <span>Followers</span>
+                                                        <span>{{ $t('profile.followers') }}</span>
                                                     </div>
                                                     <div v-if="result.followers_count && result.statuses_count">·</div>
                                                     <div v-if="result.statuses_count"
                                                         class="sr-account-stats-statuses font-weight-bold">
                                                         <span>{{ formatCount(result.statuses_count) }}</span>
-                                                        <span>Posts</span>
+                                                        <span>{{ $t('profile.posts') }}</span>
                                                     </div>
                                                     <div v-if="!result.followers_count && result.statuses_count">·</div>
 
                                                     <div v-if="!result.followers_count && !result.statuses_count"
                                                         class="sr-account-stats-statuses font-weight-bold">
-                                                        Remote Account
+                                                        {{ $t('spa.navbar.remoteAccount') }}
                                                     </div>
                                                     <div v-if="!result.followers_count && !result.statuses_count">
                                                         ·
                                                     </div>
                                                     <b-button v-b-tooltip.html
-                                                        :title="'Joined ' + timeAgo(result.created_at) + ' ago'"
+                                                        :title="$t('spa.navbar.joinedAgo', { time: timeAgo(result.created_at) })"
                                                         variant="link" size="sm" class="sr-account-stats-statuses p-0">
                                                         <i class="far fa-clock fa-sm"></i>
                                                         <span class="font-weight-bold">{{ timeAgo(result.created_at)
@@ -107,7 +107,7 @@
                                             #{{ result.name }}
                                         </div>
                                         <div v-if="result.count && result.count > 100" class="sr-tag-count">
-                                            {{ formatCount(result.count) }} {{ result.count == 1 ? 'Post' : 'Posts' }}
+                                            {{ formatCount(result.count) }} {{ result.count == 1 ? $t('spa.navbar.post') : $t('profile.posts') }}
                                         </div>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@
                                         <div class="sr-post-acct"
                                             :class="{ compact: result.acct && result.acct.length > 26 }">
                                             &commat;{{ truncate(result.account.acct, 20) }}
-                                            <b-button v-if="result.locked" v-b-tooltip.html title="Private Account"
+                                            <b-button v-if="result.locked" v-b-tooltip.html :title="$t('spa.navbar.privateAccount')"
                                                 variant="link" size="sm" class="p-0">
                                                 <i class="far fa-lock fa-sm text-lighter ml-1"></i>
                                             </b-button>
@@ -133,7 +133,7 @@
                                             </div>
                                             <div>·</div>
                                             <div class="sr-post-action-label">
-                                                Tap to view post
+                                                {{ $t('spa.navbar.tapToViewPost') }}
                                             </div>
                                         </div>
                                     </div>
@@ -147,9 +147,9 @@
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item dropdown ml-2">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="User Menu">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" :title="$t('spa.navbar.userMenu')">
                                 <i class="d-none far fa-user fa-lg text-dark"></i>
-                                <span class="sr-only">User Menu</span>
+                                <span class="sr-only">{{ $t('spa.navbar.userMenu') }}</span>
                                 <img :src="user.avatar" class="nav-avatar rounded-circle border shadow" width="30"
                                     height="30"
                                     onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">

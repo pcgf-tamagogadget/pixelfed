@@ -1,15 +1,15 @@
 @component('mail::message')
-# Account Email Changed
+# {{ __('emails.emailChange.title') }}
 
 
 @component('mail::panel')
-<p>The email associated to your account has been changed.</p>
+<p>{{ __('emails.emailChange.body') }}</p>
 @endcomponent
 
-<small>If you did not make this change and believe your Pixelfed account has been compromised, please contact the instance admin.</small>
+<small>{{ __('emails.emailChange.notYou') }}</small>
 
 <br>
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 {{ config('pixelfed.domain.app') }}
 @endcomponent

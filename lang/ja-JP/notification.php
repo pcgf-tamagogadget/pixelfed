@@ -7,6 +7,6 @@ return [
     'startedFollowingYou' => 'フォローされました。',
     'commented' => '投稿にコメントされました。',
     'mentionedYou' => 'メンションされました。',
-    'shared' => '投稿がリブログされました。',
+    'shared' => '投稿が共有されました。',
 
 ];

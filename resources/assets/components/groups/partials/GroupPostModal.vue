@@ -35,7 +35,7 @@
 						<div class="text-right" style="flex-grow:1;">
 							<button class="btn btn-link text-dark py-0" type="button">
 								<span class="fas fa-ellipsis-h text-lighter"></span>
-								<span class="sr-only">Post Menu</span>
+								<span class="sr-only">{{ $t('groups.groupPostModal.postMenu') }}</span>
 							</button>
 						</div>
 					</div>
@@ -46,17 +46,17 @@
 						<div class="d-flex justify-content-between" style="padding: 8px 5px">
 							<button class="btn btn-link py-0 text-decoration-none btn-sm" :class="{ 'font-weight-bold': status.favourited, 'text-primary': status.favourited, 'text-muted': !status.favourited }">
 								<i class="far fa-heart mr-1"></i>
-								{{ status.favourited ? 'Liked' : 'Like' }}
+								{{ status.favourited ? $t('common.liked') : $t('common.like') }}
 							</button>
 
 							<button class="btn btn-link py-0 text-decoration-none btn-sm text-muted">
 								<i class="far fa-comment cursor-pointer text-muted mr-1"></i>
-								Comment
+								{{ $t('common.comment') }}
 							</button>
 
 							<button class="btn btn-link py-0 text-decoration-none btn-sm" disabled>
 								<i class="fas fa-external-link-alt cursor-pointer text-muted mr-1"></i>
-								Share
+								{{ $t('common.share') }}
 							</button>
 						</div>
 					</div>

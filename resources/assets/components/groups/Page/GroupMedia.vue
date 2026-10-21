@@ -23,7 +23,7 @@
                 </div>
 
                 <div v-if="!initialLoad">
-                    <p class="text-center mt-5 pt-5 font-weight-bold">Loading...</p>
+                    <p class="text-center mt-5 pt-5 font-weight-bold">{{ $t('common.loading') }}</p>
                 </div>
 
                 <template v-else>
@@ -145,7 +145,7 @@
                 })
                 .catch(err => {
                     //window.location.href = '/groups/unavailable';
-                    alert('error');
+                    alert(this.$t('common.error'));
                 });
             },
 

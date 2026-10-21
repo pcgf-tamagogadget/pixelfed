@@ -5,8 +5,8 @@
 <div class="container">
 	<div class="row">
 		<div class="col-12 py-5 d-flex justify-content-between align-items-center">
-			<p class="h1 mb-0"><i class="far fa-circle"></i> Circles</p>
-			<p class="mb-0"><a class="btn btn-outline-primary font-weight-bold btn-sm py-1" href="{{route('account.circles.create')}}"><i class="far fa-circle"></i> New</a></p>
+			<p class="h1 mb-0"><i class="far fa-circle"></i> {{ __('pages.account.circles.title') }}</p>
+			<p class="mb-0"><a class="btn btn-outline-primary font-weight-bold btn-sm py-1" href="{{route('account.circles.create')}}"><i class="far fa-circle"></i> {{ __('pages.account.circles.new') }}</a></p>
 		</div>
 		<div class="col-12">
 			<div class="card">
@@ -23,8 +23,8 @@
 									@endforeach
 								</div>
 								<div class="col-md-4 text-right">
-									<span class="font-weight-lighter mb-0 text-muted pr-3">{{$circle->members->count()}} Members</span>
-									<a class="btn btn-outline-primary btn-sm py-1 font-weight-bold" href="{{$circle->url()}}">View</a>
+									<span class="font-weight-lighter mb-0 text-muted pr-3">{{ __('pages.account.circles.membersCount', ['count' => $circle->members->count()]) }}</span>
+									<a class="btn btn-outline-primary btn-sm py-1 font-weight-bold" href="{{$circle->url()}}">{{ __('pages.account.circles.view') }}</a>
 								</div>
 							</div>
 						</li>

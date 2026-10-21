@@ -22,7 +22,7 @@
 							:src="config.about.banner_image"
 							class="img-fluid rounded"
 							style="width: 100%;max-height: 200px;object-fit: cover;"
-							alt="Server banner image"
+							:alt="$t('spa.landingIndex.bannerAlt')"
 							height="200"
 							onerror="this.src='/storage/headers/default.jpg';this.onerror=null;">
 					</div>
@@ -62,7 +62,7 @@
 												width="45"
 												height="45"
 												class="avatar"
-												:alt="`${config.contact.account.username}'s avatar`"
+												:alt="$t('spa.landingIndex.avatarAlt', { username: config.contact.account.username })"
 												onerror="this.src='/storage/avatars/default.jpg';this.onerror=null;"
 												>
 
@@ -75,8 +75,8 @@
 								</div>
 
 								<div v-if="config.contact.email" class="list-group-item bg-transparent">
-									<p class="item-label">Contact</p>
-									<a :href="`mailto:${config.contact.email}?subject=Regarding ${config.domain}`" class="admin-email" target="_blank">{{ config.contact.email }}</a>
+									<p class="item-label">{{ $t('spa.landingIndex.contact') }}</p>
+									<a :href="`mailto:${config.contact.email}?subject=${encodeURIComponent($t('spa.landingIndex.emailSubject', { domain: config.domain }))}`" class="admin-email" target="_blank">{{ config.contact.email }}</a>
 								</div>
 							</div>
 						</div>

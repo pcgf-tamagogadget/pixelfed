@@ -122,7 +122,7 @@
                                         v-model="formData.filter_action"
                                         />
                                         <label class="custom-control-label d-flex align-items-center" for="action-blur">
-                                            <span class="badge badge-primary mr-2">Blur</span>
+                                            <span class="badge badge-primary mr-2">{{ $t('compose.filters.blur') }}</span>
                                             {{ $t("settings.filters.hide_media_blur") }}
                                         </label>
                                     </div>
@@ -136,7 +136,7 @@
                                         v-model="formData.filter_action"
                                         />
                                         <label class="custom-control-label d-flex align-items-center" for="action-warn">
-                                            <span class="badge badge-warning mr-2">Warning</span>
+                                            <span class="badge badge-warning mr-2">{{ $t('compose.filters.warning') }}</span>
                                             {{ $t("settings.filters.show_warning") }}
                                         </label>
                                     </div>
@@ -150,7 +150,7 @@
                                         v-model="formData.filter_action"
                                         />
                                         <label class="custom-control-label d-flex align-items-center" for="action-hide">
-                                            <span class="badge badge-danger mr-2">Hidden</span>
+                                            <span class="badge badge-danger mr-2">{{ $t('compose.filters.hidden') }}</span>
                                             {{ $t("settings.filters.hide_content_completely") }}
                                         </label>
                                     </div>
@@ -257,7 +257,7 @@
                                     <option value="43200">{{ $t("settings.filters.12_hours") }}</option>
                                     <option value="86400">{{ $t("settings.filters.1_day") }}</option>
                                     <option value="604800">{{ $t("settings.filters.1_week") }}</option>
-                                    <option value="-1">{{ $t("settings.filters.1_week") }}</option>
+                                    <option value="-1">{{ $t("settings.filters.cutom") }}</option>
                                 </select>
                                 <div v-if="selectedDuration === '-1'" class="input-group mt-2">
                                     <input
@@ -268,7 +268,7 @@
                                     :placeholder="$t('settings.filters.enter_duration_in_seconds')"
                                     />
                                     <div class="input-group-append overflow-hidden">
-                                        <span class="input-group-text">seconds</span>
+                                        <span class="input-group-text">{{ $t('compose.filters.seconds') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -291,7 +291,7 @@
                             <button type="submit" class="btn btn-primary font-weight-bold rounded-pill" :disabled="!isValid">
                                 <template v-if="isPosting">
                                     <div class="spinner-border text-white mx-4 spinner-border-sm" role="status">
-                                        <span class="sr-only">Loading...</span>
+                                        <span class="sr-only">{{ $t('common.loading') }}</span>
                                     </div>
                                 </template>
                                 <template v-else>
@@ -352,7 +352,7 @@
                                             <option value="43200">{{ $t("settings.filters.12_hours") }}</option>
                                             <option value="86400">{{ $t("settings.filters.1_day") }}</option>
                                             <option value="604800">{{ $t("settings.filters.1_week") }}</option>
-                                            <option value="-1">{{ $t("settings.filters.1_week") }}</option>
+                                            <option value="-1">{{ $t("settings.filters.cutom") }}</option>
                                         </select>
                                         <div v-if="selectedDuration === '-1'" class="input-group mt-2">
                                             <input
@@ -364,7 +364,7 @@
                                             :placeholder="$t('settings.filters.enter_duration_in_seconds')"
                                             />
                                             <div class="input-group-append">
-                                                <span class="input-group-text">seconds</span>
+                                                <span class="input-group-text">{{ $t('compose.filters.seconds') }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -391,7 +391,7 @@
                                                     'border-info': !keyword.whole_word && !keywordErrors[index],
                                                     'is-invalid': keywordErrors[index]
                                                 }"
-                                                placeholder="Enter keyword or phrase"
+                                                :placeholder="$t('compose.filters.keywordPlaceholder')"
                                                 maxlength="40"
                                                 @input="checkDuplicateKeyword(index)"
                                                 />
@@ -458,7 +458,7 @@
                                             >
                                             <div class="card-body">
                                                 <i class="fas fa-tint fa-2x text-info mb-3"></i>
-                                                <h5 class="card-title">Blur</h5>
+                                                <h5 class="card-title">{{ $t('compose.filters.blur') }}</h5>
                                                 <p class="card-text text-muted small">{{ $t('settings.filters.hide_media_blur') }}</p>
                                             </div>
                                         </div>
@@ -469,7 +469,7 @@
                                         >
                                             <div class="card-body">
                                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
-                                                <h5 class="card-title">Warn</h5>
+                                                <h5 class="card-title">{{ $t('compose.filters.warn') }}</h5>
                                                 <p class="card-text text-muted small">{{ $t('settings.filters.show_warning') }}</p>
                                             </div>
                                         </div>
@@ -480,7 +480,7 @@
                                         >
                                             <div class="card-body">
                                                 <i class="fas fa-eye-slash fa-2x text-danger mb-3"></i>
-                                                <h5 class="card-title">Hide</h5>
+                                                <h5 class="card-title">{{ $t('compose.filters.hide') }}</h5>
                                                 <p class="card-text text-muted small">{{ $t('settings.filters.hide_completely') }}</p>
                                             </div>
                                         </div>
@@ -533,7 +533,7 @@
                                     </div>
                                     <div class="card shadow-none border rounded-lg mb-3">
                                         <div class="card-header bg-light">
-                                            <h5 class="mb-0 text-center font-weight-light">{{ formData.title || 'Untitled Filter' }}</h5>
+                                            <h5 class="mb-0 text-center font-weight-light">{{ formData.title || $t('compose.filters.untitledFilter') }}</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="row mb-3">
@@ -546,7 +546,7 @@
                                                             class="badge badge-pill badge-light badge-lg border mr-1 mb-1 p-2"
                                                         >
                                                             {{ keyword.keyword }}
-                                                            <span v-if="keyword.whole_word" class="small font-italic ml-1">(whole)</span>
+                                                            <span v-if="keyword.whole_word" class="small font-italic ml-1">{{ $t('compose.filters.whole') }}</span>
                                                         </span>
                                                     </div>
                                                     <span v-else class="text-muted">{{ $t('settings.filters.no_keywords_specified')  }}</span>
@@ -563,7 +563,7 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <div class="col-md-4 font-weight-bold">Applied to:</div>
+                                                <div class="col-md-4 font-weight-bold">{{ $t('compose.filters.appliedTo') }}</div>
                                                 <div class="col-md-8">
                                                     <span
                                                         v-for="context in formData.context"
@@ -584,7 +584,7 @@
                                                     <span v-else-if="selectedDuration === '43200'">{{ $t("settings.filters.12_hours") }}</span>
                                                     <span v-else-if="selectedDuration === '86400'">{{ $t("settings.filters.1_day") }}</span>
                                                     <span v-else-if="selectedDuration === '604800'">{{ $t("settings.filters.1_week") }}</span>
-                                                    <span v-else-if="selectedDuration === '-1'">{{ customDuration }} seconds</span>
+                                                    <span v-else-if="selectedDuration === '-1'">{{ $t('compose.filters.customSeconds', { seconds: customDuration }) }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -600,7 +600,7 @@
                                         class="btn btn-outline-secondary font-weight-light rounded-pill"
                                         @click="currentStep > 0 ? currentStep-- : closeModal()"
                                     >
-                                    {{ currentStep > 0 ? 'Back' : 'Cancel' }}
+                                    {{ currentStep > 0 ? $t('compose.filters.back') : $t('common.cancel') }}
                                 </button>
 
                                 <button
@@ -631,7 +631,7 @@
                                 >
                                     <template v-if="isPosting">
                                         <div class="spinner-border text-white mx-4 spinner-border-sm" role="status">
-                                            <span class="sr-only">Loading...</span>
+                                            <span class="sr-only">{{ $t('common.loading') }}</span>
                                         </div>
                                     </template>
                                     <template v-else>
@@ -685,8 +685,8 @@
                 contextItems: [
                     {
                         value: 'home',
-                        label: 'Home timeline',
-                        description: 'Filter content on your main feed'
+                        label: this.$t('compose.filters.homeTimeline'),
+                        description: this.$t('compose.filters.homeTimelineDesc')
                     },
                     // {
                     //   value: 'notifications',
@@ -695,8 +695,8 @@
                     // },
                     {
                         value: 'public',
-                        label: 'Public timelines',
-                        description: 'Filter content on public and explore pages'
+                        label: this.$t('compose.filters.publicTimelines'),
+                        description: this.$t('compose.filters.publicTimelinesDesc')
                     },
                     // {
                     //   value: 'thread',
@@ -705,8 +705,8 @@
                     // },
                     {
                         value: 'tags',
-                        label: 'Hashtags',
-                        description: 'Filter content in hashtag feeds'
+                        label: this.$t('compose.filters.hashtags'),
+                        description: this.$t('compose.filters.hashtagsDesc')
                     },
                     // {
                     //   value: 'groups',
@@ -867,7 +867,7 @@
                     const normalizedKeyword = keywordObj.keyword.toLowerCase().trim();
 
                     if (keywordSet.has(normalizedKeyword)) {
-                        this.$set(this.keywordErrors, index, 'Duplicate keyword');
+                        this.$set(this.keywordErrors, index, this.$t('compose.filters.duplicateKeyword'));
                         hasErrors = true;
                         this.isDuplicateError = true;
                     } else {
@@ -930,7 +930,7 @@
                     );
 
                 if (isDuplicate) {
-                    this.$set(this.keywordErrors, index, 'Duplicate keyword');
+                    this.$set(this.keywordErrors, index, this.$t('compose.filters.duplicateKeyword'));
                     this.isDuplicateError = true;
                     return false;
                 } else {
@@ -990,12 +990,12 @@
 
             formatContext(context) {
                 const contexts = {
-                    'home': 'Home feed',
-                    'notifications': 'Notifications',
-                    'public': 'Public feeds',
-                    'thread': 'Conversations',
-                    'tags': 'Hashtags',
-                    'groups': 'Groups'
+                    'home': this.$t('compose.filters.homeFeed'),
+                    'notifications': this.$t('compose.filters.notifications'),
+                    'public': this.$t('compose.filters.publicFeeds'),
+                    'thread': this.$t('compose.filters.conversations'),
+                    'tags': this.$t('compose.filters.hashtags'),
+                    'groups': this.$t('compose.filters.groups')
                 };
                 return contexts[context] || context;
             },
@@ -1022,13 +1022,13 @@
 
             renderActionDescription() {
                 if(this.formData.filter_action === 'warn') {
-                    return `<div><i class="fas fa-exclamation-triangle text-warning mr-1"></i> <strong>Warn</strong></div>`
+                    return `<div><i class="fas fa-exclamation-triangle text-warning mr-1"></i> <strong>${this.$t('compose.filters.warn')}</strong></div>`
                 }
                 if(this.formData.filter_action === 'blur') {
-                    return `<div><i class="fas fa-tint mr-1 text-info"></i> <strong>Blur</strong></div>`
+                    return `<div><i class="fas fa-tint mr-1 text-info"></i> <strong>${this.$t('compose.filters.blur')}</strong></div>`
                 }
                 if(this.formData.filter_action === 'hide') {
-                    return `<div><i class="fas fa-eye-slash mr-1 text-danger"></i> <strong>Hide</strong></div>`
+                    return `<div><i class="fas fa-eye-slash mr-1 text-danger"></i> <strong>${this.$t('compose.filters.hide')}</strong></div>`
                 }
             },
 
@@ -1039,22 +1039,22 @@
                 content.style.marginTop = '20px';
 
                 let title = document.createElement('h4');
-                title.textContent = 'Whole Word Matching';
+                title.textContent = this.$t('compose.filters.wholeWordTitle');
                 title.style.fontWeight = 'bold';
                 title.style.marginBottom = '15px';
                 title.style.paddingBottom = '15px';
                 title.style.borderBottom = '1px solid #ccc';
 
                 let description = document.createElement('p');
-                description.textContent = 'When enabled, keywords will only match complete words.';
+                description.textContent = this.$t('compose.filters.wholeWordDesc');
                 description.style.marginBottom = '15px';
 
                 let example = document.createElement('p');
-                example.textContent = 'Example: If your keyword is "cat", it will match "I have a cat" but won\'t match "category" or "concatenate".';
+                example.textContent = this.$t('compose.filters.wholeWordExample');
                 example.style.marginBottom = '15px';
 
                 let usage = document.createElement('p');
-                usage.textContent = 'This is useful when you want to filter specific terms without affecting words that contain those letters as part of a larger word.';
+                usage.textContent = this.$t('compose.filters.wholeWordUsage');
 
                 content.appendChild(title);
                 content.appendChild(description);
@@ -1067,7 +1067,7 @@
                     html: true,
                     customClass: 'word-matching-modal',
                     content: content,
-                    confirmButtonText: 'Got it',
+                    confirmButtonText: this.$t('compose.filters.gotIt'),
                     confirmButtonColor: '#6c7cff'
                 });
             },
@@ -1079,22 +1079,22 @@
                 content.style.marginTop = '20px';
 
                 var title = document.createElement('h4');
-                title.textContent = 'Partial Phrase Matching';
+                title.textContent = this.$t('compose.filters.partialTitle');
                 title.style.fontWeight = 'bold';
                 title.style.marginBottom = '15px';
                 title.style.paddingBottom = '15px';
                 title.style.borderBottom = '1px solid #ccc';
 
                 var description = document.createElement('p');
-                description.textContent = 'When enabled, keywords will match any text containing these characters.';
+                description.textContent = this.$t('compose.filters.partialDesc');
                 description.style.marginBottom = '15px';
 
                 var example = document.createElement('p');
-                example.textContent = 'Example: If your keyword is "cat", it will match "I have a cat" as well as "category" and "concatenate".';
+                example.textContent = this.$t('compose.filters.partialExample');
                 example.style.marginBottom = '15px';
 
                 var usage = document.createElement('p');
-                usage.textContent = 'This is useful when you want to filter variations of words or when the same letters might appear in different contexts.';
+                usage.textContent = this.$t('compose.filters.partialUsage');
 
                 content.appendChild(title);
                 content.appendChild(description);
@@ -1107,7 +1107,7 @@
                     html: true,
                     customClass: 'word-matching-modal',
                     content: content,
-                    confirmButtonText: 'Got it',
+                    confirmButtonText: this.$t('compose.filters.gotIt'),
                     confirmButtonColor: '#6c7cff'
                 });
             }

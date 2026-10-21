@@ -7,8 +7,8 @@
 		<div class="header-body">
 			<div class="row align-items-center py-4">
 				<div class="col-lg-6 col-7">
-					<p class="display-1 text-white d-inline-block mb-1">Custom Emoji</p>
-					<p class="h1 text-white font-weight-light d-inline-block mb-0">Showing duplicates of {{$emoji->shortcode}}</p>
+					<p class="display-1 text-white d-inline-block mb-1">{{ __('admin_panel.customEmoji.duplicates.title') }}</p>
+					<p class="h1 text-white font-weight-light d-inline-block mb-0">{{ __('admin_panel.customEmoji.duplicates.showingDuplicates', ['shortcode' => $emoji->shortcode]) }}</p>
 				</div>
 			</div>
 		</div>
@@ -19,12 +19,12 @@
 		<div class="col-12 col-md-6">
 			<div class="alert alert-warning py-2 mb-4">
 				<p class="mb-0">
-					<i class="far fa-exclamation-triangle mr-2"></i> Duplicate emoji shortcodes can lead to unpredictible results
+					<i class="far fa-exclamation-triangle mr-2"></i> {{ __('admin_panel.customEmoji.duplicates.warning') }}
 				</p>
-				<p class="mb-0 small">If you change the primary/in-use emoji, you will need to clear the cache by running the <strong>php artisan cache:clear</strong> command for the changes to take effect immediately.</p>
+				<p class="mb-0 small">{!! __('admin_panel.customEmoji.duplicates.cacheNotice') !!}</p>
 			</div>
 
-			<p class="font-weight-bold">In Use</p>
+			<p class="font-weight-bold">{{ __('admin_panel.customEmoji.duplicates.inUse') }}</p>
 			<div class="list-group">
 				<div class="list-group-item">
 					<div class="media align-items-center">
@@ -35,7 +35,7 @@
 							<p class="text-muted small mb-0">{{ $emoji->domain }}</p>
 						</div>
 
-						<div class="ml-3 badge badge-info">Added {{$emoji->created_at->diffForHumans(null, true, true)}}</div>
+						<div class="ml-3 badge badge-info">{{ __('admin_panel.customEmoji.duplicates.added', ['time' => $emoji->created_at->diffForHumans(null, true, true)]) }}</div>
 
 						<form
 							class="form-inline"
@@ -45,7 +45,7 @@
 							<button
 								type="submit"
 								class="ml-3 btn btn-sm {{$emoji->disabled ? 'btn-danger' : 'btn-success'}}">
-								{{$emoji->disabled ? 'Disabled' : 'Active' }}
+								{{ $emoji->disabled ? __('admin_panel.common.disabled') : __('admin_panel.customEmoji.duplicates.active') }}
 							</button>
 						</form>
 
@@ -57,7 +57,7 @@
 				</div>
 			</div>
 			<hr>
-			<p class="font-weight-bold">Not used (due to conflicting shortcode)</p>
+			<p class="font-weight-bold">{{ __('admin_panel.customEmoji.duplicates.notUsed') }}</p>
 			<div class="list-group">
 				@foreach($emojis as $emoji)
 				<div class="list-group-item">
@@ -69,7 +69,7 @@
 							<p class="text-muted small mb-0">{{ $emoji->domain }}</p>
 						</div>
 
-						<div class="ml-3 badge badge-info">Added {{$emoji->created_at->diffForHumans(null, true, true)}}</div>
+						<div class="ml-3 badge badge-info">{{ __('admin_panel.customEmoji.duplicates.added', ['time' => $emoji->created_at->diffForHumans(null, true, true)]) }}</div>
 
 						<form
 							class="form-inline"
@@ -79,7 +79,7 @@
 							<button
 								type="submit"
 								class="ml-3 btn btn-sm {{$emoji->disabled ? 'btn-danger' : 'btn-success'}}">
-								{{$emoji->disabled ? 'Disabled' : 'Active' }}
+								{{ $emoji->disabled ? __('admin_panel.common.disabled') : __('admin_panel.customEmoji.duplicates.active') }}
 							</button>
 						</form>
 

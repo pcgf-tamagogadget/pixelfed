@@ -3,20 +3,20 @@
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Delete Your Account</h3>
+    <h3 class="font-weight-bold">{{ __('settings.remove.delete_your_account') }}</h3>
   </div>
   <hr>
   <div class="mt-3">
-  	<p>Hi <span class="font-weight-bold">{{Auth::user()->username}}</span>,</p>
+  	<p>{!! __('settings.remove.hi_username', ['username' => e(Auth::user()->username)]) !!}</p>
 
-  	<p>We're sorry to hear you'd like to delete your account.</p>
+  	<p>{{ __('settings.remove.were_sorry_to_hear_youd_like_to_delete_your_account') }}</p>
 
-  	<p class="pb-1">If you're just looking to take a break, you can always <a href="{{route('settings.remove.temporary')}}">temporarily disable</a> your account instead.</p>
+  	<p class="pb-1">{!! __('settings.remove.if_youre_just_looking_to_take_a_break_etc', ['url' => e(route('settings.remove.temporary'))]) !!}</p>
 
-    <p class="">When you press the button below, your photos, comments, likes, friendships and all other data will be removed permanently and will not be recoverable. If you decide to create another Pixelfed account in the future, you cannot sign up with the same username again on this instance.</p>
+    <p class="">{{ __('settings.remove.when_you_press_the_button_below_your_data_will_be_removed_permanently_etc') }}</p>
 
     <div class="alert alert-danger my-5">
-      <span class="font-weight-bold">Warning:</span> Some remote servers may contain your public data (statuses, avatars, etc) and will not be deleted until federation support is launched.
+      <span class="font-weight-bold">{{ __('settings.remove.warning') }}</span> {{ __('settings.remove.some_remote_servers_may_contain_your_public_data_etc') }}
     </div>
 
   	<p>
@@ -24,9 +24,9 @@
         @csrf
         <div class="custom-control custom-switch mb-3">
           <input type="checkbox" class="custom-control-input" id="confirm-check" name="confirm">
-          <label class="custom-control-label font-weight-bold" for="confirm-check">I confirm that this action is not reversible, and will result in the permanent deletion of my account.</label>
+          <label class="custom-control-label font-weight-bold" for="confirm-check">{{ __('settings.remove.i_confirm_that_this_action_is_not_reversible_etc') }}</label>
         </div>
-        <button type="submit" class="btn btn-danger font-weight-bold py-0 delete-btn" disabled="">Permanently delete my account</button>
+        <button type="submit" class="btn btn-danger font-weight-bold py-0 delete-btn" disabled="">{{ __('settings.remove.permanently_delete_my_account') }}</button>
       </form>
   	</p>
   </div>

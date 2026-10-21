@@ -3,15 +3,15 @@
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Blocked Instances</h3>
+    <h3 class="font-weight-bold">{{ __('settings.privacy.blocked_instances_title') }}</h3>
   </div>
   <hr>
   <div class="form-group pb-1">
     <p>
-      <a class="btn btn-outline-secondary py-0 font-weight-bold" href="{{route('settings.privacy.muted-users')}}">Muted Users</a>
-      <a class="btn btn-outline-secondary py-0 font-weight-bold" href="{{route('settings.privacy.blocked-users')}}">Blocked Users</a>
-      <a class="btn btn-outline-secondary py-0 font-weight-bold" href="{{route('settings.privacy.blocked-keywords')}}">Blocked keywords</a>
-      <a class="btn btn-outline-primary py-0 font-weight-bold" href="{{route('settings.privacy.blocked-instances')}}">Blocked instances</a>
+      <a class="btn btn-outline-secondary py-0 font-weight-bold" href="{{route('settings.privacy.muted-users')}}">{{ __('settings.privacy.muted_users') }}</a>
+      <a class="btn btn-outline-secondary py-0 font-weight-bold" href="{{route('settings.privacy.blocked-users')}}">{{ __('settings.privacy.blocked_users') }}</a>
+      <a class="btn btn-outline-secondary py-0 font-weight-bold" href="{{route('settings.privacy.blocked-keywords')}}">{{ __('settings.privacy.blocked_keywords') }}</a>
+      <a class="btn btn-outline-primary py-0 font-weight-bold" href="{{route('settings.privacy.blocked-instances')}}">{{ __('settings.privacy.blocked_instances') }}</a>
     </p>
   </div>
   @if($filters->count() > 0)
@@ -27,7 +27,7 @@
           <form action="{{route('settings.privacy.blocked-instances.unblock')}}" method="POST">
             @csrf
             <input type="hidden" name="id" value="{{$filter->id}}">
-            <button type="submit" class="btn btn-outline-secondary btn-sm px-3 font-weight-bold">Unblock</button>
+            <button type="submit" class="btn btn-outline-secondary btn-sm px-3 font-weight-bold">{{ __('settings.privacy.unblock') }}</button>
           </form>
         </span>
       </div> 
@@ -38,13 +38,13 @@
     {{$filters->links()}}
   </div>
     <p>
-      <button type="button" class="btn btn-primary font-weight-bold px-3 blockInstance">Block Instance</button>
+      <button type="button" class="btn btn-primary font-weight-bold px-3 blockInstance">{{ __('settings.privacy.block_instance') }}</button>
     </p>
   @else
-    <p>You can block entire instances, this prevents users on that instance from interacting with your content. To understand how blocking works, <a href="#">read more</a> in the Help Center.</p>
-    <p class="lead mb-4">You are not blocking any instances. For a list of instances banned by the admin, click <a href="#">here</a>.</p>
+    <p>{!! __('settings.privacy.you_can_block_entire_instances_etc', ['url' => '#']) !!}</p>
+    <p class="lead mb-4">{!! __('settings.privacy.you_are_not_blocking_any_instances_etc', ['url' => '#']) !!}</p>
     <p>
-      <button type="button" class="btn btn-primary font-weight-bold px-3 blockInstance">Block Instance</button>
+      <button type="button" class="btn btn-primary font-weight-bold px-3 blockInstance">{{ __('settings.privacy.block_instance') }}</button>
     </p>
   @endif
 
@@ -56,10 +56,10 @@
   $(document).ready(function() {
       $('.blockInstance').on('click', function() {
       swal({
-        text: 'Add domain to block.',
+        text: @json(__('settings.privacy.add_domain_to_block')),
         content: "input",
         button: {
-          text: "Block",
+          text: @json(__('settings.privacy.block')),
           closeModal: false,
         },
       })
@@ -69,13 +69,13 @@
           swal.close();
           return;
         }
-        let msg = 'The URL you have entered is not valid, please try again.'
+        let msg = @json(__('settings.privacy.the_url_you_have_entered_is_not_valid_etc'))
         try {
           let validator = new URL(val);
           if(!validator.hostname || validator.protocol != 'https:') {
             swal.stopLoading();
             swal.close();
-            swal('Invalid URL', msg, 'error');
+            swal(@json(__('settings.privacy.invalid_url')), msg, 'error');
             return;
           }
           axios.post(window.location.href, {
@@ -85,13 +85,13 @@
           }).catch(err => {
             swal.stopLoading();
             swal.close();
-            swal('Invalid URL', msg, 'error');
+            swal(@json(__('settings.privacy.invalid_url')), msg, 'error');
             return;
           });
         } catch(e) {
           swal.stopLoading();
           swal.close();
-          swal('Invalid URL', msg, 'error');
+          swal(@json(__('settings.privacy.invalid_url')), msg, 'error');
         }
       })
     });

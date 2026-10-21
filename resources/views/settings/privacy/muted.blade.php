@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between align-items-center">
     <div class="title d-flex align-items-center" style="gap: 1rem;">
         <p class="mb-0"><a href="/settings/privacy"><i class="far fa-chevron-left fa-lg"></i></a></p>
-        <h3 class="font-weight-bold mb-0">Muted Accounts</h3>
+        <h3 class="font-weight-bold mb-0">{{ __('settings.privacy.muted_accounts') }}</h3>
     </div>
 </div>
 <hr />
@@ -18,7 +18,7 @@
                 <form method="post">
                     @csrf
                     <input type="hidden" name="profile_id" value="{{$user->id}}">
-                    <button type="submit" class="btn btn-link btn-sm px-3 font-weight-bold">Unmute</button>
+                    <button type="submit" class="btn btn-link btn-sm px-3 font-weight-bold">{{ __('settings.privacy.unmute') }}</button>
                 </form>
             </span>
         </div>
@@ -29,7 +29,7 @@
     {{$users->links()}}
 </div>
 @else
-<p class="lead text-center font-weight-bold">You are not muting any accounts.</p>
+<p class="lead text-center font-weight-bold">{{ __('settings.privacy.you_are_not_muting_any_accounts') }}</p>
 @endif
 
 @endsection

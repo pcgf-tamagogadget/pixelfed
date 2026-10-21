@@ -4,7 +4,7 @@
 <div class="title">
 	<div class="d-flex justify-content-between align-items-center">
 		<div class="font-weight-bold"># {{$message->id}}</div>
-		<div class="font-weight-bold h3">Contact Form Message</div>
+		<div class="font-weight-bold h3">{{ __('admin_panel.messages.show.title') }}</div>
 		<div></div>
 	</div>
 </div>
@@ -18,7 +18,7 @@
                 @if($message->responded_at)
                 <div class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <div class="small text-muted">Admin Response Sent</div>
+                        <div class="small text-muted">{{ __('admin_panel.messages.show.adminResponseSent') }}</div>
                         <div>
                             <span class="font-weight-bold" title="{{$message->responded_at}}" data-toggle="tooltip">
                                 {{$message->responded_at->diffForHumans()}}
@@ -30,28 +30,28 @@
 
                 <div class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <div class="small text-muted">Status</div>
+                        <div class="small text-muted">{{ __('admin_panel.common.status') }}</div>
                         @if($message->read_at == null)
-                        <div class="text-success font-weight-bold">Open</div>
+                        <div class="text-success font-weight-bold">{{ __('admin_panel.messages.show.open') }}</div>
                         @else
-                        <div class="text-muted">Closed</div>
+                        <div class="text-muted">{{ __('admin_panel.messages.show.closed') }}</div>
                         @endif
                     </div>
                 </div>
                 <div class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <div class="small text-muted">Response Requested</div>
+                        <div class="small text-muted">{{ __('admin_panel.messages.show.responseRequested') }}</div>
                         @if($message->response_requested == 1)
-                        <div class="font-weight-bold">Yes</div>
+                        <div class="font-weight-bold">{{ __('admin_panel.common.yes') }}</div>
                         @else
-                        <div class="text-muted">No</div>
+                        <div class="text-muted">{{ __('admin_panel.common.no') }}</div>
                         @endif
                     </div>
                 </div>
 
                 <div class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <div class="small text-muted">Created</div>
+                        <div class="small text-muted">{{ __('admin_panel.common.created') }}</div>
                         <div>
                             <span class="font-weight-bold" title="{{$message->created_at}}" data-toggle="tooltip">
                                 {{$message->created_at->diffForHumans()}}
@@ -63,7 +63,7 @@
                 @if($message->user && $message->user->last_active_at)
                 <div class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <div class="small text-muted">User Last Active</div>
+                        <div class="small text-muted">{{ __('admin_panel.messages.show.userLastActive') }}</div>
                         <div>
                             <span class="font-weight-bold" title="{{$message->user->last_active_at}}" data-toggle="tooltip">
                                 {{$message->user->last_active_at->diffForHumans()}}
@@ -75,7 +75,7 @@
 
                 @if(!$message->read_at)
                 <div class="list-group-item">
-                    <button type="button" class="btn btn-outline-primary btn-block" id="markRead">Mark Read</button>
+                    <button type="button" class="btn btn-outline-primary btn-block" id="markRead">{{ __('admin_panel.messages.show.markRead') }}</button>
                 </div>
                 @endif
             </div>
@@ -101,18 +101,18 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<p class="text-uppercase text-muted small mb-2">Message Body</p>
+						<p class="text-uppercase text-muted small mb-2">{{ __('admin_panel.messages.show.messageBody') }}</p>
 						<p class="mb-0">{{$message->message}}</p>
 
                         <hr>
-                        <p class="text-uppercase text-muted small mb-2">Admin Reply:</p>
+                        <p class="text-uppercase text-muted small mb-2">{{ __('admin_panel.messages.show.adminReply') }}</p>
 
                         @if($message->responded_at)
                         <p class="mb-0">{{$message->response}}</p>
                         @else
                         @if(config('mail.default') === 'log')
                         <div class="alert alert-danger">
-                        <p class="mb-0">You need to configure your mail driver before you can send outgoing emails.</p>
+                        <p class="mb-0">{{ __('admin_panel.messages.show.mailNotConfigured') }}</p>
                         </div>
                         @else
                         <form method="post" id="mform">
@@ -125,7 +125,7 @@
                                     rows="4"
                                     style="resize: none;"
                                     maxlength="500"
-                                    placeholder="Reply to &commat;{{$message->user->username}} via email ..."></textarea>
+                                    placeholder="{{ __('admin_panel.messages.show.replyPlaceholder', ['username' => $message->user->username]) }}"></textarea>
     							@if ($errors->any())
     							@foreach ($errors->all() as $error)
     							<p class="invalid-feedback mb-0" style="display:block;">
@@ -136,8 +136,8 @@
     						</div>
     						<div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <button type="button" class="btn btn-primary font-weight-bold submit-btn">Send</button>
-    								<button type="button" class="btn btn-outline-primary font-weight-bold preview-btn">Preview</button>
+                                    <button type="button" class="btn btn-primary font-weight-bold submit-btn">{{ __('admin_panel.messages.show.send') }}</button>
+    								<button type="button" class="btn btn-outline-primary font-weight-bold preview-btn">{{ __('admin_panel.messages.show.preview') }}</button>
                                 </div>
 
                                 <div>

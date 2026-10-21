@@ -1,7 +1,7 @@
 <template>
 <div class="mb-3">
     <div v-if="status.media_attachments && status.media_attachments.length" class="list-group-item" style="gap:1rem;overflow:hidden;">
-        <div class="text-center text-muted small font-weight-bold mb-3">Reported Post Media</div>
+        <div class="text-center text-muted small font-weight-bold mb-3">{{ $t('admin.modalPost.reportedPostMedia') }}</div>
         <div v-if="status.media_attachments && status.media_attachments.length" class="d-flex flex-grow-1" style="gap: 1rem;overflow-x:auto;">
             <template
                 v-for="media in status.media_attachments">
@@ -32,7 +32,7 @@
         <div class="flex-grow-1">
             <div v-if="status && status.in_reply_to_id && status.parent && status.parent.account" class="mb-3">
                 <template v-if="showInReplyTo">
-                    <div class="mt-n1 text-center text-muted small font-weight-bold mb-1">Reply to</div>
+                    <div class="mt-n1 text-center text-muted small font-weight-bold mb-1">{{ $t('admin.modalPost.replyTo') }}</div>
                     <div class="media" style="gap: 1rem;">
                         <img
                             :src="status.parent.account.avatar"
@@ -54,11 +54,11 @@
                     </div>
                     <hr class="my-1">
                 </template>
-                <a v-else class="btn btn-dark font-weight-bold btn-block btn-sm" href="#" @click.prevent="showInReplyTo = true">Show parent post</a>
+                <a v-else class="btn btn-dark font-weight-bold btn-block btn-sm" href="#" @click.prevent="showInReplyTo = true">{{ $t('admin.modalPost.showParentPost') }}</a>
             </div>
 
             <div>
-                <div class="mt-n1 text-center text-muted small font-weight-bold mb-1">Reported Post</div>
+                <div class="mt-n1 text-center text-muted small font-weight-bold mb-1">{{ $t('admin.modalPost.reportedPost') }}</div>
                 <div class="media" style="gap: 1rem;">
                     <img
                         :src="status.account.avatar"
@@ -74,7 +74,7 @@
                             <admin-read-more :content="status.content_text" />
                         </template>
                         <template v-else>
-                            <admin-read-more content="EMPTY CAPTION" class="font-weight-bold text-muted" />
+                            <admin-read-more :content="$t('admin.modalPost.emptyCaption')" class="font-weight-bold text-muted" />
                         </template>
                         <p class="mb-0">
                             <a :href="`/i/web/post/${status.id}`" target="_blank" class="text-muted" style="font-size: 11px;">

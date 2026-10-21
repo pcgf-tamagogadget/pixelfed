@@ -10,14 +10,14 @@
 			body-class="p-0"
 			title-class="w-100 text-center pl-4 font-weight-bold"
 			title-tag="p"
-			title="Shared By">
+			:title="$t('spa.shareModal.title')">
 			<div v-if="isLoading" class="likes-loader list-group border-top-0" style="max-height: 500px;">
 				<like-placeholder />
 			</div>
 
 			<div v-else>
 				<div v-if="!likes.length" class="d-flex justify-content-center align-items-center" style="height: 140px;">
-					<p class="font-weight-bold mb-0">Nobody has shared this yet!</p>
+					<p class="font-weight-bold mb-0">{{ $t('spa.shareModal.empty') }}</p>
 				</div>
 
 				<div v-else class="list-group" style="max-height: 500px;">
@@ -35,7 +35,7 @@
 									class="btn btn-outline-muted rounded-pill btn-sm font-weight-bold"
 									@click="goToProfile(profile)"
 									style="width:110px;">
-									View Profile
+									{{ $t('menu.viewProfile') }}
 								</button>
 								<button
 									v-else-if="account.follows"
@@ -46,7 +46,7 @@
 									<span v-if="isUpdatingFollowState && followStateIndex === index">
 										<b-spinner small />
 									</span>
-									<span v-else>Following</span>
+									<span v-else>{{ $t('profile.following') }}</span>
 								</button>
 								<button
 									v-else-if="!account.follows"
@@ -57,7 +57,7 @@
 									<span v-if="isUpdatingFollowState && followStateIndex === index">
 										<b-spinner small />
 									</span>
-									<span v-else>Follow</span>
+									<span v-else>{{ $t('profile.follow') }}</span>
 								</button>
 							</div>
 						</div>

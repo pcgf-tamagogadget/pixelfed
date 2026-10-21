@@ -4,7 +4,7 @@
             class="media d-inline-flex mb-0"
             :class="{ isAuthor: convo.isAuthor }"
             >
-            <img v-if="!convo.isAuthor && !hideAvatars" class="mr-3 shadow msg-avatar" :src="thread.avatar" alt="avatar" width="50" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+            <img v-if="!convo.isAuthor && !hideAvatars" class="mr-3 shadow msg-avatar" :src="thread.avatar" :alt="$t('spa.directMessageItem.avatar')" width="50" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
 
             <div class="media-body">
                 <p v-if="convo.type == 'photo' || convo.type == 'photos'" class="pill-to p-0 shadow">
@@ -68,10 +68,10 @@
                     {{convo.text}}
                 </p>
                 <p v-if="convo.type == 'story:react'" class="small text-muted mb-0 ml-0">
-                    <span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span> reacted your story
+                    <i18n path="spa.directMessageItem.reactedYourStory" tag="span"><template v-slot:username><span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span></template></i18n>
                 </p>
                 <p v-if="convo.type == 'story:comment'" class="small text-muted mb-0 ml-0">
-                    <span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span> replied to your story
+                    <i18n path="spa.directMessageItem.repliedToYourStory" tag="span"><template v-slot:username><span class="font-weight-bold">{{ convo.meta.story_actor_username }}</span></template></i18n>
                 </p>
 
                 <p
@@ -80,7 +80,7 @@
                     <span
                         v-if="convo.hidden"
                         class="small pr-2"
-                        title="Filtered Message"
+                        :title="$t('spa.directMessageItem.filteredMessage')"
                         data-toggle="tooltip"
                         data-placement="bottom">
                         <i class="fas fa-lock"></i>
@@ -99,7 +99,7 @@
                 </p>
             </div>
 
-            <img v-if="convo.isAuthor && !hideAvatars" class="ml-3 shadow msg-avatar" :src="profile.avatar" alt="avatar" width="50" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+            <img v-if="convo.isAuthor && !hideAvatars" class="ml-3 shadow msg-avatar" :src="profile.avatar" :alt="$t('spa.directMessageItem.avatar')" width="50" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
         </div>
     </div>
 </template>

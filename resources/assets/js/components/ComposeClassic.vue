@@ -10,14 +10,14 @@
 				</a>
 				<div class="text-right" style="flex-grow:1;">
 					<div class="dropdown">
-						<button class="btn btn-link text-dark no-caret dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Post options">
+						<button class="btn btn-link text-dark no-caret dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" :title="$t('compose.composeClassic.postOptions')">
 							<span class="fas fa-ellipsis-v fa-lg text-muted"></span>
 						</button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-							<div class="dropdown-item small font-weight-bold" v-on:click="createCollection">Create Collection</div>
+							<div class="dropdown-item small font-weight-bold" v-on:click="createCollection">{{ $t('compose.composeClassic.createCollection') }}</div>
 							<div class="dropdown-divider"></div>
-							<div class="dropdown-item small font-weight-bold" v-on:click="about">About</div>
-							<div class="dropdown-item small font-weight-bold" v-on:click="closeModal">Close</div>
+							<div class="dropdown-item small font-weight-bold" v-on:click="about">{{ $t('navmenu.about') }}</div>
+							<div class="dropdown-item small font-weight-bold" v-on:click="closeModal">{{ $t('common.close') }}</div>
 						</div>
 					</div>
 				</div>
@@ -28,20 +28,20 @@
 					<div class="w-100 h-100 bg-light py-5" style="border-bottom: 1px solid #f1f1f1">
 						<div class="p-5">
 							<b-progress :value="uploadProgress" :max="100" striped :animated="true"></b-progress>
-							<p class="text-center mb-0 font-weight-bold">Uploading ... ({{uploadProgress}}%)</p>
+							<p class="text-center mb-0 font-weight-bold">{{ $t('compose.common.uploading', { progress: uploadProgress }) }}</p>
 						</div>
 					</div>
 				</div>
 				<div v-else>
 					<div v-if="ids.length > 0 && ids.length != config.uploader.album_limit" class="card-header py-2 bg-primary m-2 rounded cursor-pointer" v-on:click="addMedia($event)">
-						<p class="text-center mb-0 font-weight-bold text-white"><i class="fas fa-plus mr-1"></i> Add Photo</p>
+						<p class="text-center mb-0 font-weight-bold text-white"><i class="fas fa-plus mr-1"></i> {{ $t('compose.composeClassic.addPhoto') }}</p>
 					</div>
 					<div v-if="ids.length == 0" class="w-100 h-100 bg-light py-5 cursor-pointer" style="border-bottom: 1px solid #f1f1f1" v-on:click="addMedia($event)">
 						<div class="p-5">
 							<p class="text-center font-weight-bold">{{composeMessage()}}</p>
-							<p class="text-muted mb-0 small text-center">Accepted Formats: <b>{{acceptedFormats()}}</b></p>
-							<p class="text-muted mb-0 small text-center">Max File Size: <b>{{maxSize()}}</b></p>
-							<p class="text-muted mb-0 small text-center">Albums can contain up to <b>{{config.uploader.album_limit}}</b> photos or videos</p>
+							<p class="text-muted mb-0 small text-center">{{ $t('compose.composeClassic.acceptedFormats') }} <b>{{acceptedFormats()}}</b></p>
+							<p class="text-muted mb-0 small text-center">{{ $t('compose.composeClassic.maxFileSize') }} <b>{{maxSize()}}</b></p>
+							<i18n path="compose.composeClassic.albumLimitInfo" tag="p" class="text-muted mb-0 small text-center"><template v-slot:count><b>{{config.uploader.album_limit}}</b></template></i18n>
 						</div>
 					</div>
 					<div v-if="ids.length > 0">
@@ -67,7 +67,7 @@
 								<div class="p-1 pt-3">
 									<img :src="media[carouselCursor].url" width="100px" height="60px" v-on:click.prevent="toggleFilter($event, null)" class="cursor-pointer">
 								</div>
-								<a :class="[media[carouselCursor].filter_class == null ? 'nav-link text-white active' : 'nav-link text-muted']" href="#" v-on:click.prevent="toggleFilter($event, null)">No Filter</a>
+								<a :class="[media[carouselCursor].filter_class == null ? 'nav-link text-white active' : 'nav-link text-muted']" href="#" v-on:click.prevent="toggleFilter($event, null)">{{ $t('compose.composeClassic.noFilter') }}</a>
 							</li>
 							<li class="nav-item" v-for="(filter, index) in filters">
 								<div class="p-1 pt-3">
@@ -81,11 +81,11 @@
 				<div v-if="ids.length > 0 && ['image', 'video'].indexOf(media[carouselCursor].type) != -1" class="bg-lighter p-2 row">
 					<div v-if="media[carouselCursor].type == 'Image'" class="col-12">
 						<div class="form-group">
-							<input type="text" class="form-control" v-model="media[carouselCursor].alt" placeholder="Optional image description">
+							<input type="text" class="form-control" v-model="media[carouselCursor].alt" :placeholder="$t('compose.composeClassic.imageDescriptionPlaceholder')">
 						</div>
 
 						<div class="form-group">
-							<input type="text" class="form-control" v-model="media[carouselCursor].license" placeholder="Optional media license">
+							<input type="text" class="form-control" v-model="media[carouselCursor].license" :placeholder="$t('compose.composeClassic.licensePlaceholder')">
 						</div>
 					</div>
 					<!-- <div class="col-6 pt-2">
@@ -93,14 +93,14 @@
 						<button class="btn btn-outline-secondary btn-sm"><i class="fas fa-tools"></i></button>
 					</div> -->
 					<div class="col-12 text-right pt-2">
-						<button class="btn btn-outline-danger btn-sm font-weight-bold mr-1" v-on:click="deleteMedia()">Delete Media</button>
+						<button class="btn btn-outline-danger btn-sm font-weight-bold mr-1" v-on:click="deleteMedia()">{{ $t('compose.composeClassic.deleteMedia') }}</button>
 					</div>
 				</div>
 			</div>
 
 			<div class="card-body p-0 border-top">
 				<div class="caption">
-					<textarea class="form-control mb-0 border-0 rounded-0" rows="3" placeholder="Add an optional caption" v-model="composeText"></textarea>
+					<textarea class="form-control mb-0 border-0 rounded-0" rows="3" :placeholder="$t('compose.composeClassic.captionPlaceholder')" v-model="composeText"></textarea>
 				</div>
 			</div>
 
@@ -109,11 +109,11 @@
 					<div>
 						<div class="custom-control custom-switch d-inline mr-3">
 							<input type="checkbox" class="custom-control-input" id="nsfwToggle" v-model="nsfw">
-							<label class="custom-control-label small font-weight-bold text-muted pt-1" for="nsfwToggle">NSFW</label>
+							<label class="custom-control-label small font-weight-bold text-muted pt-1" for="nsfwToggle">{{ $t('compose.composeClassic.nsfw') }}</label>
 						</div>
 						<div class="dropdown d-inline">
 							<button class="btn btn-outline-secondary btn-sm py-0 dropdown-toggle" type="button" id="visibility" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{visibility[0].toUpperCase() + visibility.slice(1)}}
+								{{ $t('compose.common.' + visibility) }}
 							</button>
 							<div class="dropdown-menu" aria-labelledby="visibility" style="width: 200px;">
 								<a :class="[visibility=='public'?'dropdown-item active':'dropdown-item']" href="#" data-id="public" data-title="Public" v-on:click.prevent="visibility = 'public'">
@@ -122,8 +122,8 @@
 											<i class="fas fa-globe"></i>
 										</div> 
 										<div class="col-12 col-sm-10 pl-2">
-											<p class="font-weight-bold mb-0">Public</p>
-											<p class="small mb-0">Anyone can see</p>
+											<p class="font-weight-bold mb-0">{{ $t('compose.common.public') }}</p>
+											<p class="small mb-0">{{ $t('compose.composeClassic.anyoneCanSee') }}</p>
 										</div> 
 									</div>
 								</a>
@@ -133,8 +133,8 @@
 											<i class="fas fa-lock"></i>
 										</div> 
 										<div class="col-12 col-sm-10 pl-2">
-											<p class="font-weight-bold mb-0">Followers Only</p>
-											<p class="small mb-0">Only followers can see</p>
+											<p class="font-weight-bold mb-0">{{ $t('compose.common.followersOnly') }}</p>
+											<p class="small mb-0">{{ $t('compose.composeClassic.onlyFollowersCanSee') }}</p>
 										</div> 
 									</div>
 								</a>
@@ -144,8 +144,8 @@
 											<i class="fas fa-lock"></i>
 										</div> 
 										<div class="col-12 col-sm-10 pl-2">
-											<p class="font-weight-bold mb-0">Unlisted</p>
-											<p class="small mb-0">Not listed on public timelines</p>
+											<p class="font-weight-bold mb-0">{{ $t('compose.common.unlisted') }}</p>
+											<p class="small mb-0">{{ $t('compose.composeClassic.notListedPublic') }}</p>
 										</div> 
 									</div>
 								</a>
@@ -191,7 +191,7 @@
 								<a :class="[composeState == 'delete' ?'dropdown-item font-weight-bold active':'dropdown-item font-weight-bold ']" href="#" v-on:click.prevent="composeState = 'delete'">Delete</a> - ->
 							</div>
 						</div> -->
-						<button class="btn btn-primary btn-sm font-weight-bold px-3" v-on:click="compose()">Publish</button>
+						<button class="btn btn-primary btn-sm font-weight-bold px-3" v-on:click="compose()">{{ $t('compose.common.publish') }}</button>
 					</div>
 				</div>
 			</div>
@@ -320,14 +320,14 @@ export default {
 				Array.prototype.forEach.call(io.files, function(io, i) {
 					self.uploading = true;
 					if(self.media && self.media.length + i >= self.config.uploader.album_limit) {
-						swal('Error', 'You can only upload ' + self.config.uploader.album_limit + ' photos per album', 'error');
+						swal(self.$t('common.error'), self.$t('compose.common.albumLimit', { limit: self.config.uploader.album_limit }), 'error');
 						return;
 					}
 					let type = io.type;
 					let acceptedMimes = self.config.uploader.media_types.split(',');
 					let validated = $.inArray(type, acceptedMimes);
 					if(validated == -1) {
-						swal('Invalid File Type', 'The file you are trying to add is not a valid mime type. Please upload a '+self.config.uploader.media_types+' only.', 'error');
+						swal(self.$t('compose.common.invalidFileType'), self.$t('compose.common.invalidFileTypeMsg', { types: self.config.uploader.media_types }), 'error');
 						return;
 					}
 
@@ -352,7 +352,7 @@ export default {
 					}).catch(function(e) {
 						self.uploading = false;
 						io.value = null;
-						let errorMsg = 'An unexpected error occurred.';
+						let errorMsg = self.$t('compose.common.unexpectedError');
 						if (e.response && e.response.status === 422 && e.response.data) {
 							if (e.response.data.errors) {
 								let messages = Object.values(e.response.data.errors).flat();
@@ -363,7 +363,7 @@ export default {
 						} else if (e.response && e.response.data && e.response.data.message) {
 							errorMsg = e.response.data.message;
 						}
-						swal('Upload Failed', errorMsg, 'error');
+						swal(self.$t('compose.common.uploadFailed'), errorMsg, 'error');
 					});
 					io.value = null;
 					self.uploadProgress = 0;
@@ -380,7 +380,7 @@ export default {
 		},
 
 		deleteMedia() {
-			if(window.confirm('Are you sure you want to delete this media?') == false) {
+			if(window.confirm(this.$t('compose.common.deleteMediaConfirm')) == false) {
 				return;
 			}
 			let id = this.media[this.carouselCursor].id;
@@ -398,7 +398,7 @@ export default {
 				this.ids.splice(this.carouselCursor, 1);
 				this.media.splice(this.carouselCursor, 1);
 			}).catch(err => {
-				swal('Whoops!', 'An error occured when attempting to delete this, please try again', 'error');
+				swal(this.$t('compose.common.whoops'), this.$t('compose.common.deleteError'), 'error');
 			});
 		},
 
@@ -440,14 +440,14 @@ export default {
 			}
 
 			if(this.composeText.length > this.config.uploader.max_caption_length) {
-				swal('Error', 'Caption is too long', 'error');
+				swal(this.$t('common.error'), this.$t('compose.common.captionTooLong'), 'error');
 				return;
 			}
 
 			switch(state) {
 				case 'publish' :
 					if(this.media.length == 0) {
-						swal('Whoops!', 'You need to add media before you can save this!', 'warning');
+						swal(this.$t('compose.common.whoops'), this.$t('compose.common.addMediaFirst'), 'warning');
 						return;
 					}
 					if(this.composeText == 'Add optional caption...') {
@@ -464,8 +464,8 @@ export default {
 						let data = res.data;
 						window.location.href = data;
 					}).catch(err => {
-						let msg = err.response.data.message ? err.response.data.message : 'An unexpected error occured.'
-						swal('Oops, something went wrong!', msg, 'error');
+						let msg = err.response.data.message ? err.response.data.message : this.$t('compose.common.unexpectedError')
+						swal(this.$t('compose.common.somethingWentWrong'), msg, 'error');
 					});
 					return;
 				break;
@@ -486,7 +486,7 @@ export default {
 		about() {
 			let text = document.createElement('div');
 			text.innerHTML = `
-				<p class="small font-weight-bold">Please visit the <a href="/site/kb/sharing-media">Sharing Media</a> page for more info.</p>
+				<p class="small font-weight-bold">${this.$t('compose.composeClassic.aboutInfo', { link: '<a href="/site/kb/sharing-media">' + this.$t('compose.composeClassic.sharingMedia') + '</a>' })}</p>
 			`;
 			swal({
 				title: 'Compose UI v3', 
@@ -506,8 +506,8 @@ export default {
 			let video = config.uploader.media_types.includes('video/mp4');
 
 			return video ? 
-			'Click here to add photos or videos' :
-			'Click here to add photos';
+			this.$t('compose.composeClassic.clickToAddMedia') :
+			this.$t('compose.composeClassic.clickToAddPhotos');
 		},
 
 		createCollection() {

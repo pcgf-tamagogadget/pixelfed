@@ -1,10 +1,10 @@
 <template>
 	<div class="group-info-card">
 		<div class="card card-body mt-3 shadow-none border rounded-lg">
-			<p class="title">About</p>
+			<p class="title">{{ $t('groups.about.about') }}</p>
 
 			<p v-if="group.description && group.description.length > 1" class="description" v-html="group.description"></p>
-			<p v-else class="description">This group does not have a description.</p>
+			<p v-else class="description">{{ $t('groups.about.noDescription') }}</p>
 
 		</div>
 		<div class="card card-body mt-3 shadow-none border rounded-lg">
@@ -13,8 +13,8 @@
 					<i class="fal fa-globe fa-lg"></i>
 				</div>
 				<div class="fact-body">
-					<p class="fact-title">Public</p>
-					<p class="fact-subtitle">Anyone can see who's in the group and what they post.</p>
+					<p class="fact-title">{{ $t('groups.about.public') }}</p>
+					<p class="fact-subtitle">{{ $t('groups.about.publicHelp') }}</p>
 				</div>
 			</div>
 
@@ -23,8 +23,8 @@
 					<i class="fal fa-lock fa-lg"></i>
 				</div>
 				<div class="fact-body">
-					<p class="fact-title">Private</p>
-					<p class="fact-subtitle">Only members can see who's in the group and what they post.</p>
+					<p class="fact-title">{{ $t('groups.about.private') }}</p>
+					<p class="fact-subtitle">{{ $t('groups.about.privateHelp') }}</p>
 				</div>
 			</div>
 
@@ -33,8 +33,8 @@
 					<i class="fal fa-eye fa-lg"></i>
 				</div>
 				<div class="fact-body">
-					<p class="fact-title">Visible</p>
-					<p class="fact-subtitle">Anyone can find this group.</p>
+					<p class="fact-title">{{ $t('groups.about.visible') }}</p>
+					<p class="fact-subtitle">{{ $t('groups.about.visibleHelp') }}</p>
 				</div>
 			</div>
 
@@ -43,8 +43,8 @@
 					<i class="fal fa-eye-slash fa-lg"></i>
 				</div>
 				<div class="fact-body">
-					<p class="fact-title">Hidden</p>
-					<p class="fact-subtitle">Only members can find this group.</p>
+					<p class="fact-title">{{ $t('groups.about.hidden') }}</p>
+					<p class="fact-subtitle">{{ $t('groups.about.hiddenHelp') }}</p>
 				</div>
 			</div>
 
@@ -64,11 +64,11 @@
 				</div>
 				<div class="fact-body">
 					<p class="fact-title"">{{ group.category.name }}</p>
-					<p class="fact-subtitle">Category</p>
+					<p class="fact-subtitle">{{ $t('groups.about.category') }}</p>
 				</div>
 			</div>
 
-			<p class="mb-0 font-weight-light text-lighter">Created: {{ timestampFormat(group.created_at) }}</p>
+			<p class="mb-0 font-weight-light text-lighter">{{ $t('groups.about.created', { date: timestampFormat(group.created_at) }) }}</p>
 		</div>
 	</div>
 </template>

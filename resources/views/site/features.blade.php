@@ -3,11 +3,11 @@
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Features</h3>
+    <h3 class="font-weight-bold">{{ __('site.features.title') }}</h3>
   </div>
   <hr>
 @endsection
 
 @push('meta')
-<meta property="og:description" content="Features">
+<meta property="og:description" content="{{ __('site.features.title') }}">
 @endpush

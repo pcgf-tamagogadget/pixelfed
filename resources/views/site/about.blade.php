@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 <head>
 
 	<meta charset="utf-8">
@@ -28,8 +28,8 @@
 	<main id="content">
 		<div class="container">
 			<p class="text-right mt-3">
-				<a href="/" class="font-weight-bold text-dark">Home</a>
-				<a href="/site/newsroom" class="ml-4 font-weight-bold text-dark">Newsroom</a>
+				<a href="/" class="font-weight-bold text-dark">{{ __('site.aboutPage.home') }}</a>
+				<a href="/site/newsroom" class="ml-4 font-weight-bold text-dark">{{ __('site.newsroom.title') }}</a>
 			</p>
 		</div>
 		<div class="px-4 py-5 my-5 text-center">
@@ -104,7 +104,7 @@
 		<div id="rules" class="container">
 			<div class="row mb-4">
 				<div class="col">
-					<h1 class="display-4 font-weight-bold mb-0 text-center">Rules</h1>
+					<h1 class="display-4 font-weight-bold mb-0 text-center">{{ __('site.aboutPage.rules') }}</h1>
 				</div>
 			</div>
 			<div class="row justify-content-center">
@@ -114,7 +114,7 @@
 						<li class="h3 my-4">{{$rule}}</li>
 						@endforeach
 					</ol>
-					<p class="h5 text-center pt-4">For more information, please review our <a href="/site/terms">Terms of Use</a></p>
+					<p class="h5 text-center pt-4">{!! __('site.aboutPage.reviewTerms') !!}</p>
 				</div>
 			</div>
 		</div>

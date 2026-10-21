@@ -7,7 +7,7 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-12 col-lg-4">
-                    <p class="display-1 text-white d-inline-block mb-0">Diagnostics</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.diagnostics.home.title') }}</p>
                 </div>
                 <div class="col-12 col-lg-8 d-flex flex-column flex-md-row pt-3 pt-md-0" style="gap: 10px;">
                     <div class="flex-grow-1">
@@ -15,7 +15,7 @@
                             class="btn btn-outline-white btn-lg btn-block px-3 mb-0 copy-information"
                             href="#">
                             <i class="far fa-clipboard mr-1"></i>
-                            Copy Diagnostics
+                            {{ __('admin_panel.diagnostics.home.copyDiagnostics') }}
                         </a>
                     </div>
                     <div class="flex-grow-1">
@@ -23,7 +23,7 @@
                             class="btn btn-outline-white btn-lg btn-block px-3 mb-0 copy-information"
                             href="#">
                             <i class="far fa-chart-network mr-1"></i>
-                            Federation Test
+                            {{ __('admin_panel.diagnostics.home.federationTest') }}
                         </a>
                     </div>
                     <div class="flex-grow-1">
@@ -32,7 +32,7 @@
                             class="btn btn-outline-white btn-lg btn-block px-3 mb-0 copy-information"
                             href="#">
                             <i class="far fa-mobile mr-1"></i>
-                            Mobile App Test
+                            {{ __('admin_panel.diagnostics.home.mobileAppTest') }}
                         </a>
                     </div>
                 </div>
@@ -47,16 +47,16 @@
             	<div class="information">
                 	<ul>
                 		<p class="font-weight-bold text-muted">
-                			Troubleshooting
+                			{{ __('admin_panel.diagnostics.home.troubleshooting') }}
                 		</p>
 
                 		<li>
                 			<strong>Bootstrap:</strong>
-                			<span>{{is_writable(base_path('bootstrap/')) ? 'Writable ✅' : 'Not writable ❌'}}</span>
+                			<span>{{is_writable(base_path('bootstrap/')) ? __('admin_panel.diagnostics.home.writable') : __('admin_panel.diagnostics.home.notWritable')}}</span>
                 		</li>
                 		<li>
                 			<strong>Storage:</strong>
-                			<span>{{is_writable(base_path('storage/')) ? 'Writable ✅' : 'Not writable ❌'}}</span>
+                			<span>{{is_writable(base_path('storage/')) ? __('admin_panel.diagnostics.home.writable') : __('admin_panel.diagnostics.home.notWritable')}}</span>
                 		</li>
 
                 		@foreach([
@@ -73,65 +73,65 @@
                 		] as $ext)
                 			@if(!extension_loaded($ext))
                 				<li>
-                					<strong>PHP Module {{$ext}}:</strong>
-                					<span>Not installed/Not loaded ❌</span>
+                					<strong>{{ __('admin_panel.diagnostics.home.phpModule', ['ext' => $ext]) }}</strong>
+                					<span>{{ __('admin_panel.diagnostics.home.notInstalled') }}</span>
                 				</li>
                 			@endif
                 		@endforeach
 
                 		<li>
                 			<strong><span class="badge badge-primary">DATABASE</span> Ping:</strong>
-                			<span>{{ \DB::connection()->getPDO() ? 'Pong! Connected to DB "' . \DB::connection()->getDatabaseName() . '" ✅' : 'DB Not Responding ❌' }}</span>
+                			<span>{{ \DB::connection()->getPDO() ? __('admin_panel.diagnostics.home.dbPong', ['name' => \DB::connection()->getDatabaseName()]) : __('admin_panel.diagnostics.home.dbNotResponding') }}</span>
                 		</li>
                 		<li>
                 			<strong><span class="badge badge-primary">REDIS</span> Ping:</strong>
-                			<span>{{ \Illuminate\Support\Facades\Redis::command('ping') ? 'Pong! Connected to Redis ✅' : 'Redis Not Responding ❌' }}</span>
+                			<span>{{ \Illuminate\Support\Facades\Redis::command('ping') ? __('admin_panel.diagnostics.home.redisPong') : __('admin_panel.diagnostics.home.redisNotResponding') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">ACTIVITYPUB</span> instance actor created: </strong>
+                			<strong><span class="badge badge-primary">ACTIVITYPUB</span> {{ __('admin_panel.diagnostics.home.instanceActorCreated') }} </strong>
                 			<span>{{ \App\Models\InstanceActor::count() ? '✅ true' : '❌ false' }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">ACTIVITYPUB</span> instance actor cached: </strong>
+                			<strong><span class="badge badge-primary">ACTIVITYPUB</span> {{ __('admin_panel.diagnostics.home.instanceActorCached') }} </strong>
                 			<span>{{ Cache::get(\App\Models\InstanceActor::PROFILE_KEY) ? '✅ true' : '❌ false' }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">OAUTH</span> enabled: </strong>
+                			<strong><span class="badge badge-primary">OAUTH</span> {{ __('admin_panel.diagnostics.home.oauthEnabled') }} </strong>
                 			<span>{{ (bool) config_cache('pixelfed.oauth_enabled') ? '✅ true' : '❌ false' }}</span>
                 		</li>
                 		<li>
                 			<strong><span class="badge badge-primary">OAUTH</span> token_expiration</strong>
-                			<span>{{ config_cache('instance.oauth.token_expiration') }} days</span>
+                			<span>{{ __('admin_panel.diagnostics.home.days', ['count' => config_cache('instance.oauth.token_expiration')]) }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">OAUTH</span> public key exists: </strong>
+                			<strong><span class="badge badge-primary">OAUTH</span> {{ __('admin_panel.diagnostics.home.publicKeyExists') }} </strong>
                 			<span>{{ file_exists(storage_path('oauth-public.key')) || config_cache('passport.public_key') ? '✅ true' : '❌ false' }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">OAUTH</span> private key exists: </strong>
+                			<strong><span class="badge badge-primary">OAUTH</span> {{ __('admin_panel.diagnostics.home.privateKeyExists') }} </strong>
                 			<span>{{ file_exists(storage_path('oauth-private.key')) || config_cache('passport.private_key') ? '✅ true' : '❌ false' }}</span>
                 		</li>
 
                 		<hr>
                 		<p class="font-weight-bold text-muted">
-                			Important Information
+                			{{ __('admin_panel.diagnostics.home.importantInformation') }}
                 		</p>
 
 
                 		@if(function_exists('shell_exec'))
                 			<li>
-                				<strong>Version:</strong>
-                				<span>{{config('pixelfed.version')}}-{{ @shell_exec('git log --pretty="%h" -n1 HEAD') ?? 'unknown git commit' }}</span>
+                				<strong>{{ __('admin_panel.diagnostics.home.version') }}</strong>
+                				<span>{{config('pixelfed.version')}}-{{ @shell_exec('git log --pretty="%h" -n1 HEAD') ?? __('admin_panel.diagnostics.home.unknownGitCommit') }}</span>
                 			</li>
                 		@else
                 			<li>
-                				<strong>Version:</strong>
+                				<strong>{{ __('admin_panel.diagnostics.home.version') }}</strong>
                 				<span>{{config('pixelfed.version')}}</span>
                 			</li>
                 		@endif
 
                 		<li>
-                			<strong>Database:</strong>
+                			<strong>{{ __('admin_panel.diagnostics.home.database') }}</strong>
                 			@php($v = explode(' ', DB::select('select version() as version')[0]->version))
                 			<span>{{config('database.default')}} ({{count($v) == 1 ? $v[0] : $v[1]}})</span>
                 		</li>
@@ -154,7 +154,7 @@
 
                 		<hr>
                 		<p class="font-weight-bold text-muted">
-                			PHP Variables
+                			{{ __('admin_panel.diagnostics.home.phpVariables') }}
                 		</p>
                 		<li>
                 			<strong>PHP:</strong>
@@ -190,49 +190,49 @@
                 			<span>{{ ini_get('file_uploads') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> allow_url_fopen (true):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> allow_url_fopen (true):</strong>
                 			<span>{{ ini_get('allow_url_fopen') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> allow_url_include (false):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> allow_url_include (false):</strong>
                 			<span>{{ ini_get('allow_url_include') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> expose_php (false):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> expose_php (false):</strong>
                 			<span>{{ ini_get('expose_php') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> display_errors (false):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> display_errors (false):</strong>
                 			<span>{{ ini_get('display_errors') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> display_startup_errors (false):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> display_startup_errors (false):</strong>
                 			<span>{{ ini_get('display_startup_errors') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> log_errors (true):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> log_errors (true):</strong>
                 			<span>{{ ini_get('log_errors') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> ignore_repeated_errors (false):</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> ignore_repeated_errors (false):</strong>
                 			<span>{{ ini_get('ignore_repeated_errors') }}</span>
                 		</li>
                 		<li>
-                			<strong><span class="badge badge-primary">PHP INI - Security</span> disable_functions:</strong>
+                			<strong><span class="badge badge-primary">PHP INI - {{ __('admin_panel.diagnostics.home.security') }}</span> disable_functions:</strong>
                 			<span>{{ ini_get('disable_functions') }}</span>
                 		</li>
 
                     	<hr>
                     	<p class="font-weight-bold text-muted">
-                    		Pixelfed Variables (No Secrets)
+                    		{{ __('admin_panel.diagnostics.home.pixelfedVariables') }}
                     	</p>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="bg-light">
                                 	<tr>
-                                		<th width="5%" scope="col" class="border-0 text-dark">CONFIG</th>
-                                		<th width="20%"scope="col" class="border-0 text-dark">Variable Name</th>
-                                		<th width="40%"scope="col" class="border-0 text-dark">Details</th>
+                                		<th width="5%" scope="col" class="border-0 text-dark">{{ __('admin_panel.diagnostics.home.config') }}</th>
+                                		<th width="20%"scope="col" class="border-0 text-dark">{{ __('admin_panel.diagnostics.home.variableName') }}</th>
+                                		<th width="40%"scope="col" class="border-0 text-dark">{{ __('admin_panel.diagnostics.home.details') }}</th>
                                 	</tr>
                                 </thead>
                                 <tbody>
@@ -823,7 +823,7 @@
                                 	<tr>
                                 		<td><span class="badge badge-primary">PURIFY</span></td>
                                 		<td><strong>RESTRICT_HTML_TYPES</strong></td>
-                                		<td><span>BROKEN</span></td>
+                                		<td><span>{{ __('admin_panel.diagnostics.home.broken') }}</span></td>
                                 	</tr>
 
                                 	<tr>
@@ -862,16 +862,16 @@
             <div class="pb-3 border-bottom">
             	<div class="form-group mb-0">
             		<div class="ml-n4 mr-n2 p-3">
-            			<label class="font-weight-bold text-muted">Decrypt Payload</label>
-            			<textarea class="form-control payload-input" rows="5" name="payload" placeholder="Enter payload here"></textarea>
-            			<p class="help-text small text-muted mt-3 mb-0">The payload is from the "Something went wrong" page, anyone can copy the payload for you to decrypt.<br />Contents are encrypted due to potential sensitive information.</p>
+            			<label class="font-weight-bold text-muted">{{ __('admin_panel.diagnostics.home.decryptPayload') }}</label>
+            			<textarea class="form-control payload-input" rows="5" name="payload" placeholder="{{ __('admin_panel.diagnostics.home.payloadPlaceholder') }}"></textarea>
+            			<p class="help-text small text-muted mt-3 mb-0">{{ __('admin_panel.diagnostics.home.payloadHelp') }}<br />{{ __('admin_panel.diagnostics.home.payloadHelpEncrypted') }}</p>
             		</div>
             	</div>
 
 
             	<div class="form-group row">
             		<div class="col-12">
-            			<button type="button" class="btn btn-primary font-weight-bold px-5 decrypt-payload">Decrypt</button>
+            			<button type="button" class="btn btn-primary font-weight-bold px-5 decrypt-payload">{{ __('admin_panel.diagnostics.home.decrypt') }}</button>
             		</div>
             	</div>
             </div>
@@ -903,14 +903,14 @@
 			'payload': payload
 		}).then(res => {
 			swal(
-				'Payload',
+				@json(__('admin_panel.diagnostics.home.payload')),
 				res.data.decrypted,
 				'info'
 			);
 			document.querySelector('.payload-input').value = '';
 		}).catch(err => {
 			swal(
-				'Error',
+				@json(__('admin_panel.diagnostics.home.error')),
 				err.response.data.error,
 				'error'
 			);
@@ -921,7 +921,7 @@
 		let text = document.querySelector('.information').innerText;
 		let payload = '=======================\n Pixelfed Instance Diagnostic v0.2 \n=======================\n' + text + '\n========= END =========\n';
 		navigator.clipboard.writeText(payload);
-		swal('Copied', 'Successfully copied diagnostic information to clipboard!', 'success');
+		swal(@json(__('admin_panel.diagnostics.home.copied')), @json(__('admin_panel.diagnostics.home.copiedMessage')), 'success');
 	});
 </script>
 @endpush

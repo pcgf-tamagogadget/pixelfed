@@ -11,7 +11,7 @@
 								<i class="far fa-home fa-lg"></i>
 							</p>
 							<p class="nav-link-label">
-								<span>Home</span>
+								<span>{{ $t('spa.drawer.home') }}</span>
 							</p>
 						</router-link>
 					</li>
@@ -22,7 +22,7 @@
 								<i class="far fa-stream fa-lg"></i>
 							</p>
 							<p class="nav-link-label">
-								<span>Local</span>
+								<span>{{ $t('spa.drawer.local') }}</span>
 							</p>
 						</router-link>
 					</li>
@@ -33,7 +33,7 @@
 								<i class="far fa-plus-circle fa-lg"></i>
 							</p>
 							<p class="nav-link-label">
-								<span>New</span>
+								<span>{{ $t('spa.drawer.new') }}</span>
 							</p>
 						</router-link>
 					</li>
@@ -44,7 +44,7 @@
 								<i class="far fa-bell fa-lg"></i>
 							</p>
 							<p class="nav-link-label">
-								<span>Alerts</span>
+								<span>{{ $t('spa.drawer.alerts') }}</span>
 							</p>
 						</router-link>
 					</li>
@@ -55,7 +55,7 @@
 								<i class="far fa-user fa-lg"></i>
 							</p>
 							<p class="nav-link-label">
-								<span>Profile</span>
+								<span>{{ $t('navmenu.profile') }}</span>
 							</p>
 						</router-link>
 					</li>

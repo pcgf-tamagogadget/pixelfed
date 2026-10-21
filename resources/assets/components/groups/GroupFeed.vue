@@ -1,7 +1,7 @@
 <template>
 	<div class="group-feed-component">
 		<div v-if="!initalLoad">
-			<p class="text-center mt-5 pt-5 font-weight-bold">Loading...</p>
+			<p class="text-center mt-5 pt-5 font-weight-bold">{{ $t('common.loading') }}</p>
 		</div>
 
 		<div v-else>
@@ -37,12 +37,12 @@
 
 							<div v-if="feed.length == 0" class="mt-3">
 								<div class="card card-body shadow-none border d-flex align-items-center justify-content-center" style="height: 200px;">
-									<p class="font-weight-bold mb-0">No posts yet!</p>
+									<p class="font-weight-bold mb-0">{{ $t('groups.groupFeed.noPosts') }}</p>
 								</div>
 							</div>
 
 							<div v-else class="group-timeline">
-								<p class="font-weight-bold mb-1">Recent Posts</p>
+								<p class="font-weight-bold mb-1">{{ $t('groups.groupFeed.recentPosts') }}</p>
 
 
 								<!-- <div class="status-card-component shadow-sm mb-3 rounded-lg">
@@ -449,7 +449,7 @@
 									size="sm"
 									centered
 									hide-footer
-									title="Likes"
+									:title="$t('groups.groupFeed.likes')"
 									body-class="list-group-flush p-0">
 									<div class="list-group py-1" style="max-height:300px;overflow-y:auto;">
 										<div
@@ -458,7 +458,7 @@
 											v-for="(user, index) in likes" :key="'modal_likes_'+index">
 											<div class="media align-items-center">
 												<a :href="user.url">
-													<img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="user.username + '’s avatar'" width="30px" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
+													<img class="mr-3 rounded-circle box-shadow" :src="user.avatar" :alt="$t('groups.groupFeed.userAvatar', { username: user.username })" width="30px" onerror="this.onerror=null;this.src='/storage/avatars/default.jpg';">
 												</a>
 												<div class="media-body">
 													<p class="mb-0" style="font-size: 14px">
@@ -493,7 +493,7 @@
 
 						<div v-else>
 							<div class="card card-body mt-3 shadow-none border d-flex align-items-center justify-content-center" style="height: 100px;">
-								<p class="lead mb-0">Join to participate in this group.</p>
+								<p class="lead mb-0">{{ $t('groups.groupFeed.joinToParticipate') }}</p>
 							</div>
 						</div>
 					</div>
@@ -733,13 +733,13 @@
 						this.tab = 'feed';
 						history.pushState('', null, this.group.url);
 						this.requestingMembership = false;
-						swal('Oops!', body.data.error, 'error');
+						swal(this.$t('common.oops'), body.data.error, 'error');
 					}
 				});
 			},
 
 			cancelJoinRequest() {
-				if(!window.confirm('Are you sure you want to cancel your request to join this group?')) {
+				if(!window.confirm(this.$t('groups.groupFeed.confirmCancelRequest'))) {
 					return;
 				}
 
@@ -750,13 +750,13 @@
 					let body = err.response;
 
 					if(body.status == 422) {
-						swal('Oops!', body.data.error, 'error');
+						swal(this.$t('common.oops'), body.data.error, 'error');
 					}
 				});
 			},
 
 			leaveGroup() {
-				if(!window.confirm('Are you sure you want to leave this group? Any content you shared will remain accessible. You won\'t be able to rejoin for 24 hours.')) {
+				if(!window.confirm(this.$t('groups.groupFeed.confirmLeave'))) {
 					return;
 				}
 
@@ -846,15 +846,15 @@
 
 			copyLink() {
 				window.App.util.clipboard(this.group.url);
-				this.$bvToast.toast(`Succesfully copied group url to clipboard`, {
-					title: 'Success',
+				this.$bvToast.toast(this.$t('groups.groupFeed.linkCopied'), {
+					title: this.$t('common.success'),
 					variant: 'success',
 					autoHideDelay: 5000
 				});
 			},
 
 			reportGroup() {
-				swal('Report Group', 'Are you sure you want to report this group?')
+				swal(this.$t('groups.groupFeed.reportGroup'), this.$t('groups.groupFeed.confirmReport'))
 				.then(res => {
 					if(res) {
 						location.href = `/i/report?id=${this.group.id}&type=group`;

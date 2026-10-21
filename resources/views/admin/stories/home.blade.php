@@ -7,7 +7,7 @@
 		<div class="header-body">
 			<div class="row align-items-center py-4">
 				<div class="col-lg-6 col-7">
-					<p class="display-1 text-white d-inline-block mb-0">Stories</p>
+					<p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.stories.home.title') }}</p>
 				</div>
 			</div>
 			<div class="row">
@@ -16,7 +16,7 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">Active Stories</h5>
+									<h5 class="card-title text-uppercase text-muted mb-0">{{ __('admin_panel.stories.home.activeStories') }}</h5>
 									<span class="h2 font-weight-bold mb-0">{{$stats['active']['today']}}</span>
 								</div>
 								<div class="col-auto">
@@ -27,7 +27,7 @@
 							</div>
 							<p class="mt-3 mb-0 text-sm">
 								<span class="text-success mr-2"><i class="fa fa-arrow-up"></i> {{$stats['active']['month']}}</span>
-								<span class="text-nowrap">in last 30 days</span>
+								<span class="text-nowrap">{{ __('admin_panel.stories.home.inLast30Days') }}</span>
 							</p>
 						</div>
 					</div>
@@ -37,7 +37,7 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">Remote Stories</h5>
+									<h5 class="card-title text-uppercase text-muted mb-0">{{ __('admin_panel.stories.home.remoteStories') }}</h5>
 									<span class="h2 font-weight-bold mb-0">{{$stats['remote']['month']}}</span>
 								</div>
 								<div class="col-auto">
@@ -48,38 +48,38 @@
 							</div>
 							<p class="mt-3 mb-0 text-sm">
 								<span class="text-success mr-2"><i class="fa fa-arrow-up"></i> {{$stats['remote']['month']}}</span>
-								<span class="text-nowrap">in last 30 days</span>
+								<span class="text-nowrap">{{ __('admin_panel.stories.home.inLast30Days') }}</span>
 							</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Total Stories</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.stories.home.totalStories') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0">{{$stats['total']}}</span>
 					</div>
 					<div class="">
-						<h5 class="text-light text-uppercase mb-0">Stories Per User</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.stories.home.storiesPerUser') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0">{{$stats['avg_spu']}}</span>
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Storage Used</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.stories.home.storageUsed') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0 human-size">{{$stats['storage']['sum']}}</span>
 					</div>
 					<div class="">
-						<h5 class="text-light text-uppercase mb-0">Average Media Size</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.stories.home.averageMediaSize') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0 human-size">{{$stats['storage']['average']}}</span>
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Average Duration</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.stories.home.averageDuration') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0">{{$stats['avg_duration']}}s</span>
 					</div>
 					<div class="">
-						<h5 class="text-light text-uppercase mb-0">Average Type</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.stories.home.averageType') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0">{{$stats['avg_type']}}</span>
 					</div>
 				</div>
@@ -93,11 +93,11 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col" class="">#</th>
-					<th scope="col" class="">Username</th>
-					<th scope="col" class="">Type</th>
-					<th scope="col" class="">View Count</th>
-					<th scope="col" class="">Created</th>
-					<th scope="col" class="">Expires</th>
+					<th scope="col" class="">{{ __('admin_panel.common.username') }}</th>
+					<th scope="col" class="">{{ __('admin_panel.stories.home.type') }}</th>
+					<th scope="col" class="">{{ __('admin_panel.stories.home.viewCount') }}</th>
+					<th scope="col" class="">{{ __('admin_panel.common.created') }}</th>
+					<th scope="col" class="">{{ __('admin_panel.stories.home.expires') }}</th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
@@ -120,8 +120,8 @@
 								<i class="fas fa-ellipsis-v"></i>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-								<a class="dropdown-item" href="{{$story->mediaUrl()}}">Preview</a>
-								<a class="dropdown-item" href="#">Delete</a>
+								<a class="dropdown-item" href="{{$story->mediaUrl()}}">{{ __('admin_panel.stories.home.preview') }}</a>
+								<a class="dropdown-item" href="#">{{ __('admin_panel.common.delete') }}</a>
 							</div>
 						</div>
 					</td>

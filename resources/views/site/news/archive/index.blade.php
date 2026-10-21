@@ -2,6 +2,6 @@
 
 @section('body')
 <div class="container">
-	<p class="text-center">Archive here</p>
+	<p class="text-center">{{ __('site.newsroom.archivePlaceholder') }}</p>
 </div>
 @endsection

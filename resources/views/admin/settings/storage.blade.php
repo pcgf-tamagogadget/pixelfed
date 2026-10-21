@@ -4,12 +4,12 @@
 
 @section('section')
 <div class="title">
-	<h3 class="font-weight-bold">Storage</h3>
-	<p class="lead">Filesystem storage stats</p>
+	<h3 class="font-weight-bold">{{ __('admin_panel.settings.storage.title') }}</h3>
+	<p class="lead">{{ __('admin_panel.settings.storage.subtitle') }}</p>
 </div>
 <hr>
 <p class="alert alert-warning">
-	<strong>Feature Unavailable:</strong> This feature will be released in a future version.
+	<strong>{{ __('admin_panel.common.featureUnavailable') }}</strong> {{ __('admin_panel.common.futureVersion') }}
 </p>
 @endsection
 

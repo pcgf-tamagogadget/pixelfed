@@ -1,4 +1,4 @@
-@extends('layouts.app-guest',['title' => $user->username . " on " . config_cache('app.name')])
+@extends('layouts.app-guest',['title' => __('profile.page.userOnApp', ['username' => $user->username, 'app' => config_cache('app.name')])])
 
 @section('content')
 @if (session('error'))
@@ -20,7 +20,7 @@
 
 				@if(!Auth::check())
 				<p class="text-center mb-0">{{ __('profile.alreadyFollow', ['username'=>$user->username])}}</p>
-				<p class="text-center mb-0"><a href="{{route('login')}}">{{__('Log in')}}</a></p>
+				<p class="text-center mb-0"><a href="{{route('login')}}">{{ __('profile.page.logIn') }}</a></p>
 				<p class="text-center mb-0">{{__('profile.loginToSeeProfile')}}</p>
 				@endif
 			</div>

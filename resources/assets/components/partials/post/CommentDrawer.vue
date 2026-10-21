@@ -6,19 +6,19 @@
 			<div v-if="feed.length && feed.length >= 1" class="mb-2 sort-menu">
 				<b-dropdown size="sm" variant="link" ref="sortMenu" toggle-class="text-decoration-none text-dark font-weight-bold" no-caret>
 					<template #button-content>
-						Show {{ sorts[sortIndex] }} comments <i class="far fa-chevron-down ml-1"></i>
+						{{ [$t('spa.commentDrawer.showAllComments'), $t('spa.commentDrawer.showNewestComments'), $t('spa.commentDrawer.showPopularComments')][sortIndex] }} <i class="far fa-chevron-down ml-1"></i>
 					</template>
 					<b-dropdown-item href="#" :class="{ active: sortIndex === 0 }" @click="toggleSort(0)">
-						<p class="title mb-0">All</p>
-						<p class="description">All comments in chronological order</p>
+						<p class="title mb-0">{{ $t('spa.commentDrawer.sortAll') }}</p>
+						<p class="description">{{ $t('spa.commentDrawer.sortAllDescription') }}</p>
 					</b-dropdown-item>
 					<b-dropdown-item href="#" :class="{ active: sortIndex === 1 }" @click="toggleSort(1)">
-						<p class="title mb-0">Newest</p>
-						<p class="description">Newest comments appear first</p>
+						<p class="title mb-0">{{ $t('spa.commentDrawer.sortNewest') }}</p>
+						<p class="description">{{ $t('spa.commentDrawer.sortNewestDescription') }}</p>
 					</b-dropdown-item>
 					<b-dropdown-item href="#" :class="{ active: sortIndex === 2 }" @click="toggleSort(2)">
-						<p class="title mb-0">Popular</p>
-						<p class="description">The most relevant comments appear first</p>
+						<p class="title mb-0">{{ $t('spa.commentDrawer.sortPopular') }}</p>
+						<p class="description">{{ $t('spa.commentDrawer.sortPopularDescription') }}</p>
 					</b-dropdown-item>
 				</b-dropdown>
 			</div>
@@ -59,7 +59,7 @@
 										<p class="mb-0">
 											{{ $t('common.sensitiveContentWarning') }}
 										</p>
-										<a href="#" class="small font-weight-bold primary" @click.prevent="post.sensitive = false">Show</a>
+										<a href="#" class="small font-weight-bold primary" @click.prevent="post.sensitive = false">{{ $t('spa.commentDrawer.show') }}</a>
 									</span>
 
 									<!-- <span v-else v-html="post.content"></span> -->
@@ -92,7 +92,7 @@
 
     										<div class="sensitive-warning">
     											<p class="mb-0"><i class="far fa-eye-slash fa-lg"></i></p>
-    											<p class="mb-0 small">Tap to view</p>
+    											<p class="mb-0 small">{{ $t('spa.commentDrawer.tapToView') }}</p>
     										</div>
     									</div>
 
@@ -152,7 +152,7 @@
                                             </div>
 
                                             <div v-else>
-                                                <p>Cannot render commment</p>
+                                                <p>{{ $t('spa.commentDrawer.cannotRender') }}</p>
                                             </div>
 
     										<button
@@ -172,7 +172,7 @@
 									class="btn btn-link font-weight-bold btn-sm p-0"
 									:class="[ post.favourited ? 'primary' : 'text-muted' ]"
 									@click="likeComment(idx)">
-									{{ post.favourited ? 'Liked' : 'Like' }}
+									{{ post.favourited ? $t('common.liked') : $t('common.like') }}
 								</button>
 								<template v-if="post.visibility != 'public'">
 									<span class="mx-1">·</span>
@@ -180,20 +180,20 @@
 										v-if="post.visibility === 'unlisted'"
 										class="text-lighter"
 										v-b-tooltip:hover.bottom
-										title="This post is unlisted on timelines">
+										:title="$t('spa.commentDrawer.unlistedTooltip')">
 										<i class="far fa-unlock fa-sm"></i>
 									</span>
 									<span
 										v-else-if="post.visibility === 'private'"
 										class="text-muted"
 										v-b-tooltip:hover.bottom
-										title="This post is only visible to followers of this account">
+										:title="$t('spa.commentDrawer.privateTooltip')">
 										<i class="far fa-lock fa-sm"></i>
 									</span>
 								</template>
 								<span class="mx-1">·</span>
 								<a class="font-weight-bold text-muted" :href="post.url" @click.prevent="toggleCommentReply(idx)">
-									Reply
+									{{ $t('spa.commentDrawer.reply') }}
 								</a>
 								<span class="mx-1">·</span>
 								<a class="font-weight-bold text-muted" :href="post.url" @click.prevent="goToPost(post)" v-once>
@@ -206,7 +206,7 @@
                                         :class="[deletingIndex && deletingIndex === idx ? 'text-danger' : 'text-muted']"
 										href="#"
 										@click.prevent="deleteComment(idx)">
-                                        {{ deletingIndex && deletingIndex === idx ? 'Deleting...' : 'Delete'}}
+                                        {{ deletingIndex && deletingIndex === idx ? $t('spa.commentDrawer.deleting') : $t('common.delete') }}
 									</a>
 								</span>
 
@@ -216,7 +216,7 @@
 										class="font-weight-bold text-muted"
 										href="#"
 										@click.prevent="reportComment(idx)">
-										Report
+										{{ $t('menu.report') }}
 									</a>
 								</span>
 							</p>
@@ -225,14 +225,14 @@
 								<div v-if="!post.replies.replies_show && commentReplyIndex !== idx" class="media-body-show-replies">
 									<a href="#" class="font-weight-bold primary" @click.prevent="showCommentReplies(idx)">
 										<i class="media-body-show-replies-icon"></i>
-										<span class="media-body-show-replies-label">Show {{ prettyCount(post.reply_count) }} replies</span>
+										<span class="media-body-show-replies-label">{{ $t('spa.commentDrawer.showReplies', { count: prettyCount(post.reply_count) }) }}</span>
 									</a>
 								</div>
 
 								<div v-else class="media-body-show-replies">
 									<a href="#" class="font-weight-bold text-muted" @click.prevent="hideCommentReplies(idx)">
 										<i class="media-body-show-replies-icon"></i>
-										<span class="media-body-show-replies-label">Hide {{ prettyCount(post.reply_count) }} replies</span>
+										<span class="media-body-show-replies-label">{{ $t('spa.commentDrawer.hideReplies', { count: prettyCount(post.reply_count) }) }}</span>
 									</a>
 								</div>
 							</template>
@@ -250,7 +250,7 @@
 								<div class="media-body-show-replies mt-n3">
 									<a href="#" class="font-weight-bold text-dark" @click.prevent="goToPost(post)">
 										<i class="media-body-show-replies-icon"></i>
-										<span class="media-body-show-replies-label">View full thread</span>
+										<span class="media-body-show-replies-label">{{ $t('spa.commentDrawer.viewFullThread') }}</span>
 									</a>
 								</div>
 							</div>
@@ -291,14 +291,14 @@
 
 		<div v-if="!feedLoading && canLoadMore" class="post-comment-drawer-loadmore">
 			<p>
-				<a class="font-weight-bold text-dark" href="#" @click.prevent="fetchMore()">Load more comments…</a>
+				<a class="font-weight-bold text-dark" href="#" @click.prevent="fetchMore()">{{ $t('spa.commentDrawer.loadMoreComments') }}</a>
 			</p>
 		</div>
 
 		<div v-if="showEmptyRepliesRefresh" class="post-comment-drawer-loadmore">
 			<p class="text-center mb-4">
 				<a class="btn btn-outline-primary font-weight-bold rounded-pill" href="#" @click.prevent="forceRefresh()">
-					<i class="far fa-sync mr-2"></i> Refresh
+					<i class="far fa-sync mr-2"></i> {{ $t('spa.commentDrawer.refresh') }}
 				</a>
 			</p>
 		</div>
@@ -310,7 +310,7 @@
 				<vue-tribute :options="tributeSettings">
 					<textarea
                         class="form-control bg-light rounded-sm shadow-sm rounded-pill"
-                        placeholder="Write a comment...."
+                        :placeholder="$t('spa.commentDrawer.writeComment')"
                         style="resize: none;padding-right:140px;"
                         rows="1"
                         v-model="replyContent"
@@ -322,7 +322,7 @@
 				<vue-tribute :options="tributeSettings">
 					<textarea
 						class="form-control bg-light rounded-sm shadow-sm"
-						placeholder="Write a comment...."
+						:placeholder="$t('spa.commentDrawer.writeComment')"
 						style="resize: none;padding-right:140px;"
 						rows="5"
 						v-model="replyContent"

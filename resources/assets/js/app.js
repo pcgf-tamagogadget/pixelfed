@@ -32,7 +32,14 @@ window.App.redirect = function() {
 	});
 }
 
-window.App.boot = function() {
+// Shared VueI18n instance. Pages that mount their own root
+// (`new Vue({ el: '#panel', i18n: App.i18n() })`) must pass it so that
+// components can use $t(); App.boot() uses it as well.
+window.App.i18n = function() {
+    if (window.App._i18n) {
+        return window.App._i18n;
+    }
+
     Vue.use(VueI18n);
 
     // Load every locale JSON in ./i18n/ automatically, keyed by locale code
@@ -45,14 +52,19 @@ window.App.boot = function() {
     });
     let locale = document.querySelector('html').getAttribute('lang');
 
-    const i18n = new VueI18n({
-    locale: locale, // set locale
-    fallbackLocale: 'en-US',
-    messages: i18nMessages
-});
+    window.App._i18n = new VueI18n({
+        locale: locale, // set locale
+        fallbackLocale: 'en-US',
+        messages: i18nMessages
+    });
+
+    return window.App._i18n;
+}
+
+window.App.boot = function() {
     new Vue({
         el: '#content',
-        i18n,
+        i18n: window.App.i18n(),
     });
 }
 
@@ -94,7 +106,7 @@ window.App.util = {
 	}),
 	version: 1,
 	format: {
-		count: (function(count = 0, locale = 'en-GB', notation = 'compact') {
+		count: (function(count = 0, locale = document.documentElement.lang || 'en-GB', notation = 'compact') {
 			if(count < 1) {
 				return 0;
 			}

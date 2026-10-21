@@ -6,8 +6,7 @@
                     <div class="col-12 col-md-6">
                         <div class="card shadow-none border card-body mt-5 mb-3 ft-std" style="border-radius: 20px;">
                             <p class="lead font-weight-bold text-center mb-0"><i
-                                    class="far fa-exclamation-triangle mr-2"></i>This account has indicated their new
-                                account is:</p>
+                                    class="far fa-exclamation-triangle mr-2"></i>{{ $t('spa.profile.movedNotice') }}</p>
                         </div>
                         <div class="card shadow-none border" style="border-radius: 20px;">
                             <div class="card-body ft-std">
@@ -21,8 +20,7 @@
 
                                     <div class="d-flex flex-grow-1 justify-content-end" style="min-width: 200px;">
                                         <router-link :to="`/i/web/profile/${profile.moved.id}`"
-                                            class="btn btn-outline-primary rounded-pill font-weight-bold">View New
-                                            Account</router-link>
+                                            class="btn btn-outline-primary rounded-pill font-weight-bold">{{ $t('spa.profile.viewNewAccount') }}</router-link>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +197,7 @@ export default {
                     }
                     this.profile.followers_count--;
                 }).catch(err => {
-                    swal('Oops!', 'An error occured when attempting to unfollow this account.', 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.profile.unfollowError'), 'error');
                     this.relationship.following = true;
                 });
         },
@@ -214,7 +212,7 @@ export default {
                     }
                     this.profile.followers_count++;
                 }).catch(err => {
-                    swal('Oops!', 'An error occured when attempting to follow this account.', 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.profile.followError'), 'error');
                     this.relationship.following = false;
                 });
         },

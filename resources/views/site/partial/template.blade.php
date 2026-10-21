@@ -1,4 +1,4 @@
-@extends('layouts.anon',['title' => 'About ' . config_cache('app.name')])
+@extends('layouts.anon',['title' => __('site.aboutPage.pageTitle', ['name' => config_cache('app.name')])])
 
 @section('content')
 

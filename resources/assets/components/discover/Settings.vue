@@ -10,72 +10,72 @@
 				<div class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">Discover Settings</h1>
+					<h1 class="font-default">{{ $t('spa.discoverSettings.title') }}</h1>
 					<!-- <p class="font-default lead">Browse timelines of a specific instance</p> -->
 
 					<hr>
 
 					<div class="card font-default shadow-none border">
 						<div class="card-header">
-							<p class="text-center font-weight-bold mb-0">Manage Features</p>
+							<p class="text-center font-weight-bold mb-0">{{ $t('spa.discoverSettings.manageFeatures') }}</p>
 						</div>
 						<div class="card-body">
 
 							<div class="mb-2">
 								<b-form-checkbox size="lg" v-model="hashtags.enabled" name="check-button" switch class="font-weight-bold">
-									My Hashtags
+									{{ $t('spa.discoverHashtags.title') }}
 								</b-form-checkbox>
-								<p class="text-muted">Allow users to browse timelines of hashtags they follow</p>
+								<p class="text-muted">{{ $t('spa.discoverSettings.hashtagsHelp') }}</p>
 							</div>
 
 							<div class="mb-2">
 								<b-form-checkbox size="lg" v-model="memories.enabled" name="check-button" switch class="font-weight-bold">
-									My Memories
+									{{ $t('spa.discoverMemories.title') }}
 								</b-form-checkbox>
-								<p class="text-muted">Allow users to access Memories, a timeline of posts they made or liked on this day in past years</p>
+								<p class="text-muted">{{ $t('spa.discoverSettings.memoriesHelp') }}</p>
 							</div>
 
 							<div class="mb-2">
 								<b-form-checkbox size="lg" v-model="insights.enabled" name="check-button" switch class="font-weight-bold">
-									Account Insights
+									{{ $t('spa.discoverInsights.title') }}
 								</b-form-checkbox>
-								<p class="text-muted">Allow users to access Account Insights, an overview of their account activity</p>
+								<p class="text-muted">{{ $t('spa.discoverSettings.insightsHelp') }}</p>
 							</div>
 
 							<div class="mb-2">
 								<b-form-checkbox size="lg" v-model="friends.enabled" name="check-button" switch class="font-weight-bold">
-									Find Friends
+									{{ $t('spa.discoverFindFriends.title') }}
 								</b-form-checkbox>
-								<p class="text-muted">Allow users to access Find Friends, a directory of popular accounts</p>
+								<p class="text-muted">{{ $t('spa.discoverSettings.friendsHelp') }}</p>
 							</div>
 
 							<div>
 								<b-form-checkbox size="lg" v-model="server.enabled" name="check-button" switch class="font-weight-bold">
-									Server Timelines
+									{{ $t('spa.discoverServerFeed.title') }}
 								</b-form-checkbox>
-								<p class="text-muted">Allow users to access Server Timelines, a timeline of public posts from a specific instance</p>
+								<p class="text-muted">{{ $t('spa.discoverSettings.serverHelp') }}</p>
 							</div>
 						</div>
 					</div>
 
 					<div v-if="server.enabled" class="card font-default shadow-none border my-3">
 						<div class="card-header">
-							<p class="text-center font-weight-bold mb-0">Manage Server Timelines</p>
+							<p class="text-center font-weight-bold mb-0">{{ $t('spa.discoverSettings.manageServerTimelines') }}</p>
 						</div>
 						<div class="card-body">
 							<div class="mb-2">
-								<b-form-group label="Server Mode">
-									<b-form-radio v-model="server.mode" value="all" disabled>Allow any instance (Not Recommended)</b-form-radio>
-									<b-form-radio v-model="server.mode" value="allowlist">Limit by approved domains</b-form-radio>
+								<b-form-group :label="$t('spa.discoverSettings.serverMode')">
+									<b-form-radio v-model="server.mode" value="all" disabled>{{ $t('spa.discoverSettings.allowAny') }}</b-form-radio>
+									<b-form-radio v-model="server.mode" value="allowlist">{{ $t('spa.discoverSettings.limitByDomains') }}</b-form-radio>
 								</b-form-group>
-								<p class="text-muted">Set the allowed instances to browse</p>
+								<p class="text-muted">{{ $t('spa.discoverSettings.serverModeHelp') }}</p>
 							</div>
 
 							<div v-if="server.mode == 'allowlist'">
-								<b-form-group label="Allowed Domains">
+								<b-form-group :label="$t('spa.discoverSettings.allowedDomains')">
 									<b-form-textarea
 										v-model="server.domains"
-										placeholder="Add domains to allow here, separated by commas"
+										:placeholder="$t('spa.discoverSettings.allowedDomainsPlaceholder')"
 										rows="3"
 										max-rows="6"
 									></b-form-textarea>
@@ -86,7 +86,7 @@
 				</div>
 
 				<div class="col-md-2 col-lg-3">
-					<button v-if="hasChanged" class="btn btn-primary btn-block primary font-weight-bold" @click="saveFeatures">Save changes</button>
+					<button v-if="hasChanged" class="btn btn-primary btn-block primary font-weight-bold" @click="saveFeatures">{{ $t('spa.discoverSettings.saveChanges') }}</button>
 				</div>
 			</div>
 		</div>
@@ -112,11 +112,11 @@ export default {
 			profile: window._sharedData.user,
 			breadcrumbItems: [
 				{
-					text: 'Discover',
+					text: this.$t('navmenu.discover'),
 					href: '/i/web/discover'
 				},
 				{
-					text: 'Settings',
+					text: this.$t('navmenu.settings'),
 					active: true
 				}
 			],
@@ -249,8 +249,8 @@ export default {
 				// }
 				// this.original = data;
 				this.server = res.data.server;
-				this.$bvToast.toast('Successfully updated settings!', {
-					title: 'Discover Settings',
+				this.$bvToast.toast(this.$t('spa.discoverSettings.updated'), {
+					title: this.$t('spa.discoverSettings.title'),
 					autoHideDelay: 5000,
 					appendToast: true,
 					variant: 'success'

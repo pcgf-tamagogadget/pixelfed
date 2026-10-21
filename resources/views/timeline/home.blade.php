@@ -23,7 +23,7 @@
 @endif
 <noscript>
 	<div class="container">
-		<p class="pt-5 text-center lead">Please enable javascript to view this content.</p>
+		<p class="pt-5 text-center lead">{{ __('pages.common.enableJs') }}</p>
 	</div>
 </noscript>
 

@@ -9,19 +9,22 @@
                 <div class="col-md-8 col-lg-6">
                     <div v-if="isReply" class="p-3 rounded-top mb-n3" style="background-color: var(--card-header-accent)">
                         <p>
-                            <i class="fal fa-reply mr-1"></i> In reply to
-
-                            <a
-                                :href="'/i/web/profile/' + reply.account.id"
-                                class="font-weight-bold primary"
-                                @click.prevent="goToProfile(reply.account)">
-                                &commat;{{ reply.account.acct }}
-                            </a>
+                            <i class="fal fa-reply mr-1"></i>
+                            <i18n path="spa.post.inReplyTo" tag="span">
+                                <template v-slot:username>
+                                    <a
+                                        :href="'/i/web/profile/' + reply.account.id"
+                                        class="font-weight-bold primary"
+                                        @click.prevent="goToProfile(reply.account)">
+                                        &commat;{{ reply.account.acct }}
+                                    </a>
+                                </template>
+                            </i18n>
 
                             <button
                                 @click.prevent="goToPost(reply)"
                                 class="btn btn-primary font-weight-bold btn-sm px-3 float-right rounded-pill">
-                                View Post
+                                {{ $t('menu.viewPost') }}
                             </button>
                         </p>
                     </div>
@@ -61,13 +64,13 @@
                             <p class="text-center">
                                 <i class="far fa-exclamation-triangle fa-3x text-lighter"></i>
                             </p>
-                            <p class="text-center lead font-weight-bold">Error displaying post</p>
-                            <p class="mb-0">This can happen for a few reasons:</p>
+                            <p class="text-center lead font-weight-bold">{{ $t('spa.post.errorTitle') }}</p>
+                            <p class="mb-0">{{ $t('spa.post.errorReasons') }}</p>
                             <ul class="text-lighter">
-                                <li>The url is invalid or has a typo</li>
-                                <li>The page has been flagged for review by our automated abuse detection systems</li>
-                                <li>The content may have been deleted</li>
-                                <li>You do not have permission to view this content</li>
+                                <li>{{ $t('spa.post.errorInvalidUrl') }}</li>
+                                <li>{{ $t('spa.post.errorFlagged') }}</li>
+                                <li>{{ $t('spa.post.errorDeleted') }}</li>
+                                <li>{{ $t('spa.post.errorNoPermission') }}</li>
                             </ul>
                         </div>
                     </div>
@@ -345,7 +348,7 @@
                     this.user.following_count++;
                     this.post.account.followers_count++;
                 }).catch(err => {
-                    swal('Oops!', 'An error occurred when attempting to follow this account.', 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.post.followError'), 'error');
                     this.post.relationship.following = false;
                 });
             },
@@ -357,7 +360,7 @@
                     this.user.following_count--;
                     this.post.account.followers_count--;
                 }).catch(err => {
-                    swal('Oops!', 'An error occurred when attempting to unfollow this account.', 'error');
+                    swal(this.$t('common.oops'), this.$t('spa.post.unfollowError'), 'error');
                     this.post.relationship.following = true;
                 });
             },
@@ -419,8 +422,8 @@
                     this.post.bookmarked = !this.post.bookmarked;
                 })
                 .catch(err => {
-                    this.$bvToast.toast('Cannot bookmark post at this time.', {
-                        title: 'Bookmark Error',
+                    this.$bvToast.toast(this.$t('spa.post.bookmarkErrorMessage'), {
+                        title: this.$t('spa.post.bookmarkErrorTitle'),
                         variant: 'danger',
                         autoHideDelay: 5000
                     });

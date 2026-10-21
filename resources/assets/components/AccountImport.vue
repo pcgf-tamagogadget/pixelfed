@@ -7,21 +7,21 @@
             <input type="file" name="file" class="d-none" ref="zipInput" @change="zipInputChanged" />
             <template v-if="page === 1">
                 <div class="title">
-                    <h3 class="font-weight-bold">Import</h3>
+                    <h3 class="font-weight-bold">{{ $t('spa.accountImport.title') }}</h3>
                 </div>
                 <hr>
                 <section>
-                    <p class="lead">Account Import allows you to import your data from a supported service.</p>
+                    <p class="lead">{{ $t('spa.accountImport.description') }}</p>
                 </section>
                 <section class="mt-4">
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between flex-column" style="gap:1rem">
                             <div class="d-flex justify-content-between align-items-center" style="gap: 1rem;">
                                 <div>
-                                    <p class="font-weight-bold mb-1">Import from Instagram</p>
-                                    <p v-if="showDisabledWarning" class="small mb-0">This feature has been disabled by the administrators.</p>
-                                    <p v-else-if="showNotAllowedWarning" class="small mb-0">You have not been permitted to use this feature, or have reached the maximum limits. For more info, view the <a href="/site/kb/import" class="font-weight-bold">Import Help Center</a> page.</p>
-                                    <p v-else class="small mb-0">Upload the JSON export from Instagram in .zip format.<br />For more information click <a href="/site/kb/import">here</a>.</p>
+                                    <p class="font-weight-bold mb-1">{{ $t('spa.accountImport.importFromInstagram') }}</p>
+                                    <p v-if="showDisabledWarning" class="small mb-0">{{ $t('spa.accountImport.disabled') }}</p>
+                                    <i18n v-else-if="showNotAllowedWarning" path="spa.accountImport.notAllowed" tag="p" class="small mb-0"><template v-slot:link><a href="/site/kb/import" class="font-weight-bold">{{ $t('spa.accountImport.helpCenter') }}</a></template></i18n>
+                                    <p v-else class="small mb-0">{{ $t('spa.accountImport.uploadHelp') }}<br /><i18n path="spa.accountImport.moreInfo" tag="span"><template v-slot:link><a href="/site/kb/import">{{ $t('spa.accountImport.here') }}</a></template></i18n></p>
                                 </div>
                                 <div v-if="!showDisabledWarning && !showNotAllowedWarning">
                                     <button
@@ -30,13 +30,13 @@
                                         class="font-weight-bold btn btn-primary rounded-pill px-4 btn-lg"
                                         @click="selectArchive()"
                                         :disabled="showDisabledWarning">
-                                        Import
+                                        {{ $t('spa.accountImport.import') }}
                                     </button>
 
                                     <template v-else-if="step === 2">
                                         <div class="d-flex justify-content-center align-items-center flex-column">
                                             <b-spinner v-if="showUploadLoader" small />
-                                            <button v-else type="button" class="font-weight-bold btn btn-outline-primary btn-sm btn-block" @click="reviewImports()">Review Imports</button>
+                                            <button v-else type="button" class="font-weight-bold btn btn-outline-primary btn-sm btn-block" @click="reviewImports()">{{ $t('spa.accountImport.reviewImports') }}</button>
                                             <p v-if="zipName" class="small font-weight-bold mt-2 mb-0">{{ zipName }}</p>
                                         </div>
                                     </template>
@@ -49,8 +49,8 @@
                         <li v-if="processingCount" class="list-group-item d-flex justify-content-between flex-column" style="gap:1rem">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="font-weight-bold mb-1">Processing Imported Posts</p>
-                                    <p class="small mb-0">These are posts that are in the process of being imported.</p>
+                                    <p class="font-weight-bold mb-1">{{ $t('spa.accountImport.processingTitle') }}</p>
+                                    <p class="small mb-0">{{ $t('spa.accountImport.processingDescription') }}</p>
                                 </div>
                                 <div>
                                     <span class="btn btn-danger rounded-pill py-0 font-weight-bold" disabled>{{ processingCount }}</span>
@@ -61,8 +61,8 @@
                         <li v-if="finishedCount" class="list-group-item d-flex justify-content-between flex-column" style="gap:1rem">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="font-weight-bold mb-1">Imported Posts</p>
-                                    <p class="small mb-0">These are posts that have been successfully imported.</p>
+                                    <p class="font-weight-bold mb-1">{{ $t('spa.accountImport.importedTitle') }}</p>
+                                    <p class="small mb-0">{{ $t('spa.accountImport.importedDescription') }}</p>
                                 </div>
                                 <div>
                                     <button
@@ -70,7 +70,7 @@
                                         class="font-weight-bold btn btn-primary btn-sm rounded-pill px-4 btn-block"
                                         @click="handleReviewPosts()"
                                         :disabled="!finishedCount">
-                                        Review {{ finishedCount }} Posts
+                                        {{ $t('spa.accountImport.reviewPosts', { count: finishedCount }) }}
                                     </button>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                 <div class="d-flex justify-content-between align-items-center">
 
                     <div class="title">
-                        <h3 class="font-weight-bold">Import from Instagram</h3>
+                        <h3 class="font-weight-bold">{{ $t('spa.accountImport.importFromInstagram') }}</h3>
                     </div>
 
                     <button
@@ -94,20 +94,20 @@
                         @click="handleImport()"
                         >
                         <b-spinner v-if="importButtonLoading" small />
-                        <span v-else>Import</span>
+                        <span v-else>{{ $t('spa.accountImport.import') }}</span>
                     </button>
                 </div>
                 <hr>
                 <section>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div v-if="!selectedMedia || !selectedMedia.length">
-                            <p class="lead mb-0">Review posts you'd like to import.</p>
-                            <p class="small text-muted mb-0">Tap on posts to include them in your import.</p>
+                            <p class="lead mb-0">{{ $t('spa.accountImport.reviewPostsLead') }}</p>
+                            <p class="small text-muted mb-0">{{ $t('spa.accountImport.tapToInclude') }}</p>
                         </div>
-                        <p v-else class="lead mb-0"><span class="font-weight-bold">{{ selectedPostsCounter }}</span> posts selected for import</p>
+                        <i18n v-else path="spa.accountImport.postsSelected" tag="p" class="lead mb-0"><template v-slot:count><span class="font-weight-bold">{{ selectedPostsCounter }}</span></template></i18n>
 
-                        <button v-if="selectedMedia.length" class="btn btn-outline-danger font-weight-bold rounded-pill btn-sm my-1" @click="handleClearAll()">Clear all selected</button>
-                        <button v-else class="btn btn-outline-primary font-weight-bold rounded-pill" @click="handleSelectAll()">Select first {{ toggleLimit }} posts</button>
+                        <button v-if="selectedMedia.length" class="btn btn-outline-danger font-weight-bold rounded-pill btn-sm my-1" @click="handleClearAll()">{{ $t('spa.accountImport.clearAll') }}</button>
+                        <button v-else class="btn btn-outline-primary font-weight-bold rounded-pill" @click="handleSelectAll()">{{ $t('spa.accountImport.selectFirst', { count: toggleLimit }) }}</button>
                     </div>
                 </section>
                 <section class="row mb-n5 media-selector" style="max-height: 600px;overflow-y: auto;">
@@ -134,7 +134,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-between align-items-center">
                             <p class="small"><i class="far fa-clock"></i> {{ formatDate(media.media[0].creation_timestamp) }}</p>
-                            <p class="small font-weight-bold"><a href="#" @click.prevent="showDetailsModal(media)"><i class="far fa-info-circle"></i> Details</a></p>
+                            <p class="small font-weight-bold"><a href="#" @click.prevent="showDetailsModal(media)"><i class="far fa-info-circle"></i> {{ $t('spa.accountImport.details') }}</a></p>
                         </div>
                     </div>
                 </section>
@@ -144,7 +144,7 @@
                 <div class="d-flex justify-content-between align-items-center">
 
                     <div class="title">
-                        <h3 class="font-weight-bold">Posts Imported from Instagram</h3>
+                        <h3 class="font-weight-bold">{{ $t('spa.accountImport.importedFromInstagram') }}</h3>
                     </div>
                 </div>
                 <hr>
@@ -169,7 +169,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-between align-items-center">
                             <p class="small"><i class="far fa-clock"></i> {{ formatDate(media.created_at, false) }}</p>
-                            <p class="small font-weight-bold"><a :href="media.url"><i class="far fa-info-circle"></i> View</a></p>
+                            <p class="small font-weight-bold"><a :href="media.url"><i class="far fa-info-circle"></i> {{ $t('spa.accountImport.view') }}</a></p>
                         </div>
                     </div>
 
@@ -178,7 +178,7 @@
                             v-if="importedPosts.meta && importedPosts.meta.next_cursor"
                             class="btn btn-primary btn-block font-weight-bold"
                             @click="loadMorePosts()">
-                            Load more
+                            {{ $t('spa.accountImport.loadMore') }}
                         </button>
                     </div>
                 </section>
@@ -187,16 +187,16 @@
 
         <b-modal
             id="detailsModal"
-            title="Post Details"
+            :title="$t('spa.accountImport.postDetails')"
             v-model="detailsModalShow"
             :ok-only="true"
-            ok-title="Close"
+            :ok-title="$t('common.close')"
             centered>
             <div class="">
                 <div v-for="(media, idx) in modalData.media" class="mb-3">
                     <div class="list-group">
                         <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <p class="text-center font-weight-bold mb-0">Media #{{idx + 1}}</p>
+                            <p class="text-center font-weight-bold mb-0">{{ $t('spa.accountImport.mediaNumber', { number: idx + 1 }) }}</p>
                             <template v-if="media.uri.endsWith('.jpg') || media.uri.endsWith('.png')">
                                 <img :src="getFileNameUrl(media.uri)" width="30" height="30" style="object-fit: cover; border-radius: 5px;">
                             </template>
@@ -209,12 +209,12 @@
                             </div>
                         </template>
                         <div class="list-group-item">
-                            <p class="small text-muted">Caption</p>
+                            <p class="small text-muted">{{ $t('spa.accountImport.caption') }}</p>
                             <p class="mb-0 small read-more" style="font-size: 12px;overflow-y: hidden;">{{ media.title ? media.title : modalData.title }}</p>
                         </div>
                         <div class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
-                                <p class="small mb-0 text-muted">Timestamp</p>
+                                <p class="small mb-0 text-muted">{{ $t('spa.accountImport.timestamp') }}</p>
                                 <p class="font-weight-bold mb-0">{{ formatDate(media.creation_timestamp) }}</p>
                             </div>
                         </div>
@@ -303,13 +303,13 @@
             selectArchive() {
                 event.currentTarget.blur();
                 swal({
-                    title: 'Upload Archive',
+                    title: this.$t('spa.accountImport.uploadArchive'),
                     icon: 'success',
-                    text: 'The .zip archive is probably named something like username_20230606.zip, and was downloaded from the Instagram.com website.',
+                    text: this.$t('spa.accountImport.uploadArchiveText', { example: 'username_20230606.zip' }),
                     buttons: {
-                        cancel: "Cancel",
+                        cancel: this.$t('common.cancel'),
                         danger: {
-                            text: "Upload zip archive",
+                            text: this.$t('spa.accountImport.uploadZip'),
                             value: "upload"
                         }
                     }
@@ -401,8 +401,8 @@
 
                     if(!files || !files.length) {
                         this.contactModal(
-                            'Invalid import archive',
-                            "The .zip archive you uploaded is corrupted, or is invalid. We cannot process your import at this time.\n\nIf this issue persists, please contact an administrator.",
+                            this.$t('spa.accountImport.invalidArchive'),
+                            this.$t('spa.accountImport.invalidArchiveText'),
                             'error'
                         )
                         this.invalidArchive = true;
@@ -470,8 +470,8 @@
 
             toggleLimitReached() {
                 this.contactModal(
-                    'Limit reached',
-                    "You can only import " + this.toggleLimit + " posts at a time.\nYou can import more posts after you finish importing these posts.",
+                    this.$t('spa.accountImport.limitReached'),
+                    this.$t('spa.accountImport.limitReachedText', { count: this.toggleLimit }),
                     'error'
                 )
             },
@@ -535,7 +535,7 @@
             },
 
             handleImport() {
-                swal('Importing...', "Please wait while we upload your imported posts.\n Keep this page open and do not navigate away.", 'success');
+                swal(this.$t('spa.accountImport.importing'), this.$t('spa.accountImport.importingText'), 'success');
                 this.importButtonLoading = true;
                 let ic = this.imageCache.filter(e => {
                     return this.selectedMedia.indexOf(e.filename) != -1;
@@ -559,7 +559,7 @@
                     )
                     .catch(err => {
                         this.contactModal(
-                            'Error',
+                            this.$t('common.error'),
                             err.response.data.message,
                             'error'
                         )
@@ -591,7 +591,7 @@
                     }
                 }).catch(err => {
                     this.contactModal(
-                        'Error',
+                        this.$t('common.error'),
                         err.response.data.error,
                         'error'
                     )
@@ -620,7 +620,7 @@
                 })
             },
 
-            contactModal(title = 'Error', text, icon, closeButton = 'Close') {
+            contactModal(title = this.$t('common.error'), text, icon, closeButton = this.$t('common.close')) {
                 swal({
                     title: title,
                     text: text,
@@ -629,7 +629,7 @@
                     buttons: {
                         ok: closeButton,
                         danger: {
-                            text: 'Contact Support',
+                            text: this.$t('spa.accountImport.contactSupport'),
                             value: 'contact'
                         }
                     }

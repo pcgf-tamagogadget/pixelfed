@@ -1,41 +1,41 @@
 <template v-if="loaded">
 @if($email_verified_at === null)
 <div class="alert alert-danger mb-3">
-    <p class="mb-0 font-weight-bold">Applicant has not verified their email address yet, action can not be taken at this time.</p>
+    <p class="mb-0 font-weight-bold">{{ __('admin_panel.curatedRegister.activityLog.emailNotVerified') }}</p>
 </div>
 @elseif($is_closed != true)
 <div class="d-flex justify-content-between flex-column flex-md-row mb-4" style="gap:1rem">
     <button
         class="btn btn-success bg-gradient-success rounded-pill"
         v-on:click.prevent="handleAction('approve', $event)">
-        Approve
+        {{ __('admin_panel.curatedRegister.activityLog.approve') }}
     </button>
     <button
         class="btn btn-danger bg-gradient-danger rounded-pill flex-grow-1"
         v-on:click.prevent="handleAction('reject', $event)">
-        Reject
+        {{ __('admin_panel.curatedRegister.activityLog.reject') }}
     </button>
     <button
         class="btn rounded-pill px-md-5"
         :class="[ composeFormOpen ? 'btn-dark bg-gradient-dark' : 'btn-outline-dark' ]"
         v-on:click.prevent="handleAction('request', $event)">
-        Request details
+        {{ __('admin_panel.curatedRegister.activityLog.requestDetails') }}
     </button>
     <button
         class="btn rounded-pill px-md-5"
         :class="[ messageFormOpen ? 'btn-dark bg-gradient-dark' : 'btn-outline-dark' ]"
         v-on:click.prevent="handleAction('message', $event)">
-        Message
+        {{ __('admin_panel.curatedRegister.activityLog.message') }}
     </button>
 </div>
 
 @else
     @if($is_rejected == true)
-    <p>Application was <span class="font-weight-bold text-danger">rejected</span> on {{ $action_taken_at }}</p>
+    <p>{!! __('admin_panel.curatedRegister.activityLog.wasRejected', ['date' => e($action_taken_at)]) !!}</p>
     @elseif($is_approved == true)
-    <p>Application was <span class="font-weight-bold text-success">approved</span> on {{ $action_taken_at }}</p>
+    <p>{!! __('admin_panel.curatedRegister.activityLog.wasApproved', ['date' => e($action_taken_at)]) !!}</p>
     @else
-    <p>Application was closed on {{ $action_taken_at }}</p>
+    <p>{{ __('admin_panel.curatedRegister.activityLog.wasClosed', ['date' => $action_taken_at]) }}</p>
     @endif
 @endif
 
@@ -43,11 +43,11 @@
         <div v-show="composeFormOpen">
             <div class="card">
                 <div class="card-body pt-0">
-                    <p class="lead font-weight-bold text-center">Request Additional Details</p>
-                    <p class="text-muted">Use this form to request additional details. Once you press Send, we'll send the potential user an email with a special link they can visit with a form that they can provide additional details with. You can also Preview the email before it's sent.</p>
+                    <p class="lead font-weight-bold text-center">{{ __('admin_panel.curatedRegister.activityLog.requestAdditionalDetails') }}</p>
+                    <p class="text-muted">{{ __('admin_panel.curatedRegister.activityLog.requestAdditionalDetailsHelp') }}</p>
 
                     <div v-if="responseTemplates && responseTemplates.length" class="my-3">
-                        <p class="small font-weight-bold mb-1">Template Responses</p>
+                        <p class="small font-weight-bold mb-1">{{ __('admin_panel.curatedRegister.activityLog.templateResponses') }}</p>
 
                         <div class="d-grid">
                             <template v-for="tmpl in responseTemplates">
@@ -63,14 +63,14 @@
 
                     <div class="request-form">
                         <div class="form-group">
-                            <label for="requestDetailsMessageInput" class="small text-muted">Your Message:</label>
+                            <label for="requestDetailsMessageInput" class="small text-muted">{{ __('admin_panel.curatedRegister.activityLog.yourMessage') }}</label>
                             <textarea
                                 class="form-control text-dark"
                                 id="requestDetailsMessageInput"
                                 rows="5"
                                 v-model="composeMessage"
                                 style="white-space: pre-wrap;"
-                                placeholder="Enter your additional detail message here...">
+                                placeholder="{{ __('admin_panel.curatedRegister.activityLog.detailMessagePlaceholder') }}">
                             </textarea>
                             <p class="help-text small text-right">
                                 <span>@{{ composeMessage && composeMessage.length ? composeMessage.length : 0 }}</span>
@@ -83,19 +83,19 @@
                                 type="button"
                                 class="btn btn-primary rounded-pill btn-sm px-4"
                                 v-on:click.prevent="handleSend()">
-                                Send
+                                {{ __('admin_panel.curatedRegister.activityLog.send') }}
                             </button>
                             <a
                                 class="btn btn-dark rounded-pill btn-sm px-4"
                                 :href="previewDetailsMessageUrl"
                                 target="_blank">
-                                Preview
+                                {{ __('admin_panel.curatedRegister.activityLog.preview') }}
                             </a>
                             <a
                                 v-if="composeMessage && composeMessage.length"
                                 class="btn btn-outline-danger text-danger rounded-pill btn-sm px-4"
                                 @click="composeMessage = null">
-                                Clear
+                                {{ __('admin_panel.curatedRegister.activityLog.clear') }}
                             </a>
                         </div>
                     </div>
@@ -108,11 +108,11 @@
         <div v-show="messageFormOpen">
             <div class="card">
                 <div class="card-body pt-0">
-                    <p class="lead font-weight-bold text-center">Send Message</p>
-                    <p class="text-muted">Use this form to send a message to the applicant. Once you press Send, we'll send the potential user an email with your message. You can also Preview the email before it's sent.</p>
+                    <p class="lead font-weight-bold text-center">{{ __('admin_panel.curatedRegister.activityLog.sendMessage') }}</p>
+                    <p class="text-muted">{{ __('admin_panel.curatedRegister.activityLog.sendMessageHelp') }}</p>
 
                     <div v-if="responseTemplates && responseTemplates.length" class="my-3">
-                        <p class="small font-weight-bold mb-1">Template Responses</p>
+                        <p class="small font-weight-bold mb-1">{{ __('admin_panel.curatedRegister.activityLog.templateResponses') }}</p>
 
                         <div class="d-grid">
                             <template v-for="tmpl in responseTemplates">
@@ -128,14 +128,14 @@
 
                     <div class="request-form">
                         <div class="form-group">
-                            <label for="sendMessageInput" class="small text-muted">Your Message:</label>
+                            <label for="sendMessageInput" class="small text-muted">{{ __('admin_panel.curatedRegister.activityLog.yourMessage') }}</label>
                             <textarea
                                 class="form-control text-dark"
                                 id="sendMessageInput"
                                 rows="5"
                                 v-model="messageBody"
                                 style="white-space: pre-wrap;"
-                                placeholder="Enter your message here...">
+                                placeholder="{{ __('admin_panel.curatedRegister.activityLog.messagePlaceholder') }}">
                             </textarea>
                             <p class="help-text small text-right">
                                 <span>@{{ messageBody && messageBody.length ? messageBody.length : 0 }}</span>
@@ -148,13 +148,13 @@
                                 type="button"
                                 class="btn btn-primary rounded-pill btn-sm px-4"
                                 v-on:click.prevent="handleMessageSend()">
-                                Send
+                                {{ __('admin_panel.curatedRegister.activityLog.send') }}
                             </button>
                             <a
                                 class="btn btn-dark rounded-pill btn-sm px-4"
                                 :href="previewMessageUrl"
                                 target="_blank">
-                                Preview
+                                {{ __('admin_panel.curatedRegister.activityLog.preview') }}
                             </a>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
 
     <div class="card border">
         <div class="card-body">
-            <p class="text-center font-weight-bold">Activity Log</p>
+            <p class="text-center font-weight-bold">{{ __('admin_panel.curatedRegister.activityLog.activityLog') }}</p>
             <div class="activity-log">
                 <div v-if="!loaded" class="d-flex justify-content-center align-items-center py-5 my-5">
                     <b-spinner />
@@ -192,10 +192,10 @@
                         <div class="activity-log-item-content"><span class="activity-log-item-content-title">@{{ activity.title }}</span><span class="activity-log-item-content-message" v-if="activity.message">@{{ strLimit(activity.message) }}</span></div>
                         <div class="d-flex" style="gap: 1rem;">
                             <div v-if="activity.link">
-                                <a href="#" class="activity-log-item-content-link text-muted" @click.prevent="openModal(activity)">Details</a>
+                                <a href="#" class="activity-log-item-content-link text-muted" @click.prevent="openModal(activity)">{{ __('admin_panel.curatedRegister.activityLog.details') }}</a>
                             </div>
                             <div v-if="activity.user_response">
-                                <a href="#" class="activity-log-item-content-link" @click.prevent="openUserResponse(activity)">View User Response</a>
+                                <a href="#" class="activity-log-item-content-link" @click.prevent="openUserResponse(activity)">{{ __('admin_panel.curatedRegister.activityLog.viewUserResponse') }}</a>
                             </div>
                         </div>
                     </div>
@@ -214,6 +214,7 @@
 <script type="text/javascript">
     let app = new Vue({
         el: '#panel',
+        i18n: App.i18n(),
 
         data() {
             return {
@@ -247,7 +248,7 @@
             parseDate(timestamp) {
                 const date = new Date(timestamp);
 
-                return date.toLocaleDateString('en-US', {
+                return date.toLocaleDateString((document.documentElement.lang || 'en-US'), {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric'
@@ -257,7 +258,7 @@
             parseTime(timestamp) {
                 const date = new Date(timestamp);
 
-                return date.toLocaleTimeString('en-US', {
+                return date.toLocaleTimeString((document.documentElement.lang || 'en-US'), {
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: true
@@ -314,8 +315,8 @@
 
             handleApprove() {
                 swal({
-                    title: "Approve Request?",
-                    text: "The user application request will be approved.",
+                    title: @json(__('admin_panel.curatedRegister.activityLog.approveRequest')),
+                    text: @json(__('admin_panel.curatedRegister.activityLog.approveRequestText')),
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -323,7 +324,7 @@
                     if(willApprove) {
                         this.handleApproveAction();
                     } else {
-                        swal("Approval Cancelled!", "The application approval has been cancelled. If you change your mind, you can easily approve or reject this application in the future.", "success");
+                        swal(@json(__('admin_panel.curatedRegister.activityLog.approvalCancelled')), @json(__('admin_panel.curatedRegister.activityLog.approvalCancelledText')), "success");
 
                     }
                 })
@@ -331,8 +332,8 @@
 
             handleReject() {
                 swal({
-                    title: "Are you sure?",
-                    text: "The user application request will be rejected.",
+                    title: @json(__('admin_panel.common.areYouSure')),
+                    text: @json(__('admin_panel.curatedRegister.activityLog.rejectRequestText')),
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -340,17 +341,17 @@
                 .then((willReject) => {
                     if (willReject) {
                         swal({
-                            title: "Choose Action",
-                            text: "You can provide a rejection email, or simply silently reject",
+                            title: @json(__('admin_panel.curatedRegister.activityLog.chooseAction')),
+                            text: @json(__('admin_panel.curatedRegister.activityLog.chooseActionText')),
                             icon: "warning",
                             buttons: {
-                                cancel: "Cancel",
+                                cancel: @json(__('admin_panel.common.cancel')),
                                 reject: {
-                                    text: "Reject with email",
+                                    text: @json(__('admin_panel.curatedRegister.activityLog.rejectWithEmail')),
                                     value: "reject-email"
                                 },
                                 silent: {
-                                    text: "Silently Reject",
+                                    text: @json(__('admin_panel.curatedRegister.activityLog.silentlyReject')),
                                     value: "reject-silent"
                                 }
                             },
@@ -358,13 +359,13 @@
                         })
                         .then(res => {
                             if(!res) {
-                                swal("Rejection Cancelled!", "The application rejection has been cancelled. If you change your mind, you can easily reject this application in the future.", "success");
+                                swal(@json(__('admin_panel.curatedRegister.activityLog.rejectionCancelled')), @json(__('admin_panel.curatedRegister.activityLog.rejectionCancelledText')), "success");
                             } else {
                                 this.handleRejectAction(res);
                             }
                         })
                     } else {
-                        swal("Rejection Cancelled!", "The application rejection has been cancelled. If you change your mind, you can easily reject this application in the future.", "success");
+                        swal(@json(__('admin_panel.curatedRegister.activityLog.rejectionCancelled')), @json(__('admin_panel.curatedRegister.activityLog.rejectionCancelledText')), "success");
                     }
                 });
             },
@@ -396,8 +397,8 @@
 
             handleSend() {
                 swal({
-                    title: "Confirm",
-                    text: "Are you sure you want to send this request to this user?",
+                    title: @json(__('admin_panel.curatedRegister.activityLog.confirm')),
+                    text: @json(__('admin_panel.curatedRegister.activityLog.confirmSendRequest')),
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -410,7 +411,7 @@
                         })
                         .then(res => {
                             this.composeMessage = null;
-                            swal('Successfully sent!','', 'success');
+                            swal(@json(__('admin_panel.curatedRegister.activityLog.successfullySent')),'', 'success');
                             this.fetchActivities();
                         })
                     }
@@ -422,7 +423,7 @@
             },
 
             openUserResponse(activity) {
-                swal('User Response', activity.user_response.message)
+                swal(@json(__('admin_panel.curatedRegister.activityLog.userResponse')), activity.user_response.message)
             },
 
             useTemplate(tmpl) {

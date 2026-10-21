@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="col-12">
-		<p class="font-weight-bold text-lighter text-uppercase">Profiles Directory</p>
+		<p class="font-weight-bold text-lighter text-uppercase">{{ $t('classic.profileDirectory.title') }}</p>
 		<div v-if="loaded" class="">
 			<div class="row">
 				<div class="col-12 col-md-6 p-1" v-for="(profile, index) in profiles">
@@ -14,10 +14,10 @@
 								</p>
 								<p class="mb-1 small text-lighter d-flex justify-content-between font-weight-bold">
 									<span>
-										<span>{{prettyCount(profile.statuses_count)}}</span> POSTS
+										<span>{{prettyCount(profile.statuses_count)}}</span> {{ $t('classic.profileDirectory.posts') }}
 									</span>
 									<span>
-										<span>{{prettyCount(profile.followers_count)}}</span> FOLLOWERS
+										<span>{{prettyCount(profile.followers_count)}}</span> {{ $t('classic.profileDirectory.followers') }}
 									</span>
 								</p>
 								<p class="mb-1">
@@ -35,7 +35,7 @@
 
 				<div v-if="showLoadMore" class="col-12">
 					<p class="text-center mb-0 pt-3">
-						<button class="btn btn-outline-secondary btn-sm px-4 py-1 font-weight-bold" @click="loadMore()">Load More</button>
+						<button class="btn btn-outline-secondary btn-sm px-4 py-1 font-weight-bold" @click="loadMore()">{{ $t('classic.profileDirectory.loadMore') }}</button>
 					</p>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 			<div class="row">
 				<div class="col-12 d-flex justify-content-center align-items-center">
 					<div class="spinner-border" role="status">
-						<span class="sr-only">Loading...</span>
+						<span class="sr-only">{{ $t('common.loading') }}</span>
 					</div>
 				</div>
 			</div>

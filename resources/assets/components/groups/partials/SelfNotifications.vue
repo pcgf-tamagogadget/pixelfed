@@ -4,7 +4,7 @@
 			<div class="col-12 col-md-8 border-left">
                 <div class="px-5">
 					<div class="my-4">
-						<p class="h1 font-weight-bold mb-1">Group Notifications</p>
+						<p class="h1 font-weight-bold mb-1">{{ $t('groups.selfNotifications.title') }}</p>
 						<!-- <p class="lead text-muted mb-0">Latest notifications from your groups</p> -->
 					</div>
 					<!-- <div class="p-4 mb-4">
@@ -16,37 +16,27 @@
 							<img class="mr-3 rounded-circle" style="border:1px solid #ccc" :src="n.account.avatar" alt="" width="32px" height="32px">
 							<div class="media-body">
 								<div v-if="n.type == 'group:like'">
-									<p class="my-0">
-										<a :href="getProfileUrl(n.account)" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> liked your <a v-bind:href="getPostUrl(n.status)">post</a> in <a :href="n.group.url">{{n.group.name}}</a>
-									</p>
+									<i18n path="groups.selfNotifications.liked" tag="p" class="my-0"><template v-slot:user><a :href="getProfileUrl(n.account)" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template><template v-slot:post><a v-bind:href="getPostUrl(n.status)">{{ $t('groups.selfNotifications.post') }}</a></template><template v-slot:group><a :href="n.group.url">{{n.group.name}}</a></template></i18n>
 								</div>
 
 								<div v-else-if="n.type == 'group:comment'">
-									<p class="my-0">
-										<a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> commented on your <a class="font-weight-bold" v-bind:href="n.status.url">post</a> in <a :href="n.group.url">{{n.group.name}}</a>
-									</p>
+									<i18n path="groups.selfNotifications.commented" tag="p" class="my-0"><template v-slot:user><a :href="getProfileUrl(n.account)" class="font-weight-bold text-dark word-break" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template><template v-slot:post><a class="font-weight-bold" v-bind:href="n.status.url">{{ $t('groups.selfNotifications.post') }}</a></template><template v-slot:group><a :href="n.group.url">{{n.group.name}}</a></template></i18n>
 								</div>
 
 								<div v-else-if="n.type == 'mention'">
-									<p class="my-0">
-										<a :href="getProfileUrl(n.account)" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a> <a v-bind:href="mentionUrl(n.status)">mentioned</a> you.
-									</p>
+									<i18n path="groups.selfNotifications.mentioned" tag="p" class="my-0"><template v-slot:user><a :href="getProfileUrl(n.account)" data-placement="bottom" data-toggle="tooltip" :title="n.account.username">{{n.account.local == false ? '@':''}}{{truncate(n.account.username)}}</a></template><template v-slot:mentioned><a v-bind:href="mentionUrl(n.status)">{{ $t('groups.selfNotifications.mentionedLink') }}</a></template></i18n>
 								</div>
 
 								<div v-else-if="n.type == 'group.join.approved'">
-									<p class="my-0">
-										Your application to join <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> was approved!
-									</p>
+									<i18n path="groups.selfNotifications.joinApproved" tag="p" class="my-0"><template v-slot:group><a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a></template></i18n>
 								</div>
 
 								<div v-else-if="n.type == 'group.join.rejected'">
-									<p class="my-0">
-										Your application to join <a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a> was rejected. You can re-apply to join in 6 months.
-									</p>
+									<i18n path="groups.selfNotifications.joinRejected" tag="p" class="my-0"><template v-slot:group><a :href="n.group.url" class="font-weight-bold text-dark word-break" :title="n.group.name">{{truncate(n.group.name)}}</a></template></i18n>
 								</div>
 
 								<div v-else>
-									<p class="my-0">Cannot display notification</p>
+									<p class="my-0">{{ $t('groups.selfNotifications.cannotDisplay') }}</p>
 								</div>
 
 								<!-- <div class="align-items-center">
@@ -78,11 +68,11 @@
 										</a>
 
 										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item font-weight-bold" href="#">Dismiss</a>
+											<a class="dropdown-item font-weight-bold" href="#">{{ $t('groups.selfNotifications.dismiss') }}</a>
 											<div class="dropdown-divider"></div>
-											<a class="dropdown-item font-weight-bold" href="#">Help</a>
+											<a class="dropdown-item font-weight-bold" href="#">{{ $t('groups.selfNotifications.help') }}</a>
 											<!-- <a class="dropdown-item font-weight-bold" href="#">Ignore</a> -->
-											<a class="dropdown-item font-weight-bold" href="#">Report</a>
+											<a class="dropdown-item font-weight-bold" href="#">{{ $t('groups.selfNotifications.report') }}</a>
 										</div>
 									</div>
 								</div>
@@ -240,7 +230,7 @@
 					});
 				}).catch(err => {
 					if(err.response.data.message) {
-						swal('Error', err.response.data.message, 'error');
+						swal(this.$t('common.error'), err.response.data.message, 'error');
 					}
 				});
 			},

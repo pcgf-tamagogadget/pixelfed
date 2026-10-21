@@ -3,10 +3,10 @@
 @section('section')
 	<div class="title mb-3 d-flex justify-content-between align-items-center">
 		<div>
-			<h3 class="font-weight-bold d-inline-block">Email Verification Requests</h3>
+			<h3 class="font-weight-bold d-inline-block">{{ __('admin_panel.reports.mailVerification.title') }}</h3>
 			@if($ignored)
 				<p>
-					You are ignoring <strong>{{ count($ignored) }}</strong> mail verification requests. <a href="#" class="font-weight-bold clear-ignored">Clear ignored requests</a>
+					{!! __('admin_panel.reports.mailVerification.ignoringCount', ['count' => e(count($ignored))]) !!} <a href="#" class="font-weight-bold clear-ignored">{{ __('admin_panel.reports.mailVerification.clearIgnored') }}</a>
 				</p>
 			@endif
 		</div>
@@ -25,8 +25,8 @@
 							<p class="text-muted mb-0">{{ $report['email'] }}</p>
 						</div>
 						<div>
-							<button class="action-btn btn btn-light font-weight-bold mr-2" data-action="ignore" data-id="{{$report['id']}}">Ignore</button>
-							<button class="action-btn btn btn-primary font-weight-bold" data-action="approve" data-id="{{$report['id']}}"><i class="far fa-check-circle fa-lg mr-2"></i>Approve</button>
+							<button class="action-btn btn btn-light font-weight-bold mr-2" data-action="ignore" data-id="{{$report['id']}}">{{ __('admin_panel.reports.mailVerification.ignore') }}</button>
+							<button class="action-btn btn btn-primary font-weight-bold" data-action="approve" data-id="{{$report['id']}}"><i class="far fa-check-circle fa-lg mr-2"></i>{{ __('admin_panel.reports.mailVerification.approve') }}</button>
 						</div>
 					</div>
 				</div>
@@ -34,7 +34,7 @@
 
 				@if(count($reports) == 0)
 				<div class="list-group-item">
-					<p class="font-weight-bold mb-0">No email verification requests found!</p>
+					<p class="font-weight-bold mb-0">{{ __('admin_panel.reports.mailVerification.empty') }}</p>
 				</div>
 				@endif
 			</div>
@@ -46,7 +46,7 @@
 <script type="text/javascript">
 	$('.clear-ignored').click((e) => {
 		e.preventDefault();
-		if(!window.confirm('Are you sure you want to clear all ignored requests?')) {
+		if(!window.confirm(@json(__('admin_panel.reports.mailVerification.confirmClearIgnored')))) {
 			return;
 		}
 		axios.post('/i/admin/reports/email-verifications/clear-ignored')
@@ -59,7 +59,11 @@
 		e.preventDefault();
 		let type = e.currentTarget.getAttribute('data-action');
 		let id = e.currentTarget.getAttribute('data-id');
-		if(!window.confirm(`Are you sure you want to ${type} this email verification request?`)) {
+		const confirmMessages = {
+			ignore: @json(__('admin_panel.reports.mailVerification.confirmIgnore')),
+			approve: @json(__('admin_panel.reports.mailVerification.confirmApprove'))
+		};
+		if(!window.confirm(confirmMessages[type])) {
 			return;
 		}
 		axios.post('/i/admin/reports/email-verifications/' + type, {
@@ -67,7 +71,7 @@
 		}).then(res => {
 			location.href = '/i/admin/reports';
 		}).catch(err => {
-			swal('Oops!', 'An error occured', 'error');
+			swal(@json(__('admin_panel.reports.mailVerification.oops')), @json(__('admin_panel.reports.mailVerification.errorOccurred')), 'error');
 			console.log(err);
 		})
 	});

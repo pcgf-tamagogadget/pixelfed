@@ -1,9 +1,9 @@
 <template>
     <b-modal
         v-model="isOpen"
-        title="Remote Report"
+        :title="$t('admin.remoteReport.title')"
         :ok-only="true"
-        ok-title="Close"
+        :ok-title="$t('common.close')"
         :lazy="true"
         :scrollable="true"
         ok-variant="outline-primary"
@@ -15,11 +15,11 @@
         <template v-else>
             <div class="list-group">
                 <div class="list-group-item d-flex justify-content-between align-items-center">
-                    <div class="text-muted small font-weight-bold">Instance</div>
+                    <div class="text-muted small font-weight-bold">{{ $t('admin.remoteReport.instance') }}</div>
                     <div class="font-weight-bold">{{ model.instance }}</div>
                 </div>
                 <div v-if="model.message && model.message.length" class="list-group-item d-flex justify-content-between align-items-center flex-column gap-1">
-                    <div class="text-muted small font-weight-bold mb-2">Message</div>
+                    <div class="text-muted small font-weight-bold mb-2">{{ $t('admin.remoteReport.message') }}</div>
                     <div class="text-wrap w-100" style="word-break:break-all;font-size:12.5px;">
                         <admin-read-more
                             :content="model.message"
@@ -35,7 +35,7 @@
                     v-if="model && model.reported"
                     class="list-group-item d-flex align-items-center justify-content-between flex-row flex-grow-1"
                     style="gap:0.4rem;">
-                    <div class="text-muted small font-weight-bold">Reported Account</div>
+                    <div class="text-muted small font-weight-bold">{{ $t('admin.remoteReport.reportedAccount') }}</div>
 
                     <div class="d-flex justify-content-end flex-grow-1">
                         <a v-if="model.reported && model.reported.id" :href="`/i/web/profile/${model.reported.id}`" target="_blank" class="text-primary">
@@ -50,9 +50,9 @@
                                 <div class="d-flex flex-column">
                                     <p class="font-weight-bold mb-0 text-break" style="font-size: 12px;max-width: 140px;line-height: 16px;" :class="[ model.reported.is_admin ? 'text-danger': '']">@{{model.reported.acct}}</p>
                                     <div class="d-flex text-muted mb-0" style="font-size: 10px;gap: 0.5rem;">
-                                        <span>{{prettyCount(model.reported.followers_count)}} Followers</span>
+                                        <span>{{ $t('admin.remoteReport.followersCount', { count: prettyCount(model.reported.followers_count) }) }}</span>
                                         <span>·</span>
-                                        <span>Joined {{ timeAgo(model.reported.created_at) }}</span>
+                                        <span>{{ $t('admin.remoteReport.joined', { time: timeAgo(model.reported.created_at) }) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -62,8 +62,10 @@
                 <div
                     v-else
                     class="list-group-item d-flex align-items-center justify-content-center flex-column flex-grow-1">
-                    <p class="font-weight-bold mb-0">Reported Account Unavailable</p>
-                    <p class="small mb-0">The reported account may have been deleted, or is otherwise not currently active. You can safely <strong>Close Report</strong> to mark this report as read.</p>
+                    <p class="font-weight-bold mb-0">{{ $t('admin.remoteReport.reportedAccountUnavailable') }}</p>
+                    <i18n path="admin.remoteReport.reportedAccountUnavailableHelp" tag="p" class="small mb-0">
+                        <template v-slot:action><strong>{{ $t('admin.remoteReport.closeReport') }}</strong></template>
+                    </i18n>
                 </div>
             </div>
 
@@ -81,7 +83,7 @@
                         type="button"
                         class="btn btn-dark btn-block rounded-pill"
                         @click="handleAction('mark-read')">
-                        Close Report
+                        {{ $t('admin.remoteReport.closeReport') }}
                     </button>
 
                     <button
@@ -89,14 +91,14 @@
                         class="btn btn-outline-dark btn-block text-center rounded-pill"
                         style="word-break: break-all;"
                         @click="handleAction('mark-all-read-by-domain')">
-                        <span class="font-weight-light">Close all reports from</span> <strong>{{ model.instance}}</strong>
+                        <i18n path="admin.remoteReport.closeAllFrom" tag="span" class="font-weight-light"><template v-slot:instance><strong>{{ model.instance }}</strong></template></i18n>
                     </button>
                     <button
                         v-if="model.reported"
                         type="button"
                         class="btn btn-outline-dark btn-block rounded-pill flex-grow-1"
                         @click="handleAction('mark-all-read-by-username')">
-                        <span class="font-weight-light">Close all reports against</span> <strong>&commat;{{ model.reported.username }}</strong>
+                        <i18n path="admin.remoteReport.closeAllAgainst" tag="span" class="font-weight-light"><template v-slot:username><strong>&commat;{{ model.reported.username }}</strong></template></i18n>
                     </button>
 
                     <template
@@ -110,14 +112,14 @@
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('cw-posts')">
-                                Apply CW to Post(s)
+                                {{ $t('admin.remoteReport.applyCwToPosts') }}
                             </button>
 
                             <button
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('unlist-posts')">
-                                Unlist Post(s)
+                                {{ $t('admin.remoteReport.unlistPosts') }}
                             </button>
                         </div>
                         <div class="d-flex flex-row mt-2">
@@ -125,13 +127,13 @@
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('private-posts')">
-                                Make Post(s) Private
+                                {{ $t('admin.remoteReport.makePostsPrivate') }}
                             </button>
                             <button
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('delete-posts')">
-                                Delete Post(s)
+                                {{ $t('admin.remoteReport.deletePosts') }}
                             </button>
                         </div>
                     </template>
@@ -146,14 +148,14 @@
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('cw-all-posts')">
-                                Apply CW to all posts
+                                {{ $t('admin.remoteReport.applyCwToAllPosts') }}
                             </button>
 
                             <button
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('unlist-all-posts')">
-                                Unlist all account posts
+                                {{ $t('admin.remoteReport.unlistAllPosts') }}
                             </button>
                         </div>
                         <div
@@ -164,7 +166,7 @@
                                 type="button"
                                 class="btn btn-outline-danger btn-block btn-sm rounded-pill mt-0"
                                 @click="handleAction('private-all-posts')">
-                                Make all posts private
+                                {{ $t('admin.remoteReport.makeAllPostsPrivate') }}
                             </button>
                         </div>
                     </template>
@@ -221,15 +223,15 @@
                     'private-all-posts',
                 ],
                 actionMap: {
-                    'cw-posts': 'apply content warnings to all post(s) in this report?',
-                    'unlist-posts': 'unlist all post(s) in this report?',
-                    'delete-posts': 'delete all post(s) in this report?',
-                    'private-posts': 'make all post(s) in this report private/followers-only?',
-                    'mark-all-read-by-domain': 'mark all reports by this instance as closed?',
-                    'mark-all-read-by-username': 'mark all reports against this user as closed?',
-                    'cw-all-posts': 'apply content warnings to all post(s) belonging to this account?',
-                    'unlist-all-posts': 'make all post(s) belonging to this account as unlisted?',
-                    'private-all-posts': 'make all post(s) belonging to this account as private?',
+                    'cw-posts': 'admin.remoteReport.confirm.cwPosts',
+                    'unlist-posts': 'admin.remoteReport.confirm.unlistPosts',
+                    'delete-posts': 'admin.remoteReport.confirm.deletePosts',
+                    'private-posts': 'admin.remoteReport.confirm.privatePosts',
+                    'mark-all-read-by-domain': 'admin.remoteReport.confirm.markAllReadByDomain',
+                    'mark-all-read-by-username': 'admin.remoteReport.confirm.markAllReadByUsername',
+                    'cw-all-posts': 'admin.remoteReport.confirm.cwAllPosts',
+                    'unlist-all-posts': 'admin.remoteReport.confirm.unlistAllPosts',
+                    'private-all-posts': 'admin.remoteReport.confirm.privateAllPosts',
                 }
             }
         },
@@ -282,8 +284,8 @@
                 }
 
                 swal({
-                    title: 'Confirm',
-                    text: 'Are you sure you want to ' + this.actionMap[action],
+                    title: this.$t('admin.remoteReport.confirmTitle'),
+                    text: this.$t(this.actionMap[action]),
                     icon: 'warning',
                     buttons: true,
                     dangerMode: true,

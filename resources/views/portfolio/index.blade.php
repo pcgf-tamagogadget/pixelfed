@@ -9,7 +9,7 @@
 			</p>
 
             <div class="spinner-border mt-5" role="status">
-              <span class="sr-only">Loading...</span>
+              <span class="sr-only">{{ __('pages.common.loading') }}</span>
             </div>
 		</div>
 

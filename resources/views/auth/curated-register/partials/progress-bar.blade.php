@@ -2,19 +2,19 @@
     <ul class="step-wizard-list">
         <li class="step-wizard-item {{ $step === 1 ? 'current-item':'' }}">
             <span class="progress-count">1</span>
-            <span class="progress-label">Review Rules</span>
+            <span class="progress-label">{{ __('auth.curated.steps.rules') }}</span>
         </li>
         <li class="step-wizard-item {{ $step === 2 ? 'current-item':'' }}">
             <span class="progress-count">2</span>
-            <span class="progress-label">Your Details</span>
+            <span class="progress-label">{{ __('auth.curated.steps.details') }}</span>
         </li>
         <li class="step-wizard-item {{ $step === 3 ? 'current-item':'' }}">
             <span class="progress-count">3</span>
-            <span class="progress-label">Confirm Email</span>
+            <span class="progress-label">{{ __('auth.curated.steps.confirmEmail') }}</span>
         </li>
         <li class="step-wizard-item {{ $step === 4 ? 'current-item':'' }}">
             <span class="progress-count">4</span>
-            <span class="progress-label">Await Review</span>
+            <span class="progress-label">{{ __('auth.curated.steps.review') }}</span>
         </li>
     </ul>
 </section>

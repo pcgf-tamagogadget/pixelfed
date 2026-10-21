@@ -3,7 +3,7 @@
 @section('section')
 
   <div class="title">
-    <h3 class="font-weight-bold">Open Source</h3>
+    <h3 class="font-weight-bold">{{__('site.opensource')}}</h3>
   </div>
   <hr>
   <section>

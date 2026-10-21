@@ -8,7 +8,7 @@
 				<div class="media-body">
 					<div class="d-block" style="min-height: 80px;">
 						<div v-if="isUploading" class="w-100">
-							<p class="font-weight-light mb-1">Uploading media ...</p>
+							<p class="font-weight-light mb-1">{{ $t('groups.groupCompose.uploadingMedia') }}</p>
 							<div class="progress rounded-pill" style="height:4px">
 								<div class="progress-bar" role="progressbar" :aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100" :style="{ width: uploadProgress + '%'}"></div>
 							</div>
@@ -38,19 +38,19 @@
 					<div v-if="tab" class="tab">
 						<div v-if="tab === 'poll'">
 							<p class="font-weight-bold text-muted small">
-								Poll Options
+								{{ $t('groups.groupCompose.pollOptions') }}
 							</p>
 
 							<div v-if="pollOptions.length < 4" class="form-group mb-4">
-								<input type="text" class="form-control rounded-pill" placeholder="Add a poll option, press enter to save" v-model="pollOptionModel" @keyup.enter="savePollOption">
+								<input type="text" class="form-control rounded-pill" :placeholder="$t('groups.groupCompose.pollOptionPlaceholder')" v-model="pollOptionModel" @keyup.enter="savePollOption">
 							</div>
 
 							<div v-for="(option, index) in pollOptions" class="form-group mb-4 d-flex align-items-center" style="max-width:400px;position: relative;">
 								<span class="font-weight-bold mr-2" style="position: absolute;left: 10px;">{{ index + 1 }}.</span>
-								<input v-if="pollOptions[index].length < 50" type="text" class="form-control rounded-pill" placeholder="Add a poll option, press enter to save" v-model="pollOptions[index]" style="padding-left: 30px;padding-right: 90px;">
-								<textarea v-else class="form-control" v-model="pollOptions[index]" placeholder="Add a poll option, press enter to save" rows="3" style="padding-left: 30px;padding-right:90px;"></textarea>
+								<input v-if="pollOptions[index].length < 50" type="text" class="form-control rounded-pill" :placeholder="$t('groups.groupCompose.pollOptionPlaceholder')" v-model="pollOptions[index]" style="padding-left: 30px;padding-right: 90px;">
+								<textarea v-else class="form-control" v-model="pollOptions[index]" :placeholder="$t('groups.groupCompose.pollOptionPlaceholder')" rows="3" style="padding-left: 30px;padding-right:90px;"></textarea>
 								<button class="btn btn-danger btn-sm rounded-pill font-weight-bold" style="position: absolute;right: 5px;" @click="deletePollOption(index)">
-									<i class="fas fa-trash"></i> Delete
+									<i class="fas fa-trash"></i> {{ $t('common.delete') }}
 								</button>
 							</div>
 
@@ -59,15 +59,15 @@
 							<div class="d-flex justify-content-between">
 								<div>
 									<p class="font-weight-bold text-muted small">
-										Poll Expiry
+										{{ $t('groups.groupCompose.pollExpiry') }}
 									</p>
 
 									<div class="form-group">
 										<select class="form-control rounded-pill" style="width: 200px;" v-model="pollExpiry">
-											<option value="60">1 hour</option>
-											<option value="360">6 hours</option>
-											<option value="1440" selected>24 hours</option>
-											<option value="10080">7 days</option>
+											<option value="60">{{ $t('groups.groupCompose.oneHour') }}</option>
+											<option value="360">{{ $t('groups.groupCompose.sixHours') }}</option>
+											<option value="1440" selected>{{ $t('groups.groupCompose.twentyFourHours') }}</option>
+											<option value="10080">{{ $t('groups.groupCompose.sevenDays') }}</option>
 										</select>
 									</div>
 								</div>
@@ -87,7 +87,7 @@
 										</p>
 									</div>
 									<button class="btn btn-link font-weight-bold text-decoration-none" @click.prevent="clearFileInputs">
-										Delete
+										{{ $t('common.delete') }}
 									</button>
 								</div>
 							</div>
@@ -102,7 +102,7 @@
 										</p>
 									</div>
 									<button class="btn btn-link font-weight-bold text-decoration-none" @click.prevent="clearFileInputs">
-										Delete
+										{{ $t('common.delete') }}
 									</button>
 								</div>
 							</div>
@@ -114,7 +114,7 @@
 								@click="switchTab('photo')"
 								:disabled="photoName || videoName">
 								<i class="fal fa-image mr-2"></i>
-								<span>Add Photo</span>
+								<span>{{ $t('groups.groupCompose.addPhoto') }}</span>
 							</button>
 							<!-- <button
 								class="btn btn-light border font-weight-bold py-1 px-2 rounded-lg mr-3"
@@ -145,10 +145,10 @@
 				<button class="btn btn-primary font-weight-bold float-right px-5 rounded-pill mt-3" @click="newPost()" :disabled="isPosting">
 					<span v-if="isPosting">
 						<div class="spinner-border text-white spinner-border-sm" role="status">
-							<span class="sr-only">Loading...</span>
+							<span class="sr-only">{{ $t('common.loading') }}</span>
 						</div>
 					</span>
-					<span v-else>Post</span>
+					<span v-else>{{ $t('groups.groupCompose.post') }}</span>
 				</button>
 			</p>
 		</div>
@@ -172,7 +172,7 @@
 				config: window.App.config,
 				composeText: undefined,
 				tab: null,
-				placeholder: 'Write something...',
+				placeholder: this.$t('groups.groupCompose.writeSomething'),
 				allowPhoto: true,
 				allowVideo: true,
 				allowPolls: true,
@@ -206,12 +206,12 @@
 				switch(this.tab) {
 					case 'poll':
 						if(!this.pollOptions || this.pollOptions.length < 2 || this.pollOptions.length > 4) {
-							swal('Oops!', 'A poll must have 2-4 choices.', 'error');
+							swal(this.$t('common.oops'), this.$t('groups.groupCompose.pollChoicesError'), 'error');
 							return;
 						}
 
 						if(!this.composeText || this.composeText.length < 5) {
-							swal('Oops!', 'A poll question must be at least 5 characters.', 'error');
+							swal(this.$t('common.oops'), this.$t('groups.groupCompose.pollQuestionError'), 'error');
 							return;
 						}
 
@@ -260,7 +260,7 @@
 						this.photo = null;
 						this.tab = null;
 						this.clearFileInputs(false);
-						swal('Oops!', err.response.data.error, 'error');
+						swal(this.$t('common.oops'), err.response.data.error, 'error');
 					} else {
 						this.isPosting = false;
 						this.isUploading = false;
@@ -268,7 +268,7 @@
 						this.photo = null;
 						this.tab = null;
 						this.clearFileInputs(false);
-						swal('Oops!', 'An error occured while processing your request, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.groupCompose.requestError'), 'error');
 					}
 				});
 			},
@@ -276,13 +276,13 @@
 			switchTab(newTab) {
 				if(newTab == this.tab) {
 					this.tab = null;
-					this.placeholder = 'Write something...';
+					this.placeholder = this.$t('groups.groupCompose.writeSomething');
 					return;
 				}
 
 				switch(newTab) {
 					case 'poll':
-						this.placeholder = 'Write poll question here...'
+						this.placeholder = this.$t('groups.groupCompose.writePollQuestion')
 					break;
 
 					case 'photo':
@@ -294,7 +294,7 @@
 					break;
 
 					default:
-						this.placeholder = 'Write something...';
+						this.placeholder = this.$t('groups.groupCompose.writeSomething');
 				}
 
 				this.tab = newTab;

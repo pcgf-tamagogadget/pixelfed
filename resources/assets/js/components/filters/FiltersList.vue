@@ -21,7 +21,7 @@
 
         <div v-if="loading" class="d-flex justify-content-center py-4">
             <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">{{ $t('common.loading') }}</span>
             </div>
         </div>
 
@@ -41,12 +41,10 @@
         <div v-else>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p v-if="!searchQuery || !searchQuery.trim().length" class="text-muted mb-0">
-                    <span class="font-weight-bold">{{ filters.length }}</span>
-                    {{ filters.length === 1 ? 'filter' : 'filters' }} found
+                    <i18n :path="filters.length === 1 ? 'compose.filters.filterFound' : 'compose.filters.filtersFound'"><template v-slot:count><span class="font-weight-bold">{{ filters.length }}</span></template></i18n>
                 </p>
                 <p v-else class="text-muted mb-0">
-                    <span class="font-weight-bold">{{ filteredFilters.length }}</span>
-                    {{ filteredFilters.length === 1 ? 'filter' : 'filters' }} found
+                    <i18n :path="filteredFilters.length === 1 ? 'compose.filters.filterFound' : 'compose.filters.filtersFound'"><template v-slot:count><span class="font-weight-bold">{{ filteredFilters.length }}</span></template></i18n>
                 </p>
                 <div class="input-group input-group-sm" style="max-width: 250px;">
                     <div class="input-group-prepend">
@@ -58,7 +56,7 @@
                       type="text"
                       v-model="searchQuery"
                       class="form-control border-left-0 bg-light"
-                      placeholder="Search filters..."
+                      :placeholder="$t('compose.filters.searchPlaceholder')"
                       />
                   </div>
             </div>
@@ -154,7 +152,7 @@ export default {
             })
             .catch(error => {
                 console.error('Failed to fetch filters:', error);
-                swal('Error', 'Failed to load filters. Please try again.', 'error');
+                swal(this.$t('common.error'), this.$t('compose.filters.loadFailed'), 'error');
             })
             .finally(() => {
                 this.loading = false;
@@ -180,16 +178,16 @@ export default {
             this.showEditFilterModal = true;
         },
         deleteFilter(filterId) {
-            if (!confirm('Are you sure you want to delete this filter?')) return;
+            if (!confirm(this.$t('compose.filters.deleteConfirm'))) return;
 
             this.loading = true;
             axios.delete(`/api/v2/filters/${filterId}`)
             .then(() => {
                 this.filters = this.filters.filter(f => f.id !== filterId);
-                swal('Success', 'Filter deleted successfully', 'success');
+                swal(this.$t('common.success'), this.$t('compose.filters.deleted'), 'success');
             })
             .catch(error => {
-                swal('Error', 'Failed to delete filter. Please try again.', 'error')
+                swal(this.$t('common.error'), this.$t('compose.filters.deleteFailed'), 'error')
             })
             .finally(() => {
                 this.loading = false;
@@ -205,8 +203,8 @@ export default {
                     if (updatedIndex !== -1) {
                         this.$set(this.filters, updatedIndex, response.data);
                     }
-                    this.$bvToast.toast(`${response.data?.title ?? 'Untitled'} filter updated successfully`, {
-                        title: 'Updated Filter',
+                    this.$bvToast.toast(this.$t('compose.filters.updated', { title: response.data?.title ?? this.$t('compose.filters.untitled') }), {
+                        title: this.$t('compose.filters.updatedTitle'),
                         autoHideDelay: 5000,
                         appendToast: true,
                         variant: 'success'
@@ -217,9 +215,9 @@ export default {
                     if(error.response?.data?.error) {
                         swal(error.response?.data?.error, error.response?.data?.message, 'error')
                     } else if(error.response?.data?.message) {
-                        swal('Error', error.response?.data?.message, 'error')
+                        swal(this.$t('common.error'), error.response?.data?.message, 'error')
                     } else {
-                        swal('Error', 'Failed to update filter. Please try again.', 'error')
+                        swal(this.$t('common.error'), this.$t('compose.filters.updateFailed'), 'error')
                     }
                 })
                 .finally(() => {
@@ -229,8 +227,8 @@ export default {
                 axios.post('/api/v2/filters', filterData)
                 .then(response => {
                     this.filters.unshift(response.data);
-                    this.$bvToast.toast(`${response.data?.title ?? 'Untitled'} filter created`, {
-                        title: 'New Filter',
+                    this.$bvToast.toast(this.$t('compose.filters.created', { title: response.data?.title ?? this.$t('compose.filters.untitled') }), {
+                        title: this.$t('compose.filters.newFilter'),
                         autoHideDelay: 5000,
                         appendToast: true,
                         variant: 'success'
@@ -241,9 +239,9 @@ export default {
                     if(error.response?.data?.error) {
                         swal(error.response?.data?.error, error.response?.data?.message, 'error')
                     } else if(error.response?.data?.message) {
-                        swal('Error', error.response?.data?.message, 'error')
+                        swal(this.$t('common.error'), error.response?.data?.message, 'error')
                     } else {
-                        swal('Error', 'Failed to create filter. Please try again.', 'error')
+                        swal(this.$t('common.error'), this.$t('compose.filters.createFailed'), 'error')
                     }
                 })
                 .finally(() => {

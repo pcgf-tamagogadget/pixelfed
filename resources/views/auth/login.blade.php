@@ -8,16 +8,16 @@
                 <div class="card-header bg-transparent p-3 text-center">
                     <h4 class="font-weight-bold mb-0">
                         @if($step === '2fa')
-                        {{ __('Two-factor authentication') }}
+                        {{ __('auth.loginPage.twoFactorTitle') }}
                         @elseif($step === 'verify')
-                        {{ __('Verify your email') }}
+                        {{ __('auth.loginPage.verifyTitle') }}
                         @else
                         {{ __('auth.loginTitle') }}
                         @endif
                     </h4>
                     @if($returnTo)
                     <p class="small text-muted mb-0 mt-2">
-                        {{ __('Continue to') }} <span class="font-weight-bold">{{ $returnTo }}</span>
+                        {{ __('auth.loginPage.continueTo') }} <span class="font-weight-bold">{{ $returnTo }}</span>
                     </p>
                     @endif
                 </div>
@@ -47,9 +47,9 @@
 
                     <p class="text-center text-muted small mb-3">
                         @if($backup)
-                        {{ __('Enter one of your backup codes.') }}
+                        {{ __('auth.loginPage.enterBackupCode') }}
                         @else
-                        {{ __('Enter the 6-digit code from your authenticator app.') }}
+                        {{ __('auth.loginPage.enterTotpCode') }}
                         @endif
                     </p>
 
@@ -69,7 +69,7 @@
                                 autocapitalize="off"
                                 spellcheck="false"
                                 maxlength="32"
-                                placeholder="{{ __('Backup code') }}"
+                                placeholder="{{ __('auth.loginPage.backupCode') }}"
                                 required
                                 autofocus>
                             @else
@@ -97,15 +97,15 @@
                         </div>
 
                         <button type="submit" id="twoFactorSubmit" class="btn btn-primary btn-block btn-lg font-weight-bold rounded-pill">
-                            {{ __('Verify') }}
+                            {{ __('auth.loginPage.verify') }}
                         </button>
                     </form>
 
                     <p class="text-center mt-3 mb-0">
                         @if($backup)
-                        <a href="{{ route('login', ['step' => '2fa']) }}" class="small text-muted font-weight-bold">{{ __('Use your authenticator app instead') }}</a>
+                        <a href="{{ route('login', ['step' => '2fa']) }}" class="small text-muted font-weight-bold">{{ __('auth.loginPage.useAuthenticator') }}</a>
                         @else
-                        <a href="{{ route('login', ['step' => '2fa', 'mode' => 'backup']) }}" class="small text-muted font-weight-bold">{{ __('Use a backup code instead') }}</a>
+                        <a href="{{ route('login', ['step' => '2fa', 'mode' => 'backup']) }}" class="small text-muted font-weight-bold">{{ __('auth.loginPage.useBackupCode') }}</a>
                         @endif
                     </p>
 
@@ -114,17 +114,17 @@
                     @php($showChange = ($changeEmail ?? false) || $errors->has('email'))
 
                     <p class="text-center text-muted small mb-4">
-                        {{ __('We sent a verification link to') }} <span class="font-weight-bold">{{ $pendingUser->email }}</span>. {{ __('Open it to finish signing in.') }}
+                        {!! __('auth.loginPage.verificationSent', ['email' => '<span class="font-weight-bold">'.e($pendingUser->email).'</span>']) !!}
                     </p>
 
                     <a href="{{ route('login.verify.continue') }}" class="btn btn-primary btn-block btn-lg font-weight-bold rounded-pill mb-2">
-                        {{ __('I have verified my email') }}
+                        {{ __('auth.loginPage.iHaveVerified') }}
                     </a>
 
                     <form method="POST" action="{{ route('login.verify.resend') }}">
                         @csrf
                         <button type="submit" class="btn btn-outline-primary btn-block font-weight-bold rounded-pill">
-                            {{ __('Resend email') }}
+                            {{ __('auth.loginPage.resendEmail') }}
                         </button>
                     </form>
 
@@ -132,7 +132,7 @@
                     <div class="mt-4">
                         <form method="POST" action="{{ route('login.verify.email') }}">
                             @csrf
-                            <label for="newEmail" class="small font-weight-bold text-muted mb-0">{{ __('New email address') }}</label>
+                            <label for="newEmail" class="small font-weight-bold text-muted mb-0">{{ __('auth.loginPage.newEmail') }}</label>
                             <div class="input-group">
                                 <input
                                     id="newEmail"
@@ -144,7 +144,7 @@
                                     required
                                     autofocus>
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-primary font-weight-bold">{{ __('Update') }}</button>
+                                    <button type="submit" class="btn btn-primary font-weight-bold">{{ __('auth.loginPage.update') }}</button>
                                 </div>
                                 @if ($errors->has('email'))
                                 <span class="invalid-feedback">
@@ -154,12 +154,12 @@
                             </div>
                         </form>
                         <p class="text-center mt-2 mb-0">
-                            <a href="{{ route('login', ['step' => 'verify']) }}" class="small text-muted font-weight-bold">{{ __('Cancel') }}</a>
+                            <a href="{{ route('login', ['step' => 'verify']) }}" class="small text-muted font-weight-bold">{{ __('auth.loginPage.cancel') }}</a>
                         </p>
                     </div>
                     @else
                     <p class="text-center mt-3 mb-0">
-                        <a href="{{ route('login', ['step' => 'verify', 'change' => 1]) }}" class="small text-muted font-weight-bold">{{ __('Wrong email address?') }}</a>
+                        <a href="{{ route('login', ['step' => 'verify', 'change' => 1]) }}" class="small text-muted font-weight-bold">{{ __('auth.loginPage.wrongEmail') }}</a>
                     </p>
                     @endif
 
@@ -213,7 +213,7 @@
                                             type="button"
                                             id="togglePassword"
                                             class="btn btn-outline-secondary"
-                                            aria-label="{{ __('Press and hold to show password') }}"
+                                            aria-label="{{ __('auth.loginPage.holdToShowPassword') }}"
                                             aria-controls="password"
                                             aria-pressed="false">
                                             <i class="far fa-eye" aria-hidden="true"></i>
@@ -283,7 +283,7 @@
                     <div class="form-group row mb-0">
                         <div class="col-md-12">
                             <a href="/auth/oidc/start" class="btn btn-primary btn-sm btn-block rounded-pill font-weight-bold" style="background: linear-gradient(#6364FF, #563ACC);">
-                                Sign-in with OIDC
+                                {{ __('auth.loginPage.signInOidc') }}
                             </a>
                         </div>
                     </div>
@@ -302,9 +302,9 @@
                     <hr>
                     <div class="d-flex justify-content-between align-items-center">
                         <p class="mb-0 small text-muted">
-                            {{ __('Signing in as') }} <span class="font-weight-bold">{{ '@'.$pendingUser->username }}</span>
+                            {!! __('auth.loginPage.signingInAs', ['username' => '<span class="font-weight-bold">'.e('@'.$pendingUser->username).'</span>']) !!}
                         </p>
-                        <a href="{{ route('login.cancel') }}" class="small font-weight-bold">{{ __('Use a different account') }}</a>
+                        <a href="{{ route('login.cancel') }}" class="small font-weight-bold">{{ __('auth.loginPage.useDifferentAccount') }}</a>
                     </div>
                     @endif
                 </div>

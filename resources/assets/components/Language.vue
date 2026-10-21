@@ -9,14 +9,14 @@
 				<div class="col-md-6">
 					<div class="jumbotron shadow-sm bg-white">
 						<div class="text-center">
-							<h1 class="font-weight-bold mb-0">Language</h1>
+							<h1 class="font-weight-bold mb-0">{{ $t('navmenu.language') }}</h1>
 						</div>
 					</div>
 
 					<div class="card shadow-sm mb-3">
 						<div class="card-body">
 							<div class="locale-changer form-group">
-								<label>Language</label>
+								<label>{{ $t('navmenu.language') }}</label>
 								<select class="form-control" v-model="locale">
 									<option v-for="lang in langs" :key="lang.code" :value="lang.code">
 										{{ lang.name }}

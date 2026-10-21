@@ -5,7 +5,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-7">
             <div class="logo">
-                <img src="{{ config('app.logo') }}" width="40" height="40" alt="Pixelfed Logo">
+                <img src="{{ config('app.logo') }}" width="40" height="40" alt="{{ __('auth.curated.logoAlt') }}">
                 <p class="font-weight-bold mb-0">Pixelfed</p>
             </div>
 
@@ -20,8 +20,8 @@
                 <div class="mb-5"></div>
             @endif
 
-            <h1 class="text-center">Confirm Email</h1>
-            <p class="lead text-center">Please confirm your email address so we can continue processing your registration application.</p>
+            <h1 class="text-center">{{ __('auth.curated.confirmEmail') }}</h1>
+            <p class="lead text-center">{{ __('auth.curated.confirmEmailLead') }}</p>
 
             <form method="post">
                 @csrf
@@ -29,7 +29,7 @@
                 <input type="hidden" name="code" value="{{request()->input('code')}}">
                 <x-captcha surface="curated_register" />
                 <div class="mt-3 pt-4">
-                    <button class="btn btn-primary rounded-pill font-weight-bold btn-block">Confirm Email Address</button>
+                    <button class="btn btn-primary rounded-pill font-weight-bold btn-block">{{ __('auth.curated.confirmEmailAddress') }}</button>
                 </div>
             </form>
         </div>

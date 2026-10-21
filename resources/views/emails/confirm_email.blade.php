@@ -1,23 +1,23 @@
 @component('mail::message')
-# Email Confirmation
+# {{ __('emails.confirmEmail.title') }}
 
-Hello **{{'@'.$verify->user->username}}**, please confirm your email address.
+{!! __('emails.confirmEmail.greeting', ['username' => '**'.e('@'.$verify->user->username).'**']) !!}
 
-If you did not create this account, please disregard this email.
+{{ __('emails.common.disregard') }}
 
 @component('mail::button', ['url' => $verify->url()])
-Confirm Email
+{{ __('emails.confirmEmail.button') }}
 @endcomponent
 
-<p>This link expires after 24 hours.</p>
+<p>{{ __('emails.confirmEmail.expires') }}</p>
 <br>
 <small>
-  If the link above is not working, please copy the following address into your web browser:
+  {{ __('emails.common.copyLink') }}
   <br><br>
   {{ $verify->url() }}
 </small>
 <br><br>
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 <a href="{{ config('app.url') }}">{{ config('pixelfed.domain.app') }}</a>
 @endcomponent

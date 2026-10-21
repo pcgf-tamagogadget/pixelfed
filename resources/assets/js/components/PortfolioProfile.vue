@@ -29,7 +29,7 @@
                         		class="btn btn-outline-primary btn-custom-color"
                         		:href="profile.url"
                         		target="_blank">
-                        		View Profile
+                        		{{ $t('compose.portfolioProfile.viewProfile') }}
                         	</a>
 
                         	<a

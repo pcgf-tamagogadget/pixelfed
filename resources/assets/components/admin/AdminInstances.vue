@@ -5,54 +5,54 @@
 			<div class="header-body">
 				<div class="row align-items-center py-4">
 					<div class="col-lg-6 col-7">
-						<p class="display-1 text-white d-inline-block mb-0">Instances</p>
+						<p class="display-1 text-white d-inline-block mb-0">{{ $t('admin.instances.title') }}</p>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xl-2 col-md-6">
 						<div class="mb-3">
-							<h5 class="text-light text-uppercase mb-0">Total Instances</h5>
+							<h5 class="text-light text-uppercase mb-0">{{ $t('admin.instances.totalInstances') }}</h5>
 							<span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.total_count) }}</span>
 						</div>
 					</div>
 
 					<div class="col-xl-2 col-md-6">
 						<div class="mb-3">
-							<h5 class="text-light text-uppercase mb-0">New (past 14 days)</h5>
+							<h5 class="text-light text-uppercase mb-0">{{ $t('admin.instances.newPast14Days') }}</h5>
 							<span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.new_count) }}</span>
 						</div>
 					</div>
 
 					<div class="col-xl-2 col-md-6">
 						<div class="mb-3">
-							<h5 class="text-light text-uppercase mb-0">Banned Instances</h5>
+							<h5 class="text-light text-uppercase mb-0">{{ $t('admin.instances.bannedInstances') }}</h5>
 							<span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.banned_count) }}</span>
 						</div>
 					</div>
 
 					<div class="col-xl-2 col-md-6">
 						<div class="mb-3">
-							<h5 class="text-light text-uppercase mb-0">NSFW Instances</h5>
+							<h5 class="text-light text-uppercase mb-0">{{ $t('admin.instances.nsfwInstances') }}</h5>
 							<span class="text-white h2 font-weight-bold mb-0 human-size">{{ prettyCount(stats.nsfw_count) }}</span>
 						</div>
 					</div>
 					<div class="col-xl-2 col-md-6">
 						<div class="mb-3">
-							<button class="btn btn-outline-white btn-block btn-sm mt-1" @click.prevent="showAddModal = true">Create New Instance</button>
+							<button class="btn btn-outline-white btn-block btn-sm mt-1" @click.prevent="showAddModal = true">{{ $t('admin.instances.createNewInstance') }}</button>
 							<div v-if="showImportForm">
 								<div class="form-group mt-3">
 									<div class="custom-file">
 										<input ref="importInput" type="file" class="custom-file-input" id="customFile" v-on:change="onImportUpload">
-										<label class="custom-file-label" for="customFile">Choose file</label>
+										<label class="custom-file-label" for="customFile">{{ $t('admin.instances.chooseFile') }}</label>
 									</div>
 								</div>
 								<p class="mb-0 mt-n3">
-									<a href="#" class="text-white font-weight-bold small" @click.prevent="showImportForm = false">Cancel</a>
+									<a href="#" class="text-white font-weight-bold small" @click.prevent="showImportForm = false">{{ $t('common.cancel') }}</a>
 								</p>
 							</div>
 							<div v-else class="d-flex mt-1">
-								<button class="btn btn-outline-white btn-sm mt-1" @click="openImportForm">Import</button>
-								<button class="btn btn-outline-white btn-block btn-sm mt-1" @click="downloadBackup()">Download Backup</button>
+								<button class="btn btn-outline-white btn-sm mt-1" @click="openImportForm">{{ $t('admin.instances.import') }}</button>
+								<button class="btn btn-outline-white btn-block btn-sm mt-1" @click="downloadBackup()">{{ $t('admin.instances.downloadBackup') }}</button>
 							</div>
 						</div>
 					</div>
@@ -71,25 +71,25 @@
 				<div class="col-12 col-md-8">
 					<ul class="nav nav-pills">
 						<li class="nav-item">
-							<button :class="['nav-link', { active: tabIndex == 0}]" @click="toggleTab(0)">All</button>
+							<button :class="['nav-link', { active: tabIndex == 0}]" @click="toggleTab(0)">{{ $t('admin.instances.tabAll') }}</button>
 						</li>
 						<li class="nav-item">
-							<button :class="['nav-link', { active: tabIndex == 1}]" @click="toggleTab(1)">New</button>
+							<button :class="['nav-link', { active: tabIndex == 1}]" @click="toggleTab(1)">{{ $t('admin.instances.tabNew') }}</button>
 						</li>
 						<li class="nav-item">
-							<button :class="['nav-link', { active: tabIndex == 2}]" @click="toggleTab(2)">Banned</button>
+							<button :class="['nav-link', { active: tabIndex == 2}]" @click="toggleTab(2)">{{ $t('admin.instances.banned') }}</button>
 						</li>
 						<li class="nav-item">
 							<button :class="['nav-link', { active: tabIndex == 3}]" @click="toggleTab(3)">NSFW</button>
 						</li>
 						<li class="nav-item">
-							<button :class="['nav-link', { active: tabIndex == 4}]" @click="toggleTab(4)">Unlisted</button>
+							<button :class="['nav-link', { active: tabIndex == 4}]" @click="toggleTab(4)">{{ $t('admin.instances.unlisted') }}</button>
 						</li>
 						<li class="nav-item">
-							<button :class="['nav-link', { active: tabIndex == 5}]" @click="toggleTab(5)">Most Users</button>
+							<button :class="['nav-link', { active: tabIndex == 5}]" @click="toggleTab(5)">{{ $t('admin.instances.tabMostUsers') }}</button>
 						</li>
 						<li class="nav-item">
-							<button :class="['nav-link', { active: tabIndex == 6}]" @click="toggleTab(6)">Most Statuses</button>
+							<button :class="['nav-link', { active: tabIndex == 6}]" @click="toggleTab(6)">{{ $t('admin.instances.tabMostStatuses') }}</button>
 						</li>
 					</ul>
 				</div>
@@ -98,8 +98,8 @@
 						:search="composeSearch"
 						:disabled="searchLoading"
 						:defaultValue="searchQuery"
-						placeholder="Search instances by domain"
-						aria-label="Search instances by domain"
+						:placeholder="$t('admin.instances.searchByDomain')"
+						:aria-label="$t('admin.instances.searchByDomain')"
 						:get-result-value="getTagResultValue"
 						@submit="onSearchResultClick"
 						ref="autocomplete"
@@ -113,7 +113,7 @@
 									{{ result.domain }}
 								</div>
 								<div class="small text-muted">
-									{{ prettyCount(result.user_count) }} users
+									{{ $t('admin.instances.usersCount', { count: prettyCount(result.user_count) }) }}
 								</div>
 							</li>
 						</template>
@@ -126,14 +126,14 @@
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col" class="cursor-pointer" v-html="buildColumn('ID', 'id')" @click="toggleCol('id')"></th>
-							<th scope="col" class="cursor-pointer" v-html="buildColumn('Domain', 'domain')" @click="toggleCol('domain')"></th>
-							<th scope="col" class="cursor-pointer" v-html="buildColumn('Software', 'software')" @click="toggleCol('software')"></th>
-							<th scope="col" class="cursor-pointer" v-html="buildColumn('User Count', 'user_count')" @click="toggleCol('user_count')"></th>
-							<th scope="col" class="cursor-pointer" v-html="buildColumn('Status Count', 'status_count')" @click="toggleCol('status_count')"></th>
-							<th scope="col" class="cursor-pointer" v-html="buildColumn('Banned', 'banned')" @click="toggleCol('banned')"></th>
+							<th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.instances.domain'), 'domain')" @click="toggleCol('domain')"></th>
+							<th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.instances.software'), 'software')" @click="toggleCol('software')"></th>
+							<th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.instances.userCount'), 'user_count')" @click="toggleCol('user_count')"></th>
+							<th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.instances.statusCount'), 'status_count')" @click="toggleCol('status_count')"></th>
+							<th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.instances.banned'), 'banned')" @click="toggleCol('banned')"></th>
 							<th scope="col" class="cursor-pointer" v-html="buildColumn('NSFW', 'auto_cw')" @click="toggleCol('auto_cw')"></th>
-							<th scope="col" class="cursor-pointer" v-html="buildColumn('Unlisted', 'unlisted')" @click="toggleCol('unlisted')"></th>
-							<th scope="col">Created</th>
+							<th scope="col" class="cursor-pointer" v-html="buildColumn($t('admin.instances.unlisted'), 'unlisted')" @click="toggleCol('unlisted')"></th>
+							<th scope="col">{{ $t('admin.instances.created') }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -161,13 +161,13 @@
 					class="btn btn-primary rounded-pill"
 					:disabled="!pagination.prev"
 					@click="paginate('prev')">
-					Prev
+					{{ $t('admin.instances.prev') }}
 				</button>
 				<button
 					class="btn btn-primary rounded-pill"
 					:disabled="!pagination.next"
 					@click="paginate('next')">
-					Next
+					{{ $t('common.next') }}
 				</button>
 			</div>
 		</div>
@@ -175,57 +175,57 @@
 
 	<b-modal
 		v-model="showInstanceModal"
-		title="View Instance"
+		:title="$t('admin.instances.viewInstance')"
 		header-class="d-flex align-items-center justify-content-center mb-0 pb-0"
-		ok-title="Save"
+		:ok-title="$t('admin.instances.save')"
 		:ok-disabled="!editingInstanceChanges"
 		@ok="saveInstanceModalChanges">
 		<div v-if="editingInstance && canEditInstance" class="list-group">
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Domain</div>
+				<div class="text-muted small">{{ $t('admin.instances.domain') }}</div>
 				<div class="font-weight-bold">{{ editingInstance.domain }}</div>
 			</div>
 			<div class="list-group-item d-flex align-items-center justify-content-between">
 				<div v-if="editingInstance.software">
-					<div class="text-muted small">Software</div>
-					<div class="font-weight-bold">{{ editingInstance.software ?? 'Unknown' }}</div>
+					<div class="text-muted small">{{ $t('admin.instances.software') }}</div>
+					<div class="font-weight-bold">{{ editingInstance.software ?? $t('admin.instances.unknown') }}</div>
 				</div>
 				<div>
-					<div class="text-muted small">Total Users</div>
+					<div class="text-muted small">{{ $t('admin.instances.totalUsers') }}</div>
 					<div class="font-weight-bold">{{ formatCount(editingInstance.user_count ?? 0) }}</div>
 				</div>
 				<div>
-					<div class="text-muted small">Total Statuses</div>
+					<div class="text-muted small">{{ $t('admin.instances.totalStatuses') }}</div>
 					<div class="font-weight-bold">{{ formatCount(editingInstance.status_count ?? 0) }}</div>
 				</div>
 			</div>
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Banned</div>
+				<div class="text-muted small">{{ $t('admin.instances.banned') }}</div>
 				<div class="mr-n2 mb-1">
 					<b-form-checkbox v-model="editingInstance.banned" switch size="lg"></b-form-checkbox>
 				</div>
 			</div>
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Apply CW to Media</div>
+				<div class="text-muted small">{{ $t('admin.instances.applyCwToMedia') }}</div>
 				<div class="mr-n2 mb-1">
 					<b-form-checkbox v-model="editingInstance.auto_cw" switch size="lg"></b-form-checkbox>
 				</div>
 			</div>
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Unlisted</div>
+				<div class="text-muted small">{{ $t('admin.instances.unlisted') }}</div>
 				<div class="mr-n2 mb-1">
 					<b-form-checkbox v-model="editingInstance.unlisted" switch size="lg"></b-form-checkbox>
 				</div>
 			</div>
 			<div class="list-group-item d-flex justify-content-between" :class="[ instanceModalNotes ? 'flex-column gap-2' : 'align-items-center']">
-				<div class="text-muted small">Notes</div>
+				<div class="text-muted small">{{ $t('admin.instances.notes') }}</div>
 				<transition name="fade">
 					<div v-if="instanceModalNotes" class="w-100">
 						<b-form-textarea v-model="editingInstance.notes" rows="3" max-rows="5" maxlength="500"></b-form-textarea>
 						<p class="small text-muted">{{editingInstance.notes ? editingInstance.notes.length : 0}}/500</p>
 					</div>
 					<div v-else class="mb-1">
-						<a href="#" class="font-weight-bold small" @click.prevent="showModalNotes()">{{editingInstance.notes ? 'View' : 'Add'}}</a>
+						<a href="#" class="font-weight-bold small" @click.prevent="showModalNotes()">{{ editingInstance.notes ? $t('admin.instances.view') : $t('admin.instances.add') }}</a>
 					</div>
 				</transition>
 			</div>
@@ -238,7 +238,7 @@
 					size="sm"
 					@click="deleteInstanceModal"
 				>
-					Delete
+					{{ $t('common.delete') }}
 				</b-button>
 				<b-button
 					v-if="!refreshedModalStats"
@@ -246,7 +246,7 @@
 					size="sm"
 					@click="refreshModalStats"
 				>
-					Refresh Stats
+					{{ $t('admin.instances.refreshStats') }}
 				</b-button>
 			</div>
 		  <div>
@@ -255,13 +255,13 @@
                 size="sm"
 				@click="onViewMoreInstance"
 			  >
-				View More
+				{{ $t('admin.instances.viewMore') }}
 			  </b-button>
 			  <b-button
 				variant="primary"
 				@click="saveInstanceModalChanges"
 			  >
-				Save
+				{{ $t('admin.instances.save') }}
 			  </b-button>
 		  </div>
 		</div>
@@ -270,41 +270,41 @@
 
 	<b-modal
 		v-model="showAddModal"
-		title="Add Instance"
-		ok-title="Save"
+		:title="$t('admin.instances.addInstance')"
+		:ok-title="$t('admin.instances.save')"
 		:ok-disabled="addNewInstance.domain.length < 2"
 		@ok="saveNewInstance">
 		<div class="list-group">
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Domain</div>
+				<div class="text-muted small">{{ $t('admin.instances.domain') }}</div>
 				<div>
-					<b-form-input v-model="addNewInstance.domain" placeholder="Add domain here" />
-					<p class="small text-light mb-0">Enter a valid domain without https://</p>
+					<b-form-input v-model="addNewInstance.domain" :placeholder="$t('admin.instances.addDomainPlaceholder')" />
+					<p class="small text-light mb-0">{{ $t('admin.instances.enterValidDomain') }}</p>
 				</div>
 			</div>
 
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Banned</div>
+				<div class="text-muted small">{{ $t('admin.instances.banned') }}</div>
 				<div class="mr-n2 mb-1">
 					<b-form-checkbox v-model="addNewInstance.banned" switch size="lg"></b-form-checkbox>
 				</div>
 			</div>
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Apply CW to Media</div>
+				<div class="text-muted small">{{ $t('admin.instances.applyCwToMedia') }}</div>
 				<div class="mr-n2 mb-1">
 					<b-form-checkbox v-model="addNewInstance.auto_cw" switch size="lg"></b-form-checkbox>
 				</div>
 			</div>
 			<div class="list-group-item d-flex align-items-center justify-content-between">
-				<div class="text-muted small">Unlisted</div>
+				<div class="text-muted small">{{ $t('admin.instances.unlisted') }}</div>
 				<div class="mr-n2 mb-1">
 					<b-form-checkbox v-model="addNewInstance.unlisted" switch size="lg"></b-form-checkbox>
 				</div>
 			</div>
 			<div class="list-group-item d-flex flex-column gap-2 justify-content-between">
-				<div class="text-muted small">Notes</div>
+				<div class="text-muted small">{{ $t('admin.instances.notes') }}</div>
 				<div class="w-100">
-					<b-form-textarea v-model="addNewInstance.notes" rows="3" max-rows="5" maxlength="500" placeholder="Add optional notes here"></b-form-textarea>
+					<b-form-textarea v-model="addNewInstance.notes" rows="3" max-rows="5" maxlength="500" :placeholder="$t('admin.instances.notesPlaceholder')"></b-form-textarea>
 					<p class="small text-muted">{{addNewInstance.notes ? addNewInstance.notes.length : 0}}/500</p>
 				</div>
 			</div>
@@ -313,45 +313,45 @@
 
 	<b-modal
 		v-model="showImportModal"
-		title="Import Instance Backup"
-		ok-title="Import"
+		:title="$t('admin.instances.importBackupTitle')"
+		:ok-title="$t('admin.instances.import')"
 		scrollable
 		:ok-disabled="!importData || (!importData.banned.length && !importData.unlisted.length && !importData.auto_cw.length)"
 		@ok="completeImport"
 		@cancel="cancelImport">
 		<div v-if="showImportModal && importData">
 			<div v-if="importData.auto_cw && importData.auto_cw.length" class="mb-5">
-				<p class="font-weight-bold text-center my-0">NSFW Instances ({{importData.auto_cw.length}})</p>
-				<p class="small text-center text-muted mb-1">Tap on an instance to remove it.</p>
+				<p class="font-weight-bold text-center my-0">{{ $t('admin.instances.nsfwInstancesCount', { count: importData.auto_cw.length }) }}</p>
+				<p class="small text-center text-muted mb-1">{{ $t('admin.instances.tapToRemove') }}</p>
 				<div class="list-group">
 					<a v-for="(instance, idx) in importData.auto_cw" class="list-group-item d-flex align-items-center justify-content-between" href="#" @click.prevent="filterImportData('auto_cw', idx)">
 						{{ instance }}
 
-						<span class="badge badge-warning">Auto CW</span>
+						<span class="badge badge-warning">{{ $t('admin.instances.autoCw') }}</span>
 					</a>
 				</div>
 			</div>
 
 			<div v-if="importData.unlisted && importData.unlisted.length" class="mb-5">
-				<p class="font-weight-bold text-center my-0">Unlisted Instances ({{importData.unlisted.length}})</p>
-				<p class="small text-center text-muted mb-1">Tap on an instance to remove it.</p>
+				<p class="font-weight-bold text-center my-0">{{ $t('admin.instances.unlistedInstancesCount', { count: importData.unlisted.length }) }}</p>
+				<p class="small text-center text-muted mb-1">{{ $t('admin.instances.tapToRemove') }}</p>
 				<div class="list-group">
 					<a v-for="(instance, idx) in importData.unlisted" class="list-group-item d-flex align-items-center justify-content-between" href="#" @click.prevent="filterImportData('unlisted', idx)">
 						{{ instance }}
 
-						<span class="badge badge-primary">Unlisted</span>
+						<span class="badge badge-primary">{{ $t('admin.instances.unlisted') }}</span>
 					</a>
 				</div>
 			</div>
 
 			<div v-if="importData.banned && importData.banned.length" class="mb-5">
-				<p class="font-weight-bold text-center my-0">Banned Instances ({{importData.banned.length}})</p>
-				<p class="small text-center text-muted mb-1">Review instances, tap on an instance to remove it.</p>
+				<p class="font-weight-bold text-center my-0">{{ $t('admin.instances.bannedInstancesCount', { count: importData.banned.length }) }}</p>
+				<p class="small text-center text-muted mb-1">{{ $t('admin.instances.reviewTapToRemove') }}</p>
 				<div class="list-group">
 					<a v-for="(instance, idx) in importData.banned" class="list-group-item d-flex align-items-center justify-content-between" href="#" @click.prevent="filterImportData('banned', idx)">
 						{{ instance }}
 
-						<span class="badge badge-danger">Banned</span>
+						<span class="badge badge-danger">{{ $t('admin.instances.banned') }}</span>
 					</a>
 				</div>
 			</div>
@@ -361,7 +361,7 @@
 					<p>
 						<i class="far fa-check-circle fa-4x text-success"></i>
 					</p>
-					<p class="lead">Nothing to import!</p>
+					<p class="lead">{{ $t('admin.instances.nothingToImport') }}</p>
 				</div>
 			</div>
 		</div>
@@ -693,8 +693,8 @@
 				axios.post('/i/admin/api/instances/update', this.editingInstance)
 				.then(res => {
 					this.showInstanceModal = false;
-					this.$bvToast.toast(`Successfully updated ${res.data.data.domain}`, {
-						title: 'Instance Updated',
+					this.$bvToast.toast(this.$t('admin.instances.updatedToast', { domain: res.data.data.domain }), {
+						title: this.$t('admin.instances.instanceUpdated'),
 						autoHideDelay: 5000,
 						appendToast: true,
 						variant: 'success'
@@ -709,7 +709,7 @@
 					this.instances.unshift(res.data.data);
 				})
 				.catch(err => {
-					swal('Oops!', 'An error occured, please try again later.', 'error');
+					swal(this.$t('common.oops'), this.$t('admin.instances.errorTryLater'), 'error');
 					this.addNewInstance = {
 						domain: "",
 						banned: false,
@@ -738,7 +738,7 @@
 			},
 
 			deleteInstanceModal() {
-				if(!window.confirm('Are you sure you want to delete this instance? This will not delete posts or profiles from this instance.')) {
+				if(!window.confirm(this.$t('admin.instances.confirmDelete'))) {
 					return;
 				}
 				axios.post('/i/admin/api/instances/delete', {
@@ -757,11 +757,11 @@
 				let el = document.createElement('p');
 					el.classList.add('text-left');
 					el.classList.add('mb-0');
-					el.innerHTML = '<p class="lead mb-0">Import your instance moderation backup.</span></p><br /><p>Import Instructions:</p><ol><li>Press OK</li><li>Press "Choose File" on Import form input</li><li>Select your <kbd>pixelfed-instances-mod.json</kbd> file</li><li>Review instance moderation actions. Tap on an instance to remove it</li><li>Press "Import" button to finish importing</li></ol>';
+					el.innerHTML = '<p class="lead mb-0">' + this.$t('admin.instances.importHelp.lead') + '</span></p><br /><p>' + this.$t('admin.instances.importHelp.instructions') + '</p><ol><li>' + this.$t('admin.instances.importHelp.step1') + '</li><li>' + this.$t('admin.instances.importHelp.step2') + '</li><li>' + this.$t('admin.instances.importHelp.step3', { file: '<kbd>pixelfed-instances-mod.json</kbd>' }) + '</li><li>' + this.$t('admin.instances.importHelp.step4') + '</li><li>' + this.$t('admin.instances.importHelp.step5') + '</li></ol>';
 					let wrapper = document.createElement('div');
 					wrapper.appendChild(el);
 				swal({
-					title: 'Import Backup',
+					title: this.$t('admin.instances.importBackup'),
 					content: wrapper,
 					icon: 'info'
 				})
@@ -781,8 +781,8 @@
       				el.click();
 
       				swal(
-      					'Instance Backup Downloading',
-      					'Your instance moderation backup is downloading. Use this to import auto_cw, banned and unlisted instances to supported Pixelfed instances.',
+      					this.$t('admin.instances.backupDownloading'),
+      					this.$t('admin.instances.backupDownloadingBody'),
       					'success'
       				)
 				})
@@ -792,7 +792,7 @@
 				let res = await this.getParsedImport(ev.target.files[0]);
 
 				if(!res.hasOwnProperty('version') || res.version !== 1) {
-					swal('Invalid Backup', 'We cannot validate this backup. Please try again later.', 'error');
+					swal(this.$t('admin.instances.invalidBackup'), this.$t('admin.instances.invalidBackupBody'), 'error');
 					this.showImportForm = false;
 					this.$refs.importInput.reset();
 					return;
@@ -808,11 +808,11 @@
 					let el = document.createElement('p');
 					el.classList.add('text-left');
 					el.classList.add('mb-0');
-					el.innerHTML = '<p class="lead">An error occured when attempting to parse the import file. <span class="font-weight-bold">Please try again later.</span></p><br /><p class="small text-danger mb-0">Error message:</p><div class="card card-body"><code>' + err.message + '</code></div>';
+					el.innerHTML = '<p class="lead">' + this.$t('admin.instances.parseError') + ' <span class="font-weight-bold">' + this.$t('admin.instances.pleaseTryAgainLater') + '</span></p><br /><p class="small text-danger mb-0">' + this.$t('admin.instances.errorMessage') + '</p><div class="card card-body"><code>' + err.message + '</code></div>';
 					let wrapper = document.createElement('div');
 					wrapper.appendChild(el);
 					swal({
-						title: 'Import Error',
+						title: this.$t('admin.instances.importError'),
 						content: wrapper,
 						icon: 'error'
 					})
@@ -864,7 +864,7 @@
 					'unlisted': this.importData.unlisted,
 				})
 				.then(res => {
-					swal('Import Uploaded', 'Import successfully uploaded, please allow a few minutes to process.', 'success');
+					swal(this.$t('admin.instances.importUploaded'), this.$t('admin.instances.importUploadedBody'), 'success');
 				})
 				.then(() => {
 					setTimeout(() => this.fetchStats(), 1000);
@@ -873,7 +873,7 @@
 
 			cancelImport(bvModalEvent) {
 				if(this.importData.banned.length || this.importData.auto_cw.length || this.importData.unlisted.length) {
-					if(!window.confirm('Are you sure you want to cancel importing?')) {
+					if(!window.confirm(this.$t('admin.instances.confirmCancelImport'))) {
 						bvModalEvent.preventDefault();
 						return;
 					} else {

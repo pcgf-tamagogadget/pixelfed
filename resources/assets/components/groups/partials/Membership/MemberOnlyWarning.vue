@@ -1,8 +1,8 @@
 <template>
     <div class="member-only-warning">
         <div class="member-only-warning-wrapper">
-            <h3>Content unavailable</h3>
-            <p>You need to join this Group before you can access this content.</p>
+            <h3>{{ $t('groups.memberOnlyWarning.title') }}</h3>
+            <p>{{ $t('groups.memberOnlyWarning.message') }}</p>
         </div>
     </div>
 </template>

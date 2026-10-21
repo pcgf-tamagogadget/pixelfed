@@ -2,7 +2,7 @@
 
 @section('section')
 <div class="title mb-3">
-	<h3 class="font-weight-bold d-inline-block">Appeals</h3>
+	<h3 class="font-weight-bold d-inline-block">{{ __('admin_panel.reports.appeals.title') }}</h3>
 	<span class="float-right">
 	</span>
 </div>
@@ -11,14 +11,14 @@
 		<div class="card border bg-primary text-white rounded-pill shadow">
 			<div class="card-body pl-4 ml-3">
 				<p class="h1 font-weight-bold mb-1" style="font-weight: 700">{{App\AccountInterstitial::whereNull('appeal_handled_at')->whereNotNull('appeal_requested_at')->count()}}</p>
-				<p class="lead mb-0 font-weight-lighter">active appeals</p>				
+				<p class="lead mb-0 font-weight-lighter">{{ __('admin_panel.reports.appeals.activeAppeals') }}</p>				
 			</div>
 		</div>
 
 		<div class="mt-3 card border bg-warning text-dark rounded-pill shadow">
 			<div class="card-body pl-4 ml-3">
 				<p class="h1 font-weight-bold mb-1" style="font-weight: 700">{{App\AccountInterstitial::whereNotNull('appeal_handled_at')->whereNotNull('appeal_requested_at')->count()}}</p>
-				<p class="lead mb-0 font-weight-lighter">closed appeals</p>				
+				<p class="lead mb-0 font-weight-lighter">{{ __('admin_panel.reports.appeals.closedAppeals') }}</p>				
 			</div>
 		</div>
 	</div>
@@ -26,7 +26,7 @@
 		<ul class="list-group">
 			@if($appeals->count() == 0)
 			<li class="list-group-item text-center py-5">
-				<p class="mb-0 py-5 font-weight-bold">No appeals found!</p>
+				<p class="mb-0 py-5 font-weight-bold">{{ __('admin_panel.reports.appeals.noAppeals') }}</p>
 			</li>
 			@endif
 			@foreach($appeals as $appeal)

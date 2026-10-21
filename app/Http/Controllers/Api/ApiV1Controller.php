@@ -344,9 +344,9 @@ class ApiV1Controller extends Controller
             $changes = true;
         }
 
-        if ($request->has('source.language')) {
-            $lang = $request->input('source.language');
-            if (in_array($lang, Localization::languages())) {
+        if ($request->filled('source.language')) {
+            $lang = Localization::normalizeLocale($request->input('source.language'));
+            if (Localization::isAvailable($lang)) {
                 $user->language = $lang;
                 $changes = true;
                 $other['language'] = $lang;

@@ -4,17 +4,17 @@
             <div class="col-12 col-md-7">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="text-center">Feature not enabled</h1>
+                        <h1 class="text-center">{{ __('admin_panel.curatedRegister.notEnabled.title') }}</h1>
 
-                        <p class="lead">To enable this feature:
+                        <p class="lead">{{ __('admin_panel.curatedRegister.notEnabled.toEnable') }}
 
                         <ol class="lead">
-                            <li>Go to the <a href="/i/admin/settings" class="font-weight-bold">Settings page</a></li>
+                            <li>{!! __('admin_panel.curatedRegister.notEnabled.step1') !!}</li>
                             <li>
-                                Under <strong>Registration Status</strong> select:
-                                <pre>Filtered - Anyone can apply (Curated Onboarding)</pre>
+                                {!! __('admin_panel.curatedRegister.notEnabled.step2') !!}
+                                <pre>{{ __('admin_panel.curatedRegister.notEnabled.filteredOption') }}</pre>
                             </li>
-                            <li>Save the changes</li>
+                            <li>{{ __('admin_panel.curatedRegister.notEnabled.step3') }}</li>
                         </ol>
                     </div>
                 </div>

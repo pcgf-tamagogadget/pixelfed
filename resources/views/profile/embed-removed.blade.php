@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 <head>
 
 	<meta charset="utf-8">
@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="mobile-web-app-capable" content="yes">
 
-	<title>Pixelfed | 404 Embed Not Found</title>
+	<title>Pixelfed | {{ __('profile.embed.notFoundTitle') }}</title>
 
 	<meta property="og:site_name" content="{{ config_cache('app.name', 'pixelfed') }}">
 	<meta property="og:title" content="{{ $title ?? config_cache('app.name', 'pixelfed') }}">
@@ -42,8 +42,8 @@
 			<div class="text-center p-5">
 				<img src="{{ config('app.logo') }}" width="40px" height="40px">
 				<p class="h2 py-3 font-weight-bold">Pixelfed</p>
-				<p style="font-size:14px;font-weight: 500;" class="px-2 py-4">Cannot display profile embed, it may be deleted or set to private.</p>
-				<p><a href="{{config('app.url')}}" class="font-weight-bold" target="_blank">Visit Pixelfed</a></p>
+				<p style="font-size:14px;font-weight: 500;" class="px-2 py-4">{{ __('profile.embed.cannotDisplay') }}</p>
+				<p><a href="{{config('app.url')}}" class="font-weight-bold" target="_blank">{{ __('profile.embed.visit') }}</a></p>
 			</div>
 		</div>
 	</div>

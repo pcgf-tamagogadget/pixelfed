@@ -6,10 +6,12 @@
 					<div class="d-flex align-items-center justify-content-between">
 						<span class="lead mb-0 text-lighter">
 							<i class="fal fa-exclamation-triangle mr-2 text-warning"></i>
-							You have <strong class="text-white">{{ requestCount }}</strong> member applications to review
+							<i18n path="groups.groupMembers.applicationsToReview" tag="span">
+								<template #count><strong class="text-white">{{ requestCount }}</strong></template>
+							</i18n>
 						</span>
 						<span>
-							<button class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" @click="reviewApplicants()">Review</button>
+							<button class="btn btn-primary font-weight-bold rounded-pill btn-sm px-3" @click="reviewApplicants()">{{ $t('groups.groupMembers.review') }}</button>
 						</span>
 					</div>
 				</div>
@@ -17,7 +19,7 @@
 				<div class="card card-body border shadow-sm">
 					<div v-if="!hideHeader">
 						<p class="d-flex align-items-center mb-0">
-							<span class="lead font-weight-bold">Members</span>
+							<span class="lead font-weight-bold">{{ $t('groups.groupMembers.members') }}</span>
 							<span class="mx-2">·</span>
 							<span class="text-muted">{{group.member_count}}</span>
 						</p>
@@ -26,8 +28,8 @@
 						</p> -->
 						<div class="form-group mt-3" style="position: relative;">
 							<i class="fas fa-search fa-lg text-lighter" style="position: absolute;left:20px; top:50%;transform:translateY(-50%);"></i>
-							<input class="form-control form-control-lg bg-light border rounded-pill" style="padding-left: 50px;padding-right: 50px;" placeholder="Find a member" v-model="memberSearchModel">
-							<button class="btn btn-primary font-weight-bold rounded-pill px-3" style="position: absolute;right: 6px; top: 50%;transform: translateY(-50%);">Search</button>
+							<input class="form-control form-control-lg bg-light border rounded-pill" style="padding-left: 50px;padding-right: 50px;" :placeholder="$t('groups.groupMembers.findMember')" v-model="memberSearchModel">
+							<button class="btn btn-primary font-weight-bold rounded-pill px-3" style="position: absolute;right: 6px; top: 50%;transform: translateY(-50%);">{{ $t('groups.groupMembers.search') }}</button>
 						</div>
 
 						<hr>
@@ -48,9 +50,9 @@
 								<div class="media-body">
 									<p class="lead font-weight-bold mb-0">
 										{{profile.username}}
-										<span class="member-label rounded ml-1">Me</span>
+										<span class="member-label rounded ml-1">{{ $t('groups.groupMembers.me') }}</span>
 									</p>
-									<p class="text-muted mb-0">Founded group {{formatDate(group.created_at)}}</p>
+									<p class="text-muted mb-0">{{ $t('groups.groupMembers.foundedGroup', { date: formatDate(group.created_at) }) }}</p>
 								</div>
 								<!-- <button class="btn btn-light border">
 									<i class="fas fa-ellipsis-h text-muted"></i>
@@ -61,7 +63,7 @@
 						<hr v-if="mutual.length > 0">
 
 						<div v-if="mutual.length > 0" class="group-members-component-paginated-list">
-							<p class="font-weight-bold mb-1">Mutual Friends</p>
+							<p class="font-weight-bold mb-1">{{ $t('groups.groupMembers.mutualFriends') }}</p>
 
 							<div v-for="(member, index) in mutual" class="media align-items-center py-3">
 								<a :href="member.url" class="text-dark text-decoration-none">
@@ -77,15 +79,15 @@
 								<div class="media-body">
 									<p class="lead font-weight-bold mb-0">
 										<a :href="member.url" class="text-dark text-decoration-none" :title="member.acct" data-toggle="tooltip">{{member.username}}</a>
-										<span v-if="member.role == 'founder'" class="member-label rounded ml-1">Admin</span>
-										<span v-if="!member.local" class="remote-label rounded ml-1">Remote</span>
+										<span v-if="member.role == 'founder'" class="member-label rounded ml-1">{{ $t('groups.groupMembers.admin') }}</span>
+										<span v-if="!member.local" class="remote-label rounded ml-1">{{ $t('groups.groupMembers.remote') }}</span>
 									</p>
-									<p class="text-muted mb-0">Member since {{formatDate(member.joined)}}</p>
+									<p class="text-muted mb-0">{{ $t('groups.groupMembers.memberSince', { date: formatDate(member.joined) }) }}</p>
 								</div>
 								<a
 									class="btn btn-light lead font-weight-bolder px-3 border"
 									:href="'/account/direct/t/' + member.id">
-									<i class="far fa-comment-dots mr-1"></i> Message
+									<i class="far fa-comment-dots mr-1"></i> {{ $t('groups.groupMembers.message') }}
 								</a>
 								<b-dropdown
 									v-if="isAdmin"
@@ -97,12 +99,12 @@
 									<template #button-content>
 										<i class="fas fa-ellipsis-h"></i>
 									</template>
-									<b-dropdown-item :href="member.url">View Profile</b-dropdown-item>
-									<b-dropdown-item :href="'/account/direct/t/'+member.id">Send Message</b-dropdown-item>
-									<b-dropdown-item>View Activity</b-dropdown-item>
+									<b-dropdown-item :href="member.url">{{ $t('groups.groupMembers.viewProfile') }}</b-dropdown-item>
+									<b-dropdown-item :href="'/account/direct/t/'+member.id">{{ $t('groups.groupMembers.sendMessage') }}</b-dropdown-item>
+									<b-dropdown-item>{{ $t('groups.groupMembers.viewActivity') }}</b-dropdown-item>
 									<b-dropdown-divider></b-dropdown-divider>
-									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">Limit interactions</b-dropdown-item>
-									<b-dropdown-item link-class="font-weight-bold text-danger">Remove from group</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">{{ $t('groups.groupMembers.limitInteractions') }}</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold text-danger">{{ $t('groups.groupMembers.removeFromGroup') }}</b-dropdown-item>
 								</b-dropdown>
 							</div>
 						</div>
@@ -110,7 +112,7 @@
 						<hr v-if="members.length > 0">
 
 						<div v-if="members.length > 0" class="group-members-component-paginated-list">
-							<p class="font-weight-bold mb-1">Other Members</p>
+							<p class="font-weight-bold mb-1">{{ $t('groups.groupMembers.otherMembers') }}</p>
 
 							<div v-for="(member, index) in members" class="media align-items-center py-3">
 								<a :href="member.url" class="text-dark text-decoration-none">
@@ -126,20 +128,20 @@
 								<div class="media-body">
 									<p class="lead font-weight-bold mb-0">
 										<a :href="member.url" class="text-dark text-decoration-none" :title="member.acct" data-toggle="tooltip">{{member.username}}</a>
-										<span v-if="member.is_admin" class="member-label rounded ml-1">Admin</span>
-										<span v-if="!member.local" class="remote-label rounded ml-1">Remote</span>
+										<span v-if="member.is_admin" class="member-label rounded ml-1">{{ $t('groups.groupMembers.admin') }}</span>
+										<span v-if="!member.local" class="remote-label rounded ml-1">{{ $t('groups.groupMembers.remote') }}</span>
 									</p>
-									<p class="text-muted mb-0">Member since {{formatDate(member.joined)}}</p>
+									<p class="text-muted mb-0">{{ $t('groups.groupMembers.memberSince', { date: formatDate(member.joined) }) }}</p>
 								</div>
 								<button
 									:class="[ member.following ? 'btn-primary' : 'btn-light']"
 									class="btn lead font-weight-bolder px-4 border"
 									@click="follow(index)">
 									<span v-if="member.following">
-										Following
+										{{ $t('groups.groupMembers.following') }}
 									</span>
 									<span v-else>
-										<i class="fas fa-user-plus mr-2"></i> Follow
+										<i class="fas fa-user-plus mr-2"></i> {{ $t('groups.groupMembers.follow') }}
 									</span>
 								</button>
 								<b-dropdown
@@ -152,33 +154,33 @@
 									<template #button-content>
 										<i class="fas fa-ellipsis-h"></i>
 									</template>
-									<b-dropdown-item :href="member.url" link-class="font-weight-bold">View Profile</b-dropdown-item>
-									<b-dropdown-item :href="'/account/direct/t/'+member.id" link-class="font-weight-bold">Send Message</b-dropdown-item>
-									<b-dropdown-item link-class="font-weight-bold">View Activity</b-dropdown-item>
+									<b-dropdown-item :href="member.url" link-class="font-weight-bold">{{ $t('groups.groupMembers.viewProfile') }}</b-dropdown-item>
+									<b-dropdown-item :href="'/account/direct/t/'+member.id" link-class="font-weight-bold">{{ $t('groups.groupMembers.sendMessage') }}</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold">{{ $t('groups.groupMembers.viewActivity') }}</b-dropdown-item>
 									<b-dropdown-divider></b-dropdown-divider>
-									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">Limit interactions</b-dropdown-item>
-									<b-dropdown-item link-class="font-weight-bold text-danger">Remove from group</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">{{ $t('groups.groupMembers.limitInteractions') }}</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold text-danger">{{ $t('groups.groupMembers.removeFromGroup') }}</b-dropdown-item>
 								</b-dropdown>
 							</div>
 						</div>
 
 						<p v-if="members.length > 0 && hasNextPage" class="mt-4">
-							<button class="btn btn-light btn-block border font-weight-bold" @click="loadNextPage">Load more</button>
+							<button class="btn btn-light btn-block border font-weight-bold" @click="loadNextPage">{{ $t('groups.groupMembers.loadMore') }}</button>
 						</p>
 					</div>
 
 					<div v-if="tab == 'search'" class="d-flex justify-content-center align-items-center" style="min-height: 100px;">
 						<div class="text-center text-muted">
 							<div class="spinner-border" role="status">
-								<span class="sr-only">Loading...</span>
+								<span class="sr-only">{{ $t('common.loading') }}</span>
 							</div>
-							<p class="lead mb-0 mt-2">Loading results ...</p>
+							<p class="lead mb-0 mt-2">{{ $t('groups.groupMembers.loadingResults') }}</p>
 						</div>
 					</div>
 
 					<div v-if="tab == 'results'">
 						<div v-if="results.length > 0" class="group-members-component-paginated-list">
-							<p class="font-weight-bold mb-1">Results</p>
+							<p class="font-weight-bold mb-1">{{ $t('groups.groupMembers.results') }}</p>
 
 							<div v-for="(member, index) in results" class="media align-items-center py-3">
 								<a :href="member.url" class="text-dark text-decoration-none">
@@ -194,15 +196,15 @@
 								<div class="media-body">
 									<p class="lead font-weight-bold mb-0">
 										<a :href="member.url" class="text-dark text-decoration-none" :title="member.acct" data-toggle="tooltip">{{member.username}}</a>
-										<span v-if="member.role == 'founder'" class="member-label rounded ml-1">Admin</span>
-										<span v-if="!member.local" class="remote-label rounded ml-1">Remote</span>
+										<span v-if="member.role == 'founder'" class="member-label rounded ml-1">{{ $t('groups.groupMembers.admin') }}</span>
+										<span v-if="!member.local" class="remote-label rounded ml-1">{{ $t('groups.groupMembers.remote') }}</span>
 									</p>
-									<p class="text-muted mb-0">Member since {{formatDate(member.joined)}}</p>
+									<p class="text-muted mb-0">{{ $t('groups.groupMembers.memberSince', { date: formatDate(member.joined) }) }}</p>
 								</div>
 								<a
 									class="btn btn-light lead font-weight-bolder px-3 border"
 									:href="'/account/direct/t/' + member.id">
-									<i class="far fa-comment-dots mr-1"></i> Message
+									<i class="far fa-comment-dots mr-1"></i> {{ $t('groups.groupMembers.message') }}
 								</a>
 								<b-dropdown
 									v-if="isAdmin"
@@ -214,29 +216,29 @@
 									<template #button-content>
 										<i class="fas fa-ellipsis-h"></i>
 									</template>
-									<b-dropdown-item :href="member.url">View Profile</b-dropdown-item>
-									<b-dropdown-item :href="'/account/direct/t/'+member.id">Send Message</b-dropdown-item>
-									<b-dropdown-item>View Activity</b-dropdown-item>
+									<b-dropdown-item :href="member.url">{{ $t('groups.groupMembers.viewProfile') }}</b-dropdown-item>
+									<b-dropdown-item :href="'/account/direct/t/'+member.id">{{ $t('groups.groupMembers.sendMessage') }}</b-dropdown-item>
+									<b-dropdown-item>{{ $t('groups.groupMembers.viewActivity') }}</b-dropdown-item>
 									<b-dropdown-divider></b-dropdown-divider>
-									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">Limit interactions</b-dropdown-item>
-									<b-dropdown-item link-class="font-weight-bold text-danger">Remove from group</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">{{ $t('groups.groupMembers.limitInteractions') }}</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold text-danger">{{ $t('groups.groupMembers.removeFromGroup') }}</b-dropdown-item>
 								</b-dropdown>
 							</div>
 							<p class="text-center mt-5">
-								<a href="#" class="font-weight-bold" @click="backFromSearch">Go back</a>
+								<a href="#" class="font-weight-bold" @click="backFromSearch">{{ $t('groups.groupMembers.goBack') }}</a>
 							</p>
 						</div>
 						<div v-else class="text-center text-muted mt-3">
-							<p class="lead">No results found.</p>
+							<p class="lead">{{ $t('groups.groupMembers.noResults') }}</p>
 							<p>
-								<a href="#" class="font-weight-bold" @click="backFromSearch">Go back</a>
+								<a href="#" class="font-weight-bold" @click="backFromSearch">{{ $t('groups.groupMembers.goBack') }}</a>
 							</p>
 						</div>
 					</div>
 
 					<div v-if="tab == 'memberInteractionLimits'">
 						<div v-if="results.length > 0" class="group-members-component-paginated-list">
-							<p class="font-weight-bold mb-1">Interaction Limits</p>
+							<p class="font-weight-bold mb-1">{{ $t('groups.groupMembers.interactionLimits') }}</p>
 
 							<div v-for="(member, index) in results" class="media align-items-center py-3">
 								<a :href="member.url" class="text-dark text-decoration-none">
@@ -252,14 +254,14 @@
 								<div class="media-body">
 									<p class="lead font-weight-bold mb-0">
 										<a :href="member.url" class="text-dark text-decoration-none">{{member.username}}</a>
-										<span v-if="member.role == 'founder'" class="member-label rounded ml-1">Admin</span>
+										<span v-if="member.role == 'founder'" class="member-label rounded ml-1">{{ $t('groups.groupMembers.admin') }}</span>
 									</p>
-									<p class="text-muted mb-0">Member since {{formatDate(member.joined)}}</p>
+									<p class="text-muted mb-0">{{ $t('groups.groupMembers.memberSince', { date: formatDate(member.joined) }) }}</p>
 								</div>
 								<a
 									class="btn btn-light lead font-weight-bolder px-3 border"
 									:href="'/account/direct/t/' + member.id">
-									<i class="far fa-comment-dots mr-1"></i> Message
+									<i class="far fa-comment-dots mr-1"></i> {{ $t('groups.groupMembers.message') }}
 								</a>
 								<b-dropdown
 									v-if="isAdmin"
@@ -271,22 +273,22 @@
 									<template #button-content>
 										<i class="fas fa-ellipsis-h"></i>
 									</template>
-									<b-dropdown-item :href="member.url">View Profile</b-dropdown-item>
-									<b-dropdown-item :href="'/account/direct/t/'+member.id">Send Message</b-dropdown-item>
-									<b-dropdown-item>View Activity</b-dropdown-item>
+									<b-dropdown-item :href="member.url">{{ $t('groups.groupMembers.viewProfile') }}</b-dropdown-item>
+									<b-dropdown-item :href="'/account/direct/t/'+member.id">{{ $t('groups.groupMembers.sendMessage') }}</b-dropdown-item>
+									<b-dropdown-item>{{ $t('groups.groupMembers.viewActivity') }}</b-dropdown-item>
 									<b-dropdown-divider></b-dropdown-divider>
-									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">Limit interactions</b-dropdown-item>
-									<b-dropdown-item link-class="font-weight-bold text-danger">Remove from group</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold" @click.prevent="openInteractionLimitModal(member)">{{ $t('groups.groupMembers.limitInteractions') }}</b-dropdown-item>
+									<b-dropdown-item link-class="font-weight-bold text-danger">{{ $t('groups.groupMembers.removeFromGroup') }}</b-dropdown-item>
 								</b-dropdown>
 							</div>
 							<p class="text-center mt-5">
-								<a href="#" class="font-weight-bold" @click.prevent="backFromSearch">Go back</a>
+								<a href="#" class="font-weight-bold" @click.prevent="backFromSearch">{{ $t('groups.groupMembers.goBack') }}</a>
 							</p>
 						</div>
 						<div v-else class="text-center text-muted mt-3">
-							<p class="lead">No results found.</p>
+							<p class="lead">{{ $t('groups.groupMembers.noResults') }}</p>
 							<p>
-								<a href="#" class="font-weight-bold" @click.prevent="backFromSearch">Go back</a>
+								<a href="#" class="font-weight-bold" @click.prevent="backFromSearch">{{ $t('groups.groupMembers.goBack') }}</a>
 							</p>
 						</div>
 					</div>
@@ -301,7 +303,7 @@
 											<i class="far fa-chevron-left fa-lg"></i>
 										</button>
 
-										<p class="font-weight-bold mb-0">Review Membership Applicants</p>
+										<p class="font-weight-bold mb-0">{{ $t('groups.groupMembers.reviewApplicants') }}</p>
 									</div>
 								</div>
 								<hr>
@@ -320,17 +322,17 @@
 									<div class="media-body">
 										<p class="lead font-weight-bold mb-0">
 											<a :href="member.url" class="text-dark text-decoration-none" :title="member.acct" data-toggle="tooltip">{{member.username}}</a>
-											<span v-if="!member.local" class="remote-label rounded ml-1">Remote</span>
+											<span v-if="!member.local" class="remote-label rounded ml-1">{{ $t('groups.groupMembers.remote') }}</span>
 										</p>
 										<p class="text-muted mb-0 small">
 											<span>
-												{{ member.followers_count }} Followers
+												{{ $t('groups.groupMembers.followersCount', { count: member.followers_count }) }}
 											</span>
 
 											<span class="mx-1">·</span>
 
 											<span>
-												Joined {{formatDate(member.created_at)}}
+												{{ $t('groups.groupMembers.joined', { date: formatDate(member.created_at) }) }}
 											</span>
 										</p>
 									</div>
@@ -339,21 +341,21 @@
 										type="button"
 										class="btn btn-light lead font-weight-bolder px-3 border"
 										@click="handleApplicant(index, 'ignore')">
-										<i class="far fa-times mr-1"></i> Ignore
+										<i class="far fa-times mr-1"></i> {{ $t('groups.groupMembers.ignore') }}
 									</button>
 
 									<button
 										type="button"
 										class="btn btn-danger lead font-weight-bolder px-3 border"
 										@click="handleApplicant(index, 'reject')">
-										<i class="far fa-times mr-1"></i> Reject
+										<i class="far fa-times mr-1"></i> {{ $t('groups.groupMembers.reject') }}
 									</button>
 
 									<button
 										type="button"
 										class="btn btn-primary lead font-weight-bolder px-3 border"
 										@click="handleApplicant(index, 'approve')">
-										<i class="far fa-check mr-1"></i> Approve
+										<i class="far fa-check mr-1"></i> {{ $t('groups.groupMembers.approve') }}
 									</button>
 								</div>
 
@@ -362,13 +364,13 @@
 									class="btn btn-light font-weight-bold btn-block"
 									@click="loadMoreApplicants"
 									:disabled="loadingMoreApplicants">
-									Load More
+									{{ $t('groups.groupMembers.loadMore') }}
 								</button>
 
 								<div v-if="!applicants || !applicants.length">
-									<p class="text-center lead mb-0">No content found</p>
+									<p class="text-center lead mb-0">{{ $t('groups.groupMembers.noContent') }}</p>
 									<p class="text-center mb-0">
-										<a class="font-weight-bold" href="#" @click.prevent="backFromReview">Go back</a>
+										<a class="font-weight-bold" href="#" @click.prevent="backFromReview">{{ $t('groups.groupMembers.goBack') }}</a>
 									</p>
 								</div>
 							</div>
@@ -610,7 +612,7 @@
 
 				this.tab = 'loading';
 
-				if(!window.confirm('Are you sure you want to perform this action?')) {
+				if(!window.confirm(this.$t('groups.groupMembers.confirmAction'))) {
 					return;
 				}
 

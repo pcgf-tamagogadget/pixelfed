@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
 
 		<div class="col-12 col-md-7">
-			<p class="h3 font-weight-bold">Are you sure you want to leave this group?</p>
+			<p class="h3 font-weight-bold">{{ __('pages.groups.leave.title') }}</p>
 			{{-- <p class="lead mb-3">If you decide to leave this group, all of your content will be permanently deleted.</p>
 			<p class="lead font-weight-bold">All of your interactions will be removed, including group</p>
 			<ul class="lead mb-5">
@@ -21,12 +21,12 @@
 				<li>Moderation Reports</li>
 				<li>Recommendations</li>
 			</ul> --}}
-			<p class="mb-1">Any content you shared will remain accessible</p>
-			<p class="mb-3">You will not be able to re-join this group for 24 hours</p>
+			<p class="mb-1">{{ __('pages.groups.leave.contentRemains') }}</p>
+			<p class="mb-3">{{ __('pages.groups.leave.rejoinLimit') }}</p>
 			<hr>
 			<form class="d-flex justify-content-between">
-				<button class="btn btn-light border font-weight-bold" style="width: 75%;">Cancel</button>
-				<button type="submit" class="btn btn-danger font-weight-bold">Leave Group</button>
+				<button class="btn btn-light border font-weight-bold" style="width: 75%;">{{ __('pages.groups.leave.cancel') }}</button>
+				<button type="submit" class="btn btn-danger font-weight-bold">{{ __('pages.groups.leave.leave') }}</button>
 			</form>
 		</div>
 	</div>

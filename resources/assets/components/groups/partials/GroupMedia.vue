@@ -4,7 +4,7 @@
 			<div class="col-12">
 				<div class="card card-body border shadow-sm">
 					<div class="d-flex justify-content-between align-items-center mb-3">
-						<p class="h4 font-weight-bold mb-0">Media</p>
+						<p class="h4 font-weight-bold mb-0">{{ $t('groups.groupMedia.media') }}</p>
 						<!-- <div>
 							<a href="#" class="font-weight-bold mr-3"><i class="fas fa-plus fa-sm"></i> Create Album</a>
 							<a href="#" class="font-weight-bold">Add Photos/Video</a>
@@ -17,19 +17,19 @@
 								:class="[ tab == 'photo' ? 'text-primary font-weight-bold' : 'text-lighter' ]"
 								class="btn btn-light mr-2"
 								@click="switchTab('photo')">
-								Photos
+								{{ $t('groups.groupMedia.photos') }}
 							</button>
 							<button
 								:class="[ tab == 'video' ? 'text-primary font-weight-bold' : 'text-lighter' ]"
 								class="btn btn-light mr-2"
 								@click="switchTab('video')">
-								Videos
+								{{ $t('groups.groupMedia.videos') }}
 							</button>
 							<button
 								:class="[ tab == 'album' ? 'text-primary font-weight-bold' : 'text-lighter' ]"
 								class="btn btn-light mr-2"
 								@click="switchTab('album')">
-								Albums
+								{{ $t('groups.groupMedia.albums') }}
 							</button>
 						</div>
 
@@ -41,7 +41,7 @@
 							</div>
 
 							<div v-if="photos.length == 0" class="col-12 py-5 text-center">
-								<p class="lead font-weight-bold mb-0">No photos found</p>
+								<p class="lead font-weight-bold mb-0">{{ $t('groups.groupMedia.noPhotos') }}</p>
 							</div>
 						</div>
 
@@ -50,13 +50,13 @@
 								<a :href="status.url" class="bh-content text-decoration-none">
 									<img v-if="!status.media_attachments[0].preview_url.endsWith('no-preview.png')" :src="getMediaSource(status)" width="205" height="205" style="object-fit: cover;">
 									<div v-else class="bg-light text-dark d-flex align-items-center justify-content-center border" style="width:205px;height:205px;">
-										<p class="font-weight-bold mb-0">No preview available</p>
+										<p class="font-weight-bold mb-0">{{ $t('groups.groupMedia.noPreview') }}</p>
 									</div>
 								</a>
 							</div>
 
 							<div v-if="videos.length == 0" class="col-12 py-5 text-center">
-								<p class="lead font-weight-bold mb-0">No videos found</p>
+								<p class="lead font-weight-bold mb-0">{{ $t('groups.groupMedia.noVideos') }}</p>
 							</div>
 						</div>
 
@@ -68,17 +68,17 @@
 							</div>
 
 							<div v-if="albums.length == 0" class="col-12 py-5 text-center">
-								<p class="lead font-weight-bold mb-0">No albums found</p>
+								<p class="lead font-weight-bold mb-0">{{ $t('groups.groupMedia.noAlbums') }}</p>
 							</div>
 						</div>
 
 						<div v-if="hasNextPage[tab]" class="mt-3">
-							<button class="btn btn-light font-weight-bold btn-block border" @click="loadNextPage">Load more</button>
+							<button class="btn btn-light font-weight-bold btn-block border" @click="loadNextPage">{{ $t('groups.groupMedia.loadMore') }}</button>
 						</div>
 					</div>
 					<div v-else class="d-flex align-items-center justify-content-center" style="height:500px">
 						<div class="spinner-border text-primary" role="status">
-							<span class="sr-only">Loading...</span>
+							<span class="sr-only">{{ $t('common.loading') }}</span>
 						</div>
 					</div>
 				</div>

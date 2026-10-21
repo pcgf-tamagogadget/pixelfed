@@ -2,8 +2,8 @@
 	<div v-if="status.sensitive == true">
 		<details class="details-animated">
 			<summary>
-				<p class="mb-0 lead font-weight-bold">{{ status.spoiler_text ? status.spoiler_text : 'CW / NSFW / Hidden Media'}}</p>
-				<p class="font-weight-light">(click to show)</p>
+				<p class="mb-0 lead font-weight-bold">{{ status.spoiler_text ? status.spoiler_text : $t('compose.presenter.hiddenMedia') }}</p>
+				<p class="font-weight-light">{{ $t('compose.presenter.clickToShow') }}</p>
 			</summary>
 			<b-carousel :id="status.id + '-carousel'"
 				style="text-shadow: 1px 1px 2px #333; background-color: #000;"
@@ -22,7 +22,7 @@
 						<img :class="media.filter_class + ' d-block img-fluid w-100'" :src="media.url" :alt="media.description" loading="lazy" onerror="this.onerror=null;this.src='/storage/no-preview.png'">
 					</div>
 
-					<p v-else class="text-center p-0 font-weight-bold text-white">Error: Problem rendering preview.</p>
+					<p v-else class="text-center p-0 font-weight-bold text-white">{{ $t('compose.presenter.renderError') }}</p>
 
 				</b-carousel-slide>
 			</b-carousel>
@@ -46,7 +46,7 @@
 					<img :class="media.filter_class + ' d-block img-fluid w-100'" :src="media.url" :alt="media.description" loading="lazy">
 				</div>
 
-				<p v-else class="text-center p-0 font-weight-bold text-white">Error: Problem rendering preview.</p>
+				<p v-else class="text-center p-0 font-weight-bold text-white">{{ $t('compose.presenter.renderError') }}</p>
 
 			</b-carousel-slide>
 		</b-carousel> -->
@@ -61,7 +61,7 @@
 					<img :class="media.filter_class + ' img-fluid w-100'" :src="media.url" :alt="media.description" loading="lazy"  onerror="this.onerror=null;this.src='/storage/no-preview.png'">
 				</div>
 
-				<p v-else class="text-center p-0 font-weight-bold text-white">Error: Problem rendering preview.</p>
+				<p v-else class="text-center p-0 font-weight-bold text-white">{{ $t('compose.presenter.renderError') }}</p>
 
 			</slide>
 		</carousel>

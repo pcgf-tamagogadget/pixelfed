@@ -4,11 +4,11 @@
 
 @section('section')
   <div class="title">
-    <h3 class="font-weight-bold">Features</h3>
-    <p class="lead">Enable or disable core features</p>
+    <h3 class="font-weight-bold">{{ __('admin_panel.settings.features.title') }}</h3>
+    <p class="lead">{{ __('admin_panel.settings.features.subtitle') }}</p>
   </div>
   <hr>
   <p class="alert alert-warning">
-    <strong>Feature Unavailable:</strong> This feature will be released in a future version.
+    <strong>{{ __('admin_panel.common.featureUnavailable') }}</strong> {{ __('admin_panel.common.futureVersion') }}
   </p>
 @endsection

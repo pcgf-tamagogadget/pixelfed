@@ -4,10 +4,10 @@
 			<div class="col-12 col-md-8">
 				<div class="card card-body border shadow-sm">
 					<div class="d-flex justify-content-between align-items-center mb-3">
-						<p class="h4 font-weight-bold mb-0">Group Topics</p>
+						<p class="h4 font-weight-bold mb-0">{{ $t('groups.groupTopics.title') }}</p>
 						<select class="form-control bg-light rounded-lg border font-weight-bold py-2" style="width:95px;" disabled>
-							<option>All</option>
-							<option>Pinned</option>
+							<option>{{ $t('groups.groupTopics.all') }}</option>
+							<option>{{ $t('groups.groupTopics.pinned') }}</option>
 						</select>
 					</div>
 
@@ -19,14 +19,14 @@
 									<a :href="tag.url" class="font-weight-bold mb-1 text-dark" style="font-size: 16px;">
 										{{ tag.name }}
 									</a>
-									<p style="font-size: 13px;" class="text-muted">{{ tag.count }} posts in this group</p>
+									<p style="font-size: 13px;" class="text-muted">{{ $t('groups.groupTopics.postsInGroup', { count: tag.count }) }}</p>
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<div v-else class="py-5">
-						<p class="lead text-center font-weight-bold">No topics found</p>
+						<p class="lead text-center font-weight-bold">{{ $t('groups.groupTopics.empty') }}</p>
 					</div>
 				</div>
 			</div>

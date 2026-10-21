@@ -1,6 +1,6 @@
 <template>
   <div class="splash-screen" :class="{ 'fade-out': fadeOut }">
-    <img src="/img/pixelfed-icon-white.svg" alt="Pixelfed Logo" class="logo">
+    <img src="/img/pixelfed-icon-white.svg" :alt="$t('spa.splashScreen.logoAlt')" class="logo">
   </div>
 </template>
 

@@ -6,7 +6,7 @@
                     <img :src="reblogAccount.avatar" style="border-radius:10px;" width="24" height="24" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';">
                 </a>
                 <div style="font-size:12px;font-weight:bold">
-                    <i class="far fa-retweet text-warning mr-1"></i> Reblogged by <a :href="reblogAccount.url" class="text-dark" @click.prevent="goToProfileById(reblogAccount.id)">&commat;{{ reblogAccount.acct }}</a>
+                    <i class="far fa-retweet text-warning mr-1"></i> <i18n path="spa.postHeader.rebloggedBy" tag="span"><template v-slot:username><a :href="reblogAccount.url" class="text-dark" @click.prevent="goToProfileById(reblogAccount.id)">&commat;{{ reblogAccount.acct }}</a></template></i18n>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                     </p>
                     <p class="text-lighter mb-0" style="font-size: 13px;">
                         <span v-if="status.account.is_admin" class="d-none d-md-inline-block">
-                            <span class="badge badge-light text-danger user-select-none" title="Admin account">ADMIN</span>
+                            <span class="badge badge-light text-danger user-select-none" :title="$t('spa.postHeader.adminAccount')">{{ $t('spa.postHeader.adminBadge') }}</span>
                             <span class="mx-1 text-lighter">·</span>
                         </span>
                         <a class="timestamp text-lighter" :href="status.url" @click.prevent="goToPost()" :title="status.created_at">
@@ -39,7 +39,7 @@
 
                         <span v-if="config.ab.pue && status.hasOwnProperty('edited_at') && status.edited_at">
                             <span class="mx-1 text-lighter">·</span>
-                            <a class="text-lighter" href="#" @click.prevent="openEditModal">Edited</a>
+                            <a class="text-lighter" href="#" @click.prevent="openEditModal">{{ $t('spa.postHeader.edited') }}</a>
                         </span>
 
                         <span class="mx-1 text-lighter">·</span>
@@ -76,15 +76,15 @@
                     <b-dropdown-divider v-if="!owner"></b-dropdown-divider>
                     <b-dropdown-item v-if="!owner">
                         <p class="mb-0 font-weight-bold">{{ $t('menu.report') }}</p>
-                        <p class="small text-muted mb-0">Report content that violate our rules</p>
+                        <p class="small text-muted mb-0">{{ $t('spa.postHeader.reportDescription') }}</p>
                     </b-dropdown-item>
                     <b-dropdown-item v-if="!owner && status.hasOwnProperty('relationship')">
-                        <p class="mb-0 font-weight-bold">{{ status.relationship.muting ? 'Unmute' : 'Mute' }}</p>
-                        <p class="small text-muted mb-0">Hide posts from this account in your feeds</p>
+                        <p class="mb-0 font-weight-bold">{{ status.relationship.muting ? $t('spa.postHeader.unmute') : $t('spa.postHeader.mute') }}</p>
+                        <p class="small text-muted mb-0">{{ $t('spa.postHeader.muteDescription') }}</p>
                     </b-dropdown-item>
                     <b-dropdown-item v-if="!owner && status.hasOwnProperty('relationship')">
-                        <p class="mb-0 font-weight-bold text-danger">{{ status.relationship.blocking ? 'Unblock' : 'Block' }}</p>
-                        <p class="small text-muted mb-0">Restrict all content from this account</p>
+                        <p class="mb-0 font-weight-bold text-danger">{{ status.relationship.blocking ? $t('spa.postHeader.unblock') : $t('spa.postHeader.block') }}</p>
+                        <p class="small text-muted mb-0">{{ $t('spa.postHeader.blockDescription') }}</p>
                     </b-dropdown-item>
                     <b-dropdown-divider v-if="owner || admin"></b-dropdown-divider>
                     <b-dropdown-item v-if="owner || admin">
@@ -191,15 +191,15 @@
             scopeTitle(scope) {
                 switch(scope) {
                     case 'public':
-                        return 'Visible to everyone';
+                        return this.$t('spa.postHeader.scopePublic');
                     break;
 
                     case 'unlisted':
-                        return 'Hidden from public feeds';
+                        return this.$t('spa.postHeader.scopeUnlisted');
                     break;
 
                     case 'private':
-                        return 'Only visible to followers';
+                        return this.$t('spa.postHeader.scopePrivate');
                     break;
 
                     default:
@@ -307,7 +307,7 @@
                     .then(() => console.log('Share was successful.'))
                     .catch((error) => console.log('Sharing failed', error));
                 } else {
-                    swal('Not supported', 'Your current device does not support native sharing.', 'error');
+                    swal(this.$t('spa.postHeader.notSupported'), this.$t('spa.postHeader.nativeShareUnsupported'), 'error');
                 }
             },
 

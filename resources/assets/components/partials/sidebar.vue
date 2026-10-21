@@ -18,10 +18,10 @@
                         <p class="username primary">&commat;{{ user.username }}</p>
                         <p class="stats">
 							<span class="stats-following">
-								<span class="following-count">{{ formatCount(user.following_count) }}</span> Following
+								<span class="following-count">{{ formatCount(user.following_count) }}</span> {{ $t('profile.following') }}
 							</span>
                             <span class="stats-followers">
-								<span class="followers-count">{{ formatCount(user.followers_count) }}</span> Followers
+								<span class="followers-count">{{ formatCount(user.followers_count) }}</span> {{ $t('profile.followers') }}
 							</span>
 						</p>
 					</div>
@@ -34,16 +34,16 @@
 				<i class="fal fa-arrow-circle-up mr-1"></i> {{ $t('navmenu.compose') }} Post
 			</button> -->
 			<router-link to="/i/web/compose" class="btn btn-primary btn-block font-weight-bold">
-				<i class="fal fa-arrow-circle-up mr-1"></i> {{ $t('navmenu.compose') }} Post
+				<i class="fal fa-arrow-circle-up mr-1"></i> {{ $t('spa.sidebar.createNewPost') }}
 			</router-link>
 			<button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-				<span class="sr-only">Toggle Dropdown</span>
+				<span class="sr-only">{{ $t('spa.sidebar.toggleDropdown') }}</span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right">
-				<a class="dropdown-item font-weight-bold" href="/i/collections/create">Create Collection</a>
+				<a class="dropdown-item font-weight-bold" href="/i/collections/create">{{ $t('spa.sidebar.createCollection') }}</a>
 				<a v-if="hasStories" class="dropdown-item font-weight-bold" href="/i/stories/new">{{ $t("navmenu.createStory")}}</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item font-weight-bold" href="/settings/home">Account Settings</a>
+				<a class="dropdown-item font-weight-bold" href="/settings/home">{{ $t('spa.sidebar.accountSettings') }}</a>
 			</div>
 		</div>
 
@@ -148,7 +148,7 @@
 							<span class="icon text-lighter">
 								<i class="far fa-record-vinyl"></i>
 							</span>
-							Livestreams
+							{{ $t('spa.sidebar.livestreams') }}
 						</span>
                     </router-link>
                 </li>
@@ -257,13 +257,13 @@
 
         <div class="sidebar-attribution pr-3 d-flex flex-wrap justify-content-between align-items-center" style="gap:5px;">
             <router-link to="/i/web/language">
-                <i class="fal fa-language fa-2x" alt="Select a language"></i>
+                <i class="fal fa-language fa-2x" :alt="$t('spa.sidebar.selectLanguage')"></i>
             </router-link>
             <a href="/site/help" class="font-weight-bold">{{ $t('navmenu.help') }}</a>
             <a href="/site/privacy" class="font-weight-bold">{{ $t('navmenu.privacy') }}</a>
             <a href="/site/terms" class="font-weight-bold">{{ $t('navmenu.terms') }}</a>
             <a v-if="showLegalNoticeLink" href="/site/legal-notice" class="font-weight-bold">{{ $t('navmenu.legalNotice') }}</a>
-            <a href="https://pixelfed.org" class="font-weight-bold powered-by">Powered by Pixelfed</a>
+            <a href="https://pixelfed.org" class="font-weight-bold powered-by">{{ $t('powered_by_pixelfed') }}</a>
         </div>
 
         <!-- <b-modal
@@ -484,7 +484,7 @@ export default {
             })
         },
 
-        formatCount(count = 0, locale = 'en-GB', notation = 'compact') {
+        formatCount(count = 0, locale = document.documentElement.lang || 'en-GB', notation = 'compact') {
             return new Intl.NumberFormat(locale, {notation: notation, compactDisplay: "short"}).format(count);
         },
 

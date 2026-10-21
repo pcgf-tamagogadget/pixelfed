@@ -79,3 +79,43 @@ files:
     translation: /lang/%locale%/web.php
     skip_untranslated_strings: true
     languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/admin.php
+    translation: /lang/%locale%/admin.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/admin_panel.php
+    translation: /lang/%locale%/admin_panel.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/classic.php
+    translation: /lang/%locale%/classic.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/compose.php
+    translation: /lang/%locale%/compose.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/emails.php
+    translation: /lang/%locale%/emails.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/groups.php
+    translation: /lang/%locale%/groups.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/pages.php
+    translation: /lang/%locale%/pages.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping
+
+  - source: /lang/en-US/spa.php
+    translation: /lang/%locale%/spa.php
+    skip_untranslated_strings: true
+    languages_mapping: *locale_mapping

@@ -25,14 +25,14 @@
   <div class="pt-4 d-flex justify-content-between align-items-center">
     <p>
       @if($tag->hashtags->count() > 0)
-      <span class="font-weight-lighter pr-3">Related hashtags:</span> 
+      <span class="font-weight-lighter pr-3">{{ __('pages.discover.relatedHashtags') }}</span> 
       @foreach($tag->hashtags as $hashtag)
         <a class="btn btn-outline-secondary btn-sm py-0 pr-2" href="{{$hashtag->url()}}">#{{$hashtag->name}}</a>
       @endforeach
       @endif
     </p>
     <p class="font-weight-lighter">
-      {{$tag->posts_count}} posts
+      {{ __('pages.discover.postsCount', ['count' => $tag->posts_count]) }}
     </p>
   </div>
   <div class="tag-timeline">
@@ -63,7 +63,7 @@
 @endsection
 
 @push('meta')
-<meta property="og:description" content="Discover {{$tag->name}}">
+<meta property="og:description" content="{{ __('pages.discover.discoverTag', ['tag' => $tag->name]) }}">
 <style type="text/css">
   .bgd-1 {
     background: #141E30;  /* fallback for old browsers */
@@ -87,6 +87,6 @@
 @push('scripts')
 <script type="text/javascript" src="{{ mix('js/compose.js') }}"></script>
 <script type="text/javascript">
-$(document).ready(function(){new Vue({el: '#content'});});
+$(document).ready(function(){new Vue({ el: '#content', i18n: App.i18n() });});
 </script>
 @endpush

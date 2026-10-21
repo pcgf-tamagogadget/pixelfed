@@ -2,9 +2,9 @@
 
 @section('section')
 <div class="title">
-	<h3 class="font-weight-bold d-inline-block">Discover</h3>
+	<h3 class="font-weight-bold d-inline-block">{{ __('admin_panel.discover.home.title') }}</h3>
 	<span class="float-right">
-		<a class="btn btn-outline-primary btn-sm py-1" href="{{route('admin.discover.create-category')}}">Create</a>
+		<a class="btn btn-outline-primary btn-sm py-1" href="{{route('admin.discover.create-category')}}">{{ __('admin_panel.common.create') }}</a>
 	</span>
 </div>
 
@@ -25,19 +25,19 @@
 			<div>
 				<div class="d-inline-block text-center px-3">
 					<p class="h3 mb-0 font-weight-lighter">{{$category->hashtags()->count()}}</p>
-					<p class="mb-0 small font-weight-light text-muted">Hashtags</p>
+					<p class="mb-0 small font-weight-light text-muted">{{ __('admin_panel.discover.home.hashtags') }}</p>
 				</div>
 				<div class="d-inline-block text-center px-3">
 					<p class="h3 mb-0 font-weight-lighter">{{$category->posts()->count()}}</p>
-					<p class="mb-0 small font-weight-light text-muted">Posts</p>
+					<p class="mb-0 small font-weight-light text-muted">{{ __('admin_panel.discover.home.posts') }}</p>
 				</div>
 			</div>
 			<div>
 				@if($category->active)
-					<span class="badge badge-success mr-3">Active</span>
+					<span class="badge badge-success mr-3">{{ __('admin_panel.discover.home.active') }}</span>
 				@endif
-				<a class="btn btn-outline-secondary btn-sm py-0 mr-3" href="{{$category->editUrl()}}">Edit</a>
-				<a class="btn btn-outline-secondary btn-sm py-0" href="{{$category->url()}}">View</a>
+				<a class="btn btn-outline-secondary btn-sm py-0 mr-3" href="{{$category->editUrl()}}">{{ __('admin_panel.common.edit') }}</a>
+				<a class="btn btn-outline-secondary btn-sm py-0" href="{{$category->url()}}">{{ __('admin_panel.common.view') }}</a>
 			</div>
 		</div>
 	</li>

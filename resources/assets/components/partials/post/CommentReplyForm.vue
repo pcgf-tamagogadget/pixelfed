@@ -6,7 +6,7 @@
             <div style="display: flex;flex-grow: 1;position: relative;">
         		<textarea
         			class="form-control bg-light rounded-lg shadow-sm" style="resize: none;padding-right: 60px;"
-        			placeholder="Write a comment...."
+        			:placeholder="$t('spa.commentReplyForm.placeholder')"
         			v-model="replyContent"
         			:disabled="isPostingReply" />
 
@@ -16,7 +16,7 @@
                     @click="storeComment"
                     :disabled="!replyContent || !replyContent.length"
                     style="position: absolute;right:10px;top:50%;transform:translateY(-50%)">
-                    Post
+                    {{ $t('spa.commentReplyForm.post') }}
                 </button>
             </div>
     	</div>

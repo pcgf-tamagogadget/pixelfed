@@ -27,11 +27,11 @@
           <div class="col-12 p-3 p-md-5">
             <div class="title">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="font-weight-bold">Manage Aliases</h3>
+                    <h3 class="font-weight-bold">{{ __('settings.aliases.manage_aliases') }}</h3>
 
                     <a class="font-weight-bold" href="/settings/home">
                         <i class="far fa-long-arrow-left"></i>
-                        Back to Settings
+                        {{ __('settings.migration.back_to_settings') }}
                     </a>
                 </div>
 
@@ -39,26 +39,26 @@
 
                 <div class="row">
                     <div class="col-12 col-md-7">
-                        <p class="lead">If you want to move from another account to this one, you can create an alias here first.</p>
-                        <p>This alias is needed before you can move your followers from the old account to this one. Don't worry, making this change is safe and can be undone. The process of moving the account starts from the old one.</p>
+                        <p class="lead">{{ __('settings.aliases.if_you_want_to_move_from_another_account_etc') }}</p>
+                        <p>{{ __('settings.aliases.this_alias_is_needed_before_you_can_move_etc') }}</p>
 
-                        <p class="mb-0">Your followers will be migrated to your new account, and in some instances your posts too! For more information on Aliases and Account Migration, visit the <a href="/site/kb/your-profile">Help Center</a>.</p>
+                        <p class="mb-0">{!! __('settings.aliases.your_followers_will_be_migrated_etc', ['url' => '/site/kb/your-profile']) !!}</p>
                     </div>
 
                     <div class="col-12 col-md-5">
                         <div class="d-flex h-100 justify-content-center align-items-center flex-column">
                             <div class="border rounded-pill px-4 py-2">
-                                <p class="small mb-n1 text-lighter font-weight-bold">Old Account</p>
+                                <p class="small mb-n1 text-lighter font-weight-bold">{{ __('settings.aliases.old_account') }}</p>
                                 <p class="lead mb-0">oldUsername@example.org</p>
                             </div>
 
                             <div class="border rounded-pill px-4 py-2 mt-3">
-                                <p class="small mb-n1 text-lighter font-weight-bold">Old Account</p>
+                                <p class="small mb-n1 text-lighter font-weight-bold">{{ __('settings.aliases.old_account') }}</p>
                                 <p class="lead mb-0">oldUsername2@example.net</p>
                             </div>
 
                             <hr>
-                            <p class="mb-0 small">We support migration to and from Pixelfed, Mastodon and most other platforms that use the Mastodon Account Migration <a href="https://docs.joinmastodon.org/spec/activitypub/#Move">extension</a>.</p>
+                            <p class="mb-0 small">{!! __('settings.aliases.we_support_migration_to_and_from_pixelfed_etc', ['url' => 'https://docs.joinmastodon.org/spec/activitypub/#Move']) !!}</p>
                         </div>
 
                     </div>
@@ -74,17 +74,17 @@
                 @csrf
 
                 <div class="form-group">
-                    <label class="font-weight-bold mb-0">Old Account</label>
-                    <p class="small text-muted">Enter the username@domain of your old account</p>
+                    <label class="font-weight-bold mb-0">{{ __('settings.aliases.old_account') }}</label>
+                    <p class="small text-muted">{{ __('settings.aliases.enter_the_username_domain_of_your_old_account') }}</p>
                     <input type="email" class="form-control" name="acct" placeholder="username@domain.tld"/>
                 </div>
 
-                <button class="btn btn-primary btn-block font-weight-bold btn-lg">Create Alias</button>
+                <button class="btn btn-primary btn-block font-weight-bold btn-lg">{{ __('settings.aliases.create_alias') }}</button>
             </form>
           </div>
 
           <div class="col-12 col-md-5 p-3 p-md-5 bg-white">
-            <p class="text-center font-weight-bold">Aliases</p>
+            <p class="text-center font-weight-bold">{{ __('settings.aliases.aliases') }}</p>
             <div class="list-group">
                 @if(count($aliases))
                 @foreach($aliases as $alias)
@@ -107,7 +107,7 @@
                 @endforeach
                 @else
                 <div class="border rounded p-5">
-                    <p class="text-center mb-0">No aliases found!</p>
+                    <p class="text-center mb-0">{{ __('settings.aliases.no_aliases_found') }}</p>
                 </div>
                 @endif
             </div>

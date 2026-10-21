@@ -14,8 +14,8 @@
 	                <a href="/">
 	                	<img src="/img/pixelfed-icon-white.svg" height="60px">
 	            	</a>
-	                <h1 class="pt-4 pb-1">Reset Password</h1>
-	                <p class="font-weight-light pb-2">Use this form to reset your password.</p>
+	                <h1 class="pt-4 pb-1">{{ __('auth.passwordsPage.resetPassword') }}</h1>
+	                <p class="font-weight-light pb-2">{{ __('auth.passwordsPage.resetSubtitle') }}</p>
 	            </div>
 
 				@if ($errors)
@@ -27,7 +27,7 @@
                 @endif
 
 	            <div class="card bg-glass">
-	                <div class="card-header bg-transparent p-3 text-center font-weight-bold" style="border-bottom:1px solid #ffffff20">{{ __('Reset Password') }}</div>
+	                <div class="card-header bg-transparent p-3 text-center font-weight-bold" style="border-bottom:1px solid #ffffff20">{{ __('auth.passwordsPage.resetPassword') }}</div>
 
 	                <div class="card-body">
 	                    <form id="passwordReset" method="POST" action="{{ route('password.request') }}">
@@ -38,14 +38,14 @@
 
 	                        <div class="form-group row">
 	                            <div class="col-md-12">
-	                            	<label class="font-weight-bold small text-muted">Email</label>
+	                            	<label class="font-weight-bold small text-muted">{{ __('auth.email') }}</label>
 	                                <input
 	                                	id="email"
 	                                	type="text"
                                         class="form-control form-control-lg bg-dark bg-glass text-white{{ $errors->has('email') ? ' is-invalid' : '' }}"
 	                                	name="email"
 	                                	value="{{ $email ?? old('email') }}"
-	                                	placeholder="{{ __('E-Mail Address') }}"
+	                                	placeholder="{{ __('auth.emailAddress') }}"
 	                                	required
 	                                	disabled
                                         style="opacity:.5">
@@ -62,14 +62,14 @@
 
 	                        <div class="form-group row">
 	                            <div class="col-md-12">
-	                            	<label class="font-weight-bold small text-muted">New Password</label>
+	                            	<label class="font-weight-bold small text-muted">{{ __('auth.passwordsPage.newPassword') }}</label>
 
 	                                <input
 	                                	id="password"
 	                                	type="password"
                                         class="form-control form-control-lg bg-glass text-white{{ $errors->has('password') ? ' is-invalid' : '' }}"
 	                                	name="password"
-	                                	placeholder="{{ __('Password') }}"
+	                                	placeholder="{{ __('auth.password') }}"
 	                                	minlength="{{config('pixelfed.min_password_length')}}"
 	                                	maxlength="72"
 	                                	autocomplete="new-password"
@@ -81,21 +81,21 @@
 	                                        <strong>{{ $errors->first('password') }}</strong>
 	                                    </span>
 	                                @else
-	                                	<p class="help-text small text-muted mb-0 mt-1">Enter a new password between {{config('pixelfed.min_password_length')}}-72 characters long.</p>
+	                                	<p class="help-text small text-muted mb-0 mt-1">{{ __('auth.passwordsPage.passwordHelp', ['min' => config('pixelfed.min_password_length'), 'max' => 72]) }}</p>
 	                                @endif
 	                            </div>
 	                        </div>
 
 	                        <div class="form-group row">
 	                            <div class="col-md-12">
-	                            	<label class="font-weight-bold small text-muted">Confirm New Password</label>
+	                            	<label class="font-weight-bold small text-muted">{{ __('auth.passwordsPage.confirmNewPassword') }}</label>
 
 	                                <input
 	                                	id="password-confirm"
 	                                	type="password"
                                         class="form-control form-control-lg bg-glass text-white{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"
 	                                	name="password_confirmation"
-	                                	placeholder="{{ __('Confirm Password') }}"
+	                                	placeholder="{{ __('auth.confirm-password') }}"
 	                                	minlength="{{config('pixelfed.min_password_length')}}"
 	                                	autocomplete="new-password"
 	                                	maxlength="72"
@@ -118,7 +118,7 @@
 	                                	id="sbtn"
 	                                	class="btn btn-success btn-block rounded-pill font-weight-bold"
 	                                	onclick="event.preventDefault();handleSubmit()">
-	                                    {{ __('Reset Password') }}
+	                                    {{ __('auth.passwordsPage.resetPassword') }}
 	                                </button>
 	                            </div>
 	                        </div>
@@ -137,7 +137,7 @@
 		let btn = document.getElementById('sbtn');
 		btn.classList.add('disabled');
 		btn.setAttribute('disabled', 'disabled');
-		btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>';
+		btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">' + @json(__('auth.shared.loading')) + '</span></div>';
 		document.getElementById('passwordReset').submit()
 	}
 </script>

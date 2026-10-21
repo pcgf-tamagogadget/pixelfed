@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
     <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,21 +36,21 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="text-center">
                         <p class="mb-0 font-weight-bold prettyCount" data-count="{{$profile['statuses_count']}}"></p>
-                        <p class="mb-0 text-muted text-uppercase small font-weight-bold">Posts</p>
+                        <p class="mb-0 text-muted text-uppercase small font-weight-bold">{{ __('profile.embed.posts') }}</p>
                     </div>
                     <div class="text-center">
                         <p class="mb-0 font-weight-bold prettyCount" data-count="{{$profile['followers_count']}}"></p>
-                        <p class="mb-0 text-muted text-uppercase small font-weight-bold">Followers</p>
+                        <p class="mb-0 text-muted text-uppercase small font-weight-bold">{{ __('profile.embed.followers') }}</p>
                     </div>
                     <div class="text-center">
-                        <p class="mb-0"><a href="{{config('app.url')}}/i/intent/follow?user={{$profile['username']}}" class="btn btn-primary btn-sm py-1 px-4 text-uppercase font-weight-bold" target="_blank">Follow</a></p>
+                        <p class="mb-0"><a href="{{config('app.url')}}/i/intent/follow?user={{$profile['username']}}" class="btn btn-primary btn-sm py-1 px-4 text-uppercase font-weight-bold" target="_blank">{{ __('profile.page.follow') }}</a></p>
                     </div>
                 </div>
                 <div class="row mt-4 mb-1 embed-row"></div>
             </div>
             <div class="card-footer bg-white">
                 <p class="text-center mb-0">
-                    <a href="{{$profile['url']}}" class="font-weight-bold" target="_blank">View More Posts</a>
+                    <a href="{{$profile['url']}}" class="font-weight-bold" target="_blank">{{ __('profile.embed.viewMore') }}</a>
                 </p>
             </div>
         </div>
@@ -58,7 +58,7 @@
     <script type="text/javascript">
         window.addEventListener("message", e=>{const t=e.data||{};});
         document.querySelectorAll('.caption-container a').forEach(function(i) {i.setAttribute('target', '_blank');});
-        function formatCount(count = 0, locale = 'en-GB', notation = 'compact') {
+        function formatCount(count = 0, locale = document.documentElement.lang || 'en-GB', notation = 'compact') {
             if(count < 1) {
                 return 0;
             }

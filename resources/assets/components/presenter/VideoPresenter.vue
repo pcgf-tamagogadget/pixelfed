@@ -5,13 +5,13 @@
 				<i class="far fa-eye-slash fa-2x"></i>
 			</p>
 			<p class="h4 font-weight-bold text-center">
-				Sensitive Content
+				{{ $t('common.sensitiveContent') }}
 			</p>
 			<p class="text-center py-2 content-label-text">
-				{{ status.spoiler_text ? status.spoiler_text : 'This post may contain sensitive content.'}}
+				{{ status.spoiler_text ? status.spoiler_text : $t('compose.presenter.sensitivePost') }}
 			</p>
 			<p class="mb-0">
-				<button @click="toggleContentWarning()" class="btn btn-outline-light btn-block btn-sm font-weight-bold">See Post</button>
+				<button @click="toggleContentWarning()" class="btn btn-outline-light btn-block btn-sm font-weight-bold">{{ $t('compose.presenter.seePost') }}</button>
 			</p>
 		</div>
 		<blur-hash-image
@@ -60,7 +60,7 @@
 					return desc;
 				}
 
-				return 'Video was not tagged with any alt text.';
+				return this.$t('compose.presenter.videoNoAlt');
 			},
 
 			playOrPause(e) {

@@ -10,8 +10,8 @@
 			<div class="d-flex justify-content-between">
 				<autocomplete
 					:search="autocompleteSearch"
-					placeholder="Search this group"
-					aria-label="Search this group"
+					:placeholder="$t('groups.groupSearchModal.searchPlaceholder')"
+					:aria-label="$t('groups.groupSearchModal.searchPlaceholder')"
 					:get-result-value="getSearchResultValue"
 					:debounceTime="700"
 					@submit="onSearchSubmit"
@@ -38,7 +38,7 @@
 			</div>
 
 			<div v-if="recent && recent.length" class="pt-5">
-				<h5 class="mb-2">Recent Searches</h5>
+				<h5 class="mb-2">{{ $t('groups.groupSearchModal.recentSearches') }}</h5>
 				<a v-for="(result, index) in recent" class="media align-items-center text-decoration-none text-dark" :href="result.action">
 					<div class="bg-light rounded-circle mr-3 border d-flex justify-content-center align-items-center" style="width: 40px;height:40px">
 						<i class="far fa-search"></i>
@@ -50,7 +50,7 @@
 			</div>
 
 			<div class="pt-5">
-				<h5 class="mb-2">Explore This Group</h5>
+				<h5 class="mb-2">{{ $t('groups.groupSearchModal.exploreThisGroup') }}</h5>
 				<div class="media align-items-center" @click="viewMyActivity">
 					<img
                         :src="profile?.avatar"
@@ -61,7 +61,7 @@
                     />
 					<div class="media-body">
 						<p class="mb-0">{{ profile?.display_name || profile?.username }}</p>
-						<p class="mb-0 small text-muted">See your group activity.</p>
+						<p class="mb-0 small text-muted">{{ $t('groups.groupSearchModal.seeYourActivity') }}</p>
 					</div>
 				</div>
 				<div class="media align-items-center" @click="viewGroupSearch">
@@ -69,7 +69,7 @@
 						<i class="far fa-search"></i>
 					</div>
 					<div class="media-body">
-						<p class="mb-0">Search all groups</p>
+						<p class="mb-0">{{ $t('groups.groupSearchModal.searchAllGroups') }}</p>
 					</div>
 				</div>
 			</div>

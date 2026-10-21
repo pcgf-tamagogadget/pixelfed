@@ -6,34 +6,33 @@
 					<div v-if="isLoaded" class="row">
 						<div class="col-5">
 							<h1 class="display-3 font-default mb-3" style="line-height: 1;font-weight: 600;">
-								Spotlight
+								{{ $t('spa.discoverSpotlight.title') }}
 							</h1>
 							<h1 class="display-5 font-default" style="line-height: 1;">
 								<span class="text-muted" style="line-height: 0.8;font-weight: 200;letter-spacing: -1.2px;">
-									Community curated
-									collection of creators
+									{{ $t('spa.discoverSpotlight.subtitle') }}
 								</span>
 							</h1>
 
-							<p class="lead font-default mt-4">This weeks collection is curated by <span class="primary">@dansup</span></p>
+							<i18n path="spa.discoverSpotlight.curatedBy" tag="p" class="lead font-default mt-4"><template v-slot:username><span class="primary">@dansup</span></template></i18n>
 						</div>
 						<div class="col-7 d-flex justify-content-between">
 							<div class="text-center mr-4">
 								<h5 class="font-default mb-2">@dansup</h5>
 								<img src="https://pixelfed.test/storage/avatars/321493203255693312/skvft7.jpg?v=33" draggable="false" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';" class="avatar shadow cursor-pointer" width="160" height="160">
-								<button class="btn btn-outline-light btn-sm rounded-pill py-1 mt-2 font-default">View Profile</button>
+								<button class="btn btn-outline-light btn-sm rounded-pill py-1 mt-2 font-default">{{ $t('menu.viewProfile') }}</button>
 							</div>
 
 							<div class="text-center mr-4">
 								<h5 class="font-default mb-2">@dansup</h5>
 								<img src="https://pixelfed.test/storage/avatars/321493203255693312/skvft7.jpg?v=33" draggable="false" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';" class="avatar shadow cursor-pointer" width="160" height="160">
-								<button class="btn btn-outline-light btn-sm rounded-pill py-1 mt-2 font-default">View Profile</button>
+								<button class="btn btn-outline-light btn-sm rounded-pill py-1 mt-2 font-default">{{ $t('menu.viewProfile') }}</button>
 							</div>
 
 							<div class="text-center">
 								<h5 class="font-default mb-2">@dansup</h5>
 								<img src="https://pixelfed.test/storage/avatars/321493203255693312/skvft7.jpg?v=33" draggable="false" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=0';" class="avatar shadow cursor-pointer" width="160" height="160">
-								<button class="btn btn-outline-light btn-sm rounded-pill py-1 mt-2 font-default">View Profile</button>
+								<button class="btn btn-outline-light btn-sm rounded-pill py-1 mt-2 font-default">{{ $t('menu.viewProfile') }}</button>
 							</div>
 						</div>
 					</div>

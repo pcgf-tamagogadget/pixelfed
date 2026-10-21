@@ -3,8 +3,8 @@
 @section('content')
 <div class="jumbotron jumbotron-fluid bg-primary text-white mb-0 py-4">
 	<div class="container">
-		<p class="h1 font-weight-light">About</p>
-		<p class="h3 font-weight-light py-4">{{$page->title ?? 'Pixelfed is an image sharing platform, an ethical alternative to centralized platforms.'}}</p>
+		<p class="h1 font-weight-light">{{ __('site.aboutCustom.about') }}</p>
+		<p class="h3 font-weight-light py-4">{{$page->title ?? __('site.pixelfed_is_an_image_sharing_platform_etc')}}</p>
 	</div>
 </div>
 <div class="bg-white">
@@ -18,14 +18,14 @@
 			<div class="card border-left-blue mb-3">
 				<div class="card-body">
 					<p class="h2 mb-0">{{$stats['posts']}}</p>
-					<p class="font-weight-bold mb-0">Posts</p>
+					<p class="font-weight-bold mb-0">{{ __('site.aboutCustom.posts') }}</p>
 				</div>
 			</div>
 
 			<div class="card border-left-blue mb-3">
 				<div class="card-body">
 					<p class="h2 mb-0">{{$stats['users']}}</p>
-					<p class="font-weight-bold mb-0">Users</p>
+					<p class="font-weight-bold mb-0">{{ __('site.aboutCustom.users') }}</p>
 				</div>
 			</div>
 
@@ -37,7 +37,7 @@
 							&commat;{{$stats['admin']->username}}
 						</a>
 					</p>
-					<p class="font-weight-bold mb-0">Instance Admin</p>
+					<p class="font-weight-bold mb-0">{{ __('site.aboutCustom.instanceAdmin') }}</p>
 				</div>
 			</div>
 			@endif
@@ -53,9 +53,9 @@
 				<div class="card bg-transparent" style="box-shadow: none;border:1px solid #fff">
 					<div class="card-body text-white text-center">
 						<p class="font-weight-bold lead mb-0">
-							Ad Free
+							{{ __('site.aboutCustom.adFree') }}
 						</p>
-						<p class="font-weight-light mb-0">No Ads or Trackers</p>
+						<p class="font-weight-light mb-0">{{ __('site.aboutCustom.adFreeDesc') }}</p>
 					</div>
 				</div>
 			</div>
@@ -63,9 +63,9 @@
 				<div class="card bg-transparent" style="box-shadow: none;border:1px solid #fff">
 					<div class="card-body text-white text-center">
 						<p class="font-weight-bold lead mb-0">
-							Chronological
+							{{ __('site.aboutCustom.chronological') }}
 						</p>
-						<p class="font-weight-light mb-0">Timelines in order</p>
+						<p class="font-weight-light mb-0">{{ __('site.aboutCustom.chronologicalDesc') }}</p>
 					</div>
 				</div>
 			</div>
@@ -73,9 +73,9 @@
 				<div class="card bg-transparent" style="box-shadow: none;border:1px solid #fff">
 					<div class="card-body text-white text-center">
 						<p class="font-weight-bold lead mb-0">
-							Federated
+							{{ __('site.aboutCustom.federated') }}
 						</p>
-						<p class="font-weight-light mb-0">A network of millions</p>
+						<p class="font-weight-light mb-0">{{ __('site.aboutCustom.federatedDesc') }}</p>
 					</div>
 				</div>
 			</div>
@@ -83,9 +83,9 @@
 				<div class="card bg-transparent" style="box-shadow: none;border:1px solid #fff">
 					<div class="card-body text-white text-center">
 						<p class="font-weight-bold lead mb-0">
-							Discover
+							{{ __('site.discover') }}
 						</p>
-						<p class="font-weight-light mb-0">Discover popular posts</p>
+						<p class="font-weight-light mb-0">{{ __('site.aboutCustom.discoverDesc') }}</p>
 					</div>
 				</div>
 			</div>
@@ -93,9 +93,9 @@
 				<div class="card bg-transparent" style="box-shadow: none;border:1px solid #fff">
 					<div class="card-body text-white text-center">
 						<p class="font-weight-bold lead mb-0">
-							Photo Filters
+							{{ __('site.photo_filters') }}
 						</p>
-						<p class="font-weight-light mb-0">Add an optional filter</p>
+						<p class="font-weight-light mb-0">{{ __('site.aboutCustom.photoFiltersDesc') }}</p>
 					</div>
 				</div>
 			</div>
@@ -103,9 +103,9 @@
 				<div class="card bg-transparent" style="box-shadow: none;border:1px solid #fff">
 					<div class="card-body text-white text-center">
 						<p class="font-weight-bold lead mb-0">
-							Stories
+							{{ __('site.stories') }}
 						</p>
-						<p class="font-weight-light mb-0">Coming Soon!</p>
+						<p class="font-weight-light mb-0">{{ __('site.aboutCustom.comingSoon') }}</p>
 					</div>
 				</div>
 			</div>
@@ -115,5 +115,5 @@
 @endsection
 
 @push('meta')
-<meta property="og:description" content="Pixelfed is an image sharing platform, an ethical alternative to centralized platforms.">
+<meta property="og:description" content="{{ __('site.pixelfed_is_an_image_sharing_platform_etc') }}">
 @endpush

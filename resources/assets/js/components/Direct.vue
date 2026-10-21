@@ -4,27 +4,27 @@
 		<div class="col-12 col-md-8 offset-md-2 p-0 px-md-2">
 			<div class="card shadow-none border mt-4">
 				<div class="card-header bg-white py-4">
-					<span class="h4 font-weight-bold mb-0">Direct Messages</span>
+					<span class="h4 font-weight-bold mb-0">{{ $t('classic.direct.title') }}</span>
 					<span class="float-right">
-						<a class="btn btn-outline-primary font-weight-bold py-0 rounded-pill" href="#" @click.prevent="goto('add')">New Message</a>
+						<a class="btn btn-outline-primary font-weight-bold py-0 rounded-pill" href="#" @click.prevent="goto('add')">{{ $t('classic.direct.newMessage') }}</a>
 					</span>
 				</div>
 				<div class="card-header bg-white">
 					<ul class="nav nav-pills nav-fill">
 						<li class="nav-item">
-							<a :class="[tab == 'inbox' ? 'nav-link px-4 font-weight-bold rounded-pill active' : 'nav-link px-4 font-weight-bold rounded-pill']" @click.prevent="switchTab('inbox')" href="#">Inbox</a>
+							<a :class="[tab == 'inbox' ? 'nav-link px-4 font-weight-bold rounded-pill active' : 'nav-link px-4 font-weight-bold rounded-pill']" @click.prevent="switchTab('inbox')" href="#">{{ $t('classic.direct.inbox') }}</a>
 						</li>
 						<li class="nav-item">
-							<a :class="[tab == 'sent' ? 'nav-link px-4 font-weight-bold rounded-pill active' : 'nav-link px-4 font-weight-bold rounded-pill']" @click.prevent="switchTab('sent')" href="#">Sent</a>
+							<a :class="[tab == 'sent' ? 'nav-link px-4 font-weight-bold rounded-pill active' : 'nav-link px-4 font-weight-bold rounded-pill']" @click.prevent="switchTab('sent')" href="#">{{ $t('classic.direct.sent') }}</a>
 						</li>
 						<li class="nav-item">
-							<a :class="[tab == 'filtered' ? 'nav-link px-4 font-weight-bold rounded-pill active' : 'nav-link px-4 font-weight-bold rounded-pill']" @click.prevent="switchTab('filtered')" href="#">Filtered</a>
+							<a :class="[tab == 'filtered' ? 'nav-link px-4 font-weight-bold rounded-pill active' : 'nav-link px-4 font-weight-bold rounded-pill']" @click.prevent="switchTab('filtered')" href="#">{{ $t('classic.direct.filtered') }}</a>
 						</li>
 					</ul>
 				</div>
 				<ul v-if="tab == 'inbox'" class="list-group list-group-flush">
 					<div v-if="!messages.inbox.length" class="list-group-item d-flex justify-content-center align-items-center" style="min-height: 40vh;">
-						<p class="lead mb-0">No messages found :(</p>
+						<p class="lead mb-0">{{ $t('classic.direct.noMessages') }}</p>
 					</div>
 					<div v-else v-for="(thread, index) in messages.inbox" :key="'dm_inbox'+index">
 						<a class="list-group-item text-dark text-decoration-none border-left-0 border-right-0 border-top-0" :href="'/account/direct/t/'+thread.id">
@@ -44,7 +44,7 @@
 										<i class="far fa-comment text-primary"></i> 
 									</span>
 									<span class="pl-1 pr-3">
-										Received
+										{{ $t('classic.direct.received') }}
 									</span>
 									<span>
 										{{thread.timeAgo}}
@@ -60,7 +60,7 @@
 				</ul>
 				<ul v-if="tab == 'sent'" class="list-group list-group-flush">
 					<div v-if="!messages.sent.length" class="list-group-item d-flex justify-content-center align-items-center" style="min-height: 40vh;">
-						<p class="lead mb-0">No messages found :(</p>
+						<p class="lead mb-0">{{ $t('classic.direct.noMessages') }}</p>
 					</div>
 					<div v-else v-for="(thread, index) in messages.sent" :key="'dm_sent'+index">
 						<a class="list-group-item text-dark text-decoration-none border-left-0 border-right-0 border-top-0" href="#" @click.prevent="loadMessage(thread.id)">
@@ -80,7 +80,7 @@
 										<i class="far fa-paper-plane text-primary"></i> 
 									</span>
 									<span class="pl-1 pr-3">
-										Delivered
+										{{ $t('classic.direct.delivered') }}
 									</span>
 									<span>
 										{{thread.timeAgo}}
@@ -96,7 +96,7 @@
 				</ul>
 				<ul v-if="tab == 'filtered'" class="list-group list-group-flush">
 					<div v-if="!messages.filtered.length" class="list-group-item d-flex justify-content-center align-items-center" style="min-height: 40vh;">
-						<p class="lead mb-0">No messages found :(</p>
+						<p class="lead mb-0">{{ $t('classic.direct.noMessages') }}</p>
 					</div>
 					<div v-else v-for="(thread, index) in messages.filtered" :key="'dm_filtered'+index">
 						<a class="list-group-item text-dark text-decoration-none border-left-0 border-right-0 border-top-0" href="#" @click.prevent="loadMessage(thread.id)">
@@ -116,7 +116,7 @@
 										<i class="fas fa-shield-alt" style="color:#fd9426"></i> 
 									</span>
 									<span class="pl-1 pr-3">
-										Filtered
+										{{ $t('classic.direct.filtered') }}
 									</span>
 									<span>
 										{{thread.timeAgo}}
@@ -132,16 +132,16 @@
 				</ul>
 			</div>
 			<div v-if="tab == 'inbox'" class="mt-3 text-center">
-				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="inboxPage == 1" @click="messagePagination('inbox', 'prev')">Prev</button>
-				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="messages.inbox.length != 8" @click="messagePagination('inbox', 'next')">Next</button>
+				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="inboxPage == 1" @click="messagePagination('inbox', 'prev')">{{ $t('classic.direct.prev') }}</button>
+				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="messages.inbox.length != 8" @click="messagePagination('inbox', 'next')">{{ $t('classic.direct.next') }}</button>
 			</div>
 			<div v-if="tab == 'sent'" class="mt-3 text-center">
-				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="sentPage == 1" @click="messagePagination('sent', 'prev')">Prev</button>
-				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="messages.sent.length != 8" @click="messagePagination('sent', 'next')">Next</button>
+				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="sentPage == 1" @click="messagePagination('sent', 'prev')">{{ $t('classic.direct.prev') }}</button>
+				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="messages.sent.length != 8" @click="messagePagination('sent', 'next')">{{ $t('classic.direct.next') }}</button>
 			</div>
 			<div v-if="tab == 'filtered'" class="mt-3 text-center">
-				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="filteredPage == 1" @click="messagePagination('filtered', 'prev')">Prev</button>
-				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="messages.filtered.length != 8" @click="messagePagination('filtered', 'next')">Next</button>
+				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="filteredPage == 1" @click="messagePagination('filtered', 'prev')">{{ $t('classic.direct.prev') }}</button>
+				<button class="btn btn-outline-primary rounded-pill btn-sm" :disabled="messages.filtered.length != 8" @click="messagePagination('filtered', 'next')">{{ $t('classic.direct.next') }}</button>
 			</div>
 		</div>
 	</div>
@@ -151,17 +151,17 @@
 			<div class="card shadow-none border mt-4">
 				<div class="card-header bg-white py-4 d-flex justify-content-between">
 					<span class="cursor-pointer px-3" @click="goto('browse')"><i class="fas fa-chevron-left"></i></span>
-					<span class="h4 font-weight-bold mb-0">New Direct Message</span>
+					<span class="h4 font-weight-bold mb-0">{{ $t('classic.direct.newDirectMessage') }}</span>
 					<span><i class="fas fa-chevron-right text-white"></i></span>
 				</div>
 				<div class="card-body d-flex align-items-center justify-content-center" style="height: 60vh;">
 					<div>
-						<p class="mb-0 font-weight-bold">Select Recipient</p>
+						<p class="mb-0 font-weight-bold">{{ $t('classic.direct.selectRecipient') }}</p>
 						<autocomplete 
 							:search="composeSearch"
 							:disabled="composeLoading"
 							placeholder="@dansup"
-							aria-label="Search usernames"
+							:aria-label="$t('classic.direct.searchUsernames')"
 							:get-result-value="getTagResultValue"
 							@submit="onTagSubmitLocation"
 							ref="autocomplete"

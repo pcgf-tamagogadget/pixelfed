@@ -15,7 +15,7 @@
                                     </p>
                                     <p v-if="hashtag.count && hashtag.count > 100"
                                         class="mb-0 text-muted font-weight-bold">
-                                        {{ formatCount(hashtag.count) }} Posts
+                                        {{ $t('spa.hashtag.postsCount', { count: formatCount(hashtag.count) }) }}
                                     </p>
                                 </div>
                                 <template v-if="hashtag && hashtag.hasOwnProperty('following') && feed && feed.length">
@@ -53,7 +53,7 @@
                                                 <h5 class="text-white m-auto font-weight-bold">
                                                     <span v-if="status.hasOwnProperty('filtered')">
                                                         <span class="far fa-eye-slash fa-lg p-2 d-flex-inline"></span>
-                                                        <span>Filtered</span>
+                                                        <span>{{ $t('spa.hashtag.filtered') }}</span>
                                                     </span>
                                                     <span v-else>
                                                         <span class="far fa-eye-slash fa-lg p-2 d-flex-inline"></span>
@@ -197,7 +197,7 @@ export default {
                     this.hashtag = res.data;
                 })
                 .catch(err => {
-                    swal('Error', 'Something went wrong, please try again later!', 'error');
+                    swal(this.$t('common.error'), this.$t('spa.hashtag.errorText'), 'error');
                     this.isLoaded = true;
                     this.feedLoaded = true;
                 })

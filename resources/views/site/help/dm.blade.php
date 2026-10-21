@@ -1,4 +1,4 @@
-@extends('site.help.partial.template', ['breadcrumb'=>'Direct Messages'])
+@extends('site.help.partial.template', ['breadcrumb'=>__('helpcenter.directMessages')])
 
 @section('section')
 
@@ -6,38 +6,38 @@
   <h3 class="font-weight-bold">{{__('helpcenter.directMessages')}}</h3>
 </div>
 <hr>
-<p class="lead ">Send and recieve direct messages from other profiles.</p>
+<p class="lead ">{{ __('helpcenter.dm.intro') }}</p>
 <hr>
 <p>
   <a class="text-dark font-weight-bold" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">
     <i class="fas fa-chevron-down mr-2"></i>
-    How do I use Pixelfed Direct?
+    {{ __('helpcenter.dm.q1') }}
   </a>
   <div class="collapse" id="collapse1">
     <div>
-      <p>Pixelfed Direct lets you send messages to another account. You can send the following things as a message on Pixelfed Direct:</p>
+      <p>{{ __('helpcenter.dm.a1Intro') }}</p>
       <ul>
         <li>
-          Photos or videos you take or upload from your library
+          {{ __('helpcenter.dm.a1Item1') }}
         </li>
         <li>
-          Posts you see in feed
+          {{ __('helpcenter.dm.a1Item2') }}
         </li>
         <li>
-          Profiles
+          {{ __('helpcenter.dm.a1Item3') }}
         </li>
         <li>
-          Text
+          {{ __('helpcenter.dm.a1Item4') }}
         </li>
         <li>
-          Hashtags
+          {{ __('helpcenter.dm.a1Item5') }}
         </li>
         <li>
-          Locations
+          {{ __('helpcenter.dm.a1Item6') }}
         </li>
       </ul>
-      <p>To see messages you've sent with Pixelfed Direct, tap <i class="far fa-comment-dots"></i> in the top right of feed. From there, you can manage the messages you've sent and received.</p>
-      <p>Photos or videos sent with Pixelfed Direct can't be shared through Pixelfed to other sites like Mastodon or Twitter, and won't appear on hashtag and location pages.</p>
+      <p>{!! __('helpcenter.dm.a1Manage') !!}</p>
+      <p>{{ __('helpcenter.dm.a1Sharing') }}</p>
     </div>
   </div>
 </p>
@@ -55,33 +55,33 @@
 <p> 
   <a class="text-dark font-weight-bold" data-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapse3">
     <i class="fas fa-chevron-down mr-2"></i>
-    How do I unsend a message I've sent using Pixelfed Direct?
+    {{ __('helpcenter.dm.q3') }}
   </a>
   <div class="collapse" id="collapse3">
     <div class="mt-2">
-      You can click the message and select the <strong>Delete</strong> option.
+      {!! __('helpcenter.dm.a3') !!}
     </div>
   </div>
 </p>
 <p> 
   <a class="text-dark font-weight-bold" data-toggle="collapse" href="#collapse4" role="button" aria-expanded="false" aria-controls="collapse4">
     <i class="fas fa-chevron-down mr-2"></i>
-    Can I use Pixelfed Direct to send messages to people I’m not following?
+    {{ __('helpcenter.dm.q4') }}
   </a>
   <div class="collapse" id="collapse4">
     <div class="mt-2">
-      You can send a message to someone you are not following though it may be sent to their filtered inbox and not easily seen.
+      {{ __('helpcenter.dm.a4') }}
     </div>
   </div>
 </p>
 <p> 
   <a class="text-dark font-weight-bold" data-toggle="collapse" href="#collapse5" role="button" aria-expanded="false" aria-controls="collapse5">
     <i class="fas fa-chevron-down mr-2"></i>
-    How do I report content that I've recieved in a Pixelfed Direct message?
+    {{ __('helpcenter.dm.q5') }}
   </a>
   <div class="collapse" id="collapse5">
     <div class="mt-2">
-      You can click the message and then select the <strong>Report</strong> option and follow the instructions on the Report page.
+      {!! __('helpcenter.dm.a5') !!}
     </div>
   </div>
 </p>

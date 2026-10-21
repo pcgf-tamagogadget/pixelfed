@@ -677,7 +677,7 @@ window.App.util = {
   }),
   version: 1,
   format: {
-    count: (function(count = 0, locale = 'en-GB', notation = 'compact') {
+    count: (function(count = 0, locale = document.documentElement.lang || 'en-GB', notation = 'compact') {
       if(count < 1) {
         return 0;
       }

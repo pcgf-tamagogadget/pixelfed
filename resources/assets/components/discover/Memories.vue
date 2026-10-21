@@ -9,8 +9,8 @@
 				<div v-if="tabIndex === 0" class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">My Memories</h1>
-					<p class="font-default lead">Posts from this day in previous years</p>
+					<h1 class="font-default">{{ $t('spa.discoverMemories.title') }}</h1>
+					<p class="font-default lead">{{ $t('spa.discoverMemories.subtitle') }}</p>
 
 					<hr>
 
@@ -23,14 +23,14 @@
 						:status="post"
 						/>
 
-					<p v-if="feedLoaded && feed.length == 0" class="lead">No memories found :(</p>
+					<p v-if="feedLoaded && feed.length == 0" class="lead">{{ $t('spa.discoverMemories.noMemories') }}</p>
 				</div>
 
 				<div v-else-if="tabIndex === 1" class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">My Memories</h1>
-					<p class="font-default lead">Posts I've liked from this day in previous years</p>
+					<h1 class="font-default">{{ $t('spa.discoverMemories.title') }}</h1>
+					<p class="font-default lead">{{ $t('spa.discoverMemories.likedSubtitle') }}</p>
 
 					<hr>
 
@@ -43,13 +43,13 @@
 						:status="post"
 						/>
 
-					<p v-if="likedLoaded && liked.length == 0" class="lead">No memories found :(</p>
+					<p v-if="likedLoaded && liked.length == 0" class="lead">{{ $t('spa.discoverMemories.noMemories') }}</p>
 				</div>
 
 				<div class="col-md-2 col-lg-3">
 					<div class="nav flex-column nav-pills font-default">
-						<a class="nav-link" :class="{ active: tabIndex == 0 }" href="#" @click.prevent="toggleTab(0)">My Posts</a>
-						<a class="nav-link" :class="{ active: tabIndex == 1 }" href="#" @click.prevent="toggleTab(1)">Posts I've Liked</a>
+						<a class="nav-link" :class="{ active: tabIndex == 0 }" href="#" @click.prevent="toggleTab(0)">{{ $t('spa.discoverMemories.myPosts') }}</a>
+						<a class="nav-link" :class="{ active: tabIndex == 1 }" href="#" @click.prevent="toggleTab(1)">{{ $t('spa.discoverMemories.postsLiked') }}</a>
 					</div>
 				</div>
 			</div>
@@ -81,11 +81,11 @@
         		liked: [],
         		breadcrumbItems: [
 					{
-						text: 'Discover',
+						text: this.$t('navmenu.discover'),
 						href: '/i/web/discover'
 					},
 					{
-						text: 'My Memories',
+						text: this.$t('spa.discoverMemories.title'),
 						active: true
 					}
 				]

@@ -5,7 +5,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-7">
             <div class="logo">
-                <img src="{{ config('app.logo') }}" width="40" height="40" alt="Pixelfed Logo">
+                <img src="{{ config('app.logo') }}" width="40" height="40" alt="{{ __('auth.curated.logoAlt') }}">
                 <p class="font-weight-bold mb-0">Pixelfed</p>
             </div>
 
@@ -20,14 +20,14 @@
                 <div class="mb-5"></div>
             @endif
 
-            <h1 class="text-center font-weight-bold mt-4 mb-3"><i class="far fa-info-circle mr-2"></i> Information Requested</h1>
-            <p class="h5" style="line-height: 1.5;">Before we can process your application to join, our admin team have requested additional information from you. Please respond at your earliest convenience!</p>
+            <h1 class="text-center font-weight-bold mt-4 mb-3"><i class="far fa-info-circle mr-2"></i> {{ __('auth.curated.infoRequested') }}</h1>
+            <p class="h5" style="line-height: 1.5;">{{ __('auth.curated.beforeProcess') }}</p>
             <hr class="border-dark">
-            <p>From our Admins:</p>
+            <p>{{ __('auth.curated.fromAdmins') }}</p>
             <div class="card card-body mb-1 bg-dark border border-secondary" style="border-style: dashed !important;">
                 <p class="lead mb-0" style="white-space: pre-wrap; opacity: 0.8;">{{ $activity->message }}</p>
             </div>
-            <p class="mb-3 small text-muted">If you don't understand this request, or need additional context you should request clarification from the admin team.</p>
+            <p class="mb-3 small text-muted">{{ __('auth.curated.clarificationHint') }}</p>
             {{-- <hr class="border-dark"> --}}
 
             <form method="post">
@@ -35,13 +35,13 @@
                 <input type="hidden" name="crid" value="{{ $activity->register_id }}">
                 <input type="hidden" name="acid" value="{{ $activity->id }}">
                 <div class="form-group">
-                    <label for="message">Your Response</label>
+                    <label for="message">{{ __('auth.curated.yourResponse') }}</label>
                     <textarea
                         class="form-control bg-dark border-dark text-white"
                         rows="4"
                         id="reason"
                         name="response"
-                        placeholder="Enter your response here, up to 1000 chars..."
+                        placeholder="{{ __('auth.curated.responsePlaceholder') }}"
                         maxlength="1000">{{ old('response') }}</textarea>
                     <div class="help-text small text-muted d-flex justify-content-end mt-1 font-weight-bold">
                         <span id="charCount" class="text-white">0</span>/<span>1000</span>
@@ -49,11 +49,11 @@
                 </div>
                 <x-captcha :show="$showCaptcha" />
                 <div class="text-center">
-                    <button class="btn btn-primary font-weight-bold rounded-pill px-5">Submit my response</button>
+                    <button class="btn btn-primary font-weight-bold rounded-pill px-5">{{ __('auth.curated.submitResponse') }}</button>
                 </div>
             </form>
             <hr class="border-dark">
-            <p class="text-muted small text-center">For additional information, please see our <a href="{{ route('help.curated-onboarding') }}" style="font-weight: 600;">Curated Onboarding</a> Help Center page.</p>
+            <p class="text-muted small text-center">{!! __('auth.curated.helpCenterHint', ['link' => '<a href="'.e(route('help.curated-onboarding')).'" style="font-weight: 600;">'.e(__('auth.curated.curatedOnboarding')).'</a>']) !!}</p>
         </div>
     </div>
 </div>

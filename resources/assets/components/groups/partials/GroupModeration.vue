@@ -5,7 +5,7 @@
 				<div class="row justify-content-center">
 					<div class="col-12 col-md-6 pt-4">
 						<div class="d-flex justify-content-between align-items-center mb-3">
-							<p class="lead mb-0">Latest Mod Reports</p>
+							<p class="lead mb-0">{{ $t('groups.groupModeration.latestReports') }}</p>
 							<button class="btn btn-light border font-weight-bold btn-sm rounded shadow-sm">
 								<i class="far fa-redo"></i>
 							</button>
@@ -16,15 +16,11 @@
 								<div class="media align-items-center">
 									<img :src="report.profile.avatar" width="40" height="40" class="rounded-circle mr-3">
 									<div class="media-body">
-										<p class="mb-0">
-											<a v-if="report.total_count == 1" class="font-weight-bold" :href="report.profile.url">{{ report.profile.username }}</a>
-											<span v-else>
-												<a class="font-weight-bold" :href="report.profile.url">{{ report.profile.username }}</a> and <a class="font-weight-bold" href="#">{{ report.total_count - 1}} others</a>
-											</span>
-											reported
-											<a href="#" class="font-weight-bold" :id="`report_post:${index}`">this post</a>
-											as {{ report.type }}
-										</p>
+										<i18n path="groups.groupModeration.reportedAs" tag="p" class="mb-0">
+											<template v-slot:reporter><a v-if="report.total_count == 1" class="font-weight-bold" :href="report.profile.url">{{ report.profile.username }}</a><i18n v-else path="groups.groupModeration.andOthers" tag="span"><template v-slot:user><a class="font-weight-bold" :href="report.profile.url">{{ report.profile.username }}</a></template><template v-slot:others><a class="font-weight-bold" href="#">{{ $t('groups.groupModeration.othersCount', { count: report.total_count - 1 }) }}</a></template></i18n></template>
+											<template v-slot:post><a href="#" class="font-weight-bold" :id="`report_post:${index}`">{{ $t('groups.groupModeration.thisPost') }}</a></template>
+											<template v-slot:type>{{ report.type }}</template>
+										</i18n>
 										<p class="mb-0 small">
 											<span class="text-muted font-weight-bold">
 												{{ timeago(report.created_at) }}
@@ -35,7 +31,7 @@
 											</a> -->
 											<span>·</span>
 											<a class="text-danger font-weight-bold" href="#" @click.prevent="actionMenu(index)">
-												Actions
+												{{ $t('groups.groupModeration.actions') }}
 											</a>
 										</p>
 									</div>
@@ -70,22 +66,22 @@
 											<p v-html="report.status.content"></p>
 										</div>
 										<div v-else>
-											<p>Cannot generate preview.</p>
+											<p>{{ $t('groups.groupModeration.cannotGeneratePreview') }}</p>
 										</div>
 
 										<p class="mb-1 mt-3">
-											<a class="btn btn-primary btn-block font-weight-bold" :href="report.status.url">View Post</a>
+											<a class="btn btn-primary btn-block font-weight-bold" :href="report.status.url">{{ $t('groups.groupModeration.viewPost') }}</a>
 										</p>
 									</b-popover>
 								</div>
 							</div>
 
 							<div v-if="canLoadMore" class="list-group-item">
-								<button class="btn btn-light font-weight-bold btn-block" @click.prevent="loadMoreReports()">Load more</button>
+								<button class="btn btn-light font-weight-bold btn-block" @click.prevent="loadMoreReports()">{{ $t('groups.groupModeration.loadMore') }}</button>
 							</div>
 						</div>
 						<div v-else class="card card-body shadow-none border rounded-pill">
-							<p class="lead font-weight-bold text-center mb-0">No moderation reports found!</p>
+							<p class="lead font-weight-bold text-center mb-0">{{ $t('groups.groupModeration.noReports') }}</p>
 						</div>
 					</div>
 				</div>
@@ -93,7 +89,7 @@
 		</div>
 		<div v-else class="col-12 col-md-6 pt-4 d-flex align-items-center justify-content-center">
 			<div class="spinner-border" role="status">
-				<span class="sr-only">Loading...</span>
+				<span class="sr-only">{{ $t('common.loading') }}</span>
 			</div>
 		</div>
 	</div>
@@ -153,12 +149,12 @@
 				event.currentTarget.blur();
 
 				swal({
-					title: "Moderator Action",
+					title: this.$t('groups.groupModeration.moderatorAction'),
 					dangerMode: true,
-					text: "Please select an action to take, press ESC to close",
+					text: this.$t('groups.groupModeration.selectAction'),
 					buttons: {
 						ignore: {
-							text: "Ignore",
+							text: this.$t('groups.groupModeration.ignore'),
 							className: "btn-warning",
 							value: "ignore"
 						},
@@ -168,7 +164,7 @@
 							value: "cw",
 						},
 						delete: {
-							text: "Delete",
+							text: this.$t('common.delete'),
 							className: "btn-danger",
 							value: "delete",
 						},
@@ -185,8 +181,8 @@
 								let report = this.reports[index];
 								this.$emit('decrement', report.total_count);
 								this.reports.splice(index, 1);
-								this.$bvToast.toast(`Ignored and closed moderation report`, {
-									title: 'Moderation Action',
+								this.$bvToast.toast(this.$t('groups.groupModeration.ignoredToast'), {
+									title: this.$t('groups.groupModeration.moderationAction'),
 									autoHideDelay: 5000,
 									appendToast: true
 								});
@@ -201,8 +197,8 @@
 								let report = this.reports[index];
 								this.$emit('decrement', report.total_count);
 								this.reports.splice(index, 1);
-								this.$bvToast.toast(`Succesfully applied content warning and closed moderation report`, {
-									title: 'Moderation Action',
+								this.$bvToast.toast(this.$t('groups.groupModeration.cwAppliedToast'), {
+									title: this.$t('groups.groupModeration.moderationAction'),
 									autoHideDelay: 5000,
 									appendToast: true
 								});
@@ -210,7 +206,7 @@
 						break;
 
 						case "delete":
-							swal('Oops, this is embarassing!', 'We have not implemented this moderation action yet.', 'error');
+							swal(this.$t('groups.groupModeration.notImplementedTitle'), this.$t('groups.groupModeration.notImplementedText'), 'error');
 						break;
 					}
 				});

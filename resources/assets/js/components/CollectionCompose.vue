@@ -3,7 +3,7 @@
 	<div v-if="loaded" class="row">
 		<div class="col-12 col-md-6 offset-md-3 pt-5">
 			<div class="text-center pb-4">
-				<h1>Create Collection</h1>
+				<h1>{{ $t('compose.collectionCompose.createCollection') }}</h1>
 			</div>
 		</div>
 		<div class="col-12 col-md-4 pt-3">
@@ -12,39 +12,39 @@
 					<div>
 						<form>
 							<div class="form-group">
-								<label for="title" class="font-weight-bold text-muted">Title</label>
-								<input type="text" class="form-control" id="title" placeholder="Collection Title" v-model="collection.title" maxlength="50">
+								<label for="title" class="font-weight-bold text-muted">{{ $t('compose.common.title') }}</label>
+								<input type="text" class="form-control" id="title" :placeholder="$t('compose.collectionCompose.titlePlaceholder')" v-model="collection.title" maxlength="50">
                                 <div class="text-right small text-muted">
                                     <span>{{collection.title ? collection.title.length : 0}}/50</span>
                                 </div>
 							</div>
 							<div class="form-group">
-								<label for="description" class="font-weight-bold text-muted">Description</label>
-								<textarea class="form-control" id="description" placeholder="Example description here" v-model="collection.description" rows="3" maxlength="500">
+								<label for="description" class="font-weight-bold text-muted">{{ $t('compose.common.description') }}</label>
+								<textarea class="form-control" id="description" :placeholder="$t('compose.collectionCompose.descriptionPlaceholder')" v-model="collection.description" rows="3" maxlength="500">
 								</textarea>
                                 <div class="text-right small text-muted">
                                     <span>{{collection.description ? collection.description.length : 0}}/500</span>
                                 </div>
 							</div>
 							<div class="form-group">
-								<label for="visibility" class="font-weight-bold text-muted">Visibility</label>
+								<label for="visibility" class="font-weight-bold text-muted">{{ $t('compose.collectionCompose.visibility') }}</label>
 								<select class="custom-select" v-model="collection.visibility">
-									<option value="public">Public</option>
-									<option value="private">Followers Only</option>
-									<option value="draft">Draft</option>
+									<option value="public">{{ $t('compose.common.public') }}</option>
+									<option value="private">{{ $t('compose.common.followersOnly') }}</option>
+									<option value="draft">{{ $t('compose.collectionCompose.draft') }}</option>
 								</select>
 							</div>
 						</form>
 						<hr>
 						<p>
-							<button v-if="posts.length > 0 && collection.visibility != 'draft'" type="button" class="btn btn-primary font-weight-bold btn-block" @click="publish">Publish</button>
-							<button v-else type="button" class="btn btn-primary font-weight-bold btn-block disabled" disabled>Publish</button>
+							<button v-if="posts.length > 0 && collection.visibility != 'draft'" type="button" class="btn btn-primary font-weight-bold btn-block" @click="publish">{{ $t('compose.common.publish') }}</button>
+							<button v-else type="button" class="btn btn-primary font-weight-bold btn-block disabled" disabled>{{ $t('compose.common.publish') }}</button>
 						</p>
 						<p>
-							<button type="button" class="btn btn-outline-primary font-weight-bold btn-block" @click="save">Save</button>
+							<button type="button" class="btn btn-outline-primary font-weight-bold btn-block" @click="save">{{ $t('compose.common.save') }}</button>
 						</p>
 						<p class="mb-0">
-							<button type="button" class="btn btn-outline-secondary font-weight-bold btn-block" @click="deleteCollection">Delete</button>
+							<button type="button" class="btn btn-outline-secondary font-weight-bold btn-block" @click="deleteCollection">{{ $t('common.delete') }}</button>
 						</p>
 					</div>
 				</div>
@@ -54,10 +54,10 @@
 			<div>
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a :class="[tab == 'add' ? 'nav-link font-weight-bold bg-white active' : 'nav-link font-weight-bold text-muted']" href="#" @click.prevent="tab = 'add'">Add Posts</a>
+						<a :class="[tab == 'add' ? 'nav-link font-weight-bold bg-white active' : 'nav-link font-weight-bold text-muted']" href="#" @click.prevent="tab = 'add'">{{ $t('compose.collectionCompose.addPosts') }}</a>
 					</li>
 					<li class="nav-item">
-						<a :class="[tab == 'all' ? 'nav-link font-weight-bold bg-white active' : 'nav-link font-weight-bold text-muted']" href="#" @click.prevent="tab = 'all'">Preview</a>
+						<a :class="[tab == 'all' ? 'nav-link font-weight-bold bg-white active' : 'nav-link font-weight-bold text-muted']" href="#" @click.prevent="tab = 'all'">{{ $t('compose.collectionCompose.preview') }}</a>
 					</li>
 				</ul>
 			</div>
@@ -90,12 +90,12 @@
 					</div>
 					<div v-if="tab == 'add'">
 						<div class="form-group">
-							<label for="title" class="font-weight-bold text-muted">Add Post by URL</label>
+							<label for="title" class="font-weight-bold text-muted">{{ $t('compose.collectionCompose.addPostByUrl') }}</label>
 							<input type="text" class="form-control" placeholder="https://pixelfed.dev/p/admin/1" v-model="id">
-							<p class="help-text small text-muted">Only local, public posts can be added</p>
+							<p class="help-text small text-muted">{{ $t('compose.collectionCompose.onlyLocalPublic') }}</p>
 						</div>
 						<div class="form-group pt-4">
-							<label for="title" class="font-weight-bold text-muted">Add Recent Post</label>
+							<label for="title" class="font-weight-bold text-muted">{{ $t('compose.collectionCompose.addRecentPost') }}</label>
 							<div style="max-height: 360px; overflow-y: auto">
 								<div v-for="(s, index) in recentPosts" :class="[selectedPost == s.id ? 'box-shadow border border-warning d-inline-block m-1':'d-inline-block m-1']" @click="selectPost(s)">
 									<div class="cursor-pointer" :style="'width: 175px; height: 175px; ' + previewBackground(s)"></div>
@@ -103,7 +103,7 @@
 							</div>
 						</div>
 						<hr>
-						<button type="button" class="btn btn-primary font-weight-bold btn-block" @click="addId">Add Post</button>
+						<button type="button" class="btn btn-primary font-weight-bold btn-block" @click="addId">{{ $t('compose.collectionCompose.addPost') }}</button>
 					</div>
 					<div v-if="tab == 'order'">
 						
@@ -168,7 +168,7 @@ export default {
 				this.tab = 'all';
 				this.id = '';
 			}).catch(err => {
-				swal('Invalid URL', 'The post you entered was invalid', 'error');
+				swal(this.$t('compose.collectionCompose.invalidUrl'), this.$t('compose.collectionCompose.invalidPost'), 'error');
 				this.id = '';
 			})
 		},
@@ -184,14 +184,14 @@ export default {
 		addId() {
 			let max = this.config.uploader.max_collection_length;
 			if(this.posts.length >= max) {
-				swal('Error', 'You can only add ' + max + ' posts per collection', 'error');
+				swal(this.$t('common.error'), this.$t('compose.collectionCompose.maxPosts', { max: max }), 'error');
 				return;
 			}
 			let url = this.id;
 			let origin = window.location.origin;
 			let split = url.split('/');
 			if(url.slice(0, origin.length) !== origin) {
-				swal('Invalid URL', 'You can only add posts from this instance', 'error');
+				swal(this.$t('compose.collectionCompose.invalidUrl'), this.$t('compose.collectionCompose.onlyThisInstance'), 'error');
 				this.id = '';
 			}
             if(url.includes('/i/web/post/') || url.includes('/p/')) {
@@ -200,7 +200,7 @@ export default {
                 this.addToIds(id);
                 return;
             } else {
-				swal('Invalid URL', 'Invalid URL', 'error');
+				swal(this.$t('compose.collectionCompose.invalidUrl'), this.$t('compose.collectionCompose.invalidUrl'), 'error');
 				this.id = '';
             }
 			return;
@@ -239,7 +239,7 @@ export default {
 
 		publish() {
 			if(this.posts.length == 0) {
-				swal('Error', 'You cannot publish an empty collection');
+				swal(this.$t('common.error'), this.$t('compose.collectionCompose.emptyCollection'));
 				return;
 			}
 			axios.post('/api/local/collection/' + this.collectionId + '/publish', {
@@ -250,7 +250,7 @@ export default {
 			.then(res => {
 				window.location.href = res.data.url;
 			}).catch(err => {
-				swal('Something went wrong', 'There was a problem with your request, please try again later.', 'error');
+				swal(this.$t('compose.collectionCompose.somethingWentWrong'), this.$t('compose.collectionCompose.requestProblem'), 'error');
 			});
 		},
 
@@ -261,12 +261,12 @@ export default {
 				visibility: this.collection.visibility
 			})
 			.then(res => {
-				swal('Saved!', 'You have successfully saved this collection.', 'success');
+				swal(this.$t('compose.collectionCompose.saved'), this.$t('compose.collectionCompose.savedMsg'), 'success');
 			});
 		},
 
 		deleteCollection() {
-			let confirm = window.confirm('Are you sure you want to delete this collection?');
+			let confirm = window.confirm(this.$t('compose.collectionCompose.deleteConfirm'));
 			if(!confirm) {
 				return;
 			}

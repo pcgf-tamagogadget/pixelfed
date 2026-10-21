@@ -1,22 +1,22 @@
 @component('mail::message')
-# Action Needed: Additional information requested
+# {{ __('emails.curated.details.title') }}
 
-Hello **{{'@'.$verify->username}}**
+{!! __('emails.common.helloUser', ['username' => '**'.e('@'.$verify->username).'**']) !!}
 
-To help us process your registration application, we require more information.
+{{ __('emails.curated.details.intro') }}
 
-Our onboarding team have requested the following details:
+{{ __('emails.curated.details.requested') }}
 
 @component('mail::panel')
 <p style="white-space: pre-wrap;">{!! nl2br(e($activity->message)) !!}</p>
 @endcomponent
 <x-mail::button :url="$activity->emailReplyUrl()" color="success">
-<strong>Reply with your response</strong>
+<strong>{{ __('emails.curated.details.button') }}</strong>
 </x-mail::button>
 
-<p style="font-size:10pt;">Please respond promptly, your application will be automatically removed 7 days after your last interaction.</p>
+<p style="font-size:10pt;">{{ __('emails.curated.details.respondPromptly') }}</p>
 <br>
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 <a href="{{ config('app.url') }}">{{ config('pixelfed.domain.app') }}</a>
 @endcomponent

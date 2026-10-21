@@ -1,4 +1,4 @@
-@extends('portfolio.layout', ['title' => "@{$user['username']}'s Portfolio Photo"])
+@extends('portfolio.layout', ['title' => e(__('pages.portfolio.photoTitle', ['username' => '@'.$user['username']]))])
 
 @section('content')
 <portfolio-post initial-data="{{json_encode(['profile' => $user, 'post' => $post, 'authed' => $authed ? true : false])}}" />

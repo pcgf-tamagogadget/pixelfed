@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ \App\Util\Localization\Localization::direction() }}">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config_cache('app.name') }} - Authorization</title>
+    <title>{{ config_cache('app.name') }} - {{ __('auth.oauth.pageTitle') }}</title>
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <style>
         .passport-authorize {
@@ -255,7 +255,7 @@
 
     $visibleCount = 3;
     $hiddenCount = max($sortedScopes->count() - $visibleCount, 0);
-    $moreLabel = 'Show ' . $hiddenCount . ' more ' . \Illuminate\Support\Str::plural('permission', $hiddenCount);
+    $moreLabel = trans_choice('auth.oauth.showMore', $hiddenCount, ['count' => $hiddenCount]);
     @endphp
 
     <div class="authorize-wrap">
@@ -271,14 +271,13 @@
                     <img class="handoff-tile handoff-avatar" src="{{ $user->profile->avatarUrl() }}" alt="">
                 </div>
 
-                <h1 class="h4 font-weight-bold text-center mb-2">Authorize {{ $client->name }}</h1>
+                <h1 class="h4 font-weight-bold text-center mb-2">{{ __('auth.oauth.authorizeApp', ['app' => $client->name]) }}</h1>
                 <p class="text-muted text-center mb-4">
-                    {{ $client->name }} wants to access your
-                    <strong>{{ '@' . $user->username }}</strong> account.
+                    {!! __('auth.oauth.wantsAccess', ['app' => e($client->name), 'username' => '<strong>'.e('@' . $user->username).'</strong>']) !!}
                 </p>
 
                 @if ($sortedScopes->count() > 0)
-                <p class="small text-muted mb-2">This app will be able to:</p>
+                <p class="small text-muted mb-2">{{ __('auth.oauth.willBeAbleTo') }}</p>
 
                 <div class="scope-list">
                     @foreach ($sortedScopes as $scope)
@@ -286,7 +285,7 @@
                     <details class="scope-more">
                         <summary>
                             <span class="when-closed">{{ $moreLabel }}</span>
-                            <span class="when-open">Show fewer permissions</span>
+                            <span class="when-open">{{ __('auth.oauth.showFewer') }}</span>
                             <i class="fas fa-chevron-down"></i>
                         </summary>
                         @endif
@@ -311,7 +310,7 @@
 
                 @if ($droppedAdminScopes > 0)
                 <p class="small text-muted mt-2 mb-0">
-                    This app also asked for admin permissions, which don't apply to your account.
+                    {{ __('auth.oauth.droppedAdmin') }}
                 </p>
                 @endif
 
@@ -323,7 +322,7 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->id }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button type="submit" class="btn btn-outline-secondary btn-block font-weight-bold">Cancel</button>
+                            <button type="submit" class="btn btn-outline-secondary btn-block font-weight-bold">{{ __('auth.oauth.cancel') }}</button>
                         </form>
                     </div>
                     <div class="col-6 pl-2">
@@ -332,21 +331,21 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->id }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button type="submit" class="btn btn-primary btn-block font-weight-bold">Authorize</button>
+                            <button type="submit" class="btn btn-primary btn-block font-weight-bold">{{ __('auth.oauth.authorize') }}</button>
                         </form>
                     </div>
                 </div>
 
                 <p class="small text-muted text-center mt-3 mb-0">
-                    You can revoke this access at any time from your account settings.
+                    {{ __('auth.oauth.revokeHint') }}
                 </p>
             </div>
         </div>
 
         <p class="small text-muted text-center mt-4 mb-0">
-            Signed in as <strong>{{ '@' . $user->username }}</strong>.
-            Not you?
-            <a href="{{ route('logout') }}" class="font-weight-bold" onclick="event.preventDefault();document.getElementById('logout_auth').submit();">Log out</a>
+            {!! __('auth.oauth.signedInAs', ['username' => '<strong>'.e('@' . $user->username).'</strong>']) !!}
+            {{ __('auth.oauth.notYou') }}
+            <a href="{{ route('logout') }}" class="font-weight-bold" onclick="event.preventDefault();document.getElementById('logout_auth').submit();">{{ __('auth.oauth.logOut') }}</a>
         </p>
 
         <form id="logout_auth" action="{{ route('logout') }}" method="POST" class="d-none">

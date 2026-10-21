@@ -14,21 +14,21 @@
 		</div>
 	@endif
 	<div class="card shadow-none border">
-	  <div class="card-header font-weight-bold bg-white">Request Manual Email Verification</div>
+	  <div class="card-header font-weight-bold bg-white">{{ __('pages.account.manualVerify.title') }}</div>
 	  <div class="card-body">
-	  	<p class="">If you are experiencing issues receiving your email address confirmation code to the email address you registered with, you can request manual verification as a last resort. An administrator will review your request.</p>
+	  	<p class="">{{ __('pages.account.manualVerify.intro') }}</p>
 
-	  	<p class="font-weight-bold">If you request manual email verification, you still may experience issues recieving emails from our service, including password reset requests.</p>
+	  	<p class="font-weight-bold">{{ __('pages.account.manualVerify.warning') }}</p>
 
-	  	<p>In the event you need to reset your password and do not receive the password reset email, please contact the administrators.</p>
+	  	<p>{{ __('pages.account.manualVerify.resetHint') }}</p>
 
 	  	@if(!$exists)
 	  	<form method="post">
           @csrf
-          <button type="submit" class="btn btn-primary btn-block py-1 font-weight-bold">I understand, proceed with request</button>
+          <button type="submit" class="btn btn-primary btn-block py-1 font-weight-bold">{{ __('pages.account.manualVerify.proceed') }}</button>
         </form>
         @else
-        <button class="btn btn-primary btn-block py-1 font-weight-bold" disabled>Verification Request Sent</button>
+        <button class="btn btn-primary btn-block py-1 font-weight-bold" disabled>{{ __('pages.account.manualVerify.sent') }}</button>
         @endif
 	  </div>
   </div>

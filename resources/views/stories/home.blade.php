@@ -6,8 +6,6 @@
 
 @push('scripts')
 <script type="text/javascript">
-	new Vue({
-		el: '#content'
-	});
+	new Vue({ el: '#content', i18n: App.i18n() });
 </script>
 @endpush

@@ -7,8 +7,8 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <p class="display-1 text-white d-inline-block mb-0">Custom CSS</p>
-                    <p class="lead mb-0 text-white">Customize your instance with custom css.</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.settings.customcss.title') }}</p>
+                    <p class="lead mb-0 text-white">{{ __('admin_panel.settings.customcss.subtitle') }}</p>
                 </div>
             </div>
         </div>
@@ -27,18 +27,18 @@
                         id="customCheck1"
                         {{ (bool) config_cache('uikit.show_custom.css') ? 'checked' : null}}
                     >
-                    <label class="custom-control-label" for="customCheck1">Enable Custom CSS</label>
+                    <label class="custom-control-label" for="customCheck1">{{ __('admin_panel.settings.customcss.enable') }}</label>
                 </div>
             </div>
             <div class="form-group">
-                <label for="css" class="font-weight-bold">Custom CSS</label>
+                <label for="css" class="font-weight-bold">{{ __('admin_panel.settings.customcss.title') }}</label>
                 <textarea
                     class="form-control"
                     id="css"
                     name="css"
                     rows="5">{!!config_cache('uikit.custom.css')!!}</textarea>
             </div>
-            <button class="btn btn-primary">Save</button>
+            <button class="btn btn-primary">{{ __('admin_panel.common.save') }}</button>
         </form>
     </div>
 </div>

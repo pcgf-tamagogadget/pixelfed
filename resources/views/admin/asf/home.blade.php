@@ -6,8 +6,8 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <p class="display-1 text-white d-inline-block mb-0">Admin Shadow Filters</p>
-                    <p class="text-white mb-0">Manage shadow filters across Accounts, Hashtags, Feeds and Stories</p>
+                    <p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.asf.home.title') }}</p>
+                    <p class="text-white mb-0">{{ __('admin_panel.asf.home.subtitle') }}</p>
                 </div>
             </div>
         </div>
@@ -19,23 +19,23 @@
                 <div class="col-12 col-md-8">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link {{request()->has('filter') ? '':'active'}}" href="/i/admin/asf/home">Active Filters</a>
+                            <a class="nav-link {{request()->has('filter') ? '':'active'}}" href="/i/admin/asf/home">{{ __('admin_panel.asf.home.activeFilters') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{request()->has('filter') && request()->filter == 'all' ? 'active':''}}" href="/i/admin/asf/home?filter=all">All</a>
+                            <a class="nav-link {{request()->has('filter') && request()->filter == 'all' ? 'active':''}}" href="/i/admin/asf/home?filter=all">{{ __('admin_panel.asf.home.all') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{request()->has('filter') && request()->filter == 'inactive' ? 'active':''}}" href="/i/admin/asf/home?filter=inactive">Inactive</a>
+                            <a class="nav-link {{request()->has('filter') && request()->filter == 'inactive' ? 'active':''}}" href="/i/admin/asf/home?filter=inactive">{{ __('admin_panel.asf.home.inactive') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{request()->has('new') ? 'active':''}}" href="/i/admin/asf/create">New</a>
+                            <a class="nav-link {{request()->has('new') ? 'active':''}}" href="/i/admin/asf/create">{{ __('admin_panel.asf.home.new') }}</a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="col-12 col-md-4">
                     <form method="get">
-                        <input class="form-control" placeholder="Search by username" name="q" value="{{request()->has('q') ? request()->query('q') : ''}}" />
+                        <input class="form-control" placeholder="{{ __('admin_panel.asf.home.searchPlaceholder') }}" name="q" value="{{request()->has('q') ? request()->query('q') : ''}}" />
                     </form>
                 </div>
             </div>
@@ -44,11 +44,11 @@
                 <table class="table table-dark">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col" class="cursor-pointer">ID</th>
-                            <th scope="col" class="cursor-pointer">Username</th>
-                            <th scope="col" class="cursor-pointer">Hide Feeds</th>
-                            <th scope="col" class="cursor-pointer">Active</th>
-                            <th scope="col" class="cursor-pointer">Created</th>
+                            <th scope="col" class="cursor-pointer">{{ __('admin_panel.common.id') }}</th>
+                            <th scope="col" class="cursor-pointer">{{ __('admin_panel.common.username') }}</th>
+                            <th scope="col" class="cursor-pointer">{{ __('admin_panel.asf.home.hideFeeds') }}</th>
+                            <th scope="col" class="cursor-pointer">{{ __('admin_panel.asf.home.active') }}</th>
+                            <th scope="col" class="cursor-pointer">{{ __('admin_panel.common.created') }}</th>
                         </tr>
                     </thead>
                     <tbody>

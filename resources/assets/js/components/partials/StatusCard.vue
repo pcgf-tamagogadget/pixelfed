@@ -4,7 +4,7 @@
 		<div v-if="status.pf_type === 'text'" :class="{ 'border-top-0': !hasTopBorder }" class="card shadow-none border rounded-0">
 			<div class="card-body">
 				<div class="media">
-					<img class="rounded-circle box-shadow mr-2" :src="status.account.avatar" width="32px" height="32px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" alt="avatar">
+					<img class="rounded-circle box-shadow mr-2" :src="status.account.avatar" width="32px" height="32px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" :alt="$t('classic.statusCard.avatar')">
 					<div class="media-body">
 						<div class="pl-2 d-flex align-items-top">
 							<a class="username font-weight-bold text-dark text-decoration-none text-break" v-bind:href="profileUrl(status)" v-html="statusCardUsernameFormat(status)">
@@ -19,14 +19,14 @@
 							<span class="text-right" style="flex-grow:1;">
 								<button class="btn btn-link text-dark py-0" type="button" @click="ctxMenu()">
 									<span class="fas fa-ellipsis-h text-lighter"></span>
-									<span class="sr-only">Post Menu</span>
+									<span class="sr-only">{{ $t('classic.statusCard.postMenu') }}</span>
 								</button>
 							</span>
 						</div>
 						<div class="pl-2">
 
 							<details v-if="status.sensitive">
-								<summary class="mb-2 font-weight-bold text-muted">Content Warning</summary>
+								<summary class="mb-2 font-weight-bold text-muted">{{ $t('classic.statusCard.contentWarning') }}</summary>
 								<p v-html="status.content" class="pt-2 text-break status-content"></p>
 							</details>
 
@@ -56,24 +56,24 @@
 		<div v-else class="card rounded-0 border-top-0 status-card card-md-rounded-0 shadow-none border">
 			<div v-if="status" class="card-header d-inline-flex align-items-center bg-white">
 				<div>
-					<img class="rounded-circle box-shadow" :src="status.account.avatar" width="32px" height="32px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" alt="avatar">
+					<img class="rounded-circle box-shadow" :src="status.account.avatar" width="32px" height="32px" onerror="this.onerror=null;this.src='/storage/avatars/default.png?v=2'" :alt="$t('classic.statusCard.avatar')">
 				</div>
 				<div class="pl-2">
 					<a class="username font-weight-bold text-dark text-decoration-none text-break" v-bind:href="profileUrl(status)" v-html="statusCardUsernameFormat(status)">
 					</a>
-					<span v-if="status.account.is_admin" class="fa-stack" title="Admin Account" data-toggle="tooltip" style="height:1em; line-height:1em; max-width:19px;">
+					<span v-if="status.account.is_admin" class="fa-stack" :title="$t('classic.statusCard.adminAccount')" data-toggle="tooltip" style="height:1em; line-height:1em; max-width:19px;">
 						<i class="fas fa-certificate text-danger fa-stack-1x"></i>
 						<i class="fas fa-crown text-white fa-sm fa-stack-1x" style="font-size:7px;"></i>
 					</span>
 					<div class="d-flex align-items-center">
-						<a v-if="status.place" class="small text-decoration-none text-muted" :href="'/discover/places/'+status.place.id+'/'+status.place.slug" title="Location" data-toggle="tooltip"><i class="fas fa-map-marked-alt"></i> {{status.place.name}}, {{status.place.country}}</a>
+						<a v-if="status.place" class="small text-decoration-none text-muted" :href="'/discover/places/'+status.place.id+'/'+status.place.slug" :title="$t('classic.statusCard.location')" data-toggle="tooltip"><i class="fas fa-map-marked-alt"></i> {{status.place.name}}, {{status.place.country}}</a>
 					</div>
 				</div>
 
 				<div class="text-right" style="flex-grow:1;">
 					<button class="btn btn-link text-dark py-0" type="button" @click="ctxMenu()">
 						<span class="fas fa-ellipsis-h text-lighter"></span>
-						<span class="sr-only">Post Menu</span>
+						<span class="sr-only">{{ $t('classic.statusCard.postMenu') }}</span>
 					</button>
 				</div>
 			</div>
@@ -104,22 +104,22 @@
 				</div>
 
 				<div v-else class="w-100">
-					<p class="text-center p-0 font-weight-bold text-white">Error: Problem rendering preview.</p>
+					<p class="text-center p-0 font-weight-bold text-white">{{ $t('classic.statusCard.renderError') }}</p>
 				</div>
 
 			</div>
 
 			<div class="card-body">
 				<div v-if="reactionBar" class="reactions my-1 pb-2">
-					<h3 v-if="status.favourited" class="fas fa-heart text-danger pr-3 m-0 cursor-pointer" title="Like" v-on:click="likeStatus(status, $event);"></h3>
-					<h3 v-else class="fal fa-heart pr-3 m-0 like-btn text-dark cursor-pointer" title="Like" v-on:click="likeStatus(status, $event);"></h3>
-					<h3 v-if="!status.comments_disabled" class="fal fa-comment text-dark pr-3 m-0 cursor-pointer" title="Comment" v-on:click="commentFocus(status, $event)"></h3>
+					<h3 v-if="status.favourited" class="fas fa-heart text-danger pr-3 m-0 cursor-pointer" :title="$t('classic.statusCard.like')" v-on:click="likeStatus(status, $event);"></h3>
+					<h3 v-else class="fal fa-heart pr-3 m-0 like-btn text-dark cursor-pointer" :title="$t('classic.statusCard.like')" v-on:click="likeStatus(status, $event);"></h3>
+					<h3 v-if="!status.comments_disabled" class="fal fa-comment text-dark pr-3 m-0 cursor-pointer" :title="$t('classic.statusCard.comment')" v-on:click="commentFocus(status, $event)"></h3>
 					<span v-if="status.taggedPeople.length" class="float-right">
 						<span class="font-weight-light small" style="color:#718096">
-							<i class="far fa-user" data-toggle="tooltip" title="Tagged People"></i>
+							<i class="far fa-user" data-toggle="tooltip" :title="$t('classic.statusCard.taggedPeople')"></i>
 							<span v-for="(tag, index) in status.taggedPeople" class="mr-n2">
 								<a :href="'/'+tag.username">
-									<img :src="tag.avatar" width="20px" height="20px" class="border rounded-circle" data-toggle="tooltip" :title="'@'+tag.username" alt="Avatar">
+									<img :src="tag.avatar" width="20px" height="20px" class="border rounded-circle" data-toggle="tooltip" :title="'@'+tag.username" :alt="$t('classic.statusCard.avatar')">
 								</a>
 							</span>
 						</span>
@@ -127,11 +127,14 @@
 				</div>
 
 				<div v-if="status.liked_by.username && status.liked_by.username !== profile.username" class="likes mb-1">
-					<span class="like-count">Liked by
-						<a class="font-weight-bold text-dark" :href="status.liked_by.url">{{status.liked_by.username}}</a>
-						<span v-if="status.liked_by.others == true">
-							and <span class="font-weight-bold" v-if="status.liked_by.total_count_pretty">{{status.liked_by.total_count_pretty}}</span> <span class="font-weight-bold">others</span>
-						</span>
+					<span class="like-count">
+						<i18n v-if="status.liked_by.others == true" path="classic.statusCard.likedByOthers" tag="span">
+							<template v-slot:user><a class="font-weight-bold text-dark" :href="status.liked_by.url">{{status.liked_by.username}}</a></template>
+							<template v-slot:others><span class="font-weight-bold" v-if="status.liked_by.total_count_pretty">{{status.liked_by.total_count_pretty}}</span> <span class="font-weight-bold">{{ $t('classic.statusCard.others') }}</span></template>
+						</i18n>
+						<i18n v-else path="classic.statusCard.likedBy" tag="span">
+							<template v-slot:user><a class="font-weight-bold text-dark" :href="status.liked_by.url">{{status.liked_by.username}}</a></template>
+						</i18n>
 					</span>
 				</div>
 				<div v-if="status.pf_type != 'text'" class="caption">
@@ -148,12 +151,14 @@
 							<timeago :datetime="status.created_at" :auto-update="60" :converter-options="{includeSeconds:true}" :title="timestampFormat(status.created_at)" v-b-tooltip.hover.bottom></timeago>
 						</a>
 						<span v-else class="text-muted text-uppercase">
-							Posted <timeago :datetime="status.created_at" :auto-update="60" :converter-options="{includeSeconds:true}" :title="timestampFormat(status.created_at)" v-b-tooltip.hover.bottom></timeago>
+							<i18n path="classic.statusCard.posted" tag="span">
+								<template v-slot:time><timeago :datetime="status.created_at" :auto-update="60" :converter-options="{includeSeconds:true}" :title="timestampFormat(status.created_at)" v-b-tooltip.hover.bottom></timeago></template>
+							</i18n>
 						</span>
 
 						<span v-if="recommended">
 							<span class="px-1">&middot;</span>
-							<span class="text-muted">Based on popular and trending content</span>
+							<span class="text-muted">{{ $t('classic.statusCard.recommended') }}</span>
 						</span>
 					</p>
 				</div>
@@ -313,7 +318,7 @@
 				}).catch(err => {
 					status.favourited = !!status.favourited;
 					status.favourites_count = count;
-					swal('Error', 'Something went wrong, please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.statusCard.errorTryLater'), 'error');
 				});
 				window.navigator.vibrate(200);
 				if(status.favourited) {
@@ -334,7 +339,7 @@
 				let limit = this.config.uploader.max_caption_length;
 				if(comment.length > limit) {
 					this.replySending = false;
-					swal('Comment Too Long', 'Please make sure your comment is '+limit+' characters or less.', 'error');
+					swal(this.$t('classic.statusCard.commentTooLong'), this.$t('classic.statusCard.commentTooLongText', { limit: limit }), 'error');
 					return;
 				}
 				axios.post('/i/comment', {

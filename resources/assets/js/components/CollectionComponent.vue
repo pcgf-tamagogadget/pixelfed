@@ -11,11 +11,14 @@
 						<i class="far fa-exclamation-triangle fa-3x mr-3"></i>
 						<div class="media-body">
 							<p class="font-weight-bold mb-0">
-								This collection is unpublished.
+								{{ $t('classic.collection.unpublished') }}
 							</p>
 							<p class="small mb-0">
-								This collection is not visible to anyone else until you publish it. <br />
-								To publish, click on the <strong>Edit</strong> button and then click on the <strong>Publish</strong> button.
+								{{ $t('classic.collection.notVisible') }} <br />
+								<i18n path="classic.collection.howToPublish" tag="span">
+									<template v-slot:edit><strong>{{ $t('classic.collection.edit') }}</strong></template>
+									<template v-slot:publish><strong>{{ $t('classic.collection.publish') }}</strong></template>
+								</i18n>
 							</p>
 						</div>
 					</div>
@@ -28,7 +31,7 @@
 			<div class="d-flex align-items-center justify-content-center overflow-hidden">
 				<div class="dims"></div>
 				<div style="z-index:500;position: absolute;" class="text-white mx-5">
-					<p class="text-center pt-3 text-break" style="font-size: 3rem;line-height: 3rem;">{{title || 'Untitled Collection'}}</p>
+					<p class="text-center pt-3 text-break" style="font-size: 3rem;line-height: 3rem;">{{title || $t('classic.collection.untitled')}}</p>
 					<div class="text-center mb-3 text-break read-more" style="overflow-y: hidden">{{description}}</div>
 					<p class="text-center">
 
@@ -38,35 +41,35 @@
 								class="btn btn-outline-light btn-sm text-capitalize py-0"
 								style="font-size: 10px"
 								>
-								<i class="far fa-lock"></i> Draft
+								<i class="far fa-lock"></i> {{ $t('classic.collection.draft') }}
 							</span>
 							<span
 								v-else-if="collection.visibility == 'private'"
 								class="btn btn-outline-light btn-sm text-capitalize py-0"
 								style="font-size: 10px"
 								>
-								Followers Only
+								{{ $t('classic.collection.followersOnly') }}
 							</span>
 							<span>·</span>
 						</span>
-						<span>{{collection.post_count}} posts</span>
+						<span>{{ $t('classic.collection.postsCount', { count: collection.post_count }) }}</span>
 						<span>·</span>
-						<span>by <a :href="'/' + profileUsername" class="font-weight-bold text-white">{{profileUsername}}</a></span>
+						<i18n path="classic.collection.by" tag="span"><template v-slot:user><a :href="'/' + profileUsername" class="font-weight-bold text-white">{{profileUsername}}</a></template></i18n>
 					</p>
 					<p v-if="owner == true" class="pt-3 text-center">
 						<span>
 							<button class="btn btn-outline-light btn-sm" @click.prevent="addToCollection" onclick="this.blur();">
-								<span v-if="loadingPostList == false">Add Photo</span>
+								<span v-if="loadingPostList == false">{{ $t('classic.collection.addPhoto') }}</span>
 								<span v-else class="px-4">
 									<div class="spinner-border spinner-border-sm" role="status">
-									  <span class="sr-only">Loading...</span>
+									  <span class="sr-only">{{ $t('common.loading') }}</span>
 									</div>
 								</span>
 							</button>
 							 &nbsp; &nbsp;
-							<button class="btn btn-outline-light btn-sm" @click.prevent="editCollection" onclick="this.blur();">Edit</button>
+							<button class="btn btn-outline-light btn-sm" @click.prevent="editCollection" onclick="this.blur();">{{ $t('classic.collection.edit') }}</button>
 							 &nbsp; &nbsp;
-							<button class="btn btn-outline-light btn-sm" @click.prevent="deleteCollection">Delete</button>
+							<button class="btn btn-outline-light btn-sm" @click.prevent="deleteCollection">{{ $t('classic.collection.delete') }}</button>
 						</span>
 					</p>
 				</div>
@@ -153,7 +156,7 @@
 						<div class="card card-body shadow-none border">
 							<div class="d-flex justify-content-center align-items-center flex-column">
 								<b-spinner variant="muted" />
-								<p class="text-lighter small mt-2 mb-0">Loading more...</p>
+								<p class="text-lighter small mt-2 mb-0">{{ $t('classic.collection.loadingMore') }}</p>
 							</div>
 						</div>
 					</intersect>
@@ -162,28 +165,28 @@
 			<!-- </masonry> -->
 		</div>
 	</div>
-	<b-modal ref="editModal" id="edit-modal" hide-footer centered title="Edit Collection" body-class="">
+	<b-modal ref="editModal" id="edit-modal" hide-footer centered :title="$t('classic.collection.editCollection')" body-class="">
 		<form>
 			<div class="form-group">
-				<label for="title" class="font-weight-bold text-muted">Title</label>
-				<input type="text" class="form-control" id="title" placeholder="Untitled Collection" v-model="title" maxlength="50">
+				<label for="title" class="font-weight-bold text-muted">{{ $t('classic.collection.title') }}</label>
+				<input type="text" class="form-control" id="title" :placeholder="$t('classic.collection.untitled')" v-model="title" maxlength="50">
                 <div class="text-right small text-muted">
                     <span>{{title ? title.length : 0}}/50</span>
                 </div>
 			</div>
 			<div class="form-group">
-				<label for="description" class="font-weight-bold text-muted">Description</label>
-				<textarea class="form-control" id="description" placeholder="Add a description here ..." v-model="description" rows="3" maxlength="500"></textarea>
+				<label for="description" class="font-weight-bold text-muted">{{ $t('classic.collection.description') }}</label>
+				<textarea class="form-control" id="description" :placeholder="$t('classic.collection.descriptionPlaceholder')" v-model="description" rows="3" maxlength="500"></textarea>
                 <div class="text-right small text-muted">
                     <span>{{description ? description.length : 0}}/500</span>
                 </div>
 			</div>
 			<div class="form-group">
-				<label for="visibility" class="font-weight-bold text-muted">Visibility</label>
+				<label for="visibility" class="font-weight-bold text-muted">{{ $t('classic.collection.visibility') }}</label>
 				<select class="custom-select" v-model="visibility">
-					<option value="public">Public</option>
-					<option value="private">Followers Only</option>
-					<option value="draft">Draft</option>
+					<option value="public">{{ $t('classic.collection.public') }}</option>
+					<option value="private">{{ $t('classic.collection.followersOnly') }}</option>
+					<option value="draft">{{ $t('classic.collection.draft') }}</option>
 				</select>
 			</div>
 			<div class="d-flex justify-content-between align-items-center pt-3">
@@ -191,7 +194,7 @@
 					class="text-primary font-weight-bold text-decoration-none"
 					href="#"
 					@click.prevent="showEditPhotosModal">
-					Edit Photos
+					{{ $t('classic.collection.editPhotos') }}
 				</a>
 
 				<div v-if="collection.published_at">
@@ -199,7 +202,7 @@
 						type="button"
 						class="btn btn-primary btn-sm py-1 font-weight-bold px-3 float-right"
 						@click.prevent="updateCollection">
-						Save
+						{{ $t('classic.collection.save') }}
 					</button>
 				</div>
 
@@ -209,30 +212,30 @@
 						type="button"
 						class="btn btn-outline-primary btn-sm py-1 font-weight-bold px-3"
 						@click.prevent="publishCollection">
-						Publish
+						{{ $t('classic.collection.publish') }}
 					</button>
 
 					<button
 						v-else
 						type="button"
 						class="btn btn-outline-primary btn-sm py-1 font-weight-bold px-3 disabled" disabled>
-						Publish
+						{{ $t('classic.collection.publish') }}
 				    </button>
 
 					<button
 						type="button"
 						class="btn btn-primary btn-sm py-1 font-weight-bold px-3"
 						@click.prevent="updateCollection">
-						Save
+						{{ $t('classic.collection.save') }}
 					</button>
 				</div>
 			</div>
 		</form>
 	</b-modal>
 
-	<b-modal ref="addPhotoModal" id="add-photo-modal" hide-footer centered title="Add Photo" body-class="m-3">
+	<b-modal ref="addPhotoModal" id="add-photo-modal" hide-footer centered :title="$t('classic.collection.addPhoto')" body-class="m-3">
 		<div class="form-group">
-			<label for="title" class="font-weight-bold text-muted">Add Recent Post</label>
+			<label for="title" class="font-weight-bold text-muted">{{ $t('classic.collection.addRecentPost') }}</label>
 			<div class="row m-1" v-if="postsList.length > 0" style="max-height: 360px; overflow-y: auto;">
 				<div v-for="(p, index) in postsList" :key="'postList-'+index" class="col-4 p-1 cursor-pointer" @click="addRecentId(p)">
 					<div class="square border">
@@ -246,26 +249,26 @@
 		</div>
 		<form>
 			<div class="form-group">
-				<label for="title" class="font-weight-bold text-muted">Add Post by URL</label>
+				<label for="title" class="font-weight-bold text-muted">{{ $t('classic.collection.addPostByUrl') }}</label>
 				<input type="text" class="form-control" placeholder="https://pixelfed.dev/p/admin/1" v-model="photoId">
-				<p class="help-text small text-muted">Only local, public posts can be added</p>
+				<p class="help-text small text-muted">{{ $t('classic.collection.onlyLocalPublic') }}</p>
 			</div>
 			<button type="button" class="btn btn-primary btn-sm py-1 font-weight-bold px-3 float-right" @click.prevent="pushId">
 				<span v-if="addingPostToCollection" class="px-4">
 					<div class="spinner-border spinner-border-sm" role="status">
-						<span class="sr-only">Loading...</span>
+						<span class="sr-only">{{ $t('common.loading') }}</span>
 					</div>
 				</span>
 				<span v-else>
-					Add Photo
+					{{ $t('classic.collection.addPhoto') }}
 				</span>
 			</button>
 		</form>
 	</b-modal>
 
-	<b-modal ref="editPhotosModal" id="edit-photos-modal" hide-footer centered title="Edit Collection Photos" body-class="m-3">
+	<b-modal ref="editPhotosModal" id="edit-photos-modal" hide-footer centered :title="$t('classic.collection.editCollectionPhotos')" body-class="m-3">
 		<div class="form-group">
-			<p class="font-weight-bold text-dark text-center">Select a Photo to Delete</p>
+			<p class="font-weight-bold text-dark text-center">{{ $t('classic.collection.selectPhotoToDelete') }}</p>
 			<div class="row m-1 scrollbar-hidden" v-if="posts.length > 0" style="max-height: 350px;overflow-y: auto;">
 				<div v-for="(p, index) in posts" :key="'plm-'+index" class="col-4 p-1 cursor-pointer">
 					<div :class="[markedForDeletion.indexOf(p.id) == -1 ? 'square' : 'square  delete-border']" @click="markPhotoForDeletion(p.id)">
@@ -274,7 +277,7 @@
 				</div>
 			</div>
 			<div v-show="markedForDeletion.length > 0">
-				<button type="button" @click.prevent="confirmDeletion" class="btn btn-primary font-weight-bold py-0 btn-block mb-0 mt-4">Delete {{markedForDeletion.length}} {{markedForDeletion.length == 1 ? 'photo':'photos'}}</button>
+				<button type="button" @click.prevent="confirmDeletion" class="btn btn-primary font-weight-bold py-0 btn-block mb-0 mt-4">{{ markedForDeletion.length == 1 ? $t('classic.collection.deletePhoto', { count: markedForDeletion.length }) : $t('classic.collection.deletePhotos', { count: markedForDeletion.length }) }}</button>
 			</div>
 		</div>
 	</b-modal>
@@ -466,7 +469,7 @@ export default {
 					self.$refs.addPhotoModal.show();
 				}).catch(err => {
 					self.loadingPostList = false;
-					swal('An Error Occured', 'We cannot process your request at this time, please try again later.', 'error');
+					swal(self.$t('classic.collection.errorOccured'), self.$t('classic.collection.cannotProcess'), 'error');
 				})
 			} else {
 				this.$refs.addPhotoModal.show();
@@ -479,19 +482,19 @@ export default {
 			let addingPostToCollection = true;
 			let self = this;
 			if(this.posts.length >= max) {
-				swal('Error', 'You can only add ' + max + ' posts per collection', 'error');
+				swal(this.$t('common.error'), this.$t('classic.collection.maxPosts', { max: max }), 'error');
 				return;
 			}
 			let url = this.photoId;
 			let origin = window.location.origin;
 			let split = url.split('/');
 			if(url.slice(0, origin.length) !== origin) {
-				swal('Invalid URL', 'You can only add posts from this instance', 'error');
+				swal(this.$t('classic.collection.invalidUrl'), this.$t('classic.collection.onlyThisInstance'), 'error');
 				this.photoId = '';
 			}
 
             if(!url.includes('/i/web/post/') && !url.includes('/p/')) {
-                swal('Invalid URL', 'Invalid URL', 'error');
+                swal(this.$t('classic.collection.invalidUrl'), this.$t('classic.collection.invalidUrl'), 'error');
                 this.photoId = '';
                 return;
             }
@@ -507,7 +510,7 @@ export default {
 				self.collection.post_count++;
 				self.id = '';
 			}).catch(err => {
-				swal('Invalid URL', 'The post you entered was invalid', 'error');
+				swal(this.$t('classic.collection.invalidUrl'), this.$t('classic.collection.invalidPost'), 'error');
 				this.photoId = '';
 			});
 			self.$refs.addPhotoModal.hide();
@@ -523,7 +526,7 @@ export default {
 				return;
 			}
 
-			let confirmed = window.confirm('Are you sure you want to delete this collection?');
+			let confirmed = window.confirm(this.$t('classic.collection.confirmDeleteCollection'));
 			if(confirmed) {
 				axios.delete('/api/local/collection/' + this.collectionId)
 				.then(res => {
@@ -536,7 +539,7 @@ export default {
 
 		publishCollection() {
 			if (this.posts.length === 0) {
-				swal('Error', 'You cannot publish an empty collection');
+				swal(this.$t('common.error'), this.$t('classic.collection.emptyPublish'));
 				return;
 			}
 
@@ -544,7 +547,7 @@ export default {
 				return;
 			}
 
-			let confirmed = window.confirm('Are you sure you want to publish this collection?');
+			let confirmed = window.confirm(this.$t('classic.collection.confirmPublish'));
 			if(confirmed) {
 				axios.post('/api/local/collection/' + this.collectionId + '/publish', {
 					title: this.title,
@@ -555,7 +558,7 @@ export default {
 					console.log(res.data);
 					// window.location.href = res.data.url;
 				}).catch(err => {
-					swal('Something went wrong', 'There was a problem with your request, please try again later.', 'error')
+					swal(this.$t('classic.collection.somethingWentWrong'), this.$t('classic.collection.requestProblem'), 'error')
 			    });
 			} else {
 				return;
@@ -588,7 +591,7 @@ export default {
 
 		confirmDeletion() {
 			let self = this;
-			let confirmed = window.confirm('Are you sure you want to delete this?');
+			let confirmed = window.confirm(this.$t('classic.collection.confirmDelete'));
 			if(confirmed) {
 				this.markedForDeletion.forEach(mfd => {
 					axios.delete('/api/local/collection/item', {
@@ -605,8 +608,8 @@ export default {
 					})
 					.catch(err => {
 						swal(
-							'Oops!',
-							'An error occured with your request, please try again later.',
+							self.$t('common.oops'),
+							self.$t('classic.collection.requestError'),
 							'error'
 						);
 					})
@@ -636,7 +639,7 @@ export default {
 				this.ids.push(post.id);
 				this.collection.post_count++;
 			}).catch(err => {
-				swal('Oops!', 'An error occured, please try selecting another post.', 'error');
+				swal(this.$t('common.oops'), this.$t('classic.collection.selectAnother'), 'error');
 				this.photoId = '';
 			});
 		},

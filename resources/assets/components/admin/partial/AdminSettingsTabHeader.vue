@@ -37,13 +37,13 @@
             buttonLabel: {
                 get() {
                     if(this.saved) {
-                        return 'Saved';
+                        return this.$t('admin.settingsTabHeader.saved');
                     }
                     if(this.saving) {
-                        return 'Saving';
+                        return this.$t('admin.settingsTabHeader.saving');
                     }
 
-                    return 'Save';
+                    return this.$t('admin.settingsTabHeader.save');
                 }
             },
             isSaving: {

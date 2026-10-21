@@ -3,11 +3,11 @@
 @section('section')
 <div class="title d-flex justify-content-between align-items-center">
 	<div>
-		<h3 class="font-weight-bold d-inline-block">Discover Category</h3>
-		<p class="lead mb-0">ID: #{{$category->id}}</p>
+		<h3 class="font-weight-bold d-inline-block">{{ __('admin_panel.discover.show.title') }}</h3>
+		<p class="lead mb-0">{{ __('admin_panel.discover.show.id', ['id' => $category->id]) }}</p>
 	</div>
 	<div>
-		<a class="btn btn-outline-primary btn-sm py-1" href="{{route('admin.discover')}}">Back</a>
+		<a class="btn btn-outline-primary btn-sm py-1" href="{{route('admin.discover')}}">{{ __('admin_panel.common.back') }}</a>
 	</div>
 </div>
 
@@ -15,21 +15,21 @@
 
 <form class="px-md-5 cc-form" method="post">
 	<div class="form-group row">
-		<label for="categoryName" class="col-sm-2 col-form-label font-weight-bold">Name</label>
+		<label for="categoryName" class="col-sm-2 col-form-label font-weight-bold">{{ __('admin_panel.discover.show.name') }}</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="categoryName" placeholder="Nature" autocomplete="off" value="{{$category->name}}">
-			<p class="form-text small font-weight-bold text-muted">Slug: /discover/c/{{$category->slug}}</p>
+			<input type="text" class="form-control" id="categoryName" placeholder="{{ __('admin_panel.discover.show.namePlaceholder') }}" autocomplete="off" value="{{$category->name}}">
+			<p class="form-text small font-weight-bold text-muted">{{ __('admin_panel.discover.show.slug', ['path' => '/discover/c/' . $category->slug]) }}</p>
 		</div>
 	</div>
 	<div class="form-group row">
-		<label for="categoryName" class="col-sm-2 col-form-label font-weight-bold">Media ID</label>
+		<label for="categoryName" class="col-sm-2 col-form-label font-weight-bold">{{ __('admin_panel.discover.show.mediaId') }}</label>
 		<div class="col-sm-10">
 			<input type="text" class="form-control" id="categoryMedia" placeholder="1" autocomplete="off" value="{{$category->media_id}}">
-			<p class="form-text small font-weight-bold text-muted">Media ID is used for category thumbnail image</p>
+			<p class="form-text small font-weight-bold text-muted">{{ __('admin_panel.discover.show.mediaIdHelp') }}</p>
 		</div>
 	</div>
 	<div class="form-group row">
-		<label for="categoryActive" class="col-sm-2 col-form-label font-weight-bold">Active</label>
+		<label for="categoryActive" class="col-sm-2 col-form-label font-weight-bold">{{ __('admin_panel.discover.show.active') }}</label>
 		<div class="col-sm-10">
 			<div class="custom-control custom-switch pt-2">
 				<input type="checkbox" class="custom-control-input" id="categoryActive" {{$category->active ?'checked=""':''}}>
@@ -39,32 +39,32 @@
 	</div>
 
 	<div class="form-group row">
-		<label class="col-sm-2 col-form-label font-weight-bold">Rules</label>
+		<label class="col-sm-2 col-form-label font-weight-bold">{{ __('admin_panel.discover.show.rules') }}</label>
 		<div class="col-sm-10">
 			<div class="custom-control custom-switch pt-2">
 				<input type="checkbox" class="custom-control-input" id="categoryNsfw" {{!$category->no_nsfw ?'checked=""':''}}>
-				<label class="custom-control-label" for="categoryNsfw">Allow NSFW</label>
+				<label class="custom-control-label" for="categoryNsfw">{{ __('admin_panel.discover.show.allowNsfw') }}</label>
 			</div>
 			<div class="custom-control custom-switch pt-2">
 				<input type="checkbox" class="custom-control-input" id="categoryType" {{$category->photos_only ?'checked=""':''}}>
-				<label class="custom-control-label" for="categoryType">Photos Only</label>
+				<label class="custom-control-label" for="categoryType">{{ __('admin_panel.discover.show.photosOnly') }}</label>
 			</div>
 			<div class="custom-control custom-switch pt-2">
 				<input type="checkbox" class="custom-control-input" id="categoryLocal" {{$category->local_only ?'checked=""':''}}>
-				<label class="custom-control-label" for="categoryType">Local Posts Only</label>
+				<label class="custom-control-label" for="categoryType">{{ __('admin_panel.discover.show.localPostsOnly') }}</label>
 			</div>
 		</div>
 	</div>
 	<hr>
 	<div class="form-group row">
-		<label for="categoryName" class="col-sm-2 col-form-label font-weight-bold">Hashtags</label>
+		<label for="categoryName" class="col-sm-2 col-form-label font-weight-bold">{{ __('admin_panel.discover.show.hashtags') }}</label>
 		<div class="col-sm-10">
 			<input type="text" class="form-control" id="categoryTags" data-role="tagsinput" value="{{$category->hashtags()->pluck('slug')->implode(',')}}">
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="text-right">
-			<button type="submit" class="btn btn-primary btn-sm py-1 font-weight-bold">Update</button>
+			<button type="submit" class="btn btn-primary btn-sm py-1 font-weight-bold">{{ __('admin_panel.common.update') }}</button>
 		</div>
 	</div>
 </form>

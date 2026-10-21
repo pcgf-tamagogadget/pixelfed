@@ -10,7 +10,7 @@
 				<div class="col-md-6 col-lg-6">
 					<b-breadcrumb class="font-default" :items="breadcrumbItems"></b-breadcrumb>
 
-					<h1 class="font-default">Find Friends</h1>
+					<h1 class="font-default">{{ $t('spa.discoverFindFriends.title') }}</h1>
 					<!-- <p class="font-default lead">Posts from hashtags you follow</p> -->
 					<hr>
 
@@ -62,11 +62,11 @@ export default {
 			popularLoaded: false,
 			breadcrumbItems: [
 				{
-					text: 'Discover',
+					text: this.$t('navmenu.discover'),
 					href: '/i/web/discover'
 				},
 				{
-					text: 'Find Friends',
+					text: this.$t('spa.discoverFindFriends.title'),
 					active: true
 				}
 			]

@@ -27,7 +27,7 @@ $metaDescription = \App\Services\AccountService::getMetaDescription($profile->id
     <meta property="og:image:height" content="200">
     <meta property="twitter:card" content="summary">
     <meta property="profile:username" content="{{$acct}}">
-    <link href="{{$profile->permalink('.atom')}}" rel="alternate" title="{{$profile->username}} on Pixelfed" type="application/atom+xml">
+    <link href="{{$profile->permalink('.atom')}}" rel="alternate" title="{{ __('profile.page.onPixelfed', ['username' => $profile->username]) }}" type="application/atom+xml">
     <link href="{{$profile->permalink()}}" rel="alternate" type="application/activity+json">
     <meta name="application-name" content="Pixelfed">
     <meta name="generator" content="pixelfed">

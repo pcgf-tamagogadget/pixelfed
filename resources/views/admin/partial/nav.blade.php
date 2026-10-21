@@ -11,7 +11,7 @@
 							<input type="text" class="form-control" name="q" placeholder="{{__('navmenu.search')}}">
 						</div>
 					</div>
-					<button type="button" class="close" data-action="search-close" data-target="#navbar-search-main" aria-label="Close">
+					<button type="button" class="close" data-action="search-close" data-target="#navbar-search-main" aria-label="{{ __('admin_panel.common.close') }}">
 						<span aria-hidden="true">×</span>
 					</button>
 				</form>
@@ -48,14 +48,14 @@
 								<span style="width:30px;">
 									<i class="far fa-home text-light"></i>
 								</span>
-								<span class="font-weight-bold">Home</span>
+								<span class="font-weight-bold">{{ __('admin_panel.nav.home') }}</span>
 							</a>
 
 							<a href="/i/web/discover" class="dropdown-item d-flex align-items-center">
 								<span style="width:30px;">
 									<i class="far fa-compass text-light"></i>
 								</span>
-								<span class="font-weight-bold">Discover</span>
+								<span class="font-weight-bold">{{ __('admin_panel.nav.discover') }}</span>
 							</a>
 
 							<div class="dropdown-divider"></div>
@@ -64,13 +64,13 @@
 								<span style="width:30px;">
 									<i class="far fa-user text-light"></i>
 								</span>
-								<span class="font-weight-bold">Profile</span>
+								<span class="font-weight-bold">{{ __('admin_panel.nav.profile') }}</span>
 							</a>
 							<a href="/settings/home" class="dropdown-item d-flex align-items-center">
 								<span style="width:30px;">
 									<i class="far fa-cog text-light"></i>
 								</span>
-								<span class="font-weight-bold">Settings</span>
+								<span class="font-weight-bold">{{ __('admin_panel.nav.settings') }}</span>
 							</a>
 
 							<div class="dropdown-divider"></div>

@@ -1,17 +1,17 @@
 <x-mail::message>
-# Autospam Detection (#{{ $report['id'] }})
+# {{ __('emails.adminReport.autospamTitle') }} (#{{ $report['id'] }})
 
-We have detected a potential spam post. The post has been unlisted from public feeds.
-**Action is required to restore post visibility**. <br />
-Please review this report and handle accordingly.
+{{ __('emails.adminReport.autospamDetected') }}
+**{{ __('emails.adminReport.actionRequired') }}** <br />
+{{ __('emails.adminReport.pleaseReview') }}
 
 <x-mail::button :url="$url">
-Review Autospam Report
+{{ __('emails.adminReport.reviewAutospam') }}
 </x-mail::button>
 
 @if($reported_status)
 <x-mail::panel>
-<p style="font-size: 13px; color: #cccccc; text-align: center; font-weight: bold;margin-bottom: 10px;">Reported Status</p>
+<p style="font-size: 13px; color: #cccccc; text-align: center; font-weight: bold;margin-bottom: 10px;">{{ __('emails.adminReport.reportedStatus') }}</p>
 <div style="display: flex; align-items: center;gap: 10px;">
 @if(isset($reported_status['content']))
 <div style="font-size: 12px !important;">{{ strip_tags(str_replace(["\n", "\r", "\r\n"], ' ', $reported_status['content'])) }}</div>
@@ -19,10 +19,10 @@ Review Autospam Report
 </div>
 <div style="display: flex; align-items: center; justify-content: space-between;margin-top:10px;">
 <a style="font-size: 11px !important;font-weight: bold;text-decoration: none;" href="{{ url('/i/web/post/' . $reported_status['id'])}}">
-	View status
+	{{ __('emails.adminReport.viewStatus') }}
 </a>
 <p style="font-size: 11px !important;font-weight: bold;">
-	Posted {{ now()->parse($reported_status['created_at'])->diffForHumans() }}
+	{{ __('emails.adminReport.posted', ['time' => now()->parse($reported_status['created_at'])->diffForHumans()]) }}
 </p>
 </div>
 </x-mail::panel>
@@ -30,7 +30,7 @@ Review Autospam Report
 
 @if($reported_account && isset($reported_account['id']))
 <x-mail::panel>
-<p style="font-size: 13px; color: #cccccc; text-align: center; font-weight: bold;margin-bottom: 10px;">Reported Account</p>
+<p style="font-size: 13px; color: #cccccc; text-align: center; font-weight: bold;margin-bottom: 10px;">{{ __('emails.adminReport.reportedAccount') }}</p>
 
 <div style="display: flex; align-items: flex-start;gap: 10px;">
 
@@ -38,7 +38,7 @@ Review Autospam Report
 	src="{{$reported_account['avatar']}}"
 	width="50"
 	height="50"
-	alt="Avatar"
+	alt="{{ __('emails.adminReport.avatar') }}"
 	style="border-radius: 10px;min-width: 50px;flex-grow: 1;"
 	onerror="this.src='{{url('/storage/avatars/default.jpg')}}';this.onerror=null;" />
 <div>
@@ -52,13 +52,13 @@ Review Autospam Report
 </p>
 
 <div style="display: flex; align-items: center; gap: 5px;">
-<p style="font-size: 10px;margin-bottom: 0;">{{ $reported_account['statuses_count'] }} posts</p>
+<p style=\"font-size: 10px;margin-bottom: 0;\">{{ __('emails.adminReport.postsCount', ['count' => $reported_account['statuses_count']]) }}</p>
 <p style="font-size: 10px;margin-bottom: 0;">·</p>
-<p style="font-size: 10px;margin-bottom: 0;">{{ $reported_account['followers_count'] }} followers</p>
+<p style=\"font-size: 10px;margin-bottom: 0;\">{{ __('emails.adminReport.followersCount', ['count' => $reported_account['followers_count']]) }}</p>
 <p style="font-size: 10px;margin-bottom: 0;">·</p>
-<p style="font-size: 10px;margin-bottom: 0;">{{ $reported_account['following_count'] }} following</p>
+<p style=\"font-size: 10px;margin-bottom: 0;\">{{ __('emails.adminReport.followingCount', ['count' => $reported_account['following_count']]) }}</p>
 <p style="font-size: 10px;margin-bottom: 0;">·</p>
-<p style="font-size: 10px;margin-bottom: 0;">Joined {{ now()->parse($reported_account['created_at'])->diffForHumans()}}</p>
+<p style="font-size: 10px;margin-bottom: 0;">{{ __('emails.adminReport.joined', ['time' => now()->parse($reported_account['created_at'])->diffForHumans()]) }}</p>
 </div>
 
 </div>
@@ -67,7 +67,7 @@ Review Autospam Report
 @endif
 
 <p style="font-size: 12px;color: #cccccc;text-align: center;">
-This is an automated email that is intended for administrators of {{ config('pixelfed.domain.app')}}.<br />
-If you received this email by mistake, kindly disregard and delete this email.
+{{ __('emails.adminReport.footer', ['domain' => config('pixelfed.domain.app')]) }}<br />
+{{ __('emails.adminReport.footerMistake') }}
 </p>
 </x-mail::message>

@@ -1,24 +1,24 @@
 <x-mail::message>
-Hello **&commat;{{$contact->user->username}}**,
+{!! __('emails.common.helloUserComma', ['username' => '**&commat;'.e($contact->user->username).'**']) !!}
 
-You contacted the admin team of {{config('pixelfed.domain.app')}} with the following inquiry:
+{{ __('emails.contactResponse.intro', ['domain' => config('pixelfed.domain.app')]) }}
 
 <x-mail::panel>
 <i>{{Str::limit($contact->message, 80)}}</i>
 </x-mail::panel>
 
 <x-mail::button :url="$url" color="primary">
-    View Admin Response
+    {{ __('emails.contactResponse.button') }}
 </x-mail::button>
 
 <small>
-or copy and paste the following url: <a href="{{$url}}">{{$url}}</a>
+{!! __('emails.contactResponse.copyUrl', ['url' => '<a href="'.e($url).'">'.e($url).'</a>']) !!}
 </small>
 <br>
 <br>
 <br>
 <small>
-Thanks,<br>
-The {{ ucfirst(config('pixelfed.domain.app')) }} Admin Team
+{{ __('emails.common.thanks') }}<br>
+{{ __('emails.contactResponse.signature', ['domain' => ucfirst(config('pixelfed.domain.app'))]) }}
 </small>
 </x-mail::message>

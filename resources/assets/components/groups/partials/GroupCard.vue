@@ -18,7 +18,7 @@
 
             <div class="group-card-inner-copy">
                 <p class="font-weight-bold mb-0 text-dark" style="font-size: 16px;">
-                    {{ truncate(group.name || 'Untitled Group', titleLength) }}
+                    {{ truncate(group.name || $t('groups.groupListCard.untitledGroup'), titleLength) }}
                 </p>
 
                 <p class="text-muted mb-1" style="font-size: 12px;">
@@ -31,7 +31,7 @@
                     </span>
 
                     <span v-if="!group.local" class="remote-label ml-3">
-                        <i class="fal fa-globe"></i> Remote
+                        <i class="fal fa-globe"></i> {{ $t('groups.groupListCard.remote') }}
                     </span>
                 </p>
             </div>
@@ -41,7 +41,7 @@
 
             <div class="group-card-inner-cta">
                 <router-link :to="`/groups/${group.id}`" class="btn btn-light btn-block font-weight-bold">
-                    Join Group
+                    {{ $t('groups.groupCard.joinGroup') }}
                 </router-link>
             </div>
         </div>

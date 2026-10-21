@@ -10,11 +10,11 @@
             <div class="card-header font-weight-bold bg-white">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span>
-                        OAuth Clients
+                        {{ $t('classic.clients.title') }}
                     </span>
 
                     <a class="action-link" tabindex="-1" @click="showCreateClientForm">
-                        Create New Client
+                        {{ $t('classic.clients.createNew') }}
                     </a>
                 </div>
             </div>
@@ -22,15 +22,15 @@
             <div class="card-body">
                 <!-- Current Clients -->
                 <p class="mb-0 font-weight-bold text-center lead p-5" v-if="clients.length === 0">
-                    You have not created any OAuth clients.
+                    {{ $t('classic.clients.empty') }}
                 </p>
 
                 <table class="table table-borderless mb-0" v-if="clients.length > 0">
                     <thead>
                         <tr>
-                            <th>Client ID</th>
-                            <th>Name</th>
-                            <th>Secret</th>
+                            <th>{{ $t('classic.clients.clientId') }}</th>
+                            <th>{{ $t('classic.clients.name') }}</th>
+                            <th>{{ $t('classic.clients.secret') }}</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -51,20 +51,20 @@
                             <!-- Secret -->
                             <td style="vertical-align: middle;">
                                 <code v-if="client.plain_secret">{{ client.plain_secret }}</code>
-                                <span v-else class="text-muted font-italic">Hidden (only shown at creation)</span>
+                                <span v-else class="text-muted font-italic">{{ $t('classic.clients.hiddenSecret') }}</span>
                             </td>
 
                             <!-- Edit Button -->
                             <td style="vertical-align: middle;">
                                 <a class="btn btn-outline-secondary btn-sm py-1" tabindex="-1" @click="edit(client)">
-                                    Edit
+                                    {{ $t('classic.clients.edit') }}
                                 </a>
                             </td>
 
                             <!-- Delete Button -->
                             <td style="vertical-align: middle;">
                                 <a class="btn btn-outline-danger btn-sm py-1" @click.prevent="destroy(client)" href="#">
-                                    Delete
+                                    {{ $t('classic.clients.delete') }}
                                 </a>
                             </td>
                         </tr>
@@ -79,7 +79,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">
-                            Client Created
+                            {{ $t('classic.clients.clientCreated') }}
                         </h4>
 
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -87,21 +87,21 @@
 
                     <div class="modal-body">
                         <div class="alert alert-warning">
-                            <strong>Important:</strong> Copy your client secret now. It will not be shown again.
+                            <strong>{{ $t('classic.clients.important') }}</strong> {{ $t('classic.clients.copySecretNotice') }}
                         </div>
 
                         <div class="form-group">
-                            <label class="font-weight-bold">Client ID</label>
+                            <label class="font-weight-bold">{{ $t('classic.clients.clientId') }}</label>
                             <input type="text" class="form-control" :value="newClientId" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label class="font-weight-bold">Client Secret</label>
+                            <label class="font-weight-bold">{{ $t('classic.clients.clientSecret') }}</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" :value="newClientSecret" readonly ref="secretInput">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" @click="copySecret">
-                                        Copy
+                                        {{ $t('classic.clients.copy') }}
                                     </button>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal">Done</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal">{{ $t('classic.clients.done') }}</button>
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">
-                            Create Client
+                            {{ $t('classic.clients.createClient') }}
                         </h4>
 
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -130,7 +130,7 @@
                     <div class="modal-body">
                         <!-- Form Errors -->
                         <div class="alert alert-danger" v-if="createForm.errors.length > 0">
-                            <p class="mb-0"><strong>Whoops!</strong> Something went wrong!</p>
+                            <p class="mb-0"><strong>{{ $t('classic.clients.whoops') }}</strong> {{ $t('classic.clients.somethingWentWrong') }}</p>
                             <br>
                             <ul>
                                 <li v-for="error in createForm.errors">
@@ -143,72 +143,72 @@
                         <form role="form">
                             <!-- Name -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Name</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.name') }}</label>
 
                                 <div class="col-md-9">
                                     <input id="create-client-name" type="text" class="form-control" autocomplete="off"
                                                                 @keyup.enter="store" v-model="createForm.name">
 
                                     <span class="form-text text-muted">
-                                        Something your users will recognize and trust.
+                                        {{ $t('classic.clients.nameHelp') }}
                                     </span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Description</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.description') }}</label>
 
                                 <div class="col-md-9">
                                     <textarea class="form-control" rows="3"></textarea>
 
                                     <span class="form-text text-muted">
-                                        A brief description of your app
+                                        {{ $t('classic.clients.descriptionHelp') }}
                                     </span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Website</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.website') }}</label>
 
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" autocomplete="off">
 
                                     <span class="form-text text-muted">
-                                        Your website url
+                                        {{ $t('classic.clients.websiteHelp') }}
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Redirect URL -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Redirect URL</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.redirectUrl') }}</label>
 
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" name="redirect"
                                                     @keyup.enter="store" v-model="createForm.redirect">
 
                                     <span class="form-text text-muted">
-                                        Your application's authorization callback URL.
+                                        {{ $t('classic.clients.redirectUrlHelp') }}
                                     </span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Scopes</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.scopes') }}</label>
 
                                 <div class="col-md-9">
                                     <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                      <label class="custom-control-label" for="customSwitch1">Read</label>
+                                      <label class="custom-control-label" for="customSwitch1">{{ $t('classic.clients.read') }}</label>
                                     </div>
 
                                     <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                                      <label class="custom-control-label" for="customSwitch2">Write</label>
+                                      <label class="custom-control-label" for="customSwitch2">{{ $t('classic.clients.write') }}</label>
                                     </div>
 
                                     <span class="form-text text-muted">
-                                        Your application's scopes.
+                                        {{ $t('classic.clients.scopesHelp') }}
                                     </span>
                                 </div>
                             </div>
@@ -217,10 +217,10 @@
 
                     <!-- Modal Actions -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">{{ $t('classic.clients.close') }}</button>
 
                         <button type="button" class="btn btn-primary font-weight-bold" @click="store">
-                            Create
+                            {{ $t('classic.clients.create') }}
                         </button>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">
-                            Edit Client
+                            {{ $t('classic.clients.editClient') }}
                         </h4>
 
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -242,7 +242,7 @@
                     <div class="modal-body">
                         <!-- Form Errors -->
                         <div class="alert alert-danger" v-if="editForm.errors.length > 0">
-                            <p class="mb-0"><strong>Whoops!</strong> Something went wrong!</p>
+                            <p class="mb-0"><strong>{{ $t('classic.clients.whoops') }}</strong> {{ $t('classic.clients.somethingWentWrong') }}</p>
                             <br>
                             <ul>
                                 <li v-for="error in editForm.errors">
@@ -255,28 +255,28 @@
                         <form role="form">
                             <!-- Name -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Name</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.name') }}</label>
 
                                 <div class="col-md-9">
                                     <input id="edit-client-name" type="text" class="form-control"
                                                                 @keyup.enter="update" v-model="editForm.name">
 
                                     <span class="form-text text-muted">
-                                        Something your users will recognize and trust.
+                                        {{ $t('classic.clients.nameHelp') }}
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Redirect URL -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Redirect URL</label>
+                                <label class="col-md-3 col-form-label">{{ $t('classic.clients.redirectUrl') }}</label>
 
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" name="redirect"
                                                     @keyup.enter="update" v-model="editForm.redirect">
 
                                     <span class="form-text text-muted">
-                                        Your application's authorization callback URL.
+                                        {{ $t('classic.clients.redirectUrlHelp') }}
                                     </span>
                                 </div>
                             </div>
@@ -285,10 +285,10 @@
 
                     <!-- Modal Actions -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('classic.clients.close') }}</button>
 
                         <button type="button" class="btn btn-primary" @click="update">
-                            Save Changes
+                            {{ $t('classic.clients.saveChanges') }}
                         </button>
                     </div>
                 </div>
@@ -434,7 +434,7 @@
                         if (typeof error.response.data === 'object') {
                             form.errors = _.flatten(_.toArray(error.response.data.errors));
                         } else {
-                            form.errors = ['Something went wrong. Please try again.'];
+                            form.errors = [this.$t('classic.clients.genericError')];
                         }
                     });
             },
@@ -455,7 +455,7 @@
              * Destroy the given client.
              */
             destroy(client) {
-                if (!confirm('Are you sure you want to delete this OAuth client? Any applications using it will stop working immediately.')) {
+                if (!confirm(this.$t('classic.clients.confirmDelete'))) {
                     return;
                 }
 
@@ -467,7 +467,7 @@
                         if (error.response && error.response.data && error.response.data.error) {
                             alert(error.response.data.error);
                         } else {
-                            alert('Failed to delete client. Please try again.');
+                            alert(this.$t('classic.clients.deleteError'));
                         }
                     });
             }

@@ -3,7 +3,7 @@
 		<div class="card stories-card">
 			<div class="card-header bg-white">
 				<p class="mb-0 d-flex align-items-center justify-content-between">
-					<span class="text-muted font-weight-bold">Stories</span>
+					<span class="text-muted font-weight-bold">{{ $t('navmenu.stories') }}</span>
 					<a class="text-dark small" href="/account/activity">{{ $t("story.seeAll") }}</a>
 				</p>
 			</div>

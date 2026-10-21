@@ -1,13 +1,13 @@
 @php
 $id = Str::random(14);
 @endphp
-<h1 class="text-center">Before you continue.</h1>
+<h1 class="text-center">{{ __('auth.curated.step1.title') }}</h1>
 @if(config_cache('app.rules') && strlen(config_cache('app.rules')) > 5)
-<p class="lead text-center">Let's go over a few basic guidelines established by the server's administrators.</p>
+<p class="lead text-center">{{ __('auth.curated.step1.rulesLead') }}</p>
 
 @include('auth.curated-register.partials.server-rules')
 @else
-<p class="lead text-center mt-4"><span class="opacity-5">The admins have not specified any community rules, however we suggest you review the</span> <a href="/site/terms" target="_blank" class="text-white font-weight-bold">Terms of Use</a> <span class="opacity-5">and</span> <a href="/site/privacy" target="_blank" class="text-white font-weight-bold">Privacy Policy</a>.</p>
+<p class="lead text-center mt-4">{!! __('auth.curated.step1.noRules', ['terms' => '<a href="/site/terms" target="_blank" class="text-white font-weight-bold">'.e(__('auth.curated.termsOfUse')).'</a>', 'privacy' => '<a href="/site/privacy" target="_blank" class="text-white font-weight-bold">'.e(__('auth.curated.privacyPolicy')).'</a>']) !!}</p>
 @endif
 
 <div class="action-btns">
@@ -15,18 +15,18 @@ $id = Str::random(14);
         @csrf
         <input type="hidden" name="step" value="1">
         <input type="hidden" name="age_verified" id="{{$id}}-age-verified" value="">
-        <button type="button" class="btn btn-primary rounded-pill font-weight-bold btn-block flex-grow-1" onclick="onSubmit()">Accept</button>
+        <button type="button" class="btn btn-primary rounded-pill font-weight-bold btn-block flex-grow-1" onclick="onSubmit()">{{ __('auth.curated.step1.accept') }}</button>
     </form>
 
-    <a class="btn btn-outline-muted rounded-pill" href="/">Go back</a>
+    <a class="btn btn-outline-muted rounded-pill" href="/">{{ __('auth.curated.step1.goBack') }}</a>
 </div>
 
 <div class="small-links">
-    <a href="/login">Login</a>
+    <a href="/login">{{ __('auth.login') }}</a>
     <span>·</span>
-    <a href="/auth/sign_up/resend-confirmation">Re-send confirmation</a>
+    <a href="/auth/sign_up/resend-confirmation">{{ __('auth.curated.step1.resend') }}</a>
     <span>·</span>
-    <a href="{{route('help.curated-onboarding')}}" target="_blank">Help</a>
+    <a href="{{route('help.curated-onboarding')}}" target="_blank">{{ __('auth.curated.help') }}</a>
 </div>
 
 @push('scripts')
@@ -48,12 +48,12 @@ $id = Str::random(14);
 
     function promptDateOfBirth() {
         swal({
-            title: "Enter Your Date of Birth",
-            text: "We require your birthdate solely to confirm that you meet our age requirement.\n\n Rest assured, this information is not stored or used for any other purpose.",
+            title: @json(__('auth.curated.step1.dobTitle')),
+            text: @json(__('auth.curated.step1.dobText')),
             content: {
                 element: "input",
                 attributes: {
-                    placeholder: "Enter your birthday in YYYY-MM-DD format",
+                    placeholder: @json(__('auth.curated.step1.dobPlaceholder')),
                     type: "date",
                     min: '1900-01-01',
                     max: getToday(),
@@ -64,7 +64,7 @@ $id = Str::random(14);
             buttons: {
                 cancel: false,
                 confirm: {
-                    text: 'Confirm Birthdate',
+                    text: @json(__('auth.curated.step1.dobConfirm')),
                     className: "swal-button--cancel",
                 }
             }
@@ -72,7 +72,7 @@ $id = Str::random(14);
             if (inputValue === false) return;
 
             if (inputValue === "") {
-                swal("Oops!", "You need to provide your date of birth to proceed!", "error");
+                swal(@json(__('auth.curated.step1.oops')), @json(__('auth.curated.step1.dobRequired')), "error");
                 return false;
             }
 
@@ -82,11 +82,11 @@ $id = Str::random(14);
                 // swal(`Your age is ${age}`);
                 if(age >= 120 || age <= 5) {
                     swal({
-                        title: "Ineligible to join",
-                        text: "Sorry, the birth date you provided is not valid and we cannot process your request at this time.\n\nIf you entered your birthdate incorrectly you can try again, otherwise if you attempt to bypass our minimum age requirements, your account may be suspended.",
+                        title: @json(__('auth.curated.step1.ineligible')),
+                        text: @json(__('auth.curated.step1.invalidDob')),
                         icon: "error",
                         buttons: {
-                            cancel: "I understand"
+                            cancel: @json(__('auth.curated.step1.understand'))
                         }
                     }).then(() => {
                         window.location.href = '/'
@@ -97,18 +97,18 @@ $id = Str::random(14);
                     submitAgeVerified();
                 } else {
                     swal({
-                        title: "Ineligible to join",
-                        text: `Sorry, you must be at least ${minAge} years old to join this server.`,
+                        title: @json(__('auth.curated.step1.ineligible')),
+                        text: @json(__('auth.curated.step1.tooYoung', ['age' => (int) config('pixelfed.min_registration_age', 16)])),
                         icon: "error",
                         buttons: {
-                            cancel: "I understand"
+                            cancel: @json(__('auth.curated.step1.understand'))
                         }
                     }).then(() => {
                         window.location.href = '/'
                     });
                 }
             } else {
-                swal("Invalid date format!");
+                swal(@json(__('auth.curated.step1.invalidFormat')));
                 return false;
             }
         });

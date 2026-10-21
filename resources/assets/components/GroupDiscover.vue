@@ -9,7 +9,7 @@
                 <template v-else>
                     <div class="container-fluid">
                         <div class="py-5">
-                            <h1>Discover</h1>
+                            <h1>{{ $t('groups.groupDiscover.title') }}</h1>
                         </div>
 
                         <div class="popular row">

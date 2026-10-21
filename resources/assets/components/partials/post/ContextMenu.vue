@@ -38,7 +38,7 @@
                                     <div class="icon"><i class="far"
                                             :class="[ctxMenuRelationship.muting ? 'fa-eye' : 'fa-eye-slash']"></i>
                                     </div>
-                                    <p class="text-muted mb-0">{{ ctxMenuRelationship.muting ? 'Unmute' : 'Mute' }}</p>
+                                    <p class="text-muted mb-0">{{ ctxMenuRelationship.muting ? $t('spa.contextMenu.unmute') : $t('spa.contextMenu.mute') }}</p>
                                 </div>
                             </a>
                         </div>
@@ -46,7 +46,7 @@
                             <a class="small menu-option text-danger" href="#" @click.prevent="handleBlock">
                                 <div class="action-icon-link-inline">
                                     <div class="icon"><i class="far fa-shield-alt"></i></div>
-                                    <p class="text-danger mb-0">Block</p>
+                                    <p class="text-danger mb-0">{{ $t('spa.contextMenu.block') }}</p>
                                 </div>
                             </a>
                         </div>
@@ -89,13 +89,13 @@
 
                 <a v-if="status && profile.id == status.account.id && status.visibility !== 'archived'"
                     class="list-group-item menu-option text-danger" href="#" @click.prevent="editPost(status)">
-                    Edit
+                    {{ $t('spa.contextMenu.edit') }}
                 </a>
 
                 <a v-if="status && (profile.is_admin || profile.id == status.account.id) && status.visibility !== 'archived'"
                     class="list-group-item menu-option text-danger" href="#" @click.prevent="deletePost(status)">
                     <div v-if="isDeleting" class="spinner-border spinner-border-sm" role="status">
-                        <span class="sr-only">Loading...</span>
+                        <span class="sr-only">{{ $t('common.loading') }}</span>
                     </div>
                     <div v-else>
                         {{ $t('common.delete') }}
@@ -153,17 +153,14 @@
                 <div class="text-center font-weight-bold text-danger">{{ $t('menu.moderationTools') }}</div>
                 <div class="small text-center text-muted">{{ $t('menu.selectOneOption') }}</div>
                 </p>
-                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">Unlist
-                    Posts</div>
-                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">Moderation
-                    Log
-                </div>
+                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">{{ $t('spa.contextMenu.unlistPosts') }}</div>
+                <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="confirmModal()">{{ $t('spa.contextMenu.moderationLog') }}</div>
                 <div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxModOtherMenuClose()">{{
                     $t('common.cancel') }}</div>
             </div>
         </b-modal>
 
-        <b-modal ref="ctxShareModal" id="ctx-share-modal" title="Share" hide-footer hide-header centered rounded
+        <b-modal ref="ctxShareModal" id="ctx-share-modal" :title="$t('common.share')" hide-footer hide-header centered rounded
             size="sm" body-class="list-group-flush p-0 rounded text-center">
             <a class="list-group-item menu-option" href="#" @click.prevent="ctxMenuCopyLink()">
                 {{ $t('common.copyLink') }}
@@ -229,7 +226,7 @@
                 <button
                     :class="copiedEmbed ? 'btn btn-primary btn-block btn-sm py-1 font-weight-bold disabed' : 'btn btn-primary btn-block btn-sm py-1 font-weight-bold'"
                     @click="ctxCopyEmbed" :disabled="copiedEmbed">
-                    {{ copiedEmbed ? 'Embed Code Copied!' : 'Copy Embed Code' }}</button>
+                    {{ copiedEmbed ? $t('spa.contextMenu.embedCodeCopied') : $t('spa.contextMenu.copyEmbedCode') }}</button>
                 <p class="mb-0 px-2 small text-muted">{{ $t('menu.embedConfirmText') }} <a href="/site/terms">{{
                     $t('site.terms') }}</a></p>
             </div>
@@ -290,7 +287,7 @@
                         $t('common.cancel')
                     }}</button>
                 <button type="button" class="btn btn-outline-lighter border-0" style="color: rgb(0,122,255) !important;"
-                    @click.prevent="confirmModalConfirm()">Confirm</button>
+                    @click.prevent="confirmModalConfirm()">{{ $t('spa.contextMenu.confirm') }}</button>
             </div>
         </b-modal>
 
@@ -315,7 +312,7 @@ export default {
             ctxEmbedShowCaption: true,
             ctxEmbedShowLikes: false,
             ctxEmbedCompactMode: false,
-            confirmModalTitle: 'Are you sure?',
+            confirmModalTitle: this.$t('spa.contextMenu.areYouSure'),
             confirmModalIdentifer: null,
             confirmModalType: false,
             isDeleting: false,
@@ -538,7 +535,7 @@ export default {
 
         closeConfirmModal() {
             this.closeModals();
-            this.confirmModalTitle = 'Are you sure?';
+            this.confirmModalTitle = this.$t('spa.contextMenu.areYouSure');
             this.confirmModalType = false;
             this.confirmModalIdentifer = null;
         },
@@ -577,7 +574,7 @@ export default {
                 case 'addcw':
                     msg = this.$t('menu.modAddCWConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('spa.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -606,7 +603,7 @@ export default {
                 case 'remcw':
                     msg = this.$t('menu.modRemoveCWConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('spa.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -635,7 +632,7 @@ export default {
                 case 'unlist':
                     msg = this.$t('menu.modUnlistConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('spa.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -666,7 +663,7 @@ export default {
                 case 'spammer':
                     msg = this.$t('menu.modMarkAsSpammerConfirm');
                     swal({
-                        title: 'Confirm',
+                        title: this.$t('spa.contextMenu.confirm'),
                         text: msg,
                         icon: 'warning',
                         buttons: true,
@@ -746,8 +743,8 @@ export default {
             }
 
             swal({
-                title: 'Confirm Delete',
-                text: 'Are you sure you want to delete this post?',
+                title: this.$t('spa.contextMenu.confirmDelete'),
+                text: this.$t('menu.deletePostConfirm'),
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -822,8 +819,8 @@ export default {
             let curState = this.ctxMenuRelationship.muting;
 
             swal({
-                title: curState ? 'Confirm Unmute' : 'Confirm Mute',
-                text: curState ? 'Are you sure you want to unmute this account?' : 'Are you sure you want to mute this account?',
+                title: curState ? this.$t('spa.contextMenu.confirmUnmute') : this.$t('spa.contextMenu.confirmMute'),
+                text: curState ? this.$t('spa.contextMenu.unmuteConfirm') : this.$t('spa.contextMenu.muteConfirm'),
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -844,9 +841,9 @@ export default {
                             .catch(err => {
                                 this.closeModals();
                                 if (err && err.response && err.response.data && err.response.data.error) {
-                                    swal('Error', err.response.data.error, 'error');
+                                    swal(this.$t('common.error'), err.response.data.error, 'error');
                                 } else {
-                                    swal('Oops!', 'An error occured, please try again later.', 'error');
+                                    swal(this.$t('common.oops'), this.$t('spa.contextMenu.errorOccurred'), 'error');
                                 }
                             })
                     }
@@ -860,8 +857,8 @@ export default {
             let curState = this.ctxMenuRelationship.blocking;
 
             swal({
-                title: curState ? 'Confirm Unblock' : 'Confirm Block',
-                text: curState ? 'Are you sure you want to unblock this account?' : 'Are you sure you want to block this account?',
+                title: curState ? this.$t('spa.contextMenu.confirmUnblock') : this.$t('spa.contextMenu.confirmBlock'),
+                text: curState ? this.$t('spa.contextMenu.unblockConfirm') : this.$t('spa.contextMenu.blockConfirm'),
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -882,9 +879,9 @@ export default {
                             .catch(err => {
                                 this.closeModals();
                                 if (err && err.response && err.response.data && err.response.data.error) {
-                                    swal('Error', err.response.data.error, 'error');
+                                    swal(this.$t('common.error'), err.response.data.error, 'error');
                                 } else {
-                                    swal('Oops!', 'An error occured, please try again later.', 'error');
+                                    swal(this.$t('common.oops'), this.$t('spa.contextMenu.errorOccurred'), 'error');
                                 }
                             })
                     }
@@ -897,8 +894,8 @@ export default {
             }
 
             swal({
-                title: 'Unfollow',
-                text: 'Are you sure you want to unfollow ' + this.status.account.username + '?',
+                title: this.$t('profile.unfollow'),
+                text: this.$t('spa.contextMenu.unfollowConfirm', { username: this.status.account.username }),
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -916,9 +913,9 @@ export default {
                             .catch(err => {
                                 this.closeModals();
                                 if (err && err.response && err.response.data && err.response.data.error) {
-                                    swal('Error', err.response.data.error, 'error');
+                                    swal(this.$t('common.error'), err.response.data.error, 'error');
                                 } else {
-                                    swal('Oops!', 'An error occured, please try again later.', 'error');
+                                    swal(this.$t('common.oops'), this.$t('spa.contextMenu.errorOccurred'), 'error');
                                 }
                             })
                     }
@@ -937,15 +934,15 @@ export default {
                     const data = res.data;
                     if (data.id && data.pinned) {
                         this.$emit('pinned');
-                        swal('Pinned', 'Successfully pinned post to your profile', 'success');
+                        swal(this.$t('spa.contextMenu.pinned'), this.$t('spa.contextMenu.pinSuccess'), 'success');
                     } else {
-                        swal('Error', 'An error occured when attempting to pin', 'error');
+                        swal(this.$t('common.error'), this.$t('spa.contextMenu.pinError'), 'error');
                     }
                 })
                 .catch(err => {
                     this.closeModals();
                     if (err.response?.data?.error) {
-                        swal('Error', err.response?.data?.error, 'error');
+                        swal(this.$t('common.error'), err.response?.data?.error, 'error');
                     }
                 });
         },
@@ -961,15 +958,15 @@ export default {
                     const data = res.data;
                     if (data.id) {
                         this.$emit('unpinned');
-                        swal('Unpinned', 'Successfully unpinned post from your profile', 'success');
+                        swal(this.$t('spa.contextMenu.unpinned'), this.$t('spa.contextMenu.unpinSuccess'), 'success');
                     } else {
-                        swal('Error', data.error, 'error');
+                        swal(this.$t('common.error'), data.error, 'error');
                     }
                 })
                 .catch(err => {
                     this.closeModals();
                     if (err.response?.data?.error) {
-                        swal('Error', err.response?.data?.error, 'error');
+                        swal(this.$t('common.error'), err.response?.data?.error, 'error');
                     } else {
                         window.location.reload()
                     }

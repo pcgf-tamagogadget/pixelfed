@@ -3,8 +3,8 @@
 	<transition name="fade">
 		<div v-if="announcements.length" class="card border shadow-none mb-3">
 			<div class="card-header text-muted bg-white">
-				<i class="fas fa-bullhorn mr-2"></i> <span class="text-weight-light">ANNOUNCEMENTS</span>
-				<span class="float-right cursor-pointer" title="Close" @click="close"><i class="fas fa-times text-lighter"></i></span>
+				<i class="fas fa-bullhorn mr-2"></i> <span class="text-weight-light">{{ $t('classic.announcements.title') }}</span>
+				<span class="float-right cursor-pointer" :title="$t('common.close')" @click="close"><i class="fas fa-times text-lighter"></i></span>
 			</div>
 			<div class="card-body">
 				<div class="card-title mb-0">
@@ -14,13 +14,13 @@
 					<span style="font-size:13px;">{{announcement.summary}}</span>
 				</p>
 				<p class="d-flex align-items-center justify-content-between mb-0">
-					<a v-if="announcement.url" :href="announcement.url" class="small font-weight-bold mb-0">Read more</a>
+					<a v-if="announcement.url" :href="announcement.url" class="small font-weight-bold mb-0">{{ $t('common.readMore') }}</a>
 					<span v-else></span>
 					<span>
 						<span :class="[showPrev ? 'btn btn-outline-secondary btn-sm py-0':'btn btn-outline-secondary btn-sm py-0 disabled']" :disabled="showPrev == false" @click="loadPrev()">
 							<i class="fas fa-chevron-left fa-sm"></i>
 						</span>
-						<span class="btn btn-outline-success btn-sm py-0 mx-1" title="Mark as Read" data-toggle="tooltip" data-placement="bottom" @click="markAsRead()">
+						<span class="btn btn-outline-success btn-sm py-0 mx-1" :title="$t('classic.announcements.markAsRead')" data-toggle="tooltip" data-placement="bottom" @click="markAsRead()">
 							<i class="fas fa-check fa-sm"></i>
 						</span>
 						<span :class="[showNext ? 'btn btn-outline-secondary btn-sm py-0':'btn btn-outline-secondary btn-sm py-0 disabled']" :disabled="showNext == false" @click="loadNext()">
@@ -150,7 +150,7 @@ export default {
 				vm.showNext = vm.announcements.length > 1;
 			})
 			.catch(err => {
-				swal('Oops, Something went wrong', 'There was a problem with your request, please try again later.', 'error');
+				swal(this.$t('classic.announcements.errorTitle'), this.$t('classic.announcements.errorText'), 'error');
 			});
 		}
 	}

@@ -14,8 +14,8 @@
                     <a href="/">
                         <img src="/img/pixelfed-icon-white.svg" height="60px">
                     </a>
-                    <h1 class="pt-4 pb-1">Forgot Email</h1>
-                    <p class="font-weight-light pb-2">Recover your account by sending an email to an associated username</p>
+                    <h1 class="pt-4 pb-1">{{ __('auth.emailForgotPage.title') }}</h1>
+                    <p class="font-weight-light pb-2">{{ __('auth.emailForgotPage.subtitle') }}</p>
                 </div>
 
                 @if(session('status'))
@@ -40,7 +40,7 @@
                 @endif
 
                 <div class="card bg-glass">
-                    <div class="card-header bg-transparent p-3 text-center font-weight-bold" style="border-bottom:1px solid #ffffff20">{{ __('Recover Email') }}</div>
+                    <div class="card-header bg-transparent p-3 text-center font-weight-bold" style="border-bottom:1px solid #ffffff20">{{ __('auth.emailForgotPage.recoverEmail') }}</div>
 
                     <div class="card-body">
 
@@ -49,14 +49,14 @@
 
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label class="font-weight-bold small text-muted">Username</label>
+                                    <label class="font-weight-bold small text-muted">{{ __('auth.username') }}</label>
                                     <input
                                         id="username"
                                         type="text"
                                         class="form-control form-control-lg bg-glass text-white"
                                         name="username"
                                         maxlength="30"
-                                        placeholder="{{ __('Your username') }}" required>
+                                        placeholder="{{ __('auth.emailForgotPage.yourUsername') }}" required>
                                      @if ($errors->has('username') )
                                         <span class="text-danger small mb-3">
                                             <strong>{{ $errors->first('username') }}</strong>
@@ -70,7 +70,7 @@
                             <div class="form-group row pt-4 mb-0">
                                 <div class="col-md-12">
                                     <button type="button" id="sbtn" class="btn btn-primary btn-block rounded-pill font-weight-bold" onclick="event.preventDefault();handleSubmit()">
-                                        {{ __('Send Email Reminder') }}
+                                        {{ __('auth.emailForgotPage.sendReminder') }}
                                     </button>
                                 </div>
                             </div>
@@ -80,10 +80,10 @@
 
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                     <a class="btn btn-link text-white font-weight-bold text-decoration-none" href="{{ route('login') }}">
-                        <i class="far fa-long-arrow-left fa-lg mr-1"></i> {{ __('Back to Login') }}
+                        <i class="far fa-long-arrow-left fa-lg mr-1"></i> {{ __('auth.backLogin') }}
                     </a>
 
-                    <a href="{{ route('password.request') }}" class="text-white font-weight-bold text-decoration-none">Forgot password?</a>
+                    <a href="{{ route('password.request') }}" class="text-white font-weight-bold text-decoration-none">{{ __('auth.emailForgotPage.forgotPassword') }}</a>
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@
         let btn = document.getElementById('sbtn');
         btn.classList.add('disabled');
         btn.setAttribute('disabled', 'disabled');
-        btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>';
+        btn.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">' + @json(__('auth.shared.loading')) + '</span></div>';
         document.getElementById('passwordReset').submit()
     }
 </script>

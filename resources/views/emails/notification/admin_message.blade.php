@@ -1,5 +1,5 @@
 @component('mail::message')
-# Message from {{ config('pixelfed.domain.app') }}:
+# {{ __('emails.adminMessage.title', ['domain' => config('pixelfed.domain.app')]) }}
 
 
 @component('mail::panel')
@@ -9,11 +9,11 @@
 
 <br>
 
-Regards,<br>
+{{ __('emails.common.regards') }}<br>
 {{ config('pixelfed.domain.app') }}
 
 @component('mail::subcopy')
-Please do not reply to this email, this address is not monitored.
+{{ __('emails.adminMessage.doNotReply') }}
 @endcomponent
 
 @endcomponent

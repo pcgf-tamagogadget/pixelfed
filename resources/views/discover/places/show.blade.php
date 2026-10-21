@@ -29,7 +29,7 @@
                             @if(!Str::endsWith($status['media_attachments'][0]['preview_url'], 'no-preview.png'))
                             <source class="square-content" srcset="{{ $status['media_attachments'][0]['preview_url'] }}" />
                             @endif
-                            <img class="square-content" src="{{ $status['media_attachments'][0]['url'] }}" alt="{{ $status['media_attachments'][0]['description'] ?? 'Photo was not tagged with any alt text' }}" onerror="this.src='/storage/no-preview.png';this.onerror=null;" />
+                            <img class="square-content" src="{{ $status['media_attachments'][0]['url'] }}" alt="{{ $status['media_attachments'][0]['description'] ?? __('pages.discover.places.noAltText') }}" onerror="this.src='/storage/no-preview.png';this.onerror=null;" />
                         </picture>
                     </a>
                 </div>
@@ -39,10 +39,10 @@
                     <div class="text-center border rounded py-5">
                         <div class="">
                             <i class="far fa-exclamation-triangle fa-4x text-lighter mb-3"></i>
-                            <h4>No Posts Yet</h4>
-                            <p class="text-muted">There are no posts tagged at this location yet.</p>
+                            <h4>{{ __('pages.discover.places.noPosts') }}</h4>
+                            <p class="text-muted">{{ __('pages.discover.places.noPostsBody') }}</p>
                             <a href="/discover/places" class="btn btn-outline-primary font-weight-bold rounded-pill mt-2">
-                                Explore Other Places
+                                {{ __('pages.discover.places.exploreOther') }}
                             </a>
                         </div>
                     </div>

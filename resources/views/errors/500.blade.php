@@ -4,16 +4,16 @@
 <div class="container">
   <div class="error-page py-5 my-5">
   	<div class="text-center">
-		<h3 class="font-weight-bold">Something went wrong</h3>
-		<p class="lead py-3">We cannot process your request at this time, please try again later. </p>
+		<h3 class="font-weight-bold">{{ __('pages.errors.somethingWrong') }}</h3>
+		<p class="lead py-3">{{ __('pages.errors.cannotProcess') }}</p>
 		<p class="mb-0">
-			<a href="/" class="btn btn-primary font-weight-bold">Go back to timeline</a>
+			<a href="/" class="btn btn-primary font-weight-bold">{{ __('pages.errors.backToTimeline') }}</a>
 		</p>
   	</div>
   	@if($exception && $exception->getMessage())
   	<hr>
     <p class="text-center small payload text-uppercase font-weight-bold text-primary cursor-pointer" data-payload="{{encrypt('exception_report:'.$exception->getMessage()) ?? ''}}">
-    	Copy diagnostic details
+    	{{ __('pages.errors.copyDiagnostic') }}
     </p>
     @endif
   </div>
@@ -28,13 +28,13 @@
 		try {
 			App.util.clipboard(payload);
 			swal(
-				'Copied',
-				'The error details have been copied. Please share this with the administrators to help fix this issue.',
+				@json(__('pages.errors.copied')),
+				@json(__('pages.errors.copiedBody')),
 				'success'
 			);
 		} catch {
 			swal(
-				'Diagnostic Details',
+				@json(__('pages.errors.diagnosticDetails')),
 				payload,
 				'info'
 			);

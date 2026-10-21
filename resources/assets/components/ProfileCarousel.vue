@@ -8,8 +8,8 @@
             <template v-if="emptyFeed">
                 <div class="bg-dark d-flex justify-content-center align-items-center w-100 h-100">
                     <div>
-                        <h2 class="text-light">Oops! This account hasn't posted yet or is private.</h2>
-                        <a href="/" class="font-weight-bold text-muted">Go back home</a>
+                        <h2 class="text-light">{{ $t('spa.profileCarousel.emptyFeed') }}</h2>
+                        <a href="/" class="font-weight-bold text-muted">{{ $t('spa.profileCarousel.goBackHome') }}</a>
                     </div>
                 </div>
             </template>

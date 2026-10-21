@@ -50,14 +50,14 @@
                   <div class="card-body bg-warning-light p-3 ft-std">
                     <div class="badge badge-warning p-2" style="border-radius: 10px;">
                       <i class="fas fa-exclamation-triangle mr-1" aria-hidden="true"></i>
-                      <span>Warning</span>
+                      <span>{{ $t('spa.timelineStatus.warning') }}</span>
                     </div>
                     <p class="card-text mt-3" style="word-break:break-all;">
-                      This post contains the following filtered keyword{{ filteredTerms?.length > 1 ? 's' : ''}}:
+                      {{ filteredTerms?.length > 1 ? $t('spa.timelineStatus.filteredKeywords') : $t('spa.timelineStatus.filteredKeyword') }}
                       <span v-for="(term, idx) in filteredTerms" class="font-weight-bold">{{ term }}{{filteredTerms?.length === (idx + 1) ? '' : ', '}}</span>
                     </p>
                     <button class="btn btn-outline-primary font-weight-bold" @click="showHiddenStatus()" style="border-radius: 10px;">
-                      Show Content
+                      {{ $t('spa.timelineStatus.showContent') }}
                     </button>
                   </div>
                 </div>
@@ -201,7 +201,7 @@
                         .then(() => console.log("Share was successful."))
                         .catch((error) => console.log("Sharing failed", error));
                 } else {
-                    swal("Not supported", "Your current device does not support native sharing.", "error");
+                    swal(this.$t('spa.timelineStatus.notSupported'), this.$t('spa.timelineStatus.nativeShareUnsupported'), "error");
                 }
             },
 

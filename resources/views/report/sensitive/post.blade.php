@@ -6,7 +6,7 @@
   <div class="col-12 px-0 col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header lead font-weight-bold bg-white">
-        Report Sensitive Post
+        {{ __('pages.report.titles.sensitivePost') }}
       </div>
       <div class="card-body">
         <div class="row">
@@ -17,22 +17,22 @@
               <input type="hidden" name="type" value="{{request()->query('type')}}"></input>
               <input type="hidden" name="id" value="{{request()->query('id')}}"></input>
               <div class="form-group row">
-                <label class="col-sm-3 col-form-label font-weight-bold text-right">Message</label>
+                <label class="col-sm-3 col-form-label font-weight-bold text-right">{{ __('pages.report.message') }}</label>
                 <div class="col-sm-9">
-                  <textarea class="form-control" name="msg" placeholder="Add an optional message for mods/admins" rows="4"></textarea>
+                  <textarea class="form-control" name="msg" placeholder="{{ __('pages.report.messagePlaceholder') }}" rows="4"></textarea>
                 </div>
               </div>
               <hr>
               <div class="form-group row">
                 <div class="col-12">
-                  <button type="submit" class="btn btn-primary btn-block font-weight-bold">Submit</button>
+                  <button type="submit" class="btn btn-primary btn-block font-weight-bold">{{ __('pages.report.submit') }}</button>
                 </div>
               </div>
             </form>
           </div>
 
           <div class="col-12">
-            <p class="text-center small"><a class="font-weight-bold" href="/site/kb/community-guidelines">Learn more</a> about our community guidelines and policies.</p>
+            <p class="text-center small">{!! __('pages.report.learnMoreGuidelines', ['link' => '<a class="font-weight-bold" href="/site/kb/community-guidelines">'.e(__('pages.report.learnMore')).'</a>']) !!}</p>
           </div>
         </div>
       </div>

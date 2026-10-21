@@ -87,7 +87,7 @@
 									</span>
 									<span class="text-white font-weight-light" style="font-size: 14px;">{{timeago(stories[storyIndex].created_at)}}</span>
 									<span v-if="stories[storyIndex].type == 'poll'">
-										<span class="btn btn-outline-light font-weight-light btn-sm px-1 rounded py-0 ml-2">POLL</span>
+										<span class="btn btn-outline-light font-weight-light btn-sm px-1 rounded py-0 ml-2">{{ $t('compose.storyViewer.poll') }}</span>
 									</span>
 								</div>
 								<div>
@@ -140,13 +140,13 @@
 										<p
 											v-if="owner && pollResults.length"
 											class="small text-left mt-1 text-light">
-												{{ pollPercent(index) }}% - {{ pollResults[index] }} {{ pollResults[index] == 1 ? 'vote' : 'votes' }}
+												{{ pollPercent(index) }}% - {{ pollResults[index] }} {{ pollResults[index] == 1 ? $t('compose.storyViewer.vote') : $t('compose.storyViewer.votes') }}
 										</p>
 									</div>
 								</div>
 								<div v-if="owner && !showingPollResults && pollResults.length == 0" class="mt-3 text-center">
 									<button class="btn btn-light font-weight-bold" @click="showPollResults" :disabled="loadingPollResults">
-										{{ loadingPollResults ? 'Loading...' : 'View Results' }}
+										{{ loadingPollResults ? $t('common.loading') : $t('compose.storyViewer.viewResults') }}
 									</button>
 								</div>
 							</div>
@@ -156,9 +156,9 @@
 				<div v-if="!owner && stories[storyIndex] && stories[storyIndex].can_reply" class="card-footer bg-transparent border-0">
 					<div class="px-0 bottom-overlay">
 						<div class="px-3 form-group d-flex">
-							<input class="form-control bg-transparent border border-white rounded-pill text-white" :placeholder="'Reply to ' + username + '...'" v-model="composeText">
+							<input class="form-control bg-transparent border border-white rounded-pill text-white" :placeholder="$t('compose.storyViewer.replyTo', { username: username })" v-model="composeText">
 							<button class="btn btn-outline-light rounded-pill ml-2" @click="comment">
-								SEND
+								{{ $t('compose.storyViewer.send') }}
 							</button>
 						</div>
 					</div>
@@ -177,7 +177,7 @@
 			<div class="card border-0 shadow-none d-flex justify-content-center" style="background: #000;height: 90vh;">
 				<div class="card-body d-flex justify-content-center align-items-center">
 					<div class="spinner-border text-lighter" role="status">
-						<span class="sr-only">Loading...</span>
+						<span class="sr-only">{{ $t('common.loading') }}</span>
 					</div>
 				</div>
 			</div>
@@ -192,12 +192,12 @@
 					<div class="w-100 h-100 d-flex justify-content-center align-items-center">
 						<div class="text-center">
 							<img :src="profile.avatar" width="120" height="120" class="rounded-circle border mb-3 shadow">
-							<p class="lead text-lighter mb-1">View as <span class="text-white">{{profile.username}}</span></p>
-							<p class="text-lighter font-weight-lighter px-md-5 py-3">
-								<span class="text-white font-weight-bold">{{account.acct}}</span> will be able to see that you viewed their story.
-							</p>
-							<button class="btn btn-outline-lighter rounded-pill py-1 font-weight-bold" @click="confirmViewStory">View Story</button>
-							<button class="btn btn-outline-lighter rounded-pill py-1 font-weight-bold" @click="cancelViewStory">Cancel</button>
+							<i18n path="compose.storyViewer.viewAs" tag="p" class="lead text-lighter mb-1"><template v-slot:username><span class="text-white">{{profile.username}}</span></template></i18n>
+							<i18n path="compose.storyViewer.willSeeViewed" tag="p" class="text-lighter font-weight-lighter px-md-5 py-3">
+								<template v-slot:account><span class="text-white font-weight-bold">{{account.acct}}</span></template>
+							</i18n>
+							<button class="btn btn-outline-lighter rounded-pill py-1 font-weight-bold" @click="confirmViewStory">{{ $t('compose.storyViewer.viewStory') }}</button>
+							<button class="btn btn-outline-lighter rounded-pill py-1 font-weight-bold" @click="cancelViewStory">{{ $t('common.cancel') }}</button>
 						</div>
 					</div>
 				</div>
@@ -244,7 +244,7 @@
 
 		<b-modal ref="viewersModal"
 			id="viewers"
-			title="Viewers"
+			:title="$t('compose.storyViewer.viewers')"
 			header-class="border-0"
 			hide-footer
 			centered
@@ -267,10 +267,10 @@
 					</div>
 				</div>
 				<div v-if="viewers.length == 0" class="list-group-item text-center text-dark font-weight-light py-5">
-					No viewers yet
+					{{ $t('compose.storyViewer.noViewers') }}
 				</div>
 				<div v-if="viewersHasMore" class="list-group-item text-center border-bottom-0">
-					<button class="btn btn-light font-weight-bold border rounded-pill" @click="viewersLoadMore">Load More</button>
+					<button class="btn btn-light font-weight-bold border rounded-pill" @click="viewersLoadMore">{{ $t('compose.storyViewer.loadMore') }}</button>
 				</div>
 				<div class="list-group-item text-center rounded cursor-pointer text-muted" @click="closeViewersModal">{{ $t("story.close")}}</div>
 			</div>
@@ -285,16 +285,16 @@
 			size="sm"
 			body-class="list-group-flush p-0 rounded">
 			<p class="py-2 px-3 mb-0">
-				<div class="text-center font-weight-bold text-danger">Report</div>
-				<div class="small text-center text-muted">Select one of the following options</div>
+				<div class="text-center font-weight-bold text-danger">{{ $t('compose.common.report') }}</div>
+				<div class="small text-center text-muted">{{ $t('compose.common.selectOption') }}</div>
 			</p>
 			<div class="list-group text-center">
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('spam')">Spam</div>
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('sensitive')">Sensitive Content</div>
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('abusive')">Abusive or Harmful</div>
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="openCtxReportOtherMenu()">Other</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('spam')">{{ $t('compose.common.reasons.spam') }}</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('sensitive')">{{ $t('compose.common.reasons.sensitive') }}</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('abusive')">{{ $t('compose.common.reasons.abusive') }}</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="openCtxReportOtherMenu()">{{ $t('compose.common.reasons.other') }}</div>
 				<!-- <div class="list-group-item rounded cursor-pointer" @click="ctxReportMenuGoBack()">Go Back</div> -->
-				<div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportMenuGoBack()">Cancel</div>
+				<div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportMenuGoBack()">{{ $t('common.cancel') }}</div>
 			</div>
 		</b-modal>
 
@@ -307,18 +307,18 @@
 			size="sm"
 			body-class="list-group-flush p-0 rounded">
 			<p class="py-2 px-3 mb-0">
-				<div class="text-center font-weight-bold text-danger">Report</div>
-				<div class="small text-center text-muted">Select one of the following options</div>
+				<div class="text-center font-weight-bold text-danger">{{ $t('compose.common.report') }}</div>
+				<div class="small text-center text-muted">{{ $t('compose.common.selectOption') }}</div>
 			</p>
 			<div class="list-group text-center">
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('underage')">Underage Account</div>
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('copyright')">Copyright Infringement</div>
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('impersonation')">Impersonation</div>
-				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('scam')">Scam or Fraud</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('underage')">{{ $t('compose.common.reasons.underage') }}</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('copyright')">{{ $t('compose.common.reasons.copyright') }}</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('impersonation')">{{ $t('compose.common.reasons.impersonation') }}</div>
+				<div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('scam')">{{ $t('compose.common.reasons.scam') }}</div>
 				<!-- <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('terrorism')">Terrorism Related</div> -->
 				<!-- <div class="list-group-item rounded cursor-pointer font-weight-bold" @click="sendReport('other')">Other or Not listed</div> -->
 				<!-- <div class="list-group-item rounded cursor-pointer" @click="ctxReportOtherMenuGoBack()">Go Back</div> -->
-				<div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportOtherMenuGoBack()">Cancel</div>
+				<div class="list-group-item rounded cursor-pointer text-lighter" @click="ctxReportOtherMenuGoBack()">{{ $t('common.cancel') }}</div>
 			</div>
 		</b-modal>
 	</div>
@@ -558,7 +558,7 @@
 					}, 2000);
 				}).catch(err => {
 					this.activeReactionEmoji = false;
-					swal('Error', 'An error occured when attempting to react to this story. Please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('compose.storyViewer.reactError'), 'error');
 				});
 			},
 
@@ -582,7 +582,7 @@
 					}, 2000);
 				}).catch(err => {
 					this.activeReply = false;
-					swal('Error', 'An error occured when attempting to reply to this story. Please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('compose.storyViewer.replyError'), 'error');
 				});
 			},
 
@@ -592,7 +592,7 @@
 
 			backToFeed() {
 				if(this.composeText) {
-					swal('Are you sure you want to leave without sending this reply?')
+					swal(this.$t('compose.storyViewer.leaveConfirm'))
 					.then(confirm => {
 						if(confirm) {
 							window.location.href = this.redirectOnEnd;
@@ -708,7 +708,7 @@
 						this.viewersHasMore = false;
 					}
 				}).catch(err => {
-					swal('Cannot load viewers', 'Cannot load viewers of this story, please try again later.', 'error');
+					swal(this.$t('compose.storyViewer.cannotLoadViewers'), this.$t('compose.storyViewer.cannotLoadViewersMsg'), 'error');
 				})
 			},
 
@@ -729,7 +729,7 @@
 					this.viewers.push(...res.data);
 					this.viewerPage++;
 				}).catch(err => {
-					swal('Cannot load viewers', 'Cannot load viewers of this story, please try again later.', 'error');
+					swal(this.$t('compose.storyViewer.cannotLoadViewers'), this.$t('compose.storyViewer.cannotLoadViewersMsg'), 'error');
 				});
 			},
 
@@ -739,7 +739,7 @@
 
 			deleteStory() {
 				this.closeCtxMenu();
-				if(!window.confirm('Are you sure you want to delete this story?')) {
+				if(!window.confirm(this.$t('compose.storyViewer.deleteConfirm'))) {
 					this.pause();
 					return;
 				}
@@ -802,8 +802,8 @@
 				let id = this.stories[this.storyIndex].id;
 
 				swal({
-					'title': 'Confirm Report',
-					'text': 'Are you sure you want to report this post?',
+					'title': this.$t('compose.common.confirmReport'),
+					'text': this.$t('compose.common.reportConfirmPost'),
 					'icon': 'warning',
 					'buttons': true,
 					'dangerMode': true
@@ -814,12 +814,12 @@
 							'id': id,
 						}).then(res => {
 							this.closeMenus();
-							swal('Report Sent!', 'We have successfully received your report', 'success');
+							swal(this.$t('compose.common.reportSent'), this.$t('compose.common.reportReceived'), 'success');
 						}).catch(err => {
 							if(err.response.status === 409) {
-								swal('Already reported', 'You have already reported this story', 'info');
+								swal(this.$t('compose.storyViewer.alreadyReported'), this.$t('compose.storyViewer.alreadyReportedMsg'), 'info');
 							} else {
-								swal('Oops!', 'There was an issue reporting this story', 'error');
+								swal(this.$t('common.oops'), this.$t('compose.storyViewer.reportIssue'), 'error');
 							}
 						})
 					} else {

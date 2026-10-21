@@ -5,20 +5,20 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-7">
             <div class="logo">
-                <img src="{{ config('app.logo') }}" width="40" height="40" alt="Pixelfed Logo">
+                <img src="{{ config('app.logo') }}" width="40" height="40" alt="{{ __('auth.curated.logoAlt') }}">
                 <p class="font-weight-bold mb-0">Pixelfed</p>
             </div>
 
             @include('auth.curated-register.partials.progress-bar', ['step' => 4])
 
             <p class="text-center"><i class="fal fa-check-circle text-success fa-8x"></i></p>
-            <h1 class="text-center font-weight-bold my-4">Succesfully Sent Response!</h1>
-            <p class="h4 text-center"><span class="font-weight-bold">Our admin team will review your application.</span></p>
+            <h1 class="text-center font-weight-bold my-4">{{ __('auth.curated.responseSent') }}</h1>
+            <p class="h4 text-center"><span class="font-weight-bold">{{ __('auth.curated.adminWillReview') }}</span></p>
             <hr class="border-dark">
-            <p class="lead text-center">Most applications are processed within 24-48 hours. We will send you an email once your account is ready!</p>
-            <p class="text-muted text-center">If we need any additional information, we will send you an automated request with a link that you can visit and provide further details to help process your application.</p>
+            <p class="lead text-center">{{ __('auth.curated.processingTime') }}</p>
+            <p class="text-muted text-center">{{ __('auth.curated.additionalInfoHint') }}</p>
             <hr class="border-dark">
-            <p class="text-muted small text-center">For additional information, please see our <a href="{{ route('help.curated-onboarding') }}" style="font-weight: 600;">Curated Onboarding</a> Help Center page.</p>
+            <p class="text-muted small text-center">{!! __('auth.curated.helpCenterHint', ['link' => '<a href="'.e(route('help.curated-onboarding')).'" style="font-weight: 600;">'.e(__('auth.curated.curatedOnboarding')).'</a>']) !!}</p>
         </div>
     </div>
 </div>

@@ -12,7 +12,7 @@
 				<div class="bg-light rounded-circle d-flex justify-content-center align-items-center mb-3" style="width: 100px;height: 100px;">
 					<i class="far fa-user-plus fa-2x text-lighter"></i>
 				</div>
-				<p class="h4 font-weight-bold mb-0">Invite Friends</p>
+				<p class="h4 font-weight-bold mb-0">{{ $t('groups.groupInviteModal.inviteFriends') }}</p>
 				<!-- <p class="mb-0">Search {{ group.name }} for posts, comments or members.</p> -->
 			</div>
 
@@ -20,8 +20,8 @@
 				<div v-if="usernames.length < 5" class="d-flex justify-content-between mt-1">
 					<autocomplete
 						:search="autocompleteSearch"
-						placeholder="Search friends by username"
-						aria-label="Search this group"
+						:placeholder="$t('groups.groupInviteModal.searchPlaceholder')"
+						:aria-label="$t('groups.groupInviteModal.searchAriaLabel')"
 						:get-result-value="getSearchResultValue"
 						:debounceTime="700"
 						@submit="onSearchSubmit"
@@ -63,11 +63,11 @@
 			</transition>
 
 			<transition name="fade">
-				<button v-if="usernames && usernames.length" class="btn btn-primary btn-lg btn-block font-weight-bold rounded font-weight-bold mt-3" @click="submitInvites">Invite</button>
+				<button v-if="usernames && usernames.length" class="btn btn-primary btn-lg btn-block font-weight-bold rounded font-weight-bold mt-3" @click="submitInvites">{{ $t('groups.groupInviteModal.invite') }}</button>
 			</transition>
 
 			<div class="text-center pt-3 small">
-				<p class="mb-0">You can invite up to 5 friends at a time, and 20 friends in total.</p>
+				<p class="mb-0">{{ $t('groups.groupInviteModal.inviteLimit') }}</p>
 			</div>
 		</b-modal>
 	</div>
@@ -154,14 +154,14 @@
 					this.usernames = [];
 					this.isSubmitting = false;
 					this.close();
-					swal('Success', 'Successfully sent invite(s)', 'success');
+					swal(this.$t('common.success'), this.$t('groups.groupInviteModal.invitesSent'), 'success');
 				}).catch(err => {
 					this.usernames = [];
 					this.isSubmitting = false;
 					if(err.response.status === 422) {
-						swal('Error', err.response.data.error, 'error');
+						swal(this.$t('common.error'), err.response.data.error, 'error');
 					} else {
-						swal('Oops!', 'An error occured, please try again later', 'error');
+						swal(this.$t('common.oops'), this.$t('groups.groupInviteModal.errorOccurred'), 'error');
 					}
 					this.close();
 				})

@@ -2,7 +2,7 @@
 
 @section('section')
 <div class="title">
-	<h3 class="font-weight-bold d-inline-block">Profiles</h3>
+	<h3 class="font-weight-bold d-inline-block">{{ __('admin_panel.profiles.home.title') }}</h3>
 	<span class="float-right">
 		<a class="btn btn-{{request()->input('layout')=='card'?'primary':'light'}} btn-sm" href="{{route('admin.profiles',[
 			'layout'=>'card', 
@@ -32,9 +32,9 @@
 						<input type="hidden" name="layout" value="{{request()->input('layout')}}"></input>
 						<input type="hidden" name="page" value="{{request()->input('page')}}"></input>
 						<div class="input-group input-group-sm">
-							<input class="form-control" name="search" placeholder="Filter by username" autocomplete="off" value="{{request()->input('search')}}">
+							<input class="form-control" name="search" placeholder="{{ __('admin_panel.profiles.home.filterByUsername') }}" autocomplete="off" value="{{request()->input('search')}}">
 							<div class="input-group-append">
-								<button class="btn btn-outline-primary" type="submit">Filter</button>
+								<button class="btn btn-outline-primary" type="submit">{{ __('admin_panel.profiles.home.filter') }}</button>
 							</div>
 						</div>
 					</form>
@@ -51,20 +51,20 @@
 			<span class="bulk-count font-weight-bold" data-count="0">
 				0
 			</span>
-			<span class="bulk-desc"> items selected</span>
+			<span class="bulk-desc"> {{ __('admin_panel.profiles.home.itemsSelected') }}</span>
 		</span>
 		<span class="d-inline-flex">
 			<select class="custom-select custom-select-sm font-weight-bold bulk-action">
-				<option selected disabled="">Select Bulk Action</option>
-				<option value="1" disabled="">Review (Coming in a future version)</option>
-				<option value="2">Add C/W</option>
-				<option value="3">Unlist from timelines</option>
-				<option value="4">No Autolinking</option>
-				<option value="5">Suspend</option>
-				<option value="6">Delete</option>
+				<option selected disabled="">{{ __('admin_panel.profiles.home.selectBulkAction') }}</option>
+				<option value="1" disabled="">{{ __('admin_panel.profiles.home.reviewComingSoon') }}</option>
+				<option value="2">{{ __('admin_panel.profiles.home.addCw') }}</option>
+				<option value="3">{{ __('admin_panel.profiles.home.unlistFromTimelines') }}</option>
+				<option value="4">{{ __('admin_panel.profiles.home.noAutolinking') }}</option>
+				<option value="5">{{ __('admin_panel.profiles.home.suspend') }}</option>
+				<option value="6">{{ __('admin_panel.common.delete') }}</option>
 			</select>
 			<a class="btn btn-outline-primary btn-sm ml-3 font-weight-bold apply-bulk" href="#">
-				Apply
+				{{ __('admin_panel.profiles.home.apply') }}
 			</a>
 		</span>
 	</div>
@@ -74,25 +74,25 @@
 		<thead class="bg-light">
 			<tr>
 				<th scope="col" class="border-0" width="10%">
-					<span>ID</span> 
+					<span>{{ __('admin_panel.common.id') }}</span> 
 				</th>
 				<th scope="col" class="border-0" width="15%">
-					<span>Username</span>
+					<span>{{ __('admin_panel.common.username') }}</span>
 				</th>
 				<th scope="col" class="border-0" width="20%">
-					<span>Followers</span>
+					<span>{{ __('admin_panel.profiles.home.followers') }}</span>
 				</th>
 				<th scope="col" class="border-0" width="20%">
-					<span>Likes</span>
+					<span>{{ __('admin_panel.profiles.home.likes') }}</span>
 				</th>
 				<th scope="col" class="border-0" width="20%">
-					<span>Statuses</span>
+					<span>{{ __('admin_panel.profiles.home.statuses') }}</span>
 				</th>
 				<th scope="col" class="border-0" width="10%">
-					<span>Storage</span>
+					<span>{{ __('admin_panel.profiles.home.storage') }}</span>
 				</th>
 				<th scope="col" class="border-0" width="10%">
-					<span>Actions</span>
+					<span>{{ __('admin_panel.common.actions') }}</span>
 				</th>
 			</tr>
 		</thead>
@@ -114,11 +114,11 @@
 				{{$profile->statuses()->count()}}
 			</td>
 			<td>
-				<div class="filesize" data-size="{{$profile->media()->sum('size')}}">{{$profile->media()->sum('size')}} bytes</div>
+				<div class="filesize" data-size="{{$profile->media()->sum('size')}}">{{ __('admin_panel.profiles.home.bytes', ['size' => $profile->media()->sum('size')]) }}</div>
 				
 			</td>
 			<td>
-				<a class="btn btn-outline-secondary btn-sm py-0 mr-3" href="/i/admin/profiles/edit/{{$profile->id}}">Edit</a>
+				<a class="btn btn-outline-secondary btn-sm py-0 mr-3" href="/i/admin/profiles/edit/{{$profile->id}}">{{ __('admin_panel.common.edit') }}</a>
 			</td>
 		</tr>
 		@endforeach
@@ -146,20 +146,20 @@
 				<li class="list-group-item d-flex justify-content-between text-center">
 					<div>
 						<p class="font-weight-bold mb-0 h5">{{$profile->statuses()->count()}}</p>
-						<span class="font-weight-bold text-muted" data-toggle="tooltip" title="Total Statuses"><i class="fas fa-sm fa-camera-retro"></i></span>
+						<span class="font-weight-bold text-muted" data-toggle="tooltip" title="{{ __('admin_panel.profiles.home.totalStatuses') }}"><i class="fas fa-sm fa-camera-retro"></i></span>
 					</div>
 					<div>
 						<p class="font-weight-bold mb-0 h5 filesize" data-size="{{$profile->media()->sum('size')}}">0</p>
-						<span class="font-weight-bold text-muted" data-toggle="tooltip" title="Storage space used"><i class="fas fa-sm fa-cloud-upload-alt"></i></span>
+						<span class="font-weight-bold text-muted" data-toggle="tooltip" title="{{ __('admin_panel.profiles.home.storageSpaceUsed') }}"><i class="fas fa-sm fa-cloud-upload-alt"></i></span>
 					</div>
 					<div>
 						<p class="font-weight-bold mb-0 h5">{{$profile->followers()->count()}}</p>
-						<span class="font-weight-bold text-muted" data-toggle="tooltip" title="Total Followers"><i class="fas fa-sm fa-user-plus"></i></span>	
+						<span class="font-weight-bold text-muted" data-toggle="tooltip" title="{{ __('admin_panel.profiles.home.totalFollowers') }}"><i class="fas fa-sm fa-user-plus"></i></span>	
 					</div>
 				</li>
 				<li class="list-group-item text-center">
-					<a class="btn btn-outline-primary btn-sm py-0" href="{{$profile->url()}}">View</a>
-					<a class="btn btn-outline-secondary btn-sm py-0" href="/i/admin/profiles/edit/{{$profile->id}}">Edit</a>
+					<a class="btn btn-outline-primary btn-sm py-0" href="{{$profile->url()}}">{{ __('admin_panel.common.view') }}</a>
+					<a class="btn btn-outline-secondary btn-sm py-0" href="/i/admin/profiles/edit/{{$profile->id}}">{{ __('admin_panel.common.edit') }}</a>
 				</li>
 			</ul>
 		</div>
@@ -316,8 +316,8 @@
 			return;
 		}
 		swal(
-			'Confirm', 
-			'Are you sure you want to perform this action?',
+			@json(__('admin_panel.profiles.home.confirm')), 
+			@json(__('admin_panel.profiles.home.confirmAction')),
 			'warning'
 		).then(res => {
 			console.log(action);

@@ -2,8 +2,8 @@
 
 @section('section')
   <div class="title">
-    <h3 class="font-weight-bold">System</h3>
-    <p class="lead">System information</p>
+    <h3 class="font-weight-bold">{{ __('admin_panel.settings.system.title') }}</h3>
+    <p class="lead">{{ __('admin_panel.settings.system.subtitle') }}</p>
   </div>
   <hr>
   {{-- <div class="card shadow-none border mb-4">
@@ -18,7 +18,7 @@
     </div>
   </div>
   <hr> --}}
-  <p class="h6 text-uppercase text-center">STACK</p>
+  <p class="h6 text-uppercase text-center">{{ __('admin_panel.settings.system.stack') }}</p>
   <div class="row">
   	<div class="col-12 col-md-3">
   		<div class="card shadow-none border mb-3 border-left-blue">
@@ -54,11 +54,11 @@
   	</div>
   </div>
   <hr>
-  <p class="h6 text-uppercase text-center">LATEST RELEASE</p>
+  <p class="h6 text-uppercase text-center">{{ __('admin_panel.settings.system.latestRelease') }}</p>
   <div>
     <div class="card-loading text-center">
       <div class="spinner-border" role="status">
-        <span class="sr-only">Loading…</span>
+        <span class="sr-only">{{ __('admin_panel.common.loading') }}</span>
       </div>
     </div>
     <div class="card shadow-none border card-release d-none" style="max-height: 500px;overflow-y: auto;">

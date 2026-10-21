@@ -22,5 +22,5 @@
 @endsection
 
 @push('meta')
-<meta property="og:description" content="Change Site Language">
+<meta property="og:description" content="{{ __('site.languagePage.description') }}">
 @endpush

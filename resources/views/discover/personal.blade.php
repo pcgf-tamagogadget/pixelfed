@@ -8,8 +8,8 @@ background: linear-gradient(to right, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, F
   <div class="container py-5">
     <div class="profile-details text-white">
       <div class="username-bar">
-        <p class="display-3 font-weight-lighter mb-0">My Discover</p>
-        <p class="lead font-weight-lighter">Discover posts based on hashtags you've used before</p>
+        <p class="display-3 font-weight-lighter mb-0">{{ __('pages.discover.personal.title') }}</p>
+        <p class="lead font-weight-lighter">{{ __('pages.discover.personal.subtitle') }}</p>
       </div>
     </div>
   </div>
@@ -19,14 +19,14 @@ background: linear-gradient(to right, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, F
   <div class="pt-4 d-flex justify-content-between align-items-center">
     <p>
       @if($tags->count() > 0)
-      <span class="font-weight-lighter pr-3">Related hashtags:</span> 
+      <span class="font-weight-lighter pr-3">{{ __('pages.discover.relatedHashtags') }}</span> 
       @foreach($tags as $hashtag)
         <a class="btn btn-outline-secondary btn-sm py-0 pr-2" href="{{$hashtag->url()}}">#{{$hashtag->name}}</a>
       @endforeach
       @endif
     </p>
     <p class="font-weight-lighter">
-      {{$posts->post_count}} posts
+      {{ __('pages.discover.postsCount', ['count' => $posts->post_count]) }}
     </p>
   </div>
   <div class="tag-timeline">
@@ -59,6 +59,6 @@ background: linear-gradient(to right, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, F
 @push('scripts')
 <script type="text/javascript" src="{{ mix('js/compose.js') }}"></script>
 <script type="text/javascript">
-$(document).ready(function(){new Vue({el: '#content'});});
+$(document).ready(function(){new Vue({ el: '#content', i18n: App.i18n() });});
 </script>
 @endpush

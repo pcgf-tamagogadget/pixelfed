@@ -4,21 +4,21 @@
 			<div class="col-12 col-md-3 mb-3">
 				<div class="bg-light p-3 border rounded d-flex justify-content-between align-items-center">
 					<p class="h3 font-weight-bold mb-0">124K</p>
-					<p class="font-weight-bold text-uppercase text-lighter mb-0">Posts</p>
+					<p class="font-weight-bold text-uppercase text-lighter mb-0">{{ $t('groups.groupInsights.posts') }}</p>
 				</div>
 			</div>
 
 			<div class="col-12 col-md-3 mb-3">
 				<div class="bg-light p-3 border rounded d-flex justify-content-between align-items-center">
 					<p class="h3 font-weight-bold mb-0">9K</p>
-					<p class="font-weight-bold text-uppercase text-lighter mb-0">Users</p>
+					<p class="font-weight-bold text-uppercase text-lighter mb-0">{{ $t('groups.groupInsights.users') }}</p>
 				</div>
 			</div>
 
 			<div class="col-12 col-md-3 mb-3">
 				<div class="bg-light p-3 border rounded d-flex justify-content-between align-items-center">
 					<p class="h3 font-weight-bold mb-0">1.7M</p>
-					<p class="font-weight-bold text-uppercase text-lighter mb-0">Interactions</p>
+					<p class="font-weight-bold text-uppercase text-lighter mb-0">{{ $t('groups.groupInsights.interactions') }}</p>
 				</div>
 			</div>
 		</div>
@@ -26,7 +26,7 @@
 			<div class="col-12 col-md-3 mb-3">
 				<div class="bg-light p-3 border rounded d-flex justify-content-between align-items-center">
 					<p class="h3 font-weight-bold mb-0">50</p>
-					<p class="font-weight-bold text-uppercase text-lighter mb-0">Mod Reports</p>
+					<p class="font-weight-bold text-uppercase text-lighter mb-0">{{ $t('groups.groupInsights.modReports') }}</p>
 				</div>
 			</div>
 		</div>

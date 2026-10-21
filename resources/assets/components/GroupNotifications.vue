@@ -8,7 +8,7 @@
 
                 <template v-else>
                     <div class="px-5 pt-4 pb-2">
-                        <h2 class="fw-bold">Group Notifications</h2>
+                        <h2 class="fw-bold">{{ $t('groups.groupNotifications.title') }}</h2>
                     </div>
                 </template>
             </div>

@@ -17,9 +17,9 @@
 					</p>
 
 					<div class="user-stats">
-						<div class="user-stats-item user-select-none">{{ formatCount(account.statuses_count) }} Posts</div>
-						<div class="user-stats-item user-select-none">{{ formatCount(account.followers_count) }} Followers</div>
-						<div class="user-stats-item user-select-none">{{ formatCount(account.following_count) }} Following</div>
+						<div class="user-stats-item user-select-none">{{ $t('spa.landingUserCard.postsCount', { count: formatCount(account.statuses_count) }) }}</div>
+						<div class="user-stats-item user-select-none">{{ $t('spa.landingUserCard.followersCount', { count: formatCount(account.followers_count) }) }}</div>
+						<div class="user-stats-item user-select-none">{{ $t('spa.landingUserCard.followingCount', { count: formatCount(account.following_count) }) }}</div>
 					</div>
 
 					<div v-if="account.bio" class="user-bio">

@@ -4,12 +4,12 @@
 			<div class="col-12 col-md-7">
 				<div class="card shadow-none border mt-3 rounded-lg">
 					<div class="card-header bg-white">
-						<h5 class="mb-0">About This Group</h5>
+						<h5 class="mb-0">{{ $t('groups.about.aboutThisGroup') }}</h5>
 					</div>
 					<div class="card-body">
 						<p v-if="group.description && group.description.length > 1" class="description" v-html="group.description"></p>
-						<p v-else class="description">This group does not have a description.</p>
-						<p class="mb-0 font-weight-light text-lighter">Created: {{ timestampFormat(group.created_at) }}</p>
+						<p v-else class="description">{{ $t('groups.about.noDescription') }}</p>
+						<p class="mb-0 font-weight-light text-lighter">{{ $t('groups.about.created', { date: timestampFormat(group.created_at) }) }}</p>
 					</div>
 				</div>
 			</div>
@@ -20,8 +20,8 @@
 							<i class="fal fa-globe fa-lg"></i>
 						</div>
 						<div class="fact-body">
-							<p class="fact-title">Public</p>
-							<p class="fact-subtitle">Anyone can see who's in the group and what they post.</p>
+							<p class="fact-title">{{ $t('groups.about.public') }}</p>
+							<p class="fact-subtitle">{{ $t('groups.about.publicHelp') }}</p>
 						</div>
 					</div>
 
@@ -30,8 +30,8 @@
 							<i class="fal fa-lock fa-lg"></i>
 						</div>
 						<div class="fact-body">
-							<p class="fact-title">Private</p>
-							<p class="fact-subtitle">Only members can see who's in the group and what they post.</p>
+							<p class="fact-title">{{ $t('groups.about.private') }}</p>
+							<p class="fact-subtitle">{{ $t('groups.about.privateHelp') }}</p>
 						</div>
 					</div>
 
@@ -40,8 +40,8 @@
 							<i class="fal fa-eye fa-lg"></i>
 						</div>
 						<div class="fact-body">
-							<p class="fact-title">Visible</p>
-							<p class="fact-subtitle">Anyone can find this group.</p>
+							<p class="fact-title">{{ $t('groups.about.visible') }}</p>
+							<p class="fact-subtitle">{{ $t('groups.about.visibleHelp') }}</p>
 						</div>
 					</div>
 
@@ -51,7 +51,7 @@
 						</div>
 						<div class="fact-body">
 							<p class="fact-title">Fediverse</p>
-							<p class="fact-subtitle">This group has not specified a location.</p>
+							<p class="fact-subtitle">{{ $t('groups.about.noLocation') }}</p>
 						</div>
 					</div>
 
@@ -60,8 +60,8 @@
 							<i class="fal fa-users fa-lg"></i>
 						</div>
 						<div class="fact-body">
-							<p class="fact-title"">General</p>
-							<p class="fact-subtitle">This group has not specified a category.</p>
+							<p class="fact-title"">{{ $t('groups.about.general') }}</p>
+							<p class="fact-subtitle">{{ $t('groups.about.noCategory') }}</p>
 						</div>
 					</div>
 				</div>

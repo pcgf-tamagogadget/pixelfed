@@ -16,9 +16,7 @@
 <script type="text/javascript" src="{{ mix('js/compose.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  new Vue({ 
-    el: '#content'
-  });
+  new Vue({ el: '#content', i18n: App.i18n() });
 });
 </script>
 @endpush

@@ -1,34 +1,34 @@
 @component('mail::message')
-# [#{{$verify->id}}] New Curated Onboarding Application
+# [#{{$verify->id}}] {{ __('emails.curated.adminNotify.title') }}
 
-Hello admin,
+{{ __('emails.curated.adminNotify.helloAdmin') }}
 
-**Please review this new onboarding application.**
+**{{ __('emails.curated.adminNotify.pleaseReview') }}**
 
 <x-mail::panel>
 <p>
 <small>
-Username: <strong>{{ $verify->username }}</strong>
+{{ __('emails.curated.adminNotify.username') }} <strong>{{ $verify->username }}</strong>
 </small>
 <br>
 <small>
-Email: <strong>{{ $verify->email }}</strong>
+{{ __('emails.curated.adminNotify.email') }} <strong>{{ $verify->email }}</strong>
 </small>
 </p>
 
 <hr>
 
-<small><strong>*The user provided the following reason to join:*</strong></small>
+<small><strong>*{{ __('emails.curated.adminNotify.reason') }}*</strong></small>
 <p style="font-size:9pt;">{!! nl2br(e(Str::limit($verify->reason_to_join, 300))) !!}</p>
 </x-mail::panel>
 
 <x-mail::button :url="$verify->adminReviewUrl()" color="success">
-<strong>Review Onboarding Application</strong>
+<strong>{{ __('emails.curated.adminNotify.button') }}</strong>
 </x-mail::button>
 
-Thanks,<br>
+{{ __('emails.common.thanks') }}<br>
 <a href="{{ config('app.url') }}">{{ config('pixelfed.domain.app') }}</a>
 <br>
 <hr>
-<p style="font-size:10pt;">This is an automated message, please be aware that replies to this email cannot be monitored or responded to.</p>
+<p style="font-size:10pt;">{{ __('emails.common.automated') }}</p>
 @endcomponent

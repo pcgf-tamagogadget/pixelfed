@@ -35,7 +35,7 @@
 									class="btn btn-outline-muted rounded-pill btn-sm font-weight-bold"
 									@click="goToProfile(profile)"
 									style="width:110px;">
-									View Profile
+									{{ $t('menu.viewProfile') }}
 								</button>
 								<button
 									v-else-if="account.follows"
@@ -46,7 +46,7 @@
 									<span v-if="isUpdatingFollowState && followStateIndex === index">
 										<b-spinner small />
 									</span>
-									<span v-else>Following</span>
+									<span v-else>{{ $t('profile.following') }}</span>
 								</button>
 								<button
 									v-else-if="!account.follows"
@@ -57,7 +57,7 @@
 									<span v-if="isUpdatingFollowState && followStateIndex === index">
 										<b-spinner small />
 									</span>
-									<span v-else>Follow</span>
+									<span v-else>{{ $t('profile.follow') }}</span>
 								</button>
 							</div>
 						</div>

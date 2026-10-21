@@ -7,31 +7,31 @@
 		<div class="header-body">
 			<div class="row align-items-center py-4">
 				<div class="col-lg-6 col-7">
-					<p class="display-1 text-white d-inline-block mb-0">Custom Emoji</p>
+					<p class="display-1 text-white d-inline-block mb-0">{{ __('admin_panel.customEmoji.home.title') }}</p>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Total Emoji</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.customEmoji.home.totalEmoji') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0 human-size">{{$stats['total']}}</span>
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Total Active</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.customEmoji.home.totalActive') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0 human-size">{{$stats['active']}}</span>
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Remote Emoji</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.customEmoji.home.remoteEmoji') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0 human-size">{{$stats['remote']}}</span>
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
 					<div class="mb-3">
-						<h5 class="text-light text-uppercase mb-0">Duplicate Emoji</h5>
+						<h5 class="text-light text-uppercase mb-0">{{ __('admin_panel.customEmoji.home.duplicateEmoji') }}</h5>
 						<span class="text-white h2 font-weight-bold mb-0 human-size">{{$stats['duplicate']}}</span>
 					</div>
 				</div>
@@ -40,14 +40,14 @@
 						class="btn btn-dark btn-lg px-3 mb-1"
 						href="/i/admin/custom-emoji/new">
 						<i class="far fa-plus mr-1"></i>
-						Add Custom Emoji
+						{{ __('admin_panel.customEmoji.home.addCustomEmoji') }}
 					</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-12 mt-2">
 					<p class="font-weight-light text-white small mb-0">
-						Stats are cached for 12 hours and may not reflect the latest data.<br /> To refresh the cache and view the most recent data, <a href="/i/admin/custom-emoji/home?cc=1" class="font-weight-bold text-white">click here</a>.
+						{{ __('admin_panel.customEmoji.home.statsCached') }}<br /> {!! __('admin_panel.customEmoji.home.refreshCache', ['url' => e('/i/admin/custom-emoji/home?cc=1')]) !!}
 					</p>
 				</div>
 			</div>
@@ -60,11 +60,11 @@
 		<div class="col-12 col-md-6">
 			<form method="get" class="mb-3" id="duplicate-form">
 				<input type="hidden" name="sort" value="search">
-				<input class="form-control rounded-pill" name="q" placeholder="Search by shortcode or domain name" value="{{request()->input('q')}}">
+				<input class="form-control rounded-pill" name="q" placeholder="{{ __('admin_panel.customEmoji.home.searchPlaceholder') }}" value="{{request()->input('q')}}">
 				@if($sort == 'search')
 				<div class="custom-control custom-checkbox mt-1">
 					<input type="checkbox" class="custom-control-input" id="showDuplicate" name="dups" value="1" onclick="document.getElementById('duplicate-form').submit()" {{ request()->has('dups') ? 'checked' : ''}}>
-					<label class="custom-control-label" for="showDuplicate">Show duplicate results</label>
+					<label class="custom-control-label" for="showDuplicate">{{ __('admin_panel.customEmoji.home.showDuplicateResults') }}</label>
 				</div>
 				@endif
 			</form>
@@ -72,23 +72,23 @@
 			@if($sort != 'search')
 			<ul class="nav nav-pills my-3 nav-fill">
 				<li class="nav-item">
-					<a class="nav-link {{$sort=='all'?'active':''}}" href="?sort=all">All</a>
+					<a class="nav-link {{$sort=='all'?'active':''}}" href="?sort=all">{{ __('admin_panel.customEmoji.home.all') }}</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link {{$sort=='local'?'active':''}}" href="?sort=local">Local</a>
+					<a class="nav-link {{$sort=='local'?'active':''}}" href="?sort=local">{{ __('admin_panel.customEmoji.home.local') }}</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link {{$sort=='remote'?'active':''}}" href="?sort=remote">Remote</a>
+					<a class="nav-link {{$sort=='remote'?'active':''}}" href="?sort=remote">{{ __('admin_panel.customEmoji.home.remote') }}</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link {{$sort=='duplicates'?'active':''}}" href="?sort=duplicates">Duplicates</a>
+					<a class="nav-link {{$sort=='duplicates'?'active':''}}" href="?sort=duplicates">{{ __('admin_panel.customEmoji.home.duplicates') }}</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link {{$sort=='disabled'?'active':''}}" href="?sort=disabled">Disabled</a>
+					<a class="nav-link {{$sort=='disabled'?'active':''}}" href="?sort=disabled">{{ __('admin_panel.common.disabled') }}</a>
 				</li>
 			</ul>
 			@endif
@@ -96,7 +96,7 @@
 			@if($sort == 'duplicates')
 			<div class="alert alert-warning py-2 mt-4">
 				<p class="mb-0">
-					<i class="far fa-exclamation-triangle mr-2"></i> Duplicate emoji shortcodes can lead to unpredictible results
+					<i class="far fa-exclamation-triangle mr-2"></i> {{ __('admin_panel.customEmoji.home.warning') }}
 				</p>
 			</div>
 			@endif
@@ -118,11 +118,11 @@
 						<a
 							class="btn btn-primary rounded-pill btn-sm px-2 py-1 ml-3"
 							href="/i/admin/custom-emoji/duplicates/{{$emoji->shortcode}}">
-							View duplicates
+							{{ __('admin_panel.customEmoji.home.viewDuplicates') }}
 						</a>
 						{{-- <div class="ml-3 badge badge-info">Updated {{$emoji->updated_at->diffForHumans(null, true, true)}}</div> --}}
 					@else
-						<div class="ml-3 badge badge-info">Updated {{$emoji->updated_at->diffForHumans(null, true, true)}}</div>
+						<div class="ml-3 badge badge-info">{{ __('admin_panel.customEmoji.home.updated', ['time' => $emoji->updated_at->diffForHumans(null, true, true)]) }}</div>
 
 						<form
 							class="form-inline"
@@ -132,7 +132,7 @@
 							<button
 								type="submit"
 								class="ml-3 btn btn-sm {{$emoji->disabled ? 'btn-danger' : 'btn-success'}}">
-								{{$emoji->disabled ? 'Disabled' : 'Active' }}
+								{{ $emoji->disabled ? __('admin_panel.common.disabled') : __('admin_panel.customEmoji.home.active') }}
 							</button>
 						</form>
 
@@ -157,7 +157,7 @@
 @push('scripts')
 <script type="text/javascript">
 	$('.delete-emoji').click(function(i) {
-		if(!window.confirm('Are you sure you want to delete this custom emoji?')) {
+		if(!window.confirm(@json(__('admin_panel.customEmoji.home.confirmDelete')))) {
 			return;
 		}
 		let id = i.currentTarget.getAttribute('data-id');

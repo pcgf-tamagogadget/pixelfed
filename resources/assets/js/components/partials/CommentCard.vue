@@ -12,7 +12,7 @@
 								<i class="fas fa-chevron-left fa-lg px-2"></i>
 							</div>
 							<div>
-								<p class="font-weight-bold mb-0 h5">Comments</p>
+								<p class="font-weight-bold mb-0 h5">{{ $t('classic.commentCard.comments') }}</p>
 							</div>
 							<div>
 								<i class="fas fa-cog fa-lg text-white"></i>
@@ -33,7 +33,7 @@
 							<hr>
 							<div class="postCommentsLoader text-center py-2">
 								<div class="spinner-border" role="status">
-									<span class="sr-only">Loading...</span>
+									<span class="sr-only">{{ $t('common.loading') }}</span>
 								</div>
 							</div>
 							<div class="postCommentsContainer d-none">
@@ -41,7 +41,7 @@
 									<a
 										href="#"
 										class="text-dark"
-										title="Load more comments"
+										:title="$t('classic.commentCard.loadMore')"
 										@click.prevent="loadMoreComments"
 									>
 										<svg class="bi bi-plus-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="font-size:2em;">  <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>  <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>
@@ -54,8 +54,8 @@
 											<span class="py-3">
 												<a class="text-dark font-weight-bold mr-3"  style="font-size: 13px;" :href="profileUrl(reply)" v-bind:title="reply.account.username">{{trimCaption(reply.account.username,15)}}</a>
 												<span class="text-break" style="font-size: 13px;">
-													<span class="font-italic text-muted">This comment may contain sensitive material</span>
-													<span class="text-primary cursor-pointer pl-1" @click="reply.sensitive = false;">Show</span>
+													<span class="font-italic text-muted">{{ $t('classic.commentCard.sensitiveComment') }}</span>
+													<span class="text-primary cursor-pointer pl-1" @click="reply.sensitive = false;">{{ $t('classic.commentCard.show') }}</span>
 												</span>
 											</span>
 										</div>
@@ -74,12 +74,12 @@
 											</p>
 											<p class="mb-0">
 												<a v-once class="text-muted mr-3 text-decoration-none small" style="width: 20px;" v-text="timeAgo(reply.created_at)" :href="statusUrl(reply)"></a>
-												<span v-if="reply.favourites_count" class="text-muted comment-reaction font-weight-bold mr-3 small">{{reply.favourites_count == 1 ? '1 like' : reply.favourites_count + ' likes'}}</span>
-												<span class="small text-muted comment-reaction font-weight-bold cursor-pointer" v-on:click="replyFocus(reply, index, true)">Reply</span>
+												<span v-if="reply.favourites_count" class="text-muted comment-reaction font-weight-bold mr-3 small">{{reply.favourites_count == 1 ? $t('classic.commentCard.oneLike') : $t('classic.commentCard.likesCount', { count: reply.favourites_count })}}</span>
+												<span class="small text-muted comment-reaction font-weight-bold cursor-pointer" v-on:click="replyFocus(reply, index, true)">{{ $t('classic.commentCard.reply') }}</span>
 											</p>
 											<div v-if="reply.reply_count > 0" class="cursor-pointer pb-2" v-on:click="toggleReplies(reply)">
 												<span class="show-reply-bar"></span>
-												<span class="comment-reaction small font-weight-bold">{{reply.thread ? 'Hide' : 'View'}} Replies ({{reply.reply_count}})</span>
+												<span class="comment-reaction small font-weight-bold">{{reply.thread ? $t('classic.commentCard.hideReplies', { count: reply.reply_count }) : $t('classic.commentCard.viewReplies', { count: reply.reply_count })}}</span>
 											</div>
 											<div v-if="reply.thread == true" class="comment-thread">
 												<div v-for="(s, sindex) in reply.replies" class="py-1 media" :key="'cr' + s.id + '_' + index">
@@ -96,7 +96,7 @@
 														</p>
 														<p class="mb-0">
 															<a v-once class="text-muted mr-3 text-decoration-none small" style="width: 20px;" v-text="timeAgo(s.created_at)" :href="statusUrl(s)"></a>
-															<span v-if="s.favourites_count" class="text-muted comment-reaction font-weight-bold mr-3">{{s.favourites_count == 1 ? '1 like' : s.favourites_count + ' likes'}}</span>
+															<span v-if="s.favourites_count" class="text-muted comment-reaction font-weight-bold mr-3">{{s.favourites_count == 1 ? $t('classic.commentCard.oneLike') : $t('classic.commentCard.likesCount', { count: s.favourites_count })}}</span>
 														</p>
 													</div>
 												</div>
@@ -105,7 +105,7 @@
 									</div>
 								</div>
 								<div v-if="!replies.length">
-									<p class="text-center text-muted font-weight-bold small">No comments yet</p>
+									<p class="text-center text-muted font-weight-bold small">{{ $t('classic.commentCard.noComments') }}</p>
 								</div>
 							</div>
 						</div>
@@ -119,7 +119,7 @@
 								<textarea
 									class="form-control rounded-pill"
 									name="comment"
-									placeholder="Add a comment…"
+									:placeholder="$t('classic.commentCard.addComment')"
 									autocomplete="off"
 									autocorrect="off"
 									rows="1"
@@ -145,7 +145,7 @@
 			hide-footer
 			centered
 			rounded
-			:title-html="status.account ? 'Reply to <span class=text-dark>' + status.account.username + '</span>' : ''"
+			:title-html="status.account ? $t('classic.commentCard.replyTo', { user: '<span class=text-dark>' + status.account.username + '</span>' }) : ''"
 			title-tag="p"
 			title-class="font-weight-bold text-muted"
 			size="md"
@@ -173,11 +173,11 @@
 					<div class="d-flex align-items-center">
 						<div class="custom-control custom-switch mr-3">
 							<input type="checkbox" class="custom-control-input" id="replyModalCWSwitch" v-model="replyNsfw">
-							<label :class="[replyNsfw ? 'custom-control-label font-weight-bold text-dark':'custom-control-label text-lighter']" for="replyModalCWSwitch">Mark as NSFW</label>
+							<label :class="[replyNsfw ? 'custom-control-label font-weight-bold text-dark':'custom-control-label text-lighter']" for="replyModalCWSwitch">{{ $t('classic.commentCard.markAsNsfw') }}</label>
 						</div>
 
 						<button class="btn btn-primary btn-sm py-2 px-4 lead text-uppercase font-weight-bold" v-on:click.prevent="commentSubmit(status, $event)" :disabled="replyText.length == 0">
-							{{replySending == true ? 'POSTING' : 'POST'}}
+							{{replySending == true ? $t('classic.commentCard.posting') : $t('classic.commentCard.post')}}
 						</button>
 					</div>
 				</div>
@@ -315,7 +315,7 @@
 				let limit = this.config.uploader.max_caption_length;
 				if(comment.length > limit) {
 					this.replySending = false;
-					swal('Comment Too Long', 'Please make sure your comment is '+limit+' characters or less.', 'error');
+					swal(this.$t('classic.commentCard.commentTooLong'), this.$t('classic.commentCard.commentTooLongText', { limit: limit }), 'error');
 					return;
 				}
 				axios.post('/i/comment', {
@@ -346,21 +346,21 @@
 						$('.postCommentsLoader .lds-ring')
 						.attr('style','width:100%')
 						.addClass('pt-4 font-weight-bold text-muted')
-						.text('An error occurred, cannot fetch comments. Please try again later.');
+						.text(this.$t('classic.commentCard.fetchError'));
 					} else {
 						switch(error.response.status) {
 							case 401:
 							$('.postCommentsLoader .lds-ring')
 							.attr('style','width:100%')
 							.addClass('pt-4 font-weight-bold text-muted')
-							.text('Please login to view.');
+							.text(this.$t('classic.commentCard.loginToView'));
 							break;
 
 							default:
 							$('.postCommentsLoader .lds-ring')
 							.attr('style','width:100%')
 							.addClass('pt-4 font-weight-bold text-muted')
-							.text('An error occurred, cannot fetch comments. Please try again later.');
+							.text(this.$t('classic.commentCard.fetchError'));
 							break;
 						}
 					}
@@ -390,7 +390,7 @@
 
 			likeReply(status, $event) {
 				if($('body').hasClass('loggedIn') == false) {
-					swal('Login', 'Please login to perform this action.', 'info');
+					swal(this.$t('classic.commentCard.login'), this.$t('classic.commentCard.loginRequired'), 'info');
 					return;
 				}
 
@@ -404,7 +404,7 @@
 						status.favourited = true;
 					}
 				}).catch(err => {
-					swal('Error', 'Something went wrong, please try again later.', 'error');
+					swal(this.$t('common.error'), this.$t('classic.commentCard.errorTryLater'), 'error');
 				});
 			},
 

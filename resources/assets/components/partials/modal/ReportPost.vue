@@ -36,11 +36,11 @@
 								<p v-else class="mb-0">
 									<span v-if="showFull">
 										{{ status.content_text}}
-										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = false">Show less</a>
+										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = false">{{ $t('spa.reportPost.showLess') }}</a>
 									</span>
 									<span v-else>
 										{{ status.content_text.substr(0, 140) + ' ...' }}
-										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = true">Show full post</a>
+										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = true">{{ $t('spa.reportPost.showFullPost') }}</a>
 									</span>
 								</p>
 							</div>
@@ -53,11 +53,11 @@
 								<p v-if="status.content_text" class="mt-3 mb-0">
 									<span v-if="showFull">
 										{{ status.content_text}}
-										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = false">Show less</a>
+										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = false">{{ $t('spa.reportPost.showLess') }}</a>
 									</span>
 									<span v-else>
 										{{ status.content_text.substr(0, 80) + ' ...' }}
-										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = true">Show full post</a>
+										<a class="font-weight-bold primary ml-1" href="#" @click.prevent="showFull = true">{{ $t('spa.reportPost.showFullPost') }}</a>
 									</span>
 								</p>
 							</div>
@@ -82,13 +82,13 @@
 			<div class="mt-4">
 				<!-- <button class="btn btn-light btn-block rounded-pill font-weight-bold" @click="handleReason('notinterested')">I'm not interested in it</button> -->
 				<button class="btn btn-light btn-block rounded-pill font-weight-bold text-danger" @click="handleReason('spam')">{{ $t('menu.spam')}}</button>
-				<button v-if="status.sensitive == false" class="btn btn-light btn-block rounded-pill font-weight-bold text-danger" @click="handleReason('sensitive')">Adult or {{ $t('menu.sensitive')}}</button>
+				<button v-if="status.sensitive == false" class="btn btn-light btn-block rounded-pill font-weight-bold text-danger" @click="handleReason('sensitive')">{{ $t('spa.reportPost.adultOrSensitive') }}</button>
 				<button class="btn btn-light btn-block rounded-pill font-weight-bold text-danger" @click="handleReason('abusive')">{{ $t('menu.abusive')}}</button>
 				<button class="btn btn-light btn-block rounded-pill font-weight-bold" @click="handleReason('underage')">{{ $t('menu.underageAccount')}}</button>
 				<button class="btn btn-light btn-block rounded-pill font-weight-bold" @click="handleReason('copyright')">{{ $t('menu.copyrightInfringement')}}</button>
 				<button class="btn btn-light btn-block rounded-pill font-weight-bold" @click="handleReason('impersonation')">{{ $t('menu.impersonation')}}</button>
 				<!-- <button class="btn btn-light btn-block rounded-pill font-weight-bold" @click="handleReason('scam')">{{ $t('menu.scamOrFraud')}}</button> -->
-				<button class="btn btn-light btn-block rounded-pill mt-md-5" @click="tabIndex = 0">Go back</button>
+				<button class="btn btn-light btn-block rounded-pill mt-md-5" @click="tabIndex = 0">{{ $t('spa.reportPost.goBack') }}</button>
 			</div>
 		</div>
 

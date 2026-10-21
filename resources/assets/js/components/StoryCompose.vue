@@ -11,7 +11,7 @@
 			<div v-if="page == 'landing'" class="card card-body bg-transparent border-0 shadow-none d-flex justify-content-center" style="height: 90vh;">
 				<div class="text-center flex-fill pt-3">
 					<img class="mb-2" :src="config.logo" width="70" height="70">
-					<p class="lead text-lighter font-weight-light mb-0">Stories</p>
+					<p class="lead text-lighter font-weight-light mb-0">{{ $t('navmenu.stories') }}</p>
 				</div>
 				<div class="flex-fill py-4">
 					<p class="text-center lead font-weight-light text-lighter mb-4">{{ $t("story.shareWithFollowers")}}</p>
@@ -43,7 +43,7 @@
 				</div>
 				<div class="text-center flex-fill">
 					<p class="text-uppercase mb-0">
-						<a href="/" class="text-lighter font-weight-bold">Home</a>
+						<a href="/" class="text-lighter font-weight-bold">{{ $t('compose.storyCompose.home') }}</a>
 						<span class="px-2 text-lighter">|</span>
 						<a href="/site/help" class="text-lighter font-weight-bold">{{ $t("navmenu.help")}}</a>
 					</p>
@@ -94,7 +94,7 @@
 			<div v-else-if="page == 'error'" class="card card-body bg-transparent border-0 shadow-none d-flex justify-content-center align-items-center" style="height: 90vh;">
 				<div class="text-center flex-fill pt-3">
 					<img class="mb-2" :src="config.logo" width="70" height="70">
-					<p class="lead text-lighter font-weight-light mb-0">Stories</p>
+					<p class="lead text-lighter font-weight-light mb-0">{{ $t('navmenu.stories') }}</p>
 				</div>
 				<div class="flex-fill text-center">
 					<p class="h3 mb-0 text-light">{{ $t("common.oops") }}</p>
@@ -120,7 +120,7 @@
 			<div v-else-if="page == 'preview'" class="card card-body bg-transparent border-0 shadow-none d-flex justify-content-center align-items-center" style="height: 90vh;">
 				<div class="text-center flex-fill pt-3">
 					<img class="mb-2" :src="config.logo" width="70" height="70">
-					<p class="lead text-lighter font-weight-light mb-0">Stories</p>
+					<p class="lead text-lighter font-weight-light mb-0">{{ $t('navmenu.stories') }}</p>
 				</div>
 				<div class="flex-fill">
 					<div class="form-group pb-3">
@@ -152,7 +152,7 @@
 						</a>
 
 						<a class="btn btn-primary btn-block font-weight-bold my-3 rounded-pill" href="#" @click.prevent="shareStoryToFollowers()">
-							Post {{ canPostPoll ? 'Poll' : 'Story'}}
+							{{ canPostPoll ? $t('compose.storyCompose.postPoll') : $t('compose.storyCompose.postStory') }}
 						</a>
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 					<p class="text-muted font-weight-light mb-1">
 						<i class="fal fa-history fa-5x"></i>
 					</p>
-					<p class="text-muted font-weight-bold mb-0">STORIES</p>
+					<p class="text-muted font-weight-bold mb-0">{{ $t('compose.storyCompose.storiesHeading') }}</p>
 				</div>
 				<div class="flex-fill py-4">
 					<p class="lead font-weight-bold text-lighter">{{ $t('story.myStories') }}</p>
@@ -175,7 +175,7 @@
 										<img :src="story.src" class="rounded-circle border" width="40px" height="40px" style="object-fit: cover;">
 									</div>
 									<div class="media-body text-left">
-										<p class="mb-0 text-muted font-weight-bold"><span>{{timeago(story.created_at)}} ago</span></p>
+										<p class="mb-0 text-muted font-weight-bold"><span>{{ $t('compose.storyCompose.ago', { time: timeago(story.created_at) }) }}</span></p>
 									</div>
 									<div class="flex-grow-1 text-right">
 										<button v-if="story.viewers.length" @click="toggleShowViewers(index)" class="btn btn-link btn-sm mr-1">
@@ -187,10 +187,10 @@
 									</div>
 								</div>
 								<div v-if="story.showViewers && story.viewers.length" class="m-2 text-left">
-									<p class="font-weight-bold mb-2">{{ $t("story.viewdBy") }}</p>
+									<p class="font-weight-bold mb-2">{{ $t("story.viewedBy") }}</p>
 									<div v-for="viewer in story.viewers" class="d-flex">
 										<img src="/storage/avatars/default.png" width="24" height="24" class="rounded-circle mr-2">
-										<p class="mb-0 font-weight-bold">viewer.username</p>
+										<p class="mb-0 font-weight-bold">{{ viewer.username }}</p>
 									</div>
 								</div>
 							</div>
@@ -205,17 +205,17 @@
 			<div v-else-if="page == 'createPoll'" class="card card-body bg-transparent border-0 shadow-none d-flex justify-content-center" style="height: 90vh;">
 				<div class="text-center pt-3">
 					<img class="mb-2" :src="config.logo" width="70" height="70">
-					<p class="lead text-lighter font-weight-light mb-0">Stories</p>
+					<p class="lead text-lighter font-weight-light mb-0">{{ $t('navmenu.stories') }}</p>
 				</div>
 				<div class="flex-fill mt-3">
 					<div class="align-items-center">
 						<div class="form-group mb-5">
-							<label class="font-weight-bold text-lighter">Poll Question</label>
-							<input class="form-control form-control-lg rounded-pill bg-muted shadow text-white border-0" placeholder="Ask a poll question here..." v-model="pollQuestion" />
+							<label class="font-weight-bold text-lighter">{{ $t('compose.storyCompose.pollQuestion') }}</label>
+							<input class="form-control form-control-lg rounded-pill bg-muted shadow text-white border-0" :placeholder="$t('compose.storyCompose.pollQuestionPlaceholder')" v-model="pollQuestion" />
 						</div>
-						<label class="font-weight-bold text-lighter">Poll Answers</label>
+						<label class="font-weight-bold text-lighter">{{ $t('compose.storyCompose.pollAnswers') }}</label>
 						<div v-for="(option, index) in pollOptions" class="form-group mb-4">
-							<input class="form-control form-control-lg rounded-pill bg-muted shadow text-white border-0" placeholder="Add a poll answer here..." v-model="pollOptions[index]" />
+							<input class="form-control form-control-lg rounded-pill bg-muted shadow text-white border-0" :placeholder="$t('compose.storyCompose.pollAnswerPlaceholder')" v-model="pollOptions[index]" />
 						</div>
 						<div v-if="pollOptions.length < 4" class="mb-3">
 							<button
@@ -223,7 +223,7 @@
 								:class="[ (pollQuestion && pollQuestion.length) > 6 && (pollOptions.length == 0 || pollOptions.length && pollOptions[pollOptions.length - 1].length > 3) ? 'btn-muted' : 'btn-outline-muted' ]"
 								:disabled="!pollQuestion || pollQuestion.length < 6"
 								@click="addOptionInput">
-								Add poll option
+								{{ $t('compose.storyCompose.addPollOption') }}
 							</button>
 						</div>
 						<!-- <div v-for="(option, index) in pollOptions" class="form-group mb-4 d-flex align-items-center" style="max-width:400px;position: relative;">
@@ -394,7 +394,7 @@
 				self.page = 'uploading';
 				Array.prototype.forEach.call(io.files, function(io, i) {
 					if(self.media && self.media.length + i >= self.config.uploader.album_limit) {
-						swal('Error', 'You can only upload ' + self.config.uploader.album_limit + ' photos per album', 'error');
+						swal(self.$t('common.error'), self.$t('compose.common.albumLimit', { limit: self.config.uploader.album_limit }), 'error');
 						self.uploading = false;
 						self.page = 2;
 						return;
@@ -402,7 +402,7 @@
 					let type = io.type;
 					let validated = $.inArray(type, self.mimes);
 					if(validated == -1) {
-						swal('Invalid File Type', 'The file you are trying to add is not a valid mime type. Please upload a '+self.mimes+' only.', 'error');
+						swal(self.$t('compose.common.invalidFileType'), self.$t('compose.common.invalidFileTypeMsg', { types: self.mimes }), 'error');
 						self.uploading = false;
 						self.page = 'error';
 						return;
@@ -434,8 +434,8 @@
 					}).catch(function(e) {
 						self.uploading = false;
 						io.value = null;
-						let msg = e.response.data.message ? e.response.data.message : e.response.data.error ? e.response.data.error :'Something went wrong.'
-						swal('Oops!', msg, 'warning');
+						let msg = e.response.data.message ? e.response.data.message : e.response.data.error ? e.response.data.error :self.$t('compose.storyCompose.somethingWentWrong')
+						swal(self.$t('common.oops'), msg, 'warning');
 						self.page = 'error';
 					});
 					self.uploadProgress = 0;
@@ -460,7 +460,7 @@
 			},
 
 			deleteStory(story, index) {
-				if(window.confirm('Are you sure you want to delete this Story?') != true) {
+				if(window.confirm(this.$t('compose.storyCompose.deleteConfirm')) != true) {
 					return;
 				}
 
@@ -555,7 +555,7 @@
 				let opts = this.pollOptions;
 				let dd = [...new Set(this.pollOptions)];
 				if(dd.length != opts.length) {
-					swal('Oops!', 'You cannot use duplicate poll answers, please remove any duplicates and try again.', 'error');
+					swal(this.$t('common.oops'), this.$t('compose.storyCompose.duplicateAnswers'), 'error');
 					return;
 				}
 				this.page = 'preview';

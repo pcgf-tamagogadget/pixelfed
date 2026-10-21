@@ -8,8 +8,8 @@
             <div class="title d-flex align-items-center" style="gap: 1rem;">
                 <p class="mb-0"><a href="{{ $pc->manageUrl() }}?actions"><i class="far fa-chevron-left fa-lg"></i></a></p>
                 <div>
-                    <h3 class="font-weight-bold mb-0">Stop Managing Child</h3>
-                    <p class="small mb-0">Last updated: {{ $pc->updated_at->diffForHumans() }}</p>
+                    <h3 class="font-weight-bold mb-0">{{ __('settings.parental_controls.stop_managing_child') }}</h3>
+                    <p class="small mb-0">{{ __('settings.parental_controls.last_updated', ['time' => $pc->updated_at->diffForHumans()]) }}</p>
                 </div>
             </div>
         </div>
@@ -21,11 +21,11 @@
             <p>
                 <i class="far fa-exclamation-triangle fa-3x"></i>
             </p>
-            <h4>Confirm Stop Managing this Account?</h4>
-            <p>This child account will be transitioned to a regular account without any limitations.</p>
+            <h4>{{ __('settings.parental_controls.confirm_stop_managing_this_account') }}</h4>
+            <p>{{ __('settings.parental_controls.this_child_account_will_be_transitioned_etc') }}</p>
         </div>
 
-        <button type="submit" class="btn btn-danger btn-block font-weight-bold">Stop Managing</button>
+        <button type="submit" class="btn btn-danger btn-block font-weight-bold">{{ __('settings.parental_controls.stop_managing') }}</button>
     </div>
 </form>
 

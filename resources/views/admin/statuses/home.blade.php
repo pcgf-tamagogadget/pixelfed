@@ -2,7 +2,7 @@
 
 @section('section')
   <div class="title">
-    <h3 class="font-weight-bold">Statuses</h3>
+    <h3 class="font-weight-bold">{{ __('admin_panel.statuses.home.title') }}</h3>
   </div>
 
   <hr>
@@ -11,10 +11,10 @@
     <thead class="bg-light">
       <tr>
         <th scope="col" class="border-0 text-dark">#</th>
-        <th scope="col" class="border-0 text-dark">Username</th>
-        <th scope="col" class="border-0 text-dark">Likes</th>
-        <th scope="col" class="border-0 text-dark">Storage</th>
-        <th scope="col" class="border-0 text-dark">Created</th>
+        <th scope="col" class="border-0 text-dark">{{ __('admin_panel.common.username') }}</th>
+        <th scope="col" class="border-0 text-dark">{{ __('admin_panel.statuses.home.likes') }}</th>
+        <th scope="col" class="border-0 text-dark">{{ __('admin_panel.statuses.home.storage') }}</th>
+        <th scope="col" class="border-0 text-dark">{{ __('admin_panel.common.created') }}</th>
       </tr>
     </thead>
     <tbody>

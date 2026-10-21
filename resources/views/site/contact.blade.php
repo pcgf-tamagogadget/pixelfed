@@ -16,7 +16,7 @@
       @elseif(!config('instance.email') && config('instance.contact.enabled'))
        {{__('site.you_can_contact_the_admins')}} {{__('site.by_using_the_form_below')}}.
       @else
-       {{__('the_admins_have_not_set_a_contact_email_address')}}
+       {{__('site.the_admins_have_not_set_a_contact_email_address')}}
       @endif
     </p>
     @if(config('instance.contact.enabled'))
@@ -39,7 +39,7 @@
       @if(config('instance.email') && config('instance.contact.enabled'))
         {{__('site.you_can_contact_the_admins')}} {{__('site.by_sending_an_email_to')}} <span class="font-weight-bold">{{config('instance.email')}}</span> {{__('site.or')}} {{__('site.log_in_to_send_a_message')}}.
       @elseif (!config('instance.email') && config('instance.contact.enabled'))
-        {{__('the_admins_have_not_set_a_contact_email_address')}}. {{__('site.Please')}} {{__('site.log_in_to_send_a_message')}}.
+        {{__('site.the_admins_have_not_set_a_contact_email_address')}}. {{__('site.Please')}} {{__('site.log_in_to_send_a_message')}}.
       @elseif (config('instance.email') && !config('instance.contact.enabled'))
         {{__('site.you_can_contact_the_admins')}} {{__('site.by_sending_an_email_to')}} <span class="font-weight-bold">{{config('instance.email')}}</span>.
       @endif

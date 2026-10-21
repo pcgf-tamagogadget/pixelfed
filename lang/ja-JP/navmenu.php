@@ -16,4 +16,19 @@ return [
     'logout' => 'ログアウト',
     'directMessages' => 'ダイレクトメッセージ',
     'composePost' => '投稿',
+
+    // Added by Blade i18n pass (views).
+    'logo' => 'ロゴ',
+    'logoAlt' => 'Pixelfed ロゴ',
+    'direct' => 'ダイレクト',
+    'notifications' => '通知',
+    'compose' => '投稿を作成',
+    'new' => '新規投稿',
+    'userMenu' => 'ユーザーメニュー',
+    'myFeed' => 'マイフィード',
+    'publicFeed' => '公開フィード',
+    'networkFeed' => 'ネットワークフィード',
+    'public' => '公開',
+    'stories' => 'ストーリー',
+
 ];
